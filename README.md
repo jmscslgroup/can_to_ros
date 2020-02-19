@@ -1,5 +1,5 @@
 # CANSpeedDecoder
-Decode CAN messges written in csv file.
+Decode CAN speed messge written in csv file.
 
 ### Prerequisites
 
