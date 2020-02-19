@@ -1,5 +1,5 @@
 # CANSpeedDecoder
-Decode CAN speed messge written in csv file.
+Read CAN messges from csv file, and decode msgs with id=180 to speed (m/s). It also publish the speed to ROS topic /vehicle/vel
 
 ### Prerequisites
 
