@@ -11,6 +11,122 @@
 #include <bitset>
 #include <math.h>
 
+class decode_msgs{
+
+private:
+float speed;
+float steering_angle;
+
+public:
+decode_msgs(): speed(0.0) , steering_angle(0.0){}; // constructor 
+float GetSpeed(){ return this->speed; };
+float GetSteeringAngle(){ return this->steering_angle; };
+
+int decode_message( unsigned int msg_id, std::string msg); // decoding CAN messages
+
+std::string findTwoscomplement(std::string str); // functon to return two's complement 
+
+};
+
+
+std::string decode_msgs::findTwoscomplement(std::string str) { 
+    int n = str.length(); 
+  
+    // Traverse the string to get first '1' from 
+    // the last of string 
+    int i; 
+    for (i = n-1 ; i >= 0 ; i--) 
+        if (str[i] == '1') 
+            break; 
+  
+    // If there exists no '1' concatenate 1 at the 
+    // starting of string 
+    if (i == -1) 
+        return '1' + str; 
+  
+    // Continue traversal after the position of 
+    // first '1' 
+    for (int k = i-1 ; k >= 0; k--) 
+    { 
+        //Just flip the values 
+        if (str[k] == '1') 
+            str[k] = '0'; 
+        else
+            str[k] = '1'; 
+    } 
+    // return the modified string 
+    return str;
+} 
+
+int decode_msgs::decode_message( unsigned int msg_id, std::string msg){
+  int raw_angle;
+  unsigned long long int n;
+  std::string binary;
+  unsigned long long  rawVal_Dec;
+  float speedDec_kmph;
+  float speed_mps;
+  std::string byte1;
+  std::string byte2;
+  std::string byte6;
+  std::string byte7;
+  std::string temp1;
+  std::string rawVal;
+  float angle;
+  if (msg_id == 180){
+  
+        std::stringstream hex_ss(msg); 
+        hex_ss >> std::hex >> n;// making the message hex 
+
+        binary = std::bitset<64>(n).to_string(); // conver hex to binary 
+
+         byte6 = binary.substr(40,8);
+         byte7 = binary.substr(48,8);
+
+        rawVal= byte6+byte7;
+       
+         rawVal_Dec=std::stoull(rawVal, 0, 2);
+
+        speedDec_kmph= (float)rawVal_Dec * 0.01;
+         speed_mps= ceilf((speedDec_kmph* (10.0/36.0)) * 100) / 100;
+
+      this->steering_angle = 0.0;
+      this->speed = speed_mps;
+      
+    return 0;
+  }
+  if (msg_id == 37){
+
+        std::stringstream hex_ss(msg); // 
+        hex_ss >> std::hex >> n;
+       /// std::cout << n << std::endl;
+
+       binary = std::bitset<64>(n).to_string(); // conver hex to binary 
+
+         byte1 = binary.substr(0,8);
+         byte2 = binary.substr(8,8);
+
+         temp1= byte1.substr(4,4);// getting the last fout bits of the first byte
+
+        if ((temp1+byte2)[0]== '0'){
+         raw_angle= std::stoul( temp1+byte2, 0, 2 );
+        }
+        else {
+
+          raw_angle= std::stoul(findTwoscomplement(temp1+byte2), 0, 2 );
+          raw_angle=raw_angle * -1.0;
+        }
+        angle=float(raw_angle)*1.5;
+
+        this->steering_angle = angle;
+        this->speed = 0.0;
+
+        return 0;
+
+  }
+
+}
+
+
 
 
 float getAvgDelta_t(std::string file_name){ // the getAvgDelta_t() calculates the average time difference between the the timestamp
@@ -22,7 +138,12 @@ float getAvgDelta_t(std::string file_name){ // the getAvgDelta_t() calculates th
   float curr_value=0.0;
   int count=0;
   bool firstLine = true;
-
+  int hour;
+  int min;
+  int sec;
+  std::string microseconds;
+  std::string time_in_sec;
+  float delta;
   std::ifstream inFile;
   inFile.open(file_name);
   if( !inFile.is_open()){// check if the file is opened correctly.
@@ -41,15 +162,15 @@ float getAvgDelta_t(std::string file_name){ // the getAvgDelta_t() calculates th
       if (MessageID == 180){
         count++; // counter 
         std::time_t epoch1 = stod(Time);// creating a time_tobject to store time
-        std::string microseconds = Time.substr(10,6); // storing the precision value 
+         microseconds = Time.substr(10,6); // storing the precision value 
   
         struct tm * ptm=(gmtime(&epoch1)); // gmtime converts time since epoch to calendar time expressed as Universal Coordinated Time
         // struct tm is structure holding a calendar date and time broken down into its components.
-        int hour= ptm->tm_hour;
-        int min= ptm->tm_min;
-        int sec= ptm->tm_sec;
+        hour= ptm->tm_hour;
+        min= ptm->tm_min;
+        sec= ptm->tm_sec;
 
-        std::string time_in_sec = std::to_string((hour*3600)+(min*60)+sec) + microseconds; // total time in seconds 
+        time_in_sec = std::to_string((hour*3600)+(min*60)+sec) + microseconds; // total time in seconds 
 
         if (count ==1){
             prev_value= stod(time_in_sec);
@@ -57,7 +178,7 @@ float getAvgDelta_t(std::string file_name){ // the getAvgDelta_t() calculates th
         if (count > 1){
   
             curr_value=stod(time_in_sec);
-            float delta=curr_value-prev_value; // taking the difference 
+            delta=curr_value-prev_value; // taking the difference 
             sum=sum+delta;
             prev_value= stod(time_in_sec);
           }
@@ -78,10 +199,12 @@ int main(int argc, char **argv){
     ros::Publisher chatter_pub = nh.advertise<geometry_msgs::Twist>("/vehicle/vel", 1000);   // pulishing to /vehicle/vel topic
     ROS_INFO("Got parameter : %s", argv[1]);
     std::ifstream inFile;
-
+    std::string user_input="";
+    decode_msgs obj;
     std::string inputLine="";
     std::string Time,Bus,Message,MessageLength;
     int MessageID;
+    geometry_msgs::Twist msg;
     bool firstLine=true;
     if (argc != 2){ // check the nunber of the argument
         std::cout <<"./a.out .csv" << std::endl;
@@ -99,6 +222,11 @@ int main(int argc, char **argv){
       std::cout << "Cannot open file to read"<< std::endl;
       return 1;
     }
+    do {  // asking for user input 
+    std::cout << "Enter (S) for speed or (A) for steering angle: " << std::endl;
+    std::cin >> user_input;
+    } while (user_input != "A" && user_input != "S");
+    
 
     while (ros::ok()){
 
@@ -113,50 +241,21 @@ int main(int argc, char **argv){
       std::stringstream ss(inputLine);
       ss >> Time>> Bus>> MessageID>> Message>> MessageLength;
  
-      if (MessageID == 180){ // MID for speed is 180
-        std::stringstream hex_ss(Message); 
-        hex_ss >> std::hex >> n; // making the message hex 
-        //std::cout << n << std::endl;
+      obj.decode_message (MessageID, Message);  // speedID 180, steering angleID 37
 
-        std::string binary = std::bitset<64>(n).to_string();// conver hex to binary 
-
-        // std::string byte1 = binary.substr(0,8);
-        // std::string byte2 = binary.substr(8,8);
-        // std::string byte3 = binary.substr(16,8);
-        // std::string byte4 = binary.substr(24,8);
-        // std::string byte5 = binary.substr(32,8);
-        std::string byte6 = binary.substr(40,8);
-        std::string byte7 = binary.substr(48,8);
-        // std::string byte8 = binary.substr(56,8);
-
-        // std::cout << "byte1 " << byte1<< std::endl;
-        // std::cout << "byte2 " << byte2<< std::endl;
-        // std::cout << "byte3 " << byte3<< std::endl;
-        // std::cout << "byte4 " << byte4<< std::endl;
-        // std::cout << "byte5 " << byte5<< std::endl;
-       // std::cout << "byte6 " << byte6<< std::endl;
-        //std::cout << "byte7 " << byte7<< std::endl;
-        // std::cout << "byte8 " << byte8<< std::endl;
-
-
-       std::string rawVal= byte6+byte7;
-       
-       unsigned long long  rawVal_Dec=std::stoull(rawVal, 0, 2); // converting a string to unsigned long long 
-
-       float speedDec_kmph= (float)rawVal_Dec * 0.01;// multiply the raw value with a factor (0.01 given in the dbc file)
-       float speed_mps= ceilf((speedDec_kmph* (10.0/36.0)) * 100) / 100; // converting speed to m/s
-
-       std::cout << "speed: " << speed_mps<< " m/s" <<std::endl;// output to the console
+      if (MessageID == 180 && user_input == "S"){ 
+       msg.linear.x = obj.GetSpeed();
+      // std::cout << "speed " << obj.GetSpeed() << std::endl;
+       }
+     if (MessageID == 37 && user_input == "A"){ 
+      //outFile << obj.GetSteeringAngle() << "," << Message << std::endl;
+      }
+    }
      
-        geometry_msgs::Twist msg;
-        msg.linear.x = speed_mps;
         chatter_pub.publish(msg);
         ros::spinOnce();
         rate.sleep();
   
-      }
-    }
-
       std::cout << "Finish publishing to the topic "<< std::endl;
       inFile.close();
 
