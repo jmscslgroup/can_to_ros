@@ -1,5 +1,5 @@
 # CANSpeedDecoder
-Decode CAN messges written in csv file.
+Read CAN messges from csv file, and decode msgs with id=180 to speed (m/s). It also publishes the speed to ROS topic /vehicle/vel, and generates a bag file. 
 
 ### Prerequisites
 
@@ -28,9 +28,9 @@ $source ./devel/setup.bash
 ```
 Then use roslaunch to start can_msg_decoder node:
 ```
-$roslaunch can_speed_decoder publish_can_msg.launch file_path:=CAN_Message_.csv
+$roslaunch can_speed_decoder publish_can_msg.launch file_path:=/home/user/.../catkin_ws/src/CANSpeedDecoder/CAN_Message_.csv
 ```
-The generated bag file should be loacted at ~/.ros directory 
+The generated bag file should be located at ~/.ros directory 
 ```
 $cd ~/.ros
 ```
