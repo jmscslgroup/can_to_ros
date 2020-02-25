@@ -10,6 +10,7 @@
 #include <iostream>
 #include <bitset>
 #include <math.h>
+#include <ctime>
 
 class decode_msgs{
 
