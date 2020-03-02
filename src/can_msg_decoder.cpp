@@ -205,7 +205,7 @@ int main(int argc, char **argv){
     std::string inputLine="";
     std::string Time,Bus,Message,MessageLength;
     int MessageID;
-    geometry_msgs::Twist msg;
+ 
     bool firstLine=true;
     if (argc != 2){ // check the nunber of the argument
         std::cout <<"./a.out .csv" << std::endl;
@@ -213,6 +213,7 @@ int main(int argc, char **argv){
     }
   
     float delta_t = getAvgDelta_t(argv[1]); // calling getAvgDelta_t() and assign the returned value to delta_t
+    //std::cout << delta_t << "  delta" << std::endl;
 
     ros::Rate rate(1.0/delta_t); // the publish rate is 1/delta_t
     unsigned long long int n; // variable to hold the hex value 
@@ -245,18 +246,20 @@ int main(int argc, char **argv){
       obj.decode_message (MessageID, Message);  // speedID 180, steering angleID 37
 
       if (MessageID == 180 && user_input == "S"){ 
+       std::cout << "speed " << obj.GetSpeed() << std::endl;
+       geometry_msgs::Twist msg;
        msg.linear.x = obj.GetSpeed();
-      // std::cout << "speed " << obj.GetSpeed() << std::endl;
+       chatter_pub.publish(msg);
+       ros::spinOnce();
+       rate.sleep();
+       
        }
      if (MessageID == 37 && user_input == "A"){ 
       //outFile << obj.GetSteeringAngle() << "," << Message << std::endl;
       }
+
     }
      
-        chatter_pub.publish(msg);
-        ros::spinOnce();
-        rate.sleep();
-  
       std::cout << "Finish publishing to the topic "<< std::endl;
       inFile.close();
 
