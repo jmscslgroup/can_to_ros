@@ -15,7 +15,7 @@ $ catkin_make
 2.Clone the repo.
 ```
 $ cd ~/catkin_ws/src
-$ git clone https://github.com/SafwanElmadani/CANSpeedDecoder.git
+$ git clone https://github.com/SafwanElmadani/can_speed_decoder.git
 ```
 3.Build the WS
 ```
