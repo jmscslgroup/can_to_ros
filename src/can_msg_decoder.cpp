@@ -129,71 +129,6 @@ int decode_msgs::decode_message( unsigned int msg_id, std::string msg){
 
 
 
-
-float getAvgDelta_t(std::string file_name){ // the getAvgDelta_t() calculates the average time difference between the the timestamp
-  float results=0.0;
-  std::string  inputLine, Bus, Message, Time;
-  int  MessageID;
-  float sum=0.0;
-  float prev_value=0.0;
-  float curr_value=0.0;
-  int count=0;
-  bool firstLine = true;
-  int hour;
-  int min;
-  int sec;
-  std::string microseconds;
-  std::string time_in_sec;
-  float delta;
-  std::ifstream inFile;
-  inFile.open(file_name);
-  if( !inFile.is_open()){// check if the file is opened correctly.
-    std::cout << "Cannot open file to read"<< std::endl;
-   }
-  while (getline(inFile, inputLine)){
-    if (firstLine){ // skip the first line
-      firstLine = false;
-      continue;
-      }
-    if (inputLine.empty()) continue; // if the line is empty
-      std::replace(inputLine.begin(), inputLine.end(), ',', ' '); // replace the commas with white space
-      std::stringstream ss(inputLine);
-      ss >> Time>> Bus>> MessageID;
- 
-      if (MessageID == 180){
-        count++; // counter 
-        std::time_t epoch1 = stod(Time);// creating a time_tobject to store time
-         microseconds = Time.substr(10,6); // storing the precision value 
-  
-        struct tm * ptm=(gmtime(&epoch1)); // gmtime converts time since epoch to calendar time expressed as Universal Coordinated Time
-        // struct tm is structure holding a calendar date and time broken down into its components.
-        hour= ptm->tm_hour;
-        min= ptm->tm_min;
-        sec= ptm->tm_sec;
-
-        time_in_sec = std::to_string((hour*3600)+(min*60)+sec) + microseconds; // total time in seconds 
-
-        if (count ==1){
-            prev_value= stod(time_in_sec);
-          }
-        if (count > 1){
-  
-            curr_value=stod(time_in_sec);
-            delta=curr_value-prev_value; // taking the difference 
-            sum=sum+delta;
-            prev_value= stod(time_in_sec);
-          }
-      
-      }
- 
-   }
-      results=sum/(count-1); // calculating the average 
-    return results;
-  }
-
-
-/**********************************************************************************************/
-
 int main(int argc, char **argv){
     ros::init(argc, argv, "can_msg_decoder");
     ros::NodeHandle nh("~");
@@ -207,36 +142,42 @@ int main(int argc, char **argv){
     int MessageID;
  
     bool firstLine=true;
-    if (argc != 2){ // check the nunber of the argument
-        std::cout <<"./a.out .csv" << std::endl;
-        return 1;
-    }
+    // if (argc != 2){ // check the nunber of the argument
+    //     std::cout <<"./a.out .csv" << std::endl;
+    //     return 1;
+    // }
   
-    float delta_t = getAvgDelta_t(argv[1]); // calling getAvgDelta_t() and assign the returned value to delta_t
+    //float delta_t = getAvgDelta_t(argv[1]); // calling getAvgDelta_t() and assign the returned value to delta_t
     //std::cout << delta_t << "  delta" << std::endl;
 
-    ros::Rate rate(1.0/delta_t); // the publish rate is 1/delta_t
+    ros::Rate rate(10.0); // the publish rate is 1/delta_t
     unsigned long long int n; // variable to hold the hex value 
 
     inFile.open(argv[1]);
 
-    if( !inFile.is_open()){// check id the file is opened correctly.
-      std::cout << "Cannot open file to read"<< std::endl;
-      return 1;
-    }
-    do {  // asking for user input 
-    std::cout << "Enter (S) for speed or (A) for steering angle: " << std::endl;
-    std::cin >> user_input;
-    } while (user_input != "A" && user_input != "S");
+    // if( !inFile.is_open()){// check id the file is opened correctly.
+    //   std::cout << "Cannot open file to read"<< std::endl;
+    //   return 1;
+    // }
+    // do {  // asking for user input 
+    // std::cout << "Enter (S) for speed or (A) for steering angle: " << std::endl;
+    // std::cin >> user_input;
+    // } while (user_input != "A" && user_input != "S");
     
+    int j = 0;
+    unsigned int count=0;
+    double prev_value=0.0;
+    double curr_value=0.0;
 
     while (ros::ok()){
 
-      if (!getline(inFile, inputLine)) break;
-      if (firstLine){ // skip the first line
-        firstLine=false;
-        continue;
-      }
+      //     if (firstLine){ // skip the first line
+      //   firstLine=false;
+      //   continue;
+      // }
+    
+     if (!getline(std::cin, inputLine)) break;
+
      if (inputLine.empty()) continue; // if there is an empty line then skip it
 
       std::replace(inputLine.begin(), inputLine.end(), ',', ' '); // replace the commas with white space
@@ -245,7 +186,7 @@ int main(int argc, char **argv){
  
       obj.decode_message (MessageID, Message);  // speedID 180, steering angleID 37
 
-      if (MessageID == 180 && user_input == "S"){ 
+      if (MessageID == 180){ 
        std::cout << "speed " << obj.GetSpeed() << std::endl;
        geometry_msgs::Twist msg;
        msg.linear.x = obj.GetSpeed();
@@ -254,10 +195,7 @@ int main(int argc, char **argv){
        rate.sleep();
        
        }
-     if (MessageID == 37 && user_input == "A"){ 
-      //outFile << obj.GetSteeringAngle() << "," << Message << std::endl;
-      }
-
+    
     }
      
       std::cout << "Finish publishing to the topic "<< std::endl;
