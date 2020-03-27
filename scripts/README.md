@@ -3,15 +3,16 @@
 ~~~
 $ mkdir catkin_ws # make a ros workspace
 $ cd catkin_ws
-$ mksir src
+$ mkdir src
 $ cd src
 $ git clone https://github.com/SafwanElmadani/can_speed_decoder.git
+$ cd can_speed_decoder
 $ git checkout ROS_libpanda
-$ cd ..
+$ cd ../..
 $ catkin_make
 ~~~
 
-# Runnin hello_speed.py
+# Running hello_speed.py
 
 Now run the roslaunch file for can_speed_decoder:
 ~~~
