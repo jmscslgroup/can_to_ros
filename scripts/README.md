@@ -23,7 +23,7 @@ $ roslaunch can_speed_decoder publish_can_msg.launch
 The above only listens to updated from a file in ~/can_data.csv.  To populate, run pandacord in a new terminal:
 
 ~~~
-$ sudo pandacord -g ~/can_data.csv
+$ sudo pandacord -c ~/can_data.csv
 ~~~
 
 Finally, in yet another terminal windows (3rd one so far) run:
