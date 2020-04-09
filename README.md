@@ -28,7 +28,7 @@ $source ./devel/setup.bash
 ```
 Then use roslaunch to start can_msg_decoder node:
 ```
-$roslaunch can_speed_decoder publish_can_msg.launch file_path:=/home/user/.../catkin_ws/src/CANSpeedDecoder/CAN_Message_.csv
+$roslaunch can_to_ros publish_can_msg.launch file_path:=/home/user/.../catkin_ws/src/CANSpeedDecoder/CAN_Message_.csv
 ```
 The generated bag file should be located at ~/.ros directory 
 ```
