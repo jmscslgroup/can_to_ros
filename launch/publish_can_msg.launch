@@ -2,8 +2,8 @@
 
 <!--<node pkg="can_speed_decoder" type ="can_msg_decoder" name="can_msg_decoder" args="$(arg file_path)" output="screen" />  -->
 
-<node pkg="can_speed_decoder" type ="piping.sh" name="bashscript" output="screen" /> 
+<node pkg="can_to_ros" type ="piping.sh" name="bashscript" output="screen" /> 
 
-<node pkg="rosbag" type="record" name="can_msg_bag" args="-o can_speed_test /vehicle/vel"/>
+<node pkg="rosbag" type="record" name="can_msg_bag" args="-o can_to_ros /vehicle/vel"/>
 
 </launch>

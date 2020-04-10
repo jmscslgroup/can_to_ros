@@ -2,6 +2,7 @@
 #include "std_msgs/String.h"
 #include "geometry_msgs/Point.h"
 #include "geometry_msgs/Twist.h"
+#include "std_msgs/Float32.h"
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -17,11 +18,13 @@ class decode_msgs{
 private:
 float speed;
 float steering_angle;
+float lead_dist;
 
 public:
-decode_msgs(): speed(0.0) , steering_angle(0.0){}; // constructor 
+decode_msgs(): speed(0.0) , steering_angle(0.0), lead_dist(0.0) {}; // constructor 
 float GetSpeed(){ return this->speed; };
 float GetSteeringAngle(){ return this->steering_angle; };
+float GetLead_dist() {return this->lead_dist; };
 
 int decode_message( unsigned int msg_id, std::string msg); // decoding CAN messages
 
@@ -66,6 +69,7 @@ int decode_msgs::decode_message( unsigned int msg_id, std::string msg){
   unsigned long long  rawVal_Dec;
   float speedDec_kmph;
   float speed_mps;
+  float lead_dist;
   std::string byte1;
   std::string byte2;
   std::string byte6;
@@ -90,10 +94,9 @@ int decode_msgs::decode_message( unsigned int msg_id, std::string msg){
         speedDec_kmph= (float)rawVal_Dec * 0.01;
          speed_mps= ceilf((speedDec_kmph* (10.0/36.0)) * 100) / 100;
 
-      this->steering_angle = 0.0;
+      //this->steering_angle = 0.0;
       this->speed = speed_mps;
       
-    return 0;
   }
   if (msg_id == 37){
 
@@ -119,12 +122,34 @@ int decode_msgs::decode_message( unsigned int msg_id, std::string msg){
         angle=float(raw_angle)*1.5;
 
         this->steering_angle = angle;
-        this->speed = 0.0;
+       // this->speed = 0.0;
 
-        return 0;
+
+  }
+    if (msg_id == 869){
+  
+        std::stringstream hex_ss(msg); 
+        hex_ss >> std::hex >> n;// making the message hex 
+
+        binary = std::bitset<56>(n).to_string(); // conver hex to binary 
+
+        std::string byte5 = binary.substr(32,8);
+      
+
+        rawVal= byte5;
+       
+         rawVal_Dec=std::stoull(rawVal, 0, 2);
+
+         lead_dist= (float)rawVal_Dec;
+
+        //this->steering_angle = 0.0;
+        //this->speed = 0.0;
+        this->lead_dist = rawVal_Dec;
+      
 
   }
 
+return 0;
 }
 
 
@@ -132,49 +157,30 @@ int decode_msgs::decode_message( unsigned int msg_id, std::string msg){
 int main(int argc, char **argv){
     ros::init(argc, argv, "can_msg_decoder");
     ros::NodeHandle nh("~");
-    ros::Publisher chatter_pub = nh.advertise<geometry_msgs::Twist>("/vehicle/vel", 1000);   // pulishing to /vehicle/vel topic
-    ROS_INFO("Got parameter : %s", argv[1]);
-    std::ifstream inFile;
+    ros::NodeHandle nh2("~");
+    ros::Publisher speed_pub = nh.advertise<geometry_msgs::Twist>("/vehicle/vel", 1000);   // pulishing to /vehicle/vel topic
+    ros::Publisher lead_dist_pub = nh2.advertise<std_msgs::Float32>("/vehicle/distanceEstimator/dist", 1000); 
+    //ROS_INFO("Waiting..." );
     std::string user_input="";
     decode_msgs obj;
     std::string inputLine="";
-    std::string Time,Bus,Message,MessageLength;
+    std::string Time,Bus,Buffer,Message,MessageLength;
     int MessageID;
- 
-    bool firstLine=true;
-    // if (argc != 2){ // check the nunber of the argument
-    //     std::cout <<"./a.out .csv" << std::endl;
-    //     return 1;
-    // }
-  
+
     //float delta_t = getAvgDelta_t(argv[1]); // calling getAvgDelta_t() and assign the returned value to delta_t
     //std::cout << delta_t << "  delta" << std::endl;
 
-    ros::Rate rate(10.0); // the publish rate is 1/delta_t
-    unsigned long long int n; // variable to hold the hex value 
 
-    inFile.open(argv[1]);
 
-    // if( !inFile.is_open()){// check id the file is opened correctly.
-    //   std::cout << "Cannot open file to read"<< std::endl;
-    //   return 1;
-    // }
     // do {  // asking for user input 
-    // std::cout << "Enter (S) for speed or (A) for steering angle: " << std::endl;
+    // std::cout << "Enter (S) for speed or (A) for steering angle or (D) for lead distance: " << std::endl;
     // std::cin >> user_input;
-    // } while (user_input != "A" && user_input != "S");
-    
-    int j = 0;
-    unsigned int count=0;
-    double prev_value=0.0;
-    double curr_value=0.0;
+    // } while (user_input != "A" && user_input != "S" && user_input != "D");
 
+
+    ROS_INFO("Waiting..." );
+    ros::Rate rate(10.0); // the publish rate is 1/delta_t
     while (ros::ok()){
-
-      //     if (firstLine){ // skip the first line
-      //   firstLine=false;
-      //   continue;
-      // }
     
      if (!getline(std::cin, inputLine)) break;
 
@@ -182,24 +188,37 @@ int main(int argc, char **argv){
 
       std::replace(inputLine.begin(), inputLine.end(), ',', ' '); // replace the commas with white space
       std::stringstream ss(inputLine);
-      ss >> Time>> Bus>> MessageID>> Message>> MessageLength;
+
+      ss >> Time>>Buffer >> Bus>> MessageID>> Message>> MessageLength;
  
       obj.decode_message (MessageID, Message);  // speedID 180, steering angleID 37
 
-      if (MessageID == 180){ 
-       std::cout << "speed " << obj.GetSpeed() << std::endl;
-       geometry_msgs::Twist msg;
-       msg.linear.x = obj.GetSpeed();
-       chatter_pub.publish(msg);
-       ros::spinOnce();
-       rate.sleep();
+    //   if (MessageID == 180 && user_input == "S"){ 
+    //    std::cout << "speed " << obj.GetSpeed() << std::endl;
+    //    geometry_msgs::Twist msg;
+    //    msg.linear.x = obj.GetSpeed();
+    //    speed_pub.publish(msg);
+    //     ros::spinOnce();
+    //     rate.sleep();
        
-       }
+    //    }
+    //  if (MessageID == 37 && user_input == "A"){ 
+    //   //outFile << obj.GetSteeringAngle() << "," << Message << std::endl;
+    //   }
+
+
+       if (MessageID == 869){ 
+       std::cout << "leadDIST " << obj.GetLead_dist() << std::endl;
+       std_msgs::Float32 dist;
+       dist.data = obj.GetLead_dist();
+       lead_dist_pub.publish(dist);
+        ros::spinOnce();
+       rate.sleep();
+      }
     
     }
      
       std::cout << "Finish publishing to the topic "<< std::endl;
-      inFile.close();
 
   return 0;
 }
