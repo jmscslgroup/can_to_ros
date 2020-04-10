@@ -1,5 +1,5 @@
 # CANSpeedDecoder
-Read CAN messges from csv file, and decode msgs with id=180 to speed (m/s). It also publishes the speed to ROS topic /vehicle/vel, and generates a bag file. 
+Read CAN messges from csv file, and decode msgs with id=37,180,869
 
 ### Prerequisites
 
@@ -15,7 +15,7 @@ $ catkin_make
 2.Clone the repo.
 ```
 $ cd ~/catkin_ws/src
-$ git clone https://github.com/SafwanElmadani/can_speed_decoder.git
+$ git clone https://github.com/SafwanElmadani/can_to_ros.git
 ```
 3.Build the WS
 ```
@@ -28,7 +28,7 @@ $source ./devel/setup.bash
 ```
 Then use roslaunch to start can_msg_decoder node:
 ```
-$roslaunch can_speed_decoder publish_can_msg.launch file_path:=/home/user/.../catkin_ws/src/CANSpeedDecoder/CAN_Message_.csv
+$roslaunch can_to_ros publish_can_msg.launch
 ```
 The generated bag file should be located at ~/.ros directory 
 ```
