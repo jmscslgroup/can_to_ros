@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(can_speed_decoder)
+project(can_to_ros)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -208,4 +208,4 @@ include_directories(
 
 add_executable(can_msg_decoder src/can_msg_decoder.cpp)
 target_link_libraries(can_msg_decoder ${catkin_LIBRARIES})
-add_dependencies(can_msg_decoder can_speed_decoder_generate_messages_cpp)
+add_dependencies(can_msg_decoder can_to_ros_generate_messages_cpp)
