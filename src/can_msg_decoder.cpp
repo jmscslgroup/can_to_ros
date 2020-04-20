@@ -19,12 +19,24 @@ private:
 float speed;
 float steering_angle;
 float lead_dist;
+float lat_dist;
+float long_dist;
+float rel_speed;
+float rel_accel;
 
 public:
-decode_msgs(): speed(0.0) , steering_angle(0.0), lead_dist(0.0) {}; // constructor 
+decode_msgs(): speed(0.0) , steering_angle(0.0), lead_dist(0.0), lat_dist(0.0),long_dist(0.0), rel_speed(0.0), rel_accel(0.0) {}; // constructor 
 float GetSpeed(){ return this->speed; };
 float GetSteeringAngle(){ return this->steering_angle; };
 float GetLead_dist() {return this->lead_dist; };
+std::stringstream GetTrackAinfo(){ 
+  std::stringstream data;
+  data << lat_dist << " " << long_dist << " " <<rel_speed;
+  return  data;
+}
+float GetTrackBinfo(){
+  return rel_accel;
+}
 
 int decode_message( unsigned int msg_id, std::string msg); // decoding CAN messages
 
@@ -148,6 +160,76 @@ int decode_msgs::decode_message( unsigned int msg_id, std::string msg){
       
 
   }
+  if (msg_id>= 384 && msg_id<=399 ){
+     
+        std::stringstream hex_ss(msg);
+        hex_ss >> std::hex >> n;
+
+        binary = std::bitset<64>(n).to_string();
+
+        std::string byte2 = binary.substr(8,8);
+        std::string byte3 = binary.substr(16,8);
+        std::string byte4 = binary.substr(24,8);
+        std::string byte5 = binary.substr(32,8);
+        std::string byte6 = binary.substr(40,8);
+        std::string byte7 = binary.substr(48,8);
+
+       std::string rawVal_lat= byte4+ byte5.substr(0,3);
+       std::string rawVal_long=byte2+byte3.substr(0,5);
+       std::string raw_rel_speed=byte6+byte7.substr(0,4);
+
+       float rawVal_lat_fl;
+       float raw_rel_speed_fl;
+             if ((rawVal_lat)[0]== '0'){
+         rawVal_lat_fl= std::stoul( rawVal_lat, 0, 2 );
+        }
+        else {
+
+        rawVal_lat_fl= std::stoul(findTwoscomplement(rawVal_lat), 0, 2 );
+          rawVal_lat_fl=rawVal_lat_fl * -1.0;
+        }
+
+             if ((raw_rel_speed)[0]== '0'){
+         raw_rel_speed_fl= std::stoul( raw_rel_speed, 0, 2 );
+        }
+        else {
+
+        raw_rel_speed_fl= std::stoul(findTwoscomplement(raw_rel_speed), 0, 2 );
+          raw_rel_speed_fl=raw_rel_speed_fl * -1.0;
+        }
+
+        float rawVal_long_fl=float(std::stoull(rawVal_long, 0, 2));
+
+        std::cout << rawVal_lat << " " << rawVal_long << " " << raw_rel_speed << std::endl;
+        this->lat_dist=rawVal_lat_fl*0.04;
+        this->long_dist=rawVal_long_fl*0.04;
+        this->rel_speed=raw_rel_speed_fl*0.025;
+  
+  }
+    if (msg_id >= 400 && msg_id <= 415){
+     
+        std::stringstream hex_ss(msg);
+        hex_ss >> std::hex >> n;
+
+        binary = std::bitset<64>(n).to_string();
+
+        std::string byte2 = binary.substr(8,8);
+
+        std::string raw_accel= byte2.substr(0,7);
+
+        float raw_accel_fl;
+             if ((raw_accel)[0]== '0'){
+         raw_accel_fl= std::stoul( raw_accel, 0, 2 );
+        }
+         else {
+
+        raw_accel_fl= std::stoul(findTwoscomplement(raw_accel), 0, 2 );
+          raw_accel_fl=raw_accel_fl * -1.0;
+        }
+
+        std::cout << raw_accel_fl << std::endl;
+        this->rel_accel=raw_accel_fl*1.0;
+    }
 
 return 0;
 }
@@ -205,7 +287,7 @@ int main(int argc, char **argv){
  
       obj.decode_message (MessageID, Message);  // speedID 180, steering angleID 37
 
-      if (MessageID == 180 && user_input == "Sdsad"){ 
+      if (MessageID == 180 && user_input == "S"){ 
        std::cout << "speed " << obj.GetSpeed() << std::endl;
        geometry_msgs::Twist msg;
        msg.linear.x = obj.GetSpeed();
@@ -227,6 +309,14 @@ int main(int argc, char **argv){
         ros::spinOnce();
        rate.sleep();
       }
+      //   if (MessageID == 384 && user_input == "T"){ 
+      //  std::cout << "GPS " << obj.GetTrackAinfo().str() << std::endl;
+      // //  std_msgs::Float32 dist;
+      // //  dist.data = obj.GetLead_dist();
+      // //  lead_dist_pub.publish(dist);
+      //   ros::spinOnce();
+      //  rate.sleep();
+      // }
  
       
     }
