@@ -7,8 +7,6 @@
 #include "ainstein_radar_msgs/RadarTarget.h"
 #include "ainstein_radar_msgs/RadarTargetArray.h"
 #include "ainstein_radar_msgs/RadarInfo.h"
-#include "nav_msgs/Path.h"
-#include "geometry_msgs/PoseStamped.h"
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -19,8 +17,9 @@
 #include <math.h>
 #include <ctime>
 #include <thread> 
+#include "nav_msgs/Path.h"
+#include "geometry_msgs/PoseStamped.h"
 #include "visualization_msgs/Marker.h"
-
 class decode_msgs{
 
 private:
@@ -244,19 +243,16 @@ return 0;
 
 
 /**********************************************************************************************/
+
 int main(int argc, char **argv){
-
-    ros::init(argc, argv, "can_msg_decoder");
-    ros::NodeHandle nh("~");
+  // std::thread t1(theadF);
+  //   t1.join();
+    ros::init(argc, argv, "node3");
     ros::NodeHandle nh1("~");
-    ros::NodeHandle nh2("~");
-    ros::Publisher speed_pub = nh.advertise<geometry_msgs::Twist>("/vehicle/vel", 1000);   // pulishing to /vehicle/vel topic
-    ros::Publisher lead_dist_pub = nh2.advertise<std_msgs::Float32>("/vehicle/distanceEstimator/dist", 1000);  
+ 
+    ros::Publisher pose_pub = nh1.advertise<visualization_msgs::Marker>("/targets_pose3", 1000);
 
-
-    ros::Publisher pose_pub = nh1.advertise<visualization_msgs::Marker>("/targets_pose", 1000); 
-
-    ROS_INFO("Got parameter : %s", argv[1]);
+    //ROS_INFO("Got parameter : %s", argv[1]);
     std::ifstream inFile;
     std::string user_input="";
     decode_msgs obj;
@@ -274,16 +270,16 @@ int main(int argc, char **argv){
     // }
   
     //std::cout << delta_t << "  delta" << std::endl;
+
     ros::Rate rate(20.0); // the publish rate is 1/delta_t 
-    
+
     // inFile.open(argv[1]);
     // if( !inFile.is_open()){// check id the file is opened correctly.
     //   std::cout << "Cannot open file to read"<< std::endl;
     //   return 1;
     // }
 
-
-while (ros::ok()){
+   while (ros::ok()){
     
      if (!getline(std::cin, inputLine)) break;
 
@@ -296,10 +292,9 @@ while (ros::ok()){
  
       obj.decode_message (MessageID, Message);  // speedID 180, steering angleID 37
 
-        if (MessageID == 384){ 
-
+        if (MessageID == 387){ 
           i++;
-        obj.GetTrackAinfo() >> y >> x >> rel_spd;
+          obj.GetTrackAinfo() >> y >> x >> rel_spd;
 
         visualization_msgs::Marker marker;
         marker.header.frame_id = "world";
@@ -322,16 +317,21 @@ while (ros::ok()){
         marker.color.r = 0.0;
         marker.color.g = 1.0;
         marker.color.b = 0.0;
-        //std::cout << "test "<< std::endl;
+
         pose_pub.publish(marker);
 
-        rate.sleep();
+       rate.sleep();
       }
-  
+        
+      
     }
+    
       std::cout << "Finish publishing to the topic "<< std::endl;
-   //   inFile.close();
+    //  inFile.close();
     
 
   return 0;
 }
+
+
+

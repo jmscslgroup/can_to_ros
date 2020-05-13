@@ -7,8 +7,6 @@
 #include "ainstein_radar_msgs/RadarTarget.h"
 #include "ainstein_radar_msgs/RadarTargetArray.h"
 #include "ainstein_radar_msgs/RadarInfo.h"
-#include "nav_msgs/Path.h"
-#include "geometry_msgs/PoseStamped.h"
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -19,6 +17,8 @@
 #include <math.h>
 #include <ctime>
 #include <thread> 
+#include "nav_msgs/Path.h"
+#include "geometry_msgs/PoseStamped.h"
 #include "visualization_msgs/Marker.h"
 
 class decode_msgs{
@@ -245,18 +245,16 @@ return 0;
 
 /**********************************************************************************************/
 int main(int argc, char **argv){
-
-    ros::init(argc, argv, "can_msg_decoder");
-    ros::NodeHandle nh("~");
+  // std::thread t1(theadF);
+  //   t1.join();
+    ros::init(argc, argv, "node15");
     ros::NodeHandle nh1("~");
-    ros::NodeHandle nh2("~");
-    ros::Publisher speed_pub = nh.advertise<geometry_msgs::Twist>("/vehicle/vel", 1000);   // pulishing to /vehicle/vel topic
-    ros::Publisher lead_dist_pub = nh2.advertise<std_msgs::Float32>("/vehicle/distanceEstimator/dist", 1000);  
 
+    ros::Publisher pose_pub = nh1.advertise<visualization_msgs::Marker>("/targets_pose15", 1000);
 
-    ros::Publisher pose_pub = nh1.advertise<visualization_msgs::Marker>("/targets_pose", 1000); 
+    //ros::Publisher path_pub = nh5.advertise<nav_msgs::Path>("/targets_path12", 1000); 
 
-    ROS_INFO("Got parameter : %s", argv[1]);
+    //ROS_INFO("Got parameter : %s", argv[1]);
     std::ifstream inFile;
     std::string user_input="";
     decode_msgs obj;
@@ -267,23 +265,26 @@ int main(int argc, char **argv){
     float az;
     int i=0;
     
-    // bool firstLine=true;
+    bool firstLine=true;
     // if (argc != 2){ // check the nunber of the argument
     //     std::cout <<"./a.out .csv" << std::endl;
     //     return 1;
     // }
-  
-    //std::cout << delta_t << "  delta" << std::endl;
+
     ros::Rate rate(20.0); // the publish rate is 1/delta_t 
-    
+
     // inFile.open(argv[1]);
     // if( !inFile.is_open()){// check id the file is opened correctly.
     //   std::cout << "Cannot open file to read"<< std::endl;
     //   return 1;
     // }
+    // do {  // asking for user input 
+    // std::cout << "Enter (S) for speed or (A) for steering angle or (D) for lead distance: " << std::endl;
+    // std::cin >> user_input;
+    // } while (user_input != "A" && user_input != "S" && user_input != "T");
+    //ainstein_radar_msgs::RadarTargetArray targetArr;
 
-
-while (ros::ok()){
+  while (ros::ok()){
     
      if (!getline(std::cin, inputLine)) break;
 
@@ -296,42 +297,50 @@ while (ros::ok()){
  
       obj.decode_message (MessageID, Message);  // speedID 180, steering angleID 37
 
-        if (MessageID == 384){ 
-
+        if (MessageID == 399){ 
           i++;
-        obj.GetTrackAinfo() >> y >> x >> rel_spd;
+          obj.GetTrackAinfo() >> y >> x >> rel_spd;
+       //std::cout << "GPS " << x <<" " << y << std::endl;
+      //az=atan2 ( y,x);
 
-        visualization_msgs::Marker marker;
-        marker.header.frame_id = "world";
-        marker.header.stamp = ros::Time();
-        marker.ns = "my_namespace";
-        marker.id = 0;
-        marker.type = 1;
-        marker.action =0;
-        marker.pose.position.x = x;
-        marker.pose.position.y = y;
-        marker.pose.position.z = 0.0;
-        marker.pose.orientation.x = 0.0;
-        marker.pose.orientation.y = 0.0;
-        marker.pose.orientation.z = 0.0;
-        marker.pose.orientation.w = 1.0;
-        marker.scale.x = 0.2;
-        marker.scale.y = 0.2;
-        marker.scale.z = 0.2;
-        marker.color.a = 1.0; // Don't forget to set the alpha!
-        marker.color.r = 0.0;
-        marker.color.g = 1.0;
-        marker.color.b = 0.0;
-        //std::cout << "test "<< std::endl;
-        pose_pub.publish(marker);
-
-        rate.sleep();
+      visualization_msgs::Marker marker;
+      marker.header.frame_id = "world";
+      marker.header.stamp = ros::Time();
+      marker.ns = "my_namespace";
+      marker.id = 0;
+      marker.type = 1;
+      marker.action =0;
+      marker.pose.position.x = x;
+      marker.pose.position.y = y;
+      marker.pose.position.z = 0.0;
+      marker.pose.orientation.x = 0.0;
+      marker.pose.orientation.y = 0.0;
+      marker.pose.orientation.z = 0.0;
+      marker.pose.orientation.w = 1.0;
+      marker.scale.x = 0.2;
+      marker.scale.y = 0.2;
+      marker.scale.z = 0.2;
+      marker.color.a = 1.0; // Don't forget to set the alpha!
+      marker.color.r = 0.0;
+      marker.color.g = 1.0;
+      marker.color.b = 0.0;
+      pose_pub.publish(marker);
+       rate.sleep();
       }
-  
+        
+      
     }
+    
       std::cout << "Finish publishing to the topic "<< std::endl;
-   //   inFile.close();
+    //  inFile.close();
     
 
   return 0;
 }
+
+
+
+
+
+
+

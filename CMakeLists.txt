@@ -12,6 +12,8 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
   geometry_msgs
+  sensor_msgs
+  ainstein_radar_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -209,3 +211,64 @@ include_directories(
 add_executable(can_msg_decoder src/can_msg_decoder.cpp)
 target_link_libraries(can_msg_decoder ${catkin_LIBRARIES})
 add_dependencies(can_msg_decoder can_to_ros_generate_messages_cpp)
+
+
+add_executable(node1 src/node1.cpp)
+target_link_libraries(node1 ${catkin_LIBRARIES})
+add_dependencies(node1 can_to_ros_generate_messages_cpp)
+
+add_executable(node2 src/node2.cpp)
+target_link_libraries(node2 ${catkin_LIBRARIES})
+add_dependencies(node2 can_to_ros_generate_messages_cpp)
+
+add_executable(node3 src/node3.cpp)
+target_link_libraries(node3 ${catkin_LIBRARIES})
+add_dependencies(node3 can_to_ros_generate_messages_cpp)
+
+add_executable(node4 src/node4.cpp)
+target_link_libraries(node4 ${catkin_LIBRARIES})
+add_dependencies(node4 can_to_ros_generate_messages_cpp)
+
+add_executable(node5 src/node5.cpp)
+target_link_libraries(node5 ${catkin_LIBRARIES})
+add_dependencies(node5 can_to_ros_generate_messages_cpp)
+
+add_executable(node6 src/node6.cpp)
+target_link_libraries(node6 ${catkin_LIBRARIES})
+add_dependencies(node6 can_to_ros_generate_messages_cpp)
+
+add_executable(node7 src/node7.cpp)
+target_link_libraries(node7 ${catkin_LIBRARIES})
+add_dependencies(node7 can_to_ros_generate_messages_cpp)
+
+add_executable(node8 src/node8.cpp)
+target_link_libraries(node8 ${catkin_LIBRARIES})
+add_dependencies(node8 can_to_ros_generate_messages_cpp)
+
+add_executable(node9 src/node9.cpp)
+target_link_libraries(node9 ${catkin_LIBRARIES})
+add_dependencies(node9 can_to_ros_generate_messages_cpp)
+
+add_executable(node10 src/node10.cpp)
+target_link_libraries(node10 ${catkin_LIBRARIES})
+add_dependencies(node10 can_to_ros_generate_messages_cpp)
+
+add_executable(node11 src/node11.cpp)
+target_link_libraries(node11 ${catkin_LIBRARIES})
+add_dependencies(node11 can_to_ros_generate_messages_cpp)
+
+add_executable(node12 src/node12.cpp)
+target_link_libraries(node12 ${catkin_LIBRARIES})
+add_dependencies(node12 can_to_ros_generate_messages_cpp)
+
+add_executable(node13 src/node13.cpp)
+target_link_libraries(node13 ${catkin_LIBRARIES})
+add_dependencies(node13 can_to_ros_generate_messages_cpp)
+
+add_executable(node14 src/node14.cpp)
+target_link_libraries(node14 ${catkin_LIBRARIES})
+add_dependencies(node14 can_to_ros_generate_messages_cpp)
+
+add_executable(node15 src/node15.cpp)
+target_link_libraries(node15 ${catkin_LIBRARIES})
+add_dependencies(node15 can_to_ros_generate_messages_cpp)

@@ -1,7 +1,28 @@
 <launch>
 
-<node pkg="can_to_ros" type ="can_msg_decoder" name="can_msg_decoder" args="$(arg file_path)" output="screen" /> 
+<!-- <node pkg="can_to_ros" type ="can_msg_decoder" name="can_msg_decoder" args="$(arg file_path)" output="screen" /> 
 
-<node pkg="rosbag" type="record" name="can_msg_bag" args="-o can_to_ros /vehicle/vel"/>
+<node pkg="can_to_ros" type ="node1" name="node1" args="$(arg file_path)" /> 
+<node pkg="can_to_ros" type ="node2" name="node2" args="$(arg file_path)" /> 
+
+<node pkg="can_to_ros" type ="node3" name="node3" args="$(arg file_path)" /> 
+<node pkg="can_to_ros" type ="node4" name="node4" args="$(arg file_path)" /> 
+<node pkg="can_to_ros" type ="node5" name="node5" args="$(arg file_path)" /> 
+<node pkg="can_to_ros" type ="node6" name="node6" args="$(arg file_path)" /> 
+<node pkg="can_to_ros" type ="node7" name="node7" args="$(arg file_path)" /> 
+<node pkg="can_to_ros" type ="node8" name="node8" args="$(arg file_path)" /> 
+<node pkg="can_to_ros" type ="node9" name="node9" args="$(arg file_path)" /> 
+<node pkg="can_to_ros" type ="node10" name="node10" args="$(arg file_path)" /> 
+<node pkg="can_to_ros" type ="node11" name="node11" args="$(arg file_path)" /> 
+<node pkg="can_to_ros" type ="node12" name="node12" args="$(arg file_path)" /> 
+<node pkg="can_to_ros" type ="node13" name="node13" args="$(arg file_path)" />
+<node pkg="can_to_ros" type ="node14" name="node14" args="$(arg file_path)" />
+<node pkg="can_to_ros" type ="node15" name="node15" args="$(arg file_path)" /> -->
+
+<node pkg="can_to_ros" type ="piping.sh" name="bashscript" output="screen" /> 
+
+<node pkg="learning_tf" type ="frame_test" name="frame_test" /> 
+
+<!-- <node pkg="rosbag" type="record" name="can_msg_bag" args="-o can_to_ros -a"/> -->
 
 </launch>
