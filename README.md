@@ -1,5 +1,5 @@
 # can_to_ros
-Read CAN messges from csv file, and decode msgs with id=180, 37, 869.
+Read CAN messges from csv file.
 ### Prerequisites
 
 ROS melodic
@@ -15,6 +15,8 @@ $ catkin_make
 ```
 $ cd ~/catkin_ws/src
 $ git clone https://github.com/SafwanElmadani/can_to_ros.git
+$ cd ~/carkin_ws/src/can_to_ros
+$ git checkout conver_msg #change branch
 ```
 3.Build the WS
 ```
@@ -27,12 +29,9 @@ $source ./devel/setup.bash
 ```
 Then use roslaunch to start can_msg_decoder node:
 ```
-$roslaunch can_to_ros publish_can_msg.launch file_path:=/home/user/.../catkin_ws/src/CANSpeedDecoder/CAN_Message_.csv
+$roslaunch can_to_ros publish_can_msg.launch
 ```
-The generated bag file should be located at ~/.ros directory 
-```
-$cd ~/.ros
-```
+
 
 
 
