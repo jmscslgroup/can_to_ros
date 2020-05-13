@@ -15,6 +15,8 @@ $ catkin_make
 ```
 $ cd ~/catkin_ws/src
 $ git clone https://github.com/SafwanElmadani/can_to_ros.git
+$ cd ~/carkin_ws/src/can_to_ros
+$ git checkout conver_msg #change branch
 ```
 3.Build the WS
 ```
