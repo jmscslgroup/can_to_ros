@@ -1,5 +1,5 @@
 # can_to_ros
-Read CAN messges from csv file.
+Read CAN messges from csv file in ROS
 ### Prerequisites
 
 ROS melodic
