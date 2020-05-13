@@ -1,5 +1,5 @@
 # can_to_ros
-Read CAN messges from csv file, and decode msgs with id=180, 37, 869.
+Read CAN messges from csv file.
 ### Prerequisites
 
 ROS melodic
