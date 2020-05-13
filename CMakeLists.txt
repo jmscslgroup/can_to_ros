@@ -14,6 +14,7 @@ find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   sensor_msgs
   ainstein_radar_msgs
+  tf
 )
 
 ## System dependencies are found with CMake's conventions
@@ -272,3 +273,6 @@ add_dependencies(node14 can_to_ros_generate_messages_cpp)
 add_executable(node15 src/node15.cpp)
 target_link_libraries(node15 ${catkin_LIBRARIES})
 add_dependencies(node15 can_to_ros_generate_messages_cpp)
+
+add_executable(my_frame src/my_frame.cpp)
+target_link_libraries(my_frame ${catkin_LIBRARIES})

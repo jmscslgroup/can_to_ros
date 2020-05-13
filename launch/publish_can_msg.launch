@@ -21,7 +21,7 @@
 
 <node pkg="can_to_ros" type ="piping.sh" name="bashscript" output="screen" /> 
 
-<node pkg="learning_tf" type ="frame_test" name="frame_test" /> 
+<node pkg="can_to_ros" type ="my_frame" name="my_frame" /> 
 
 <!-- <node pkg="rosbag" type="record" name="can_msg_bag" args="-o can_to_ros -a"/> -->
 
