@@ -31,8 +31,6 @@ Then use roslaunch to start can_msg_decoder node:
 ```
 $roslaunch can_to_ros publish_can_msg.launch
 ```
-[![Plotting RPM message from Rav4 CAN bus](http://img.youtube.com/vi/cmY9Eaxb0kc/0.jpg)](https://www.youtube.com/watch?v=cmY9Eaxb0kc)
-
 
 
 
