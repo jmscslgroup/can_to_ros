@@ -276,3 +276,8 @@ add_dependencies(node15 can_to_ros_generate_messages_cpp)
 
 add_executable(my_frame src/my_frame.cpp)
 target_link_libraries(my_frame ${catkin_LIBRARIES})
+
+
+add_executable(gpsfix src/gpsfix.cpp)
+target_link_libraries(gpsfix ${catkin_LIBRARIES})
+add_dependencies(gpsfix can_to_ros_generate_messages_cpp)

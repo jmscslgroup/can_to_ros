@@ -308,7 +308,7 @@ int main(int argc, char **argv){
 
 
         visualization_msgs::Marker marker;
-        marker.header.frame_id = "world";
+        marker.header.frame_id = "front_laser_link";
         marker.header.stamp = ros::Time();
         marker.ns = "my_namespace";
         marker.id = 0;

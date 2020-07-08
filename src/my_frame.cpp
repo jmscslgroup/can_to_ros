@@ -14,7 +14,7 @@ int main(int argc, char** argv){
         transform.setOrigin( tf::Vector3(0, 0.0, 0.0) );
     transform.setRotation( tf::Quaternion(0, 0, 0) );
     change += 0.1;
-    br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "world", "my_tf_br"));
+    br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "base_link", "my_tf_br"));
     rate.sleep();
   }
   return 0;

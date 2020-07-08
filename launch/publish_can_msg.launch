@@ -19,9 +19,31 @@
 <node pkg="can_to_ros" type ="node14" name="node14" args="$(arg file_path)" />
 <node pkg="can_to_ros" type ="node15" name="node15" args="$(arg file_path)" /> -->
 
-<node pkg="can_to_ros" type ="piping.sh" name="bashscript" output="screen" /> 
+<arg name="gps_file" />
 
-<node pkg="can_to_ros" type ="my_frame" name="my_frame" /> 
+<group ns="catvehicle">
+<param name="robot_description"
+         command="$(find xacro)/xacro.py '$(find can_to_ros)/urdf/catvehicle.xacro' roboname:='catvehicle'" />
+
+
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
+
+
+<!--<include file="$(find can_to_ros)/launch/catvehicle.launch">-->
+<!--    <arg name="robot_name" value="catvehicle"/>-->
+<!--    <arg name="init_pose" value="-x 1 -y 1 -z 0"/>-->
+<!--    <arg name="config_file" value="catvehicle_control.yaml"/>-->
+<!--</include>-->
+
+<node pkg="can_to_ros" type ="piping.sh" name="bashscript" output="screen" /> 
+<node pkg="can_to_ros" type ="gpsfix" name="gpsfix" args="$(arg gps_file)" output="screen" /> 
+<!--<node pkg="can_to_ros" type ="my_frame" name="my_frame" /> -->
+
+</group>
+
+
+
 
 <!-- <node pkg="rosbag" type="record" name="can_msg_bag" args="-o can_to_ros -a"/> -->
 
