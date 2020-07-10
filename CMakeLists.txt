@@ -206,6 +206,15 @@ include_directories(
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
 
-add_executable(can_msg_decoder src/can_msg_decoder.cpp)
-target_link_libraries(can_msg_decoder ${catkin_LIBRARIES})
-add_dependencies(can_msg_decoder can_to_ros_generate_messages_cpp)
+
+add_executable(speed_node src/speed_node.cpp)
+target_link_libraries(speed_node ${catkin_LIBRARIES})
+
+add_executable(strangle_node src/strangle_node.cpp)
+target_link_libraries(strangle_node ${catkin_LIBRARIES})
+
+add_executable(leaddist_node src/leaddist_node.cpp)
+target_link_libraries(leaddist_node ${catkin_LIBRARIES})
+
+add_executable(accel_node src/accel_node.cpp)
+target_link_libraries(accel_node ${catkin_LIBRARIES})
