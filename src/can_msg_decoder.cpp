@@ -13,37 +13,18 @@
 #include <math.h>
 #include <ctime>
 
+typedef struct values_struct
+{
+   float var1, var2, var3;
+} values;
+
+
 class decode_msgs{
-
-private:
-float speed;
-float steering_angle;
-float lead_dist;
-float lat_dist;
-float long_dist;
-float rel_speed;
-float rel_accel;
-
 public:
-decode_msgs(): speed(0.0) , steering_angle(0.0), lead_dist(0.0), lat_dist(0.0),long_dist(0.0), rel_speed(0.0), rel_accel(0.0) {}; // constructor 
-float GetSpeed(){ return this->speed; };
-float GetSteeringAngle(){ return this->steering_angle; };
-float GetLead_dist() {return this->lead_dist; };
-std::stringstream GetTrackAinfo(){ 
-  std::stringstream data;
-  data << lat_dist << " " << long_dist << " " <<rel_speed;
-  return  data;
-}
-float GetTrackBinfo(){
-  return rel_accel;
-}
-
-int decode_message( unsigned int msg_id, std::string msg); // decoding CAN messages
-
+values decode_message( unsigned int msg_id, std::string msg); // decoding CAN messages
 std::string findTwoscomplement(std::string str); // functon to return two's complement 
 
 };
-
 
 std::string decode_msgs::findTwoscomplement(std::string str) { 
     int n = str.length(); 
@@ -74,7 +55,8 @@ std::string decode_msgs::findTwoscomplement(std::string str) {
     return str;
 } 
 
-int decode_msgs::decode_message( unsigned int msg_id, std::string msg){
+values decode_msgs::decode_message( unsigned int msg_id, std::string msg){
+  values returnedVal;
   int raw_angle;
   unsigned long long int n;
   std::string binary;
@@ -88,6 +70,9 @@ int decode_msgs::decode_message( unsigned int msg_id, std::string msg){
   std::string byte7;
   std::string temp1;
   std::string rawVal;
+  returnedVal.var1=0.0;
+  returnedVal.var2=0.0;
+  returnedVal.var3=0.0;
   float angle;
   if (msg_id == 180){
   
@@ -107,8 +92,8 @@ int decode_msgs::decode_message( unsigned int msg_id, std::string msg){
          speed_mps= ceilf((speedDec_kmph* (10.0/36.0)) * 100) / 100;
 
       //this->steering_angle = 0.0;
-      this->speed = speed_mps;
-      
+      returnedVal.var1 = speed_mps;
+      return returnedVal;
   }
   if (msg_id == 37){
 
@@ -133,10 +118,10 @@ int decode_msgs::decode_message( unsigned int msg_id, std::string msg){
         }
         angle=float(raw_angle)*1.5;
 
-        this->steering_angle = angle;
+        returnedVal.var1= angle;
        // this->speed = 0.0;
 
-
+      return returnedVal;
   }
     if (msg_id == 869){
   
@@ -156,8 +141,8 @@ int decode_msgs::decode_message( unsigned int msg_id, std::string msg){
 
         //this->steering_angle = 0.0;
         //this->speed = 0.0;
-        this->lead_dist = rawVal_Dec;
-      
+        returnedVal.var1 = rawVal_Dec;
+      return returnedVal;
 
   }
   if (msg_id>= 384 && msg_id<=399 ){
@@ -201,9 +186,10 @@ int decode_msgs::decode_message( unsigned int msg_id, std::string msg){
         float rawVal_long_fl=float(std::stoull(rawVal_long, 0, 2));
 
         std::cout << rawVal_lat << " " << rawVal_long << " " << raw_rel_speed << std::endl;
-        this->lat_dist=rawVal_lat_fl*0.04;
-        this->long_dist=rawVal_long_fl*0.04;
-        this->rel_speed=raw_rel_speed_fl*0.025;
+        returnedVal.var1=rawVal_lat_fl*0.04;
+        returnedVal.var2=rawVal_long_fl*0.04;
+        returnedVal.var3=raw_rel_speed_fl*0.025;
+        return returnedVal;
   
   }
     if (msg_id >= 400 && msg_id <= 415){
@@ -228,10 +214,43 @@ int decode_msgs::decode_message( unsigned int msg_id, std::string msg){
         }
 
         std::cout << raw_accel_fl << std::endl;
-        this->rel_accel=raw_accel_fl*1.0;
+        returnedVal.var1=raw_accel_fl*1.0;
+        returnedVal;
     }
 
-return 0;
+    if (msg_id == 552){
+    int temp_accel;
+    std::stringstream hex_ss(msg);
+    hex_ss >> std::hex >> n;
+
+    binary = std::bitset<32>(n).to_string();
+    //std::cout << binary << std::endl;
+    std::string byte1 = binary.substr(0,8);
+    std::string byte2 = binary.substr(8,8);
+    std::string byte3 = binary.substr(16,8);
+    std::string byte4 = binary.substr(24,8);
+    // std::cout << byte1 << std::endl;
+    // std::cout << byte2 << std::endl;
+    // std::cout << byte3 << std::endl;
+    // std::cout << byte4 << std::endl;
+
+    temp1= byte1.substr(1,7);
+    rawVal= temp1+byte2;
+    
+    if (rawVal[0]== '0'){
+      temp_accel= std::stoul( rawVal, 0, 2 );
+    }
+    else {
+
+      temp_accel= std::stoul(findTwoscomplement(rawVal), 0, 2 );
+      temp_accel=temp_accel * -1.0;
+    }
+    returnedVal.var1=float(temp_accel)*0.001;
+    //std::cout << this->long_accel << "  Accel" << std::endl; 
+
+    return returnedVal;
+    }
+
 }
 
 
@@ -240,38 +259,32 @@ return 0;
 int main(int argc, char **argv){
     ros::init(argc, argv, "can_msg_decoder");
     ros::NodeHandle nh("~");
-    ros::NodeHandle nh2("~");
-    ros::Publisher speed_pub = nh.advertise<geometry_msgs::Twist>("/vehicle/vel", 1000);   // pulishing to /vehicle/vel topic
-    ros::Publisher lead_dist_pub = nh2.advertise<std_msgs::Float32>("/vehicle/distanceEstimator/dist", 1000);  
+    // ros::NodeHandle nh2("~");
+    ros::Publisher speed_pub = nh.advertise<geometry_msgs::Twist>("/vehicle/vel", 10);   // pulishing to /vehicle/vel topic
+    ros::Publisher accel_pub = nh.advertise<std_msgs::Float32>("/vehicle/accel", 10);   // pulishing to /vehicle/vel topic
+    // ros::Publisher lead_dist_pub = nh2.advertise<std_msgs::Float32>("/vehicle/distanceEstimator/dist", 1000);  
     ROS_INFO("Got parameter : %s", argv[1]);
     std::ifstream inFile;
-    std::string user_input="";
     decode_msgs obj;
     std::string inputLine="";
     std::string Time,Buffer,Bus,Message,MessageLength;
     int MessageID;
-    
+    values data;
     bool firstLine=true;
     if (argc != 2){ // check the nunber of the argument
         std::cout <<"./a.out .csv" << std::endl;
         return 1;
     }
   
-    //std::cout << delta_t << "  delta" << std::endl;
-
-    ros::Rate rate(50.0); // the publish rate is 1/delta_t 
+    ros::Rate rate(50.0); // the publish rate 
 
     inFile.open(argv[1]);
     if( !inFile.is_open()){// check id the file is opened correctly.
       std::cout << "Cannot open file to read"<< std::endl;
       return 1;
     }
-    do {  // asking for user input 
-    std::cout << "Enter (S) for speed or (A) for steering angle or (D) for lead distance: " << std::endl;
-    std::cin >> user_input;
-    } while (user_input != "A" && user_input != "S" && user_input != "D");
-    
 
+    
     while (ros::ok()){
 
       if (!getline(inFile, inputLine)) break;
@@ -283,41 +296,48 @@ int main(int argc, char **argv){
 
       std::replace(inputLine.begin(), inputLine.end(), ',', ' '); // replace the commas with white space
       std::stringstream ss(inputLine);
-      ss >> Time>> Buffer>> Bus>> MessageID>> Message>> MessageLength;
+      ss >> Time>> Bus>> MessageID>> Message>> MessageLength;
  
-      obj.decode_message (MessageID, Message);  // speedID 180, steering angleID 37
+      
 
-      if (MessageID == 180 && user_input == "S"){ 
-       std::cout << "speed " << obj.GetSpeed() << std::endl;
-       geometry_msgs::Twist msg;
-       msg.linear.x = obj.GetSpeed();
-       speed_pub.publish(msg);
-        ros::spinOnce();
-        rate.sleep();
+      if (MessageID == 180 ){ 
+        data = obj.decode_message (MessageID, Message);  // speedID 180, steering angleID 37
+        std::cout << "speed " << data.var1 << std::endl;
+        geometry_msgs::Twist msg;
+        msg.linear.x = data.var1;
+        speed_pub.publish(msg);
+      //   ros::spinOnce();
+      //   rate.sleep();
+       rate.sleep();
        
        }
-     if (MessageID == 37 && user_input == "A"){ 
+     if (MessageID == 37){ 
+       data = obj.decode_message (MessageID, Message);  // speedID 180, steering angleID 37
+        std::cout << "str angle " << data.var1 << std::endl;
       //outFile << obj.GetSteeringAngle() << "," << Message << std::endl;
       }
 
 
-       if (MessageID == 869 && user_input == "D"){ 
-       std::cout << "leadDIST " << obj.GetLead_dist() << std::endl;
-       std_msgs::Float32 dist;
-       dist.data = obj.GetLead_dist();
-       lead_dist_pub.publish(dist);
-        ros::spinOnce();
-       rate.sleep();
-      }
-      //   if (MessageID == 384 && user_input == "T"){ 
-      //  std::cout << "GPS " << obj.GetTrackAinfo().str() << std::endl;
-      // //  std_msgs::Float32 dist;
-      // //  dist.data = obj.GetLead_dist();
-      // //  lead_dist_pub.publish(dist);
+       if (MessageID == 869){ 
+        data = obj.decode_message (MessageID, Message);  // speedID 180, steering angleID 37
+        std::cout << "leadDIST " << data.var1 << std::endl;
+      //  std_msgs::Float32 dist;
+      //  dist.data = obj.GetLead_dist();
+      //  lead_dist_pub.publish(dist);
       //   ros::spinOnce();
       //  rate.sleep();
-      // }
- 
+      }
+      if (MessageID == 552){ 
+        data = obj.decode_message (MessageID, Message);  // speedID 180, steering angleID 37
+        std::cout << "accel" << data.var1 << std::endl;
+        std_msgs::Float32 accel;
+        accel.data = data.var1;
+        accel_pub.publish(accel);
+      //   ros::spinOnce();
+      //  rate.sleep();
+       rate.sleep();
+      }
+     
       
     }
      

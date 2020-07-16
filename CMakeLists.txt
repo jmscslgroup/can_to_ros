@@ -208,4 +208,3 @@ include_directories(
 
 add_executable(can_msg_decoder src/can_msg_decoder.cpp)
 target_link_libraries(can_msg_decoder ${catkin_LIBRARIES})
-add_dependencies(can_msg_decoder can_to_ros_generate_messages_cpp)
