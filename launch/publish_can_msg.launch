@@ -1,11 +1,14 @@
 <launch>
 
-<arg name="file_path" />
+<arg name="csv_path" />
+<arg name="gps_path" />
 
-<node pkg="can_to_ros" type ="speed_node" name="speed_node" args="$(arg file_path)" output="screen" /> 
-<node pkg="can_to_ros" type ="strangle_node" name="strangle_node" args="$(arg file_path)" output="screen" /> 
-<node pkg="can_to_ros" type ="leaddist_node" name="leaddist_node" args="$(arg file_path)" output="screen" /> 
-<node pkg="can_to_ros" type ="accel_node" name="accel_node" args="$(arg file_path)" output="screen" /> 
+<node pkg="can_to_ros" type ="speed_node" name="speed_node" args="$(arg csv_path)"  /> 
+<node pkg="can_to_ros" type ="strangle_node" name="strangle_node" args="$(arg csv_path)"  /> 
+<node pkg="can_to_ros" type ="leaddist_node" name="leaddist_node" args="$(arg csv_path)"  /> 
+<node pkg="can_to_ros" type ="accel_node" name="accel_node" args="$(arg csv_path)"  /> 
+
+<node pkg="can_to_ros" type ="gpsfix" name="gpsfix" args="$(arg gps_path)" output="screen" /> 
 
 <!-- <node pkg="rosbag" type="record" name="can_msg_bag" args="-o can_to_ros /vehicle/vel"/> -->
 

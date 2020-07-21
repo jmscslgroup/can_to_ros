@@ -12,6 +12,7 @@
 #include <bitset>
 #include <math.h>
 #include <ctime>
+#include "sensor_msgs/TimeReference.h"
 
 typedef struct values_struct
 {

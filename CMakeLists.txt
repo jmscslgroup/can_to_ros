@@ -12,6 +12,7 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
   geometry_msgs
+  sensor_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -218,3 +219,6 @@ target_link_libraries(leaddist_node ${catkin_LIBRARIES})
 
 add_executable(accel_node src/accel_node.cpp)
 target_link_libraries(accel_node ${catkin_LIBRARIES})
+
+add_executable(gpsfix src/gps_node.cpp)
+target_link_libraries(gpsfix ${catkin_LIBRARIES})
