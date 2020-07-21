@@ -13,37 +13,17 @@
 #include <math.h>
 #include <ctime>
 
+typedef struct values_struct
+{
+   float var1, var2, var3;
+} values;
+
 class decode_msgs{
-
-private:
-float speed;
-float steering_angle;
-float lead_dist;
-float lat_dist;
-float long_dist;
-float rel_speed;
-float rel_accel;
-
 public:
-decode_msgs(): speed(0.0) , steering_angle(0.0), lead_dist(0.0), lat_dist(0.0),long_dist(0.0), rel_speed(0.0), rel_accel(0.0) {}; // constructor 
-float GetSpeed(){ return this->speed; };
-float GetSteeringAngle(){ return this->steering_angle; };
-float GetLead_dist() {return this->lead_dist; };
-std::stringstream GetTrackAinfo(){ 
-  std::stringstream data;
-  data << lat_dist << " " << long_dist << " " <<rel_speed;
-  return  data;
-}
-float GetTrackBinfo(){
-  return rel_accel;
-}
-
-int decode_message( unsigned int msg_id, std::string msg); // decoding CAN messages
-
+values decode_message( unsigned int msg_id, std::string msg); // decoding CAN messages
 std::string findTwoscomplement(std::string str); // functon to return two's complement 
 
 };
-
 
 std::string decode_msgs::findTwoscomplement(std::string str) { 
     int n = str.length(); 
@@ -74,7 +54,8 @@ std::string decode_msgs::findTwoscomplement(std::string str) {
     return str;
 } 
 
-int decode_msgs::decode_message( unsigned int msg_id, std::string msg){
+values decode_msgs::decode_message( unsigned int msg_id, std::string msg){
+  values returnedVal;
   int raw_angle;
   unsigned long long int n;
   std::string binary;
@@ -88,6 +69,9 @@ int decode_msgs::decode_message( unsigned int msg_id, std::string msg){
   std::string byte7;
   std::string temp1;
   std::string rawVal;
+  returnedVal.var1=0.0;
+  returnedVal.var2=0.0;
+  returnedVal.var3=0.0;
   float angle;
   if (msg_id == 180){
   
@@ -107,8 +91,8 @@ int decode_msgs::decode_message( unsigned int msg_id, std::string msg){
          speed_mps= ceilf((speedDec_kmph* (10.0/36.0)) * 100) / 100;
 
       //this->steering_angle = 0.0;
-      this->speed = speed_mps;
-      
+      returnedVal.var1 = speed_mps;
+      return returnedVal;
   }
   if (msg_id == 37){
 
@@ -133,10 +117,10 @@ int decode_msgs::decode_message( unsigned int msg_id, std::string msg){
         }
         angle=float(raw_angle)*1.5;
 
-        this->steering_angle = angle;
+        returnedVal.var1= angle;
        // this->speed = 0.0;
 
-
+      return returnedVal;
   }
     if (msg_id == 869){
   
@@ -156,8 +140,8 @@ int decode_msgs::decode_message( unsigned int msg_id, std::string msg){
 
         //this->steering_angle = 0.0;
         //this->speed = 0.0;
-        this->lead_dist = rawVal_Dec;
-      
+        returnedVal.var1 = rawVal_Dec;
+      return returnedVal;
 
   }
   if (msg_id>= 384 && msg_id<=399 ){
@@ -200,10 +184,11 @@ int decode_msgs::decode_message( unsigned int msg_id, std::string msg){
 
         float rawVal_long_fl=float(std::stoull(rawVal_long, 0, 2));
 
-       // std::cout << rawVal_lat << " " << rawVal_long << " " << raw_rel_speed << std::endl;
-        this->lat_dist=rawVal_lat_fl*0.04;
-        this->long_dist=rawVal_long_fl*0.04;
-        this->rel_speed=raw_rel_speed_fl*0.025;
+        std::cout << rawVal_lat << " " << rawVal_long << " " << raw_rel_speed << std::endl;
+        returnedVal.var1=rawVal_lat_fl*0.04;
+        returnedVal.var2=rawVal_long_fl*0.04;
+        returnedVal.var3=raw_rel_speed_fl*0.025;
+        return returnedVal;
   
   }
     if (msg_id >= 400 && msg_id <= 415){
@@ -227,13 +212,45 @@ int decode_msgs::decode_message( unsigned int msg_id, std::string msg){
           raw_accel_fl=raw_accel_fl * -1.0;
         }
 
-        //std::cout << raw_accel_fl << std::endl;
-        this->rel_accel=raw_accel_fl*1.0;
+        std::cout << raw_accel_fl << std::endl;
+        returnedVal.var1=raw_accel_fl*1.0;
+        returnedVal;
     }
 
-return 0;
-}
+    if (msg_id == 552){
+    int temp_accel;
+    std::stringstream hex_ss(msg);
+    hex_ss >> std::hex >> n;
 
+    binary = std::bitset<32>(n).to_string();
+    //std::cout << binary << std::endl;
+    std::string byte1 = binary.substr(0,8);
+    std::string byte2 = binary.substr(8,8);
+    std::string byte3 = binary.substr(16,8);
+    std::string byte4 = binary.substr(24,8);
+    // std::cout << byte1 << std::endl;
+    // std::cout << byte2 << std::endl;
+    // std::cout << byte3 << std::endl;
+    // std::cout << byte4 << std::endl;
+
+    temp1= byte1.substr(1,7);
+    rawVal= temp1+byte2;
+    
+    if (rawVal[0]== '0'){
+      temp_accel= std::stoul( rawVal, 0, 2 );
+    }
+    else {
+
+      temp_accel= std::stoul(findTwoscomplement(rawVal), 0, 2 );
+      temp_accel=temp_accel * -1.0;
+    }
+    returnedVal.var1=float(temp_accel)*0.001;
+    //std::cout << this->long_accel << "  Accel" << std::endl; 
+
+    return returnedVal;
+    }
+
+}
 
 /**********************************************************************************************/
 
@@ -243,11 +260,11 @@ int main(int argc, char **argv){
     ros::Publisher str_angle_pub = nh.advertise<std_msgs::Float32>("/vehicle/steering_angle", 1000);   // pulishing to /vehicle/vel topic
     ROS_INFO("Got parameter : %s", argv[1]);
     std::ifstream inFile;
-    std::string user_input="";
     decode_msgs obj;
     std::string inputLine="";
     std::string Time,Buffer,Bus,Message,MessageLength;
     int MessageID;
+    values data;
     
     bool firstLine=true;
     if (argc != 2){ // check the nunber of the argument
@@ -275,15 +292,14 @@ int main(int argc, char **argv){
       std::replace(inputLine.begin(), inputLine.end(), ',', ' '); // replace the commas with white space
       std::stringstream ss(inputLine);
       ss >> Time>> Bus>> MessageID>> Message>> MessageLength;
- 
-      obj.decode_message (MessageID, Message);
 
-       if (MessageID == 37){ 
-       std::cout << "str angle " << obj.GetSteeringAngle() << std::endl;
+      if (MessageID == 37){ 
+      //  std::cout << "str angle " << obj.GetSteeringAngle() << std::endl;
+       data = obj.decode_message (MessageID, Message);
        std_msgs::Float32 str_angle;
-       str_angle.data = obj.GetSteeringAngle();
+       str_angle.data = data.var1;
        str_angle_pub.publish(str_angle);
-        ros::spinOnce();
+       ros::spinOnce();
        rate.sleep();
       }
 
