@@ -1,14 +1,6 @@
 #include "ros/ros.h"
 #include "std_msgs/String.h"
-#include "geometry_msgs/Point.h"
-#include "geometry_msgs/Twist.h"
-#include "std_msgs/Float32.h"
-#include "sensor_msgs/PointCloud2.h"
 #include "sensor_msgs/NavSatFix.h"
-
-#include "ainstein_radar_msgs/RadarTarget.h"
-#include "ainstein_radar_msgs/RadarTargetArray.h"
-#include "ainstein_radar_msgs/RadarInfo.h"
 #include "nav_msgs/Path.h"
 #include "geometry_msgs/PoseStamped.h"
 #include <iostream>
@@ -16,11 +8,8 @@
 #include <fstream>
 #include <algorithm>
 #include <sstream>
-#include <iostream>
-#include <bitset>
-#include <math.h>
-#include <ctime>
-#include "visualization_msgs/Marker.h"
+#include "sensor_msgs/TimeReference.h"
+#include <time.h>
 
 
 
@@ -31,6 +20,7 @@ int main(int argc, char **argv){
     ros::init(argc, argv, "gpsfix");
     ros::NodeHandle nh("~");
     ros::Publisher gps_pub = nh.advertise<sensor_msgs::NavSatFix>("/vehicle/gpsfix", 1000);   // pulishing to /vehicle/vel topic
+    ros::Publisher gps_time_pub = nh.advertise<sensor_msgs::TimeReference>("/vehicle/gpstime", 1000);   // pulishing to /vehicle/vel topic
 
 
     std::string inputLine;
@@ -66,7 +56,7 @@ int main(int argc, char **argv){
       sensor_msgs::NavSatFix gps_msg;
 
       gps_msg.header.frame_id = "base_link";
-      gps_msg.header.stamp = Gpstime;
+      gps_msg.header.stamp =ros::Time(std::stod(Gpstime));
       gps_msg.latitude=std::stod(Lat);
       gps_msg.longitude=std::stod(Long);
       gps_msg.altitude=std::stod(Alt);
@@ -80,9 +70,17 @@ int main(int argc, char **argv){
       gps_msg.position_covariance[7]=0.0;
       gps_msg.position_covariance[8]=7.650756;
       gps_msg.position_covariance_type= 2;
+      
+      // adding a Time refrence message to tell us the atual time of gps messages
+      sensor_msgs::TimeReference gps_time_ref_msg;
+      gps_time_ref_msg.source = "gps";
+      gps_time_ref_msg.header.stamp = ros::Time::now();
+      //ros::Time::now();
+      gps_time_ref_msg.time_ref = ros::Time(std::stod(Gpstime));
 
-   
-        gps_pub.publish(gps_msg);
+
+      gps_time_pub.publish(gps_time_ref_msg);
+      gps_pub.publish(gps_msg);
 
         rate.sleep();
       }
