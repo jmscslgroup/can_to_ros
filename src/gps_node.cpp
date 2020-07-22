@@ -38,7 +38,7 @@ int main(int argc, char **argv){
     }
 
 
-      ros::Rate rate(10.0); // the publish rate is 1/delta_t 
+      ros::Rate rate(20.0); // the publish rate is 1/delta_t 
     while (ros::ok()){
 
       if (!getline(inFile, inputLine)) break;

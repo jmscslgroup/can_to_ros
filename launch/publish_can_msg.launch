@@ -10,6 +10,6 @@
 
 <node pkg="can_to_ros" type ="gpsfix" name="gpsfix" args="$(arg gps_path)" output="screen" /> 
 
-<!-- <node pkg="rosbag" type="record" name="can_msg_bag" args="-o can_to_ros /vehicle/vel"/> -->
+<node pkg= "rosbag" name="record" type="record" output="screen" args="-a -O /home/safwan/Documents/test_ws/2020-05-26-13-39-23" />
 
 </launch>
