@@ -16,8 +16,8 @@ int main(int argc, char **argv){
     std::ifstream inFile;
     decode_msgs obj;
     std::string inputLine="";
-    std::string Time,Buffer,Bus,Message,MessageLength;
-    int MessageID;
+    std::string Time,Buffer,Message,MessageLength;
+    int MessageID, Bus;
     values data;
 
     bool firstLine=true;
@@ -49,7 +49,7 @@ int main(int argc, char **argv){
       ss >> Time>> Bus>> MessageID>> Message>> MessageLength;
  
 
-      if (MessageID == 180){ 
+      if (MessageID == 180 && Bus == 0){ 
         data = obj.decode_message (MessageID, Message); 
       // std::cout << "speed " << obj.GetSpeed() << std::endl;
        geometry_msgs::Twist msg;

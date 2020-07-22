@@ -222,3 +222,69 @@ target_link_libraries(accel_node ${catkin_LIBRARIES})
 
 add_executable(gpsfix src/gps_node.cpp)
 target_link_libraries(gpsfix ${catkin_LIBRARIES})
+
+add_executable(track_a0 src/track_a0.cpp)
+target_link_libraries(track_a0 ${catkin_LIBRARIES})
+
+add_executable(track_a1 src/track_a1.cpp)
+target_link_libraries(track_a1 ${catkin_LIBRARIES})
+
+add_executable(track_a2 src/track_a2.cpp)
+target_link_libraries(track_a2 ${catkin_LIBRARIES})
+
+add_executable(track_a3 src/track_a3.cpp)
+target_link_libraries(track_a3 ${catkin_LIBRARIES})
+
+add_executable(track_a4 src/track_a4.cpp)
+target_link_libraries(track_a4 ${catkin_LIBRARIES})
+
+add_executable(track_a5 src/track_a5.cpp)
+target_link_libraries(track_a5 ${catkin_LIBRARIES})
+
+add_executable(track_a6 src/track_a6.cpp)
+target_link_libraries(track_a6 ${catkin_LIBRARIES})
+
+add_executable(track_a7 src/track_a7.cpp)
+target_link_libraries(track_a7 ${catkin_LIBRARIES})
+
+add_executable(track_a8 src/track_a8.cpp)
+target_link_libraries(track_a8 ${catkin_LIBRARIES})
+
+add_executable(track_a9 src/track_a9.cpp)
+target_link_libraries(track_a9 ${catkin_LIBRARIES})
+
+add_executable(track_a10 src/track_a10.cpp)
+target_link_libraries(track_a10 ${catkin_LIBRARIES})
+
+add_executable(track_a11 src/track_a11.cpp)
+target_link_libraries(track_a11 ${catkin_LIBRARIES})
+
+add_executable(track_a12 src/track_a12.cpp)
+target_link_libraries(track_a12 ${catkin_LIBRARIES})
+
+add_executable(track_a13 src/track_a13.cpp)
+target_link_libraries(track_a13 ${catkin_LIBRARIES})
+
+add_executable(track_a14 src/track_a14.cpp)
+target_link_libraries(track_a14 ${catkin_LIBRARIES})
+
+add_executable(track_a15 src/track_a15.cpp)
+target_link_libraries(track_a15 ${catkin_LIBRARIES})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

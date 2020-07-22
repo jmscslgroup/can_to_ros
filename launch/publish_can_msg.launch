@@ -7,9 +7,23 @@
 <node pkg="can_to_ros" type ="strangle_node" name="strangle_node" args="$(arg csv_path)"  /> 
 <node pkg="can_to_ros" type ="leaddist_node" name="leaddist_node" args="$(arg csv_path)"  /> 
 <node pkg="can_to_ros" type ="accel_node" name="accel_node" args="$(arg csv_path)"  /> 
-
+<node pkg="can_to_ros" type ="track_a0" name="track_a0" args="$(arg csv_path)"  />
+<node pkg="can_to_ros" type ="track_a1" name="track_a1" args="$(arg csv_path)"  />
+<node pkg="can_to_ros" type ="track_a2" name="track_a2" args="$(arg csv_path)"  />
+<node pkg="can_to_ros" type ="track_a3" name="track_a3" args="$(arg csv_path)"  />
+<node pkg="can_to_ros" type ="track_a4" name="track_a4" args="$(arg csv_path)"  />
+<node pkg="can_to_ros" type ="track_a5" name="track_a5" args="$(arg csv_path)"  />
+<node pkg="can_to_ros" type ="track_a6" name="track_a6" args="$(arg csv_path)"  />
+<node pkg="can_to_ros" type ="track_a7" name="track_a7" args="$(arg csv_path)"  />
+<node pkg="can_to_ros" type ="track_a8" name="track_a8" args="$(arg csv_path)"  />
+<node pkg="can_to_ros" type ="track_a9" name="track_a9" args="$(arg csv_path)"  />
+<node pkg="can_to_ros" type ="track_a10" name="track_a10" args="$(arg csv_path)"  />
+<node pkg="can_to_ros" type ="track_a11" name="track_a11" args="$(arg csv_path)"  />
+<node pkg="can_to_ros" type ="track_a12" name="track_a12" args="$(arg csv_path)"  />
+<node pkg="can_to_ros" type ="track_a13" name="track_a13" args="$(arg csv_path)"  />
+<node pkg="can_to_ros" type ="track_a14" name="track_a14" args="$(arg csv_path)"  />
+<node pkg="can_to_ros" type ="track_a15" name="track_a15" args="$(arg csv_path)"  />
 <node pkg="can_to_ros" type ="gpsfix" name="gpsfix" args="$(arg gps_path)" output="screen" /> 
-
-<node pkg= "rosbag" name="record" type="record" output="screen" args="-a -O /home/safwan/Documents/test_ws/2020-05-26-13-39-23" />
+<node pkg= "rosbag" name="record" type="record" output="screen" args="-a -O /home/safwan/Documents/test_ws/2020-05-26-13-39-23_tracks" />
 
 </launch>

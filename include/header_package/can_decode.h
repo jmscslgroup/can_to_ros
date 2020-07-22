@@ -179,7 +179,7 @@ values decode_msgs::decode_message( unsigned int msg_id, std::string msg){
 
         float rawVal_long_fl=float(std::stoull(rawVal_long, 0, 2));
 
-        std::cout << rawVal_lat << " " << rawVal_long << " " << raw_rel_speed << std::endl;
+        //std::cout << rawVal_lat << " " << rawVal_long << " " << raw_rel_speed << std::endl;
         returnedVal.var1=rawVal_lat_fl*0.04;
         returnedVal.var2=rawVal_long_fl*0.04;
         returnedVal.var3=raw_rel_speed_fl*0.025;
@@ -207,7 +207,7 @@ values decode_msgs::decode_message( unsigned int msg_id, std::string msg){
           raw_accel_fl=raw_accel_fl * -1.0;
         }
 
-        std::cout << raw_accel_fl << std::endl;
+        //std::cout << raw_accel_fl << std::endl;
         returnedVal.var1=raw_accel_fl*1.0;
         returnedVal;
     }

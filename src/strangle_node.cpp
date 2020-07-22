@@ -15,8 +15,8 @@ int main(int argc, char **argv){
     std::ifstream inFile;
     decode_msgs obj;
     std::string inputLine="";
-    std::string Time,Buffer,Bus,Message,MessageLength;
-    int MessageID;
+    std::string Time,Buffer,Message,MessageLength;
+    int MessageID, Bus;
     values data;
     
     bool firstLine=true;
@@ -46,7 +46,7 @@ int main(int argc, char **argv){
       std::stringstream ss(inputLine);
       ss >> Time>> Bus>> MessageID>> Message>> MessageLength;
 
-      if (MessageID == 37){ 
+      if (MessageID == 37 && Bus == 0){ 
       //  std::cout << "str angle " << obj.GetSteeringAngle() << std::endl;
        data = obj.decode_message (MessageID, Message);
        std_msgs::Float32 str_angle;
