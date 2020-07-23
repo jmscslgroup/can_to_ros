@@ -2,7 +2,7 @@
 #include "std_msgs/String.h"
 #include "geometry_msgs/Point.h"
 #include "geometry_msgs/Twist.h"
-#include "std_msgs/Float32.h"
+#include "geometry_msgs/PointStamped.h"
 #include "sensor_msgs/TimeReference.h"
 #include "header_package/can_decode.h"
 
@@ -11,7 +11,7 @@
 int main(int argc, char **argv){
     ros::init(argc, argv, "leaddist_node");
     ros::NodeHandle nh("~");
-    ros::Publisher lead_dist_pub = nh.advertise<std_msgs::Float32>("/vehicle/distanceEstimator/dist", 1000);  
+    ros::Publisher lead_dist_pub = nh.advertise<geometry_msgs::PointStamped>("/vehicle/distanceEstimator/dist", 1000);  
     ROS_INFO("Got parameter : %s", argv[1]);
     std::ifstream inFile;
     std::string user_input="";
@@ -50,8 +50,9 @@ int main(int argc, char **argv){
        if (MessageID == 869){ 
        data = obj.decode_message (MessageID, Message);
       //std::cout << "leadDIST " << obj.GetLead_dist() << std::endl;
-       std_msgs::Float32 dist;
-       dist.data = data.var1;
+       geometry_msgs::PointStamped dist;
+       dist.header.stamp=ros::Time(std::stod(Time));
+       dist.point.x = data.var1;
        lead_dist_pub.publish(dist);
         ros::spinOnce();
        rate.sleep();

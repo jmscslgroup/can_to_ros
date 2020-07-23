@@ -2,7 +2,7 @@
 #include "std_msgs/String.h"
 #include "geometry_msgs/Point.h"
 #include "geometry_msgs/Twist.h"
-#include "std_msgs/Float32.h"
+#include "geometry_msgs/AccelStamped.h"
 #include "sensor_msgs/TimeReference.h"
 #include "header_package/can_decode.h"
 
@@ -12,7 +12,7 @@
 int main(int argc, char **argv){
     ros::init(argc, argv, "can_msg_decoder");
     ros::NodeHandle nh("~");
-    ros::Publisher accel_pub = nh.advertise<std_msgs::Float32>("/vehicle/accel", 1000);  
+    ros::Publisher accel_pub = nh.advertise<geometry_msgs::AccelStamped>("/vehicle/accel", 1000);  
     ROS_INFO("Got parameter : %s", argv[1]);
     std::ifstream inFile;
 
@@ -57,8 +57,9 @@ int main(int argc, char **argv){
                                                                       
       if (MessageID == 552){ 
          data = obj.decode_message (MessageID, Message);
-        std_msgs::Float32 msg;
-        msg.data = data.var1;
+        geometry_msgs::AccelStamped msg;
+        msg.header.stamp=ros::Time(std::stod(Time));
+        msg.accel.linear.x = data.var1;
         accel_pub.publish(msg);
         ros::spinOnce();
         rate.sleep();

@@ -1,7 +1,7 @@
 #include "ros/ros.h"
 #include "std_msgs/String.h"
 #include "geometry_msgs/Point.h"
-#include "geometry_msgs/Twist.h"
+#include "geometry_msgs/TwistStamped.h"
 #include "std_msgs/Float32.h"
 #include "sensor_msgs/TimeReference.h"
 #include "header_package/can_decode.h"
@@ -11,7 +11,7 @@
 int main(int argc, char **argv){
     ros::init(argc, argv, "speed_node");
     ros::NodeHandle nh("~");
-    ros::Publisher speed_pub = nh.advertise<geometry_msgs::Twist>("/vehicle/vel", 1000);   // pulishing to /vehicle/vel topic 
+    ros::Publisher speed_pub = nh.advertise<geometry_msgs::TwistStamped>("/vehicle/vel", 1000);   // pulishing to /vehicle/vel topic 
     ROS_INFO("Got parameter : %s", argv[1]);
     std::ifstream inFile;
     decode_msgs obj;
@@ -52,8 +52,9 @@ int main(int argc, char **argv){
       if (MessageID == 180 && Bus == 0){ 
         data = obj.decode_message (MessageID, Message); 
       // std::cout << "speed " << obj.GetSpeed() << std::endl;
-       geometry_msgs::Twist msg;
-       msg.linear.x = data.var1;
+       geometry_msgs::TwistStamped msg;
+       msg.header.stamp=ros::Time(std::stod(Time));
+       msg.twist.linear.x = data.var1;
        speed_pub.publish(msg);
        ros::spinOnce();
        rate.sleep();

@@ -2,7 +2,7 @@
 #include "std_msgs/String.h"
 #include "geometry_msgs/Point.h"
 #include "geometry_msgs/Twist.h"
-#include "std_msgs/Float32.h"
+#include "geometry_msgs/PointStamped.h"
 #include "sensor_msgs/TimeReference.h"
 #include "header_package/can_decode.h"
 /**********************************************************************************************/
@@ -10,7 +10,7 @@
 int main(int argc, char **argv){
     ros::init(argc, argv, "strangle_node");
     ros::NodeHandle nh("~");
-    ros::Publisher str_angle_pub = nh.advertise<std_msgs::Float32>("/vehicle/steering_angle", 1000);   // pulishing to /vehicle/vel topic
+    ros::Publisher str_angle_pub = nh.advertise<geometry_msgs::PointStamped>("/vehicle/steering_angle", 1000);   // pulishing to /vehicle/vel topic
     ROS_INFO("Got parameter : %s", argv[1]);
     std::ifstream inFile;
     decode_msgs obj;
@@ -49,8 +49,9 @@ int main(int argc, char **argv){
       if (MessageID == 37 && Bus == 0){ 
       //  std::cout << "str angle " << obj.GetSteeringAngle() << std::endl;
        data = obj.decode_message (MessageID, Message);
-       std_msgs::Float32 str_angle;
-       str_angle.data = data.var1;
+       geometry_msgs::PointStamped str_angle;
+       str_angle.header.stamp=ros::Time(std::stod(Time));
+       str_angle.point.x = data.var1;
         str_angle_pub.publish(str_angle);
       // ros::spinOnce();
         rate.sleep();
