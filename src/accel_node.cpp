@@ -21,8 +21,8 @@ int main(int argc, char **argv){
     std::string user_input="";
     decode_msgs obj;
     std::string inputLine="";
-    std::string Time,Buffer,Bus,Message,MessageLength;
-    int MessageID;
+    std::string Time,Buffer,Message,MessageLength;
+    int MessageID,Bus;
     values data;
     bool firstLine=true;
     if (argc != 2){ // check the nunber of the argument
@@ -55,7 +55,7 @@ int main(int argc, char **argv){
       std::stringstream ss(inputLine);
       ss >> Time>> Bus>> MessageID>> Message>> MessageLength;
                                                                       
-      if (MessageID == 552){ 
+      if (MessageID == 552 && Bus==0){ 
          data = obj.decode_message (MessageID, Message);
         geometry_msgs::AccelStamped msg;
         msg.header.stamp=ros::Time(std::stod(Time));

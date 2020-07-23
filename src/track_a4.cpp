@@ -60,8 +60,8 @@ while (ros::ok()){
         marker.id = 0;
         marker.type = 1;
         marker.action =0;
-        marker.pose.position.x = data.var1;
-        marker.pose.position.y = data.var2;
+        marker.pose.position.x = data.var2;
+        marker.pose.position.y = data.var1;
         marker.pose.position.z = 0.0;
         marker.pose.orientation.x = 0.0;
         marker.pose.orientation.y = 0.0;

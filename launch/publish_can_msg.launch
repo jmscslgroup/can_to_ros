@@ -2,6 +2,25 @@
 
 <arg name="csv_path" />
 <arg name="gps_path" />
+<arg name="bag_name" />
+
+<group ns="catvehicle">
+<param name="robot_description"
+         command="$(find xacro)/xacro.py '$(find can_to_ros)/urdf/catvehicle.xacro' roboname:='catvehicle'" />
+
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
+
+
+<!--<include file="$(find can_to_ros)/launch/catvehicle.launch">-->
+<!--    <arg name="robot_name" value="catvehicle"/>-->
+<!--    <arg name="init_pose" value="-x 1 -y 1 -z 0"/>-->
+<!--    <arg name="config_file" value="catvehicle_control.yaml"/>-->
+<!--</include>-->
+
+<!-- <node pkg="can_to_ros" type ="piping.sh" name="bashscript" output="screen" /> 
+<node pkg="can_to_ros" type ="gpsfix" name="gpsfix" args="$(arg gps_file)" output="screen" />  -->
+
 
 <node pkg="can_to_ros" type ="speed_node" name="speed_node" args="$(arg csv_path)"  /> 
 <node pkg="can_to_ros" type ="strangle_node" name="strangle_node" args="$(arg csv_path)"  /> 
@@ -24,6 +43,14 @@
 <node pkg="can_to_ros" type ="track_a14" name="track_a14" args="$(arg csv_path)"  />
 <node pkg="can_to_ros" type ="track_a15" name="track_a15" args="$(arg csv_path)"  />
 <node pkg="can_to_ros" type ="gpsfix" name="gpsfix" args="$(arg gps_path)" output="screen" /> 
-<node pkg= "rosbag" name="record" type="record" output="screen" args="-a -O /home/safwan/Documents/test_ws/2020-05-26-13-39-23_tracks" />
+<node pkg= "rosbag" name="record" type="record" output="screen" args="-a -O /home/safwan/Documents/test_ws/$(arg bag_name)_CAN_GPS" />
+<!--<node pkg="can_to_ros" type ="my_frame" name="my_frame" /> -->
+
+</group>
+
+
+
+
+<!-- <node pkg="rosbag" type="record" name="can_msg_bag" args="-o can_to_ros -a"/> -->
 
 </launch>
