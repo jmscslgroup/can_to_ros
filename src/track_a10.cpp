@@ -61,7 +61,7 @@ while (ros::ok()){
         marker.type = 1;
         marker.action =0;
         marker.pose.position.x = data.var2;
-        marker.pose.position.y = data.var1;
+        marker.pose.position.y =(data.var1 * -1.0);
         marker.pose.position.z = 0.0;
         marker.pose.orientation.x = 0.0;
         marker.pose.orientation.y = 0.0;
@@ -71,9 +71,18 @@ while (ros::ok()){
         marker.scale.y = 0.2;
         marker.scale.z = 0.2;
         marker.color.a = 1.0; // Don't forget to set the alpha!
-        marker.color.r = 0.0;
+        if (data.var2 <= 2.0)
+        {
+        marker.color.r = 1.0;
+        marker.color.g = 0.0;
+        marker.color.b = 0.0;
+        }
+        else
+        {
+        marker.color.r = 1.0;
         marker.color.g = 1.0;
         marker.color.b = 0.0;
+        }
 
 
         pose_pub.publish(marker);

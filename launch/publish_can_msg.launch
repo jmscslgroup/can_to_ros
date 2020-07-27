@@ -26,7 +26,7 @@
 <node pkg="can_to_ros" type ="strangle_node" name="strangle_node" args="$(arg csv_path)"  /> 
 <node pkg="can_to_ros" type ="leaddist_node" name="leaddist_node" args="$(arg csv_path)"  /> 
 <node pkg="can_to_ros" type ="accel_node" name="accel_node" args="$(arg csv_path)"  /> 
-<node pkg="can_to_ros" type ="track_a0" name="track_a0" args="$(arg csv_path)"  />
+<node pkg="can_to_ros" type ="track_a0" name="track_a0" args="$(arg csv_path)" output="screen" />
 <node pkg="can_to_ros" type ="track_a1" name="track_a1" args="$(arg csv_path)"  />
 <node pkg="can_to_ros" type ="track_a2" name="track_a2" args="$(arg csv_path)"  />
 <node pkg="can_to_ros" type ="track_a3" name="track_a3" args="$(arg csv_path)"  />
@@ -42,8 +42,8 @@
 <node pkg="can_to_ros" type ="track_a13" name="track_a13" args="$(arg csv_path)"  />
 <node pkg="can_to_ros" type ="track_a14" name="track_a14" args="$(arg csv_path)"  />
 <node pkg="can_to_ros" type ="track_a15" name="track_a15" args="$(arg csv_path)"  />
-<node pkg="can_to_ros" type ="gpsfix" name="gpsfix" args="$(arg gps_path)" output="screen" /> 
-<node pkg= "rosbag" name="record" type="record" output="screen" args="-a -O /home/safwan/Documents/test_ws/$(arg bag_name)_CAN_GPS" />
+<node pkg="can_to_ros" type ="gpsfix" name="gpsfix" args="$(arg gps_path)"  /> 
+<node pkg= "rosbag" name="record" type="record"  args="-a -O /home/safwan/Documents/test_ws/$(arg bag_name)_CAN_GPS" />
 <!--<node pkg="can_to_ros" type ="my_frame" name="my_frame" /> -->
 
 </group>
