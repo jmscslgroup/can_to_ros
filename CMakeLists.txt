@@ -271,7 +271,8 @@ target_link_libraries(track_a14 ${catkin_LIBRARIES})
 add_executable(track_a15 src/track_a15.cpp)
 target_link_libraries(track_a15 ${catkin_LIBRARIES})
 
-
+add_executable(track_b0 src/track_b0.cpp)
+target_link_libraries(track_b0 ${catkin_LIBRARIES})
 
 
 

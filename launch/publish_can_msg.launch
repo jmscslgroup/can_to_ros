@@ -42,6 +42,7 @@
 <node pkg="can_to_ros" type ="track_a13" name="track_a13" args="$(arg csv_path)"  />
 <node pkg="can_to_ros" type ="track_a14" name="track_a14" args="$(arg csv_path)"  />
 <node pkg="can_to_ros" type ="track_a15" name="track_a15" args="$(arg csv_path)"  />
+<node pkg="can_to_ros" type ="track_b0" name="track_b0" args="$(arg csv_path)"  />
 <node pkg="can_to_ros" type ="gpsfix" name="gpsfix" args="$(arg gps_path)"  /> 
 <node pkg= "rosbag" name="record" type="record"  args="-a -O /home/safwan/Documents/test_ws/$(arg bag_name)_CAN_GPS" />
 <!--<node pkg="can_to_ros" type ="my_frame" name="my_frame" /> -->

@@ -194,8 +194,11 @@ values decode_msgs::decode_message( unsigned int msg_id, std::string msg){
         binary = std::bitset<64>(n).to_string();
 
         std::string byte2 = binary.substr(8,8);
+        std::string byte3 = binary.substr(16,8);
 
         std::string raw_accel= byte2.substr(0,7);
+        rawVal_Dec=std::stoull(byte3, 0, 2);
+        float score= float(rawVal_Dec); 
 
         float raw_accel_fl;
              if ((raw_accel)[0]== '0'){
@@ -209,7 +212,9 @@ values decode_msgs::decode_message( unsigned int msg_id, std::string msg){
 
         //std::cout << raw_accel_fl << std::endl;
         returnedVal.var1=raw_accel_fl*1.0;
-        returnedVal;
+        returnedVal.var2=score;
+        //std::cout<< returnedVal.var2 << std::endl;
+        return returnedVal;
     }
 
     if (msg_id == 552){
