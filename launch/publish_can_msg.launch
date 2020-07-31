@@ -43,6 +43,23 @@
 <node pkg="can_to_ros" type ="track_a14" name="track_a14" args="$(arg csv_path)"  />
 <node pkg="can_to_ros" type ="track_a15" name="track_a15" args="$(arg csv_path)"  />
 <node pkg="can_to_ros" type ="track_b0" name="track_b0" args="$(arg csv_path)"  />
+<node pkg="can_to_ros" type ="track_b1" name="track_b1" args="$(arg csv_path)"  />
+<node pkg="can_to_ros" type ="track_b2" name="track_b2" args="$(arg csv_path)"  />
+<node pkg="can_to_ros" type ="track_b3" name="track_b3" args="$(arg csv_path)"  />
+<node pkg="can_to_ros" type ="track_b4" name="track_b4" args="$(arg csv_path)"  />
+<node pkg="can_to_ros" type ="track_b5" name="track_b5" args="$(arg csv_path)"  />
+<node pkg="can_to_ros" type ="track_b6" name="track_b6" args="$(arg csv_path)"  />
+<node pkg="can_to_ros" type ="track_b7" name="track_b7" args="$(arg csv_path)"  />
+<node pkg="can_to_ros" type ="track_b8" name="track_b8" args="$(arg csv_path)"  />
+<node pkg="can_to_ros" type ="track_b9" name="track_b9" args="$(arg csv_path)"  />
+<node pkg="can_to_ros" type ="track_b10" name="track_b10" args="$(arg csv_path)"  />
+<node pkg="can_to_ros" type ="track_b11" name="track_b11" args="$(arg csv_path)"  />
+<node pkg="can_to_ros" type ="track_b12" name="track_b12" args="$(arg csv_path)"  />
+<node pkg="can_to_ros" type ="track_b13" name="track_b13" args="$(arg csv_path)"  />
+<node pkg="can_to_ros" type ="track_b14" name="track_b14" args="$(arg csv_path)"  />
+<node pkg="can_to_ros" type ="track_b15" name="track_b15" args="$(arg csv_path)"  />
+
+
 <node pkg="can_to_ros" type ="gpsfix" name="gpsfix" args="$(arg gps_path)"  /> 
 <node pkg= "rosbag" name="record" type="record"  args="-a -O /home/safwan/Documents/test_ws/$(arg bag_name)_CAN_GPS" />
 <!--<node pkg="can_to_ros" type ="my_frame" name="my_frame" /> -->

@@ -7,6 +7,7 @@
 #include "header_package/can_decode.h"
 #include "visualization_msgs/Marker.h"
 
+
 int main(int argc, char **argv){
     ros::init(argc, argv, "track_a0");
      ros::NodeHandle nh1("~");
@@ -24,6 +25,8 @@ int main(int argc, char **argv){
     float az;
     int i=0;
     values data;
+    double track_b0_s=0.0;
+    // double track_b1_s=0.0;
     bool firstLine=true;
     if (argc != 2){ // check the nunber of the argument
         std::cout <<"./a.out .csv" << std::endl;
@@ -52,6 +55,7 @@ while (ros::ok()){
       ss >> Time>> Bus>> MessageID>> Message>> MessageLength;
 
         if (MessageID == 384){ 
+
         data = obj.decode_message (MessageID, Message);
         visualization_msgs::Marker marker;
         marker.header.frame_id = "front_laser_link";
@@ -69,11 +73,24 @@ while (ros::ok()){
         marker.pose.orientation.y = 0.0;
         marker.pose.orientation.z = 0.0;
         marker.pose.orientation.w =1.0;
+
+        if (ros::param::get("/track_b0_score", track_b0_s))
+        {
+          if (track_b0_s > 50.0){
+             marker.color.a = 1.0; // Don't forget to set the alpha!
+          }
+          else
+          {
+            marker.color.a = 0; // Don't forget to set the alpha!
+          }
+          
+            // std::cout << "score " << track_b0_s<<  std::endl; 
+        }
         marker.scale.x = 0.2;
         marker.scale.y = 0.2;
         marker.scale.z = 0.2;
-        marker.color.a = 1.0; // Don't forget to set the alpha!
-        if (data.var2 <= 2.0)
+        // marker.color.a = 1.0; // Don't forget to set the alpha!
+        if (data.var2 <= 3.0)
         {
         marker.color.r = 1.0;
         marker.color.g = 0.0;

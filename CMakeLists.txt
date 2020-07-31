@@ -274,6 +274,50 @@ target_link_libraries(track_a15 ${catkin_LIBRARIES})
 add_executable(track_b0 src/track_b0.cpp)
 target_link_libraries(track_b0 ${catkin_LIBRARIES})
 
+add_executable(track_b1 src/track_b1.cpp)
+target_link_libraries(track_b1 ${catkin_LIBRARIES})
+
+add_executable(track_b2 src/track_b2.cpp)
+target_link_libraries(track_b2 ${catkin_LIBRARIES})
+
+add_executable(track_b3 src/track_b3.cpp)
+target_link_libraries(track_b3 ${catkin_LIBRARIES})
+
+add_executable(track_b4 src/track_b4.cpp)
+target_link_libraries(track_b4 ${catkin_LIBRARIES})
+
+add_executable(track_b5 src/track_b5.cpp)
+target_link_libraries(track_b5 ${catkin_LIBRARIES})
+
+add_executable(track_b6 src/track_b6.cpp)
+target_link_libraries(track_b6 ${catkin_LIBRARIES})
+
+add_executable(track_b7 src/track_b7.cpp)
+target_link_libraries(track_b7 ${catkin_LIBRARIES})
+
+add_executable(track_b8 src/track_b8.cpp)
+target_link_libraries(track_b8 ${catkin_LIBRARIES})
+
+add_executable(track_b9 src/track_b9.cpp)
+target_link_libraries(track_b9 ${catkin_LIBRARIES})
+
+add_executable(track_b10 src/track_b10.cpp)
+target_link_libraries(track_b10 ${catkin_LIBRARIES})
+
+add_executable(track_b11 src/track_b11.cpp)
+target_link_libraries(track_b11 ${catkin_LIBRARIES})
+
+add_executable(track_b12 src/track_b12.cpp)
+target_link_libraries(track_b12 ${catkin_LIBRARIES})
+
+add_executable(track_b13 src/track_b13.cpp)
+target_link_libraries(track_b13 ${catkin_LIBRARIES})
+
+add_executable(track_b14 src/track_b14.cpp)
+target_link_libraries(track_b14 ${catkin_LIBRARIES})
+
+add_executable(track_b15 src/track_b15.cpp)
+target_link_libraries(track_b15 ${catkin_LIBRARIES})
 
 
 

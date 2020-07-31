@@ -70,7 +70,20 @@ while (ros::ok()){
         marker.scale.x = 0.2;
         marker.scale.y = 0.2;
         marker.scale.z = 0.2;
-        marker.color.a = 1.0; // Don't forget to set the alpha!
+                double track_b7_s=0.0;
+        if (ros::param::get("/track_b7_score", track_b7_s))
+        {
+          if (track_b7_s > 50.0){
+             marker.color.a = 1.0; // Don't forget to set the alpha!
+          }
+          else
+          {
+            marker.color.a = 0; // Don't forget to set the alpha!
+          }
+          
+            // std::cout << "score " << track_b0_s<<  std::endl; 
+        }
+
         if (data.var2 <= 2.0)
         {
         marker.color.r = 1.0;

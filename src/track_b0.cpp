@@ -11,7 +11,7 @@ int main(int argc, char **argv){
     ros::init(argc, argv, "track_b0");
      ros::NodeHandle nh1("~");
  
-    ros::Publisher pose_pub = nh1.advertise<geometry_msgs::PointStamped>("/track_b0", 1000);
+    // ros::Publisher pose_pub = nh1.advertise<geometry_msgs::PointStamped>("/track_b0", 1000);
 
     ROS_INFO("Got parameter : %s", argv[1]);
     std::ifstream inFile;
@@ -49,15 +49,18 @@ while (ros::ok()){
       std::replace(inputLine.begin(), inputLine.end(), ',', ' '); // replace the commas with white space
       std::stringstream ss(inputLine);
       ss >> Time>> Bus>> MessageID>> Message>> MessageLength;
+      geometry_msgs::PointStamped msg;
 
-        if (MessageID == 400){ 
-        data = obj.decode_message (MessageID, Message);
-        geometry_msgs::PointStamped msg;
-        msg.header.stamp=ros::Time(std::stod(Time));
-        msg.point.x=data.var2;
+        if (MessageID == 400 ){ 
+          data = obj.decode_message (MessageID, Message);
+          // msg.header.stamp=ros::Time(std::stod(Time));
+          // msg.point.x=data.var2;
+          
         // std::cout << data.var2 << std::endl;
-        pose_pub.publish(msg);
-       rate.sleep();
+        ros::param::set("/track_b0_score", data.var2);
+      //  pose_pub.publish(msg);
+
+        rate.sleep();
       }
         
     }

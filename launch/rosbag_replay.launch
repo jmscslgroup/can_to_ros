@@ -1,0 +1,16 @@
+<launch>
+<arg name="bag_path" />
+<arg name="time" />
+
+<group ns="catvehicle">
+
+<param name="robot_description"
+         command="$(find xacro)/xacro.py '$(find can_to_ros)/urdf/catvehicle.xacro' roboname:='catvehicle'" />
+
+
+<node pkg="rosbag" type="play" name="rosbagplay" args="-s $(arg time) $(arg bag_path)" />
+
+
+</group>
+
+</launch>
