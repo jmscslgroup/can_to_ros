@@ -103,13 +103,13 @@ while (ros::ok()){
         marker.color.b = 0.0;
         }
 
-        std::time_t epoch1 = stod(Time);// creating a time_tobject to store time
-        struct tm * ptm=std::localtime(&epoch1); // gmtime converts time since epoch to calendar time expressed as Universal Coordinated Time
-        // struct tm is structure holding a calendar date and time broken down into its components.
-        int hour= ptm->tm_hour;
-        int min= ptm->tm_min;
-        int sec= ptm->tm_sec;
-        std::cout << hour<<":"<<min<< ":"<< sec<< std::endl;
+        // std::time_t epoch1 = stod(Time);// creating a time_tobject to store time
+        // struct tm * ptm=std::localtime(&epoch1); // gmtime converts time since epoch to calendar time expressed as Universal Coordinated Time
+        // // struct tm is structure holding a calendar date and time broken down into its components.
+        // int hour= ptm->tm_hour;
+        // int min= ptm->tm_min;
+        // int sec= ptm->tm_sec;
+        // std::cout << hour<<":"<<min<< ":"<< sec<< std::endl;
 
         pose_pub.publish(marker);
        rate.sleep();

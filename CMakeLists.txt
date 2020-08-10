@@ -319,6 +319,11 @@ target_link_libraries(track_b14 ${catkin_LIBRARIES})
 add_executable(track_b15 src/track_b15.cpp)
 target_link_libraries(track_b15 ${catkin_LIBRARIES})
 
+add_executable(publish_csv src/publish_csv.cpp)
+target_link_libraries(publish_csv ${catkin_LIBRARIES})
+
+add_executable(subs src/subs.cpp)
+target_link_libraries(subs ${catkin_LIBRARIES})
 
 
 

@@ -7,11 +7,27 @@
 #include "header_package/can_decode.h"
 #include "visualization_msgs/Marker.h"
 
+
+void testpub(){
+  
+  ros::NodeHandle nh2("~");
+  ros::Publisher pose_p = nh2.advertise<std_msgs::String>("/test", 1);
+  ros::Rate rate(20.0);
+  std_msgs::String msg;
+  msg.data = "hello";
+  ROS_INFO("%s", msg.data.c_str());
+  pose_p.publish(msg);
+   rate.sleep();
+}
+
 int main(int argc, char **argv){
     ros::init(argc, argv, "track_b0");
      ros::NodeHandle nh1("~");
  
-    // ros::Publisher pose_pub = nh1.advertise<geometry_msgs::PointStamped>("/track_b0", 1000);
+     ros::Publisher pose_pub = nh1.advertise<geometry_msgs::PointStamped>("/track_b0", 1000);
+     ros::Publisher pose_pub1 = nh1.advertise<geometry_msgs::PointStamped>("/track_b1", 1000);
+     ros::Publisher pose_pub2 = nh1.advertise<geometry_msgs::PointStamped>("/track_b2", 1000);
+     ros::Publisher pose_pub3 = nh1.advertise<geometry_msgs::PointStamped>("/track_b3", 1000);
 
     ROS_INFO("Got parameter : %s", argv[1]);
     std::ifstream inFile;
@@ -29,7 +45,7 @@ int main(int argc, char **argv){
         return 1;
     }
 
-    ros::Rate rate(20.0); // the publish rate is 1/delta_t 
+    ros::Rate rate(1000.0); // the publish rate is 1/delta_t 
 
     inFile.open(argv[1]);
     if( !inFile.is_open()){// check id the file is opened correctly.
@@ -49,20 +65,59 @@ while (ros::ok()){
       std::replace(inputLine.begin(), inputLine.end(), ',', ' '); // replace the commas with white space
       std::stringstream ss(inputLine);
       ss >> Time>> Bus>> MessageID>> Message>> MessageLength;
-      geometry_msgs::PointStamped msg;
-
+      testpub();
+     
+#if 0
         if (MessageID == 400 ){ 
+          geometry_msgs::PointStamped msg;
           data = obj.decode_message (MessageID, Message);
-          // msg.header.stamp=ros::Time(std::stod(Time));
-          // msg.point.x=data.var2;
+           msg.header.stamp=ros::Time(std::stod(Time));
+           msg.point.x=data.var2;
           
         // std::cout << data.var2 << std::endl;
-        ros::param::set("/track_b0_score", data.var2);
-      //  pose_pub.publish(msg);
+        //ros::param::set("/track_b0_score", data.var2);
+        pose_pub.publish(msg);
 
         rate.sleep();
-      }
-        
+     }
+             if (MessageID == 401  && std::stoi(Bus) == 1  ){ 
+              geometry_msgs::PointStamped msg;
+          data = obj.decode_message (MessageID, Message);
+           msg.header.stamp=ros::Time(std::stod(Time));
+           msg.point.x=data.var2;
+          
+        // std::cout << data.var2 << std::endl;
+        //ros::param::set("/track_b0_score", data.var2);
+        pose_pub1.publish(msg);
+
+        rate.sleep();
+     }
+             if (MessageID == 402 ){ 
+              geometry_msgs::PointStamped msg;
+          data = obj.decode_message (MessageID, Message);
+           msg.header.stamp=ros::Time(std::stod(Time));
+           msg.point.x=data.var2;
+          
+        // std::cout << data.var2 << std::endl;
+       // ros::param::set("/track_b0_score", data.var2);
+        pose_pub2.publish(msg);
+
+        rate.sleep();
+     }
+             if (MessageID == 403 ){ 
+             geometry_msgs::PointStamped msg;
+          data = obj.decode_message (MessageID, Message);
+           msg.header.stamp=ros::Time(std::stod(Time));
+           msg.point.x=data.var2;
+          
+        // std::cout << data.var2 << std::endl;
+       // ros::param::set("/track_b0_score", data.var2);
+        pose_pub3.publish(msg);
+
+        rate.sleep();
+     }
+#endif
+      rate.sleep();  
     }
     
       std::cout << "Finish publishing to the topic "<< std::endl;
