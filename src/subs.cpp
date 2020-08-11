@@ -1,13 +1,13 @@
 #include "ros/ros.h"
 #include "std_msgs/String.h"
-#include "geometry_msgs/Point.h"
 #include "geometry_msgs/Twist.h"
 #include "std_msgs/Float32.h"
 #include "sensor_msgs/TimeReference.h"
 #include "header_package/can_decode.h"
 #include "visualization_msgs/Marker.h"
 #include "geometry_msgs/PointStamped.h"
-
+#include "geometry_msgs/AccelStamped.h"
+#include "geometry_msgs/TwistStamped.h"
 
 
 class SubscribeAndPublish
@@ -16,10 +16,10 @@ public:
   SubscribeAndPublish()
   {
     //Topic you want to publish
-    pub_ = n_.advertise<geometry_msgs::PointStamped>("/test_topic", 1000);
-    pub_1=n_.advertise<geometry_msgs::PointStamped>("/test_topic1", 1000);
-    pub_2=n_.advertise<geometry_msgs::PointStamped>("/test_topic2", 1000);
-
+    accel_pub = n_.advertise<geometry_msgs::AccelStamped>("/vehicle/accel", 1000);  
+    lead_dist_pub = n_.advertise<geometry_msgs::PointStamped>("/vehicle/distanceEstimator/dist", 1000);
+    str_angle_pub = n_.advertise<geometry_msgs::PointStamped>("/vehicle/steering_angle", 1000);
+    speed_pub = n_.advertise<geometry_msgs::TwistStamped>("/vehicle/vel", 1000);
 
     //Topic you want to subscribe
     sub_ = n_.subscribe("/raw_data", 1000, &SubscribeAndPublish::callback, this);
@@ -27,58 +27,61 @@ public:
 
   void callback(const std_msgs::String::ConstPtr& raw_data)
   {
-    decode_msgs obj;
-    std::string Time,Buffer,Message,MessageLength;
-    int MessageID, Bus;
-    values data;
     std::stringstream ss(raw_data->data);
     ss >> Time>> Bus>> MessageID>> Message>> MessageLength;
-    geometry_msgs::PointStamped msg;
     
-    if(MessageID == 869 && Bus == 0 ){
-    data = obj.decode_message (MessageID, Message);
-    msg.header.stamp=ros::Time(std::stod(Time));
-    msg.point.x=data.var1;
-    pub_.publish(msg);
+    if(MessageID == 869 && Bus == 0 )
+    {
+     data = obj.decode_message (MessageID, Message);
+     geometry_msgs::PointStamped dist;
+     dist.header.stamp=ros::Time(std::stod(Time));
+     dist.point.x = data.var1;
+     lead_dist_pub.publish(dist);
 
-   // ROS_INFO("I heard: [%s]", raw_data->data.c_str());
     }
-        if(MessageID == 400 ){
-    data = obj.decode_message (MessageID, Message);
-    msg.header.stamp=ros::Time(std::stod(Time));
-    msg.point.x=data.var2;
-    pub_1.publish(msg);
+    else if (MessageID == 552 && Bus==0)
+    { 
+      data = obj.decode_message (MessageID, Message);
+      geometry_msgs::AccelStamped msg;
+      msg.header.stamp=ros::Time(std::stod(Time));
+      msg.accel.linear.x = data.var1;
+      accel_pub.publish(msg);
+      
+    }
+    else if (MessageID == 37 && Bus == 0)
+    { 
+       data = obj.decode_message (MessageID, Message);
+       geometry_msgs::PointStamped str_angle;
+       str_angle.header.stamp=ros::Time(std::stod(Time));
+       str_angle.point.x = data.var1;
+       str_angle_pub.publish(str_angle);
 
-   // ROS_INFO("I heard: [%s]", raw_data->data.c_str());
     }
-    if(MessageID == 402 ){
-    data = obj.decode_message (MessageID, Message);
-    msg.header.stamp=ros::Time(std::stod(Time));
-    msg.point.x=data.var2;
-    pub_2.publish(msg);
+    else if (MessageID == 180 && Bus == 0)
+    { 
+       data = obj.decode_message (MessageID, Message); 
+       geometry_msgs::TwistStamped msg;
+       msg.header.stamp=ros::Time(std::stod(Time));
+       msg.twist.linear.x = data.var1;
+       speed_pub.publish(msg);
+       }
+    
 
-   // ROS_INFO("I heard: [%s]", raw_data->data.c_str());
-    }
-  }
+}
 
 private:
-  ros::NodeHandle n_; 
-  ros::Publisher pub_;
-  ros::Publisher pub_1;
-  ros::Publisher pub_2;
-
+  ros::NodeHandle n_;
+  ros::Publisher accel_pub;
+  ros::Publisher lead_dist_pub;
+  ros::Publisher str_angle_pub;
+  ros::Publisher speed_pub;
   ros::Subscriber sub_;
+  decode_msgs obj;
+  std::string Time,Buffer,Message,MessageLength;
+  int MessageID, Bus;
+  values data;
 
 };//End of class SubscribeAndPublish
-
-
-    // ros::NodeHandle n;
-    // ros::Publisher pose_pub =  n.advertise<geometry_msgs::PointStamped>("/test_topic", 1000);
-
-// void subsCallback(const std_msgs::String::ConstPtr& raw_data)
-// {
-
-
 
 // }
 /****************************************************/
@@ -87,20 +90,8 @@ int main(int argc, char **argv){
     ros::NodeHandle nh1;
     ROS_INFO("Got parameter");
 
-    
-    // ros::Rate loop_rate(20);
     SubscribeAndPublish SAPObject;
-    // while (ros::ok())
-    // {
-    
-    // // ros::Subscriber sub = nh1.subscribe("/raw_data", 1000, subsCallback);
-
-    
-    // ros::Rate loop_rate(0.1);
-    // ros::spinOnce();
-    // }
      ros::spin();   
-  
- 
+
   return 0;
 }

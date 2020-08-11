@@ -56,7 +56,7 @@ int main(int argc, char **argv){
 
     }
 
-          
+    std::cout << "Finish publishing to the topic "<< std::endl;   
 
  ros::spin();
   return 0;
