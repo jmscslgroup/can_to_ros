@@ -1,5 +1,5 @@
 # can_to_ros
-Read CAN messges from csv file, and decode msgs with id=180, 37, 869.
+can_to_ros is a ROS package that reads CAN bus messages and GPS data from provided csv files, decode the messages, and publish them to ROS topics.
 ### Prerequisites
 
 ROS melodic
@@ -27,11 +27,12 @@ $source ./devel/setup.bash
 ```
 Then use roslaunch to start can_msg_decoder node:
 ```
-$roslaunch can_to_ros publish_can_msg.launch file_path:=/home/user/.../catkin_ws/src/CANSpeedDecoder/CAN_Message_.csv
+$roslaunch can_to_ros start_can_decoding.launch can_path:=/path/to/file.csv gps_path:=/path/to/file.csv bag_name:= name of the bag file.
 ```
-The generated bag file should be located at ~/.ros directory 
+Change the bag file path in start_can_decoding.launch
 ```
-$cd ~/.ros
+currently, the path is /home/safwan/Documents/test_ws/$(arg bag_name)_CAN_GPS
+needs to be changed to a path on your system. /my_path/$(arg bag_name)_CAN_GPS
 ```
 
 
