@@ -5,7 +5,7 @@ from geometry_msgs.msg import TwistStamped
 from geometry_msgs.msg import PointStamped
 
 def speed_callback(data):
-    # print("Speed ", data.twist.linear.x)
+    #  print("Speed ", data.twist.linear.x)
     
 def leaddist_callback(data):
     # print("Lead dist ", data.point.x)
