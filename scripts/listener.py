@@ -9,7 +9,9 @@ def speed_callback(data):
     
 def leaddist_callback(data):
     print("Lead dist ", data.point.x)
-    
+    rospy.set_param('Lead_dist', data.point.x)
+    # getting parameter 
+    # global_name = rospy.get_param("/global_name")
 def listener():
 
     # In ROS, nodes are uniquely named. If two nodes with the same
