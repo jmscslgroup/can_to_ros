@@ -325,6 +325,10 @@ target_link_libraries(publish_csv ${catkin_LIBRARIES})
 add_executable(subs src/subs.cpp)
 target_link_libraries(subs ${catkin_LIBRARIES})
 
+catkin_install_python(PROGRAMS scripts/listener.py
+DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+
 
 
 
