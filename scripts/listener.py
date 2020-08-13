@@ -5,12 +5,12 @@ from geometry_msgs.msg import TwistStamped
 from geometry_msgs.msg import PointStamped
 
 def speed_callback(data):
-    print("Speed ", data.twist.linear.x)
+    # print("Speed ", data.twist.linear.x)
     
 def leaddist_callback(data):
-    print("Lead dist ", data.point.x)
-    rospy.set_param('Lead_dist', data.point.x)
-    # getting parameter 
+    # print("Lead dist ", data.point.x)
+    # rospy.set_param('Lead_dist', data.point.x)
+    # getting the parameter 
     # global_name = rospy.get_param("/global_name")
 def listener():
 
