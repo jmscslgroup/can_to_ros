@@ -328,7 +328,9 @@ target_link_libraries(subs ${catkin_LIBRARIES})
 catkin_install_python(PROGRAMS scripts/listener.py
 DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
-
+catkin_install_python(PROGRAMS scripts/can_coach.py
+DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
 
 
 

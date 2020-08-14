@@ -6,12 +6,13 @@ from geometry_msgs.msg import PointStamped
 
 def speed_callback(data):
     #  print("Speed ", data.twist.linear.x)
-    
+    pass
 def leaddist_callback(data):
     # print("Lead dist ", data.point.x)
     # rospy.set_param('Lead_dist', data.point.x)
     # getting the parameter 
     # global_name = rospy.get_param("/global_name")
+    pass
 def listener():
 
     # In ROS, nodes are uniquely named. If two nodes with the same

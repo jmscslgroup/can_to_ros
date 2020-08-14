@@ -5,11 +5,6 @@
 <arg name="bag_name" />
 
 <group ns="catvehicle">
-<param name="robot_description"
-         command="$(find xacro)/xacro.py '$(find can_to_ros)/urdf/catvehicle.xacro' roboname:='catvehicle'" />
-
-  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
-  <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
 
 
 <node pkg="can_to_ros" type ="publish_csv" name="publish_csv" args="$(arg can_path)" output="screen"  /> 
@@ -19,7 +14,9 @@
 
 <node pkg="can_to_ros" name="listener" type="listener.py" output="screen" />
 
-<node pkg= "rosbag" name="record" type="record"  args="-a -O /home/safwan/Documents/test_ws/$(arg bag_name)_CAN_GPS" />
+<node pkg="can_to_ros" type ="can_coach.py" name="can_coach" output="screen"  />
+
+<node pkg= "rosbag" name="record" type="record"  args="-a -O /home/eternity/Documents/$(arg bag_name)_CAN_GPS" />
 <!--<node pkg="can_to_ros" type ="my_frame" name="my_frame" /> -->
 
 </group>
