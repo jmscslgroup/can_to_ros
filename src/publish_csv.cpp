@@ -30,7 +30,7 @@ int main(int argc, char **argv){
         return 1;
     }
 
-    ros::Rate rate(2600.0); // the publish rate is 1/delta_t 
+    ros::Rate rate(2620.0); // the publish rate is 1/delta_t 
 
     inFile.open(argv[1]);
     if( !inFile.is_open())
@@ -56,7 +56,7 @@ int main(int argc, char **argv){
 
     }
 
-    std::cout << "Finish publishing to the topic "<< std::endl;   
+    std::cout << "Finish publishing raw data "<< std::endl;   
 
  ros::spin();
   return 0;

@@ -69,7 +69,16 @@ public:
      geometry_msgs::PointStamped dist;
      dist.header.stamp=ros::Time(std::stod(Time));
      dist.point.x = data.var1;
+        //      std::time_t epoch1 = stod(Time);// creating a time_tobject to store time
+        // struct tm * ptm=std::localtime(&epoch1); // gmtime converts time since epoch to calendar time expressed as Universal Coordinated Time
+        // // struct tm is structure holding a calendar date and time broken down into its components.
+        // int hour= ptm->tm_hour;
+        // int min= ptm->tm_min;
+        // int sec= ptm->tm_sec;
+        // std::cout << hour<<":"<<min<< ":"<< sec<< std::endl;
+      if ( data.var1 < 252){
      lead_dist_pub.publish(dist);
+      }
 
     }
     else if (MessageID == 552 && Bus==0)

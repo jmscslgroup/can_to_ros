@@ -95,7 +95,7 @@ def dateString(posixTime):
 
     return date,d
 
-def getClusteredRadar(pandaObject, writer = None,recentLeadMeasurement = None, velNaccel = False, gnewLeadMeasurement = None, gmyDetections = None):
+def getClusteredRadar( writer = None,recentLeadMeasurement = None, velNaccel = False, gnewLeadMeasurement = None, gmyDetections = None):
     """This function returns a radar sensor measurement from the leading object.
     It returns the position coordinates and the relative velocity.
 
@@ -124,7 +124,7 @@ def getClusteredRadar(pandaObject, writer = None,recentLeadMeasurement = None, v
         # can_recv = pandaObject.can_recv()
         if gnewLeadMeasurement != None:
             newLeadMeasurement = gnewLeadMeasurement
-            print(newLeadMeasurement)
+            # print(newLeadMeasurement)
 
         radar = None
         if writer != None:
