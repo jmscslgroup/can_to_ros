@@ -1,0 +1,25 @@
+<launch>
+
+<!-- <arg name="can_path" /> -->
+<!-- <arg name="gps_path" /> -->
+<arg name="bag_name" />
+
+<group ns="catvehicle">
+
+
+<node pkg="can_to_ros" type ="piping.sh" name="bashscript" output="screen"  /> 
+<node pkg="can_to_ros" type ="subs" name="subs" output="screen" /> 
+
+<!-- <node pkg="can_to_ros" type ="gpsfix" name="gpsfix" args="$(arg gps_path)"  />  -->
+
+<!-- <node pkg="can_to_ros" name="listener" type="listener.py" output="screen" /> -->
+
+<!-- <node pkg="can_to_ros" type ="can_coach_subs.py" name="can_coach_subs" output="screen"  /> -->
+
+
+<node pkg= "rosbag" name="record" type="record"  args="-a -x '/raw_data' -O $(env HOME)/$(arg bag_name)_CAN_realtime" />
+
+</group>
+
+
+</launch>
