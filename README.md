@@ -36,13 +36,13 @@ The generated bag file can be found inside the home directory.
 **Publishing in real time**
 
 Use roslaunch to start publishing:
-```
+<pre>
 $roslaunch can_to_ros piping.launch bag_name:= name_of_the_bag_file.
 
-This launch file will create file inside the home directory named *can_data.csv* , and then it will pipe the data written to that file to a ros node that handles publishing rawe data. 
+This launch file will create file inside the home directory named can_data.csv, and then it will pipe the data written to that file to a ros node that handles publishing raw data. 
 
 The generated bag file can be found inside the home directory.
-```
+<pre>
 
 
 
