@@ -1,5 +1,5 @@
 # can_to_ros
-can_to_ros is a ROS package that reads CAN bus messages and GPS data from provided csv files, decode the messages, and publish them to ROS topics.
+can_to_ros is a ROS package that reads CAN bus messages from provided csv file or in real time, decode the messages, publish them to ROS topics, and record the published messages.
 ### Prerequisites
 
 ROS melodic
@@ -25,14 +25,21 @@ $ catkin_make
 ```
 $source ./devel/setup.bash
 ```
-Then use roslaunch to start can_msg_decoder node:
+**Publishing from a CSV file**
+Use roslaunch to start publishing:
 ```
-$roslaunch can_to_ros start_can_decoding.launch can_path:=/path/to/file.csv gps_path:=/path/to/file.csv bag_name:= name of the bag file.
+$roslaunch can_to_ros start_can_decoding.launch can_path:=/path/to/file.csv bag_name:= name_of_the_bag_file.
+
+The generated bag file can be found inside the home directory.
 ```
-Change the bag file path in start_can_decoding.launch
+**Publishing in real time**
+Use roslaunch to start publishing:
 ```
-currently, the path is /home/safwan/Documents/test_ws/$(arg bag_name)_CAN_GPS
-needs to be changed to a path on your system. /my_path/$(arg bag_name)_CAN_GPS
+$roslaunch can_to_ros piping.launch bag_name:= name_of_the_bag_file.
+
+This launch file will create file inside the home directory named *can_data.csv*, and then it will pipe the data written to that file to a ros node that handles publishing rawe data. 
+
+The generated bag file can be found inside the home directory.
 ```
 
 
