@@ -123,47 +123,66 @@ gnewVel=0.0
 
 
 def callback869(data):
+    # print("lead")
     global gnewLeadMeasurement
     gnewLeadMeasurement = data.point.x
 
 def callbackvel(data):
+    # print("speed")
     global gnewVel 
     gnewVel= data.twist.linear.x
     # print('speed ', data.twist.linear.x )
 
 def callback384(data):
-    gmyDetections.append([data.pose.position.x, data.pose.position.y])
+    global gmyDetections
+    np.append(gmyDetections,[[data.pose.position.x, data.pose.position.y]],axis=0) 
+    # print ("trackA0")
+    # print(data.pose.position.x, data.pose.position.y)
 def callback385(data):
-    gmyDetections.append([data.pose.position.x, data.pose.position.y])
+    global gmyDetections
+    np.append(gmyDetections,[[data.pose.position.x, data.pose.position.y]],axis=0) 
 def callback386(data):
-    gmyDetections.append([data.pose.position.x, data.pose.position.y])
+    global gmyDetections
+    np.append(gmyDetections,[[data.pose.position.x, data.pose.position.y]],axis=0) 
 def callback387(data):
-    gmyDetections.append([data.pose.position.x, data.pose.position.y])
+    global gmyDetections
+    np.append(gmyDetections,[[data.pose.position.x, data.pose.position.y]],axis=0)
 def callback388(data):
-    gmyDetections.append([data.pose.position.x, data.pose.position.y])
+    global gmyDetections
+    np.append(gmyDetections,[[data.pose.position.x, data.pose.position.y]],axis=0)
 def callback389(data):
-    gmyDetections.append([data.pose.position.x, data.pose.position.y])
+    global gmyDetections
+    np.append(gmyDetections,[[data.pose.position.x, data.pose.position.y]],axis=0)
 def callback390(data):
-    gmyDetections.append([data.pose.position.x, data.pose.position.y])
+    global gmyDetections
+    np.append(gmyDetections,[[data.pose.position.x, data.pose.position.y]],axis=0)
 def callback391(data):
-    gmyDetections.append([data.pose.position.x, data.pose.position.y])
+    global gmyDetections
+    np.append(gmyDetections,[[data.pose.position.x, data.pose.position.y]],axis=0)
 def callback392(data):
-    gmyDetections.append([data.pose.position.x, data.pose.position.y])
+    global gmyDetections
+    np.append(gmyDetections,[[data.pose.position.x, data.pose.position.y]],axis=0)
 def callback393(data):
-    gmyDetections.append([data.pose.position.x, data.pose.position.y])
+    global gmyDetections
+    np.append(gmyDetections,[[data.pose.position.x, data.pose.position.y]],axis=0)
 def callback394(data):
-    gmyDetections.append([data.pose.position.x, data.pose.position.y])
+    global gmyDetections
+    np.append(gmyDetections,[[data.pose.position.x, data.pose.position.y]],axis=0)
 def callback395(data):
-    gmyDetections.append([data.pose.position.x, data.pose.position.y])
+    global gmyDetections
+    np.append(gmyDetections,[[data.pose.position.x, data.pose.position.y]],axis=0)
 def callback396(data):
-    gmyDetections.append([data.pose.position.x, data.pose.position.y])
+    global gmyDetections
+    np.append(gmyDetections,[[data.pose.position.x, data.pose.position.y]],axis=0)
 def callback397(data):
-    gmyDetections.append([data.pose.position.x, data.pose.position.y])
+    global gmyDetections
+    np.append(gmyDetections,[[data.pose.position.x, data.pose.position.y]],axis=0)
 def callback398(data):
-    gmyDetections.append([data.pose.position.x, data.pose.position.y])
+    global gmyDetections
+    np.append(gmyDetections,[[data.pose.position.x, data.pose.position.y]],axis=0)
 def callback399(data):
-    gmyDetections.append([data.pose.position.x, data.pose.position.y])
-
+    global gmyDetections
+    np.append(gmyDetections,[[data.pose.position.x, data.pose.position.y]],axis=0)
 
 leadDist = 20
 lead869 = 0
@@ -194,31 +213,31 @@ try:
     rospy.Subscriber("/vehicle/vel", TwistStamped,callbackvel)
     print('subscribing')
     rospy.Subscriber("/vehicle/distanceEstimator/dist", PointStamped, callback869)
-    rospy.Subscriber("/tracka_0", Marker, callback384)
-    rospy.Subscriber("/tracka_1", Marker, callback385)
-    rospy.Subscriber("/tracka_2", Marker, callback386)
+    rospy.Subscriber("/track_a0", Marker, callback384)
+    rospy.Subscriber("/track_a1", Marker, callback385)
+    rospy.Subscriber("/track_a2", Marker, callback386)
     print('subscribing to tracka3')
-    rospy.Subscriber("/tracka_3", Marker, callback387)
-    rospy.Subscriber("/tracka_4", Marker, callback388)
-    rospy.Subscriber("/tracka_5", Marker, callback389)
-    rospy.Subscriber("/tracka_6", Marker, callback390)
-    rospy.Subscriber("/tracka_7", Marker, callback391)
-    rospy.Subscriber("/tracka_8", Marker, callback392)
-    rospy.Subscriber("/tracka_9", Marker, callback393)
-    rospy.Subscriber("/tracka_10", Marker, callback394)
-    rospy.Subscriber("/tracka_11", Marker, callback395)
-    rospy.Subscriber("/tracka_12", Marker, callback396)
-    rospy.Subscriber("/tracka_13", Marker, callback397)
-    rospy.Subscriber("/tracka_14", Marker, callback398)
-    rospy.Subscriber("/tracka_15", Marker, callback399)
+    rospy.Subscriber("/track_a3", Marker, callback387)
+    rospy.Subscriber("/track_a4", Marker, callback388)
+    rospy.Subscriber("/track_a5", Marker, callback389)
+    rospy.Subscriber("/track_a6", Marker, callback390)
+    rospy.Subscriber("/track_a7", Marker, callback391)
+    rospy.Subscriber("/track_a8", Marker, callback392)
+    rospy.Subscriber("/track_a9", Marker, callback393)
+    rospy.Subscriber("/track_a10", Marker, callback394)
+    rospy.Subscriber("/track_a11", Marker, callback395)
+    rospy.Subscriber("/track_a12", Marker, callback396)
+    rospy.Subscriber("/track_a13", Marker, callback397)
+    rospy.Subscriber("/track_a14", Marker, callback398)
+    rospy.Subscriber("/track_a15", Marker, callback399)
 
 
     r = rospy.Rate(50)
     while not rospy.is_shutdown():
         # print('starting while loop')
         velocity = gnewVel
-        while True:
-
+        while not rospy.is_shutdown():
+            # print(gmyDetections)
             if time.time() >= reportTime:
                 now = time.time()
                 # if now > reportTime:
