@@ -237,7 +237,7 @@ try:
         # print('starting while loop')
         velocity = gnewVel
         while not rospy.is_shutdown():
-            # print(gmyDetections)
+            # print(velocity)
             if time.time() >= reportTime:
                 now = time.time()
                 # if now > reportTime:
@@ -286,7 +286,7 @@ try:
                 myrelv = 0# may be able to add this later (with custom ROS message) relv
                 validTime = time.time() #most recent valid measurement from radar
             #need to confirm whether to reset this here, or only with new lead measurements
-            gmyDetections = np.empty_like([[0,0]])
+                gmyDetections = np.empty_like([[0,0]])
         #this controller operates under the assumption that there is a lead vehicle
             # if relv != None:
 

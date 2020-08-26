@@ -110,7 +110,8 @@ def getClusteredRadar( writer = None,recentLeadMeasurement = None, velNaccel = F
     velocity = None
     accel = None
     RADAR = [385,386,387,388,389,390,391,392,393,394,395,396,397,398,399]
-    myDetections = np.empty_like([[0,0]]) #set myDetections
+    myDetections = gmyDetections
+    # np.empty_like([[0,0]]) #set myDetections
     myRelv = np.array([0])
     tstart = time.time()
 
@@ -165,9 +166,10 @@ def getClusteredRadar( writer = None,recentLeadMeasurement = None, velNaccel = F
 
         if newLeadMeasurement != None: #if there is a new lead measurement
             leadMeasurement = newLeadMeasurement #update lead measurement
-
+        # print(myDetections)
         #cluster 869 and radar points and choose one radar point
-        if len(myDetections) > 1 and leadMeasurement != None: # if there are new radar measurements
+        if len(myDetections) > 1: #and leadMeasurement != None: # if there are new radar measurements
+            print("inside if")
             radarPlus = np.concatenate((myDetections,[[0,leadMeasurement]]) )#radar measurements plus 869 measurement
             if len(radarPlus) > 2:
                 labels = clusterRadar(radarPlus) #cluster algorithm gives labels
@@ -181,6 +183,7 @@ def getClusteredRadar( writer = None,recentLeadMeasurement = None, velNaccel = F
                 iLead = random.choice(myPoints)#just choose one randomly
                 lead = myDetections[iLead] #lead coordinates
                 relv = myRelv[iLead] #lead relv
+                print ("lead", lead)
                 end = True #we have lead vehicle points, so stop running the loop
                 # print(lead,relv)
 
