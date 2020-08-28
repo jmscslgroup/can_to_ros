@@ -48,8 +48,10 @@ private:
 		// canData->data[CAN_DATA_MAX_LENGTH];	// unsigned char[8]
 		// canData->sysTime;						// struct timeval
 		
+		char messageString[200];
+		sprintf( messageString, "%f %d %d %s %", 0.00, canData->bus, canData->messageID, canData->data, canData->dataLength);
 		std_msgs::String msgs;
-        msgs.data="this should be CAN data";
+        msgs.data = messageString;
 		
 		pub_.publish(msgs);
 	}
