@@ -1,5 +1,5 @@
 /*
- Author: Matt Bunting
+ Authors: Sfwan, Elmadani, Matt Bunting
  Copyright (c) 2020 Arizona Board of Regents
  All rights reserved.
 ​
@@ -24,12 +24,26 @@
  */
 ​
 #include <iostream>
+
+// ROS headers:
+#include "ros/ros.h"
+#include "std_msgs/String.h"
+#include "geometry_msgs/Point.h"
+#include "geometry_msgs/Twist.h"
+#include "geometry_msgs/PointStamped.h"
+#include "sensor_msgs/TimeReference.h"
+#include "header_package/can_decode.h"
+#include "visualization_msgs/Marker.h"
 ​
-#include "panda.h"
+// Libpanda headers:
+#include <panda.h>
 ​
 // A simple concrete instance of a CAN listener
-class SimpleCanObserver : public Panda::CanListener {
+class CanToRosPublisher : public Panda::CanListener {
+
 private:
+	ros::Publisher *pub_;
+	
 	void newDataNotification( Panda::CanFrame* canData ) {
 		// Gets called for every incomiming can data with data:
 		
@@ -39,7 +53,18 @@ private:
 		// canData->bus;							// unsigned char
 		// canData->data[CAN_DATA_MAX_LENGTH];	// unsigned char[8]
 		// canData->sysTime;						// struct timeval
+		
+		std_msgs::String msgs;
+        msgs.data="this should be CAN data";
+		
+		pub_.publish(msgs);
 	}
+	
+public:
+	CanToRosPublisher(ros::Publisher *pub_) {
+		this->pub_ = pub_;
+	}
+	
 };
 ​
 // A simple concrete instance of a GPS listener
@@ -60,8 +85,16 @@ private:
 ​
 using namespace std;
 int main(int argc, char **argv) {
-​
-	SimpleCanObserver canObserver;
+	// Initialize ROS stuff:
+	ros::init(argc, argv, "my_node");
+	ros::NodeHandle nh1("~");
+	
+	ros::Publisher pub_ = nh1.advertise<std_msgs::String>("/raw_data", 1000);
+	
+	ROS_INFO("Got parameter : %s", argv[1]);
+
+	// Initialize Libpanda with ROS publisher:
+	CanToRosPublisher canToRosPublisher(pub_);
 	//SimpleGpsObserver myGpsObserver;
 ​
 	// Initialize Usb, this requires a connected Panda
@@ -73,9 +106,10 @@ int main(int argc, char **argv) {
 	// Let's roll
 	pandaHandler.initialize();
 	
-	while(1);
+	// Let ROS do its thing:
+	ros::spin();
 	
-	// Will never reach here
+	// Cleanly close USB device
 	pandaHandler.stop();
 ​
 	return 0;

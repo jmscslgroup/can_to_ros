@@ -219,6 +219,8 @@ target_link_libraries(publish_csv ${catkin_LIBRARIES})
 add_executable(subs src/subs.cpp)
 target_link_libraries(subs ${catkin_LIBRARIES})
 
+add_executable(publish_libpanda src/publish_libpanda.cpp)
+target_link_libraries(publish_libpanda ${catkin_LIBRARIES} -lpanda)
 
 add_executable(realtime_publishing src/realtime_publishing.cpp)
 target_link_libraries(realtime_publishing ${catkin_LIBRARIES})
