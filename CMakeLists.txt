@@ -207,6 +207,16 @@ include_directories(
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
 
+INCLUDE_DIRECTORIES(
+../../libpanda/include 
+../../libpanda/include/panda
+../../libpanda/include/mogi
+../../libpanda/NMEAParser/Software/NMEAParserLib/include)
+
+LINK_DIRECTORIES(
+../../libpanda/build 
+../../libpanda/build/utilities )
+
 
 add_executable(gpsfix src/gps_node.cpp)
 target_link_libraries(gpsfix ${catkin_LIBRARIES})
@@ -220,7 +230,7 @@ add_executable(subs src/subs.cpp)
 target_link_libraries(subs ${catkin_LIBRARIES})
 
 add_executable(publish_libpanda src/publish_libpanda.cpp)
-target_link_libraries(publish_libpanda ${catkin_LIBRARIES} -lpanda)
+target_link_libraries(publish_libpanda ${catkin_LIBRARIES} libpandac.so) #libpandac.so
 
 add_executable(realtime_publishing src/realtime_publishing.cpp)
 target_link_libraries(realtime_publishing ${catkin_LIBRARIES})
@@ -232,8 +242,7 @@ catkin_install_python(PROGRAMS scripts/can_coach.py
 DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
-
-
+# message( " @@@@@@@@@@@@@@@@@@@@@@@ " ${PROJECT_SOURCE_DIR})
 
 
 
