@@ -11,9 +11,17 @@ $ mkdir -p ~/catkin_ws/src
 $ cd ~/catkin_ws/
 $ catkin_make
 ```
-2.Clone the repo.
+2.Clone the repos.
+
+**Installing libpanda**
 ```
-$ cd ~/catkin_ws/src
+$ cd ~/catkin_ws/
+$ git clone https://github.com/jmscslgroup/libpanda.git  
+$ #Follow the installation guide on https://github.com/jmscslgroup/libpanda
+```
+**Cloning the ROS package**
+```
+$ cd ~/catkin_ws/src/
 $ git clone https://github.com/SafwanElmadani/can_to_ros.git
 ```
 3.Build the WS
@@ -33,7 +41,7 @@ $roslaunch can_to_ros start_can_decoding.launch can_path:=/path/to/file.csv bag_
 
 The generated bag file can be found inside the home directory.
 ```
-**Publishing in real time**
+**Publishing in real time (Needs to be updated)**
 
 Use roslaunch to start publishing:
 <pre>
