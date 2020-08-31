@@ -10,6 +10,7 @@ import numpy as np
 #import matplotlib.pyplot as plt
 import random
 from sklearn.cluster import AgglomerativeClustering
+import math
 
 #Author: Matthew Nice
 #Contact: matthew.nice@vanderbilt.edu
@@ -83,10 +84,19 @@ def getLeadDist(can_recv):
             if distance < 252:
                 return distance
 
-def clusterRadar(radar_batch):
-    cluster = AgglomerativeClustering(n_clusters=None, distance_threshold = 1, affinity='euclidean', linkage='ward')
+def clusterRadar(referencePosition, radar_batch):
+    ##cluster = AgglomerativeClustering(n_clusters=2, affinity='euclidean', linkage='ward')
+    #cluster = AgglomerativeClustering(n_clusters=None, distance_threshold = 1, affinity='euclidean', linkage='ward')
     # Dx2 observations in the radar_batch, returns a cluster label for each point
-    return cluster.fit_predict(radar_batch)
+    #return cluster.fit_predict(radar_batch)
+	myPoints = []
+	for i in range (len(radar_batch)):
+		dist = math.sqrt( ((referencePosition[0]-radar_batch[i][0])**2 )+ ((referencePosition[1]-radar_batch[i][1])**2) )
+		if dist < 1:
+			myPoints.append(i)
+	
+	return myPoints
+	
 
 def dateString(posixTime):
     timeObj = time.localtime(posixTime)
