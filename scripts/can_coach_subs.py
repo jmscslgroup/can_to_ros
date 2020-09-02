@@ -64,28 +64,32 @@ lastBeep = time.time()
 start = time.time()
 
 def printit():
-    t = threading.Timer(0.5, printit)
-    t.start()
-    # print(time.time())
+	t = threading.Timer(0.5, printit)
+	t.start()
+	# print(time.time())
     # print('anything')
-    print(th)
-    if th > 2.1:
-        rospy.loginfo("faster")
-        #if th > 2.2:
-        #play_obj = sa.play_buffer(faster,1,2,44100) #two higher beeps indicating speed up
-    if th < 2.1 and th > 2.05:
-        rospy.loginfo("fast")
-        #play_obj = sa.play_buffer(fast,1,2,44100)
-    if th < 1.9 and th != -1:
-        # if th < 1.8:
-        rospy.loginfo("slower")
+	print(th)
+	if th > 2.1:
+		rospy.loginfo("faster")
+		play(fast)
+		#if th > 2.2:
+		#play_obj = sa.play_buffer(faster,1,2,44100) #two higher beeps indicating speed up
+	if th < 2.1 and th > 2.05:
+		rospy.loginfo("fast")
+		play(fast)
+		#play_obj = sa.play_buffer(fast,1,2,44100)
+	if th < 1.9 and th != -1:
+		# if th < 1.8:
+		play(slow)
+		rospy.loginfo("slower")
         #play_obj = sa.play_buffer(slower,1,2,44100)
-    if th > 1.9 and th < 1.95:
+	if th > 1.9 and th < 1.95:
+		play(slow)
         #play_obj = sa.play_buffer(slow,1,2,44100)
-        rospy.loginfo("slow")
+		rospy.loginfo("slow")
 
-    def cancel():
-        t.cancel()
+	def cancel():
+		t.cancel()
 
 def sound():
 	print(time.ctime())
@@ -321,7 +325,7 @@ try:
 			velocity = gnewVel
                 
 		print('before sleep')
-		t.cancel()
+		printit.cancel()
 		r.sleep()
 	print('before spin')
 except ValueError:
