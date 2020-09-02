@@ -55,7 +55,7 @@ public:
 
 
     //Topic you want to subscribe
-    sub_ = n_.subscribe("/raw_data", 1000, &SubscribeAndPublish::callback, this);
+    sub_ = n_.subscribe("/realtime_raw_data", 1000, &SubscribeAndPublish::callback, this);
   }
 
   void callback(const std_msgs::String::ConstPtr& raw_data)
