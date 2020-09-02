@@ -31,14 +31,29 @@
 #include "visualization_msgs/Marker.h"
 // Libpanda headers:
 #include <panda.h>
+#include <sstream>
 // A simple concrete instance of a CAN listener
 class CanToRosPublisher : public Panda::CanListener {
 
 private:
 	ros::NodeHandle nh1;
 	ros::Publisher pub_;
+	std::stringstream ss;
 	
 	void newDataNotification( Panda::CanFrame* canData ) {
+	char messageString[200];
+		sprintf( messageString, "%d.%06d ", (unsigned int)0, (int)0);
+		sprintf( messageString,"%s%d %d ", messageString, (int)canData->bus, canData->messageID);
+		for (int i = 0; i < canData->dataLength; i++) {
+			sprintf( messageString, "%s%02x", messageString, canData->data[i]);
+		}
+		sprintf( messageString, "%s %d", messageString, canData->dataLength);
+		
+		std_msgs::String msgs;
+    		msgs.data = messageString;
+		
+		pub_.publish(msgs);
+		//sprintf( messageString, "%f %d %d %s %", 0.00, canData->bus, canData->messageID, canD
 		// Gets called for every incomiming can data with data:
 		
 		// canData->messageID;					// unsigned int
@@ -48,12 +63,15 @@ private:
 		// canData->data[CAN_DATA_MAX_LENGTH];	// unsigned char[8]
 		// canData->sysTime;						// struct timeval
 		
-		char messageString[200];
-		sprintf( messageString, "%f %d %d %s %", 0.00, canData->bus, canData->messageID, canData->data, canData->dataLength);
-		std_msgs::String msgs;
-        msgs.data = messageString;
-		
-		pub_.publish(msgs);
+		//ss << 0.00 <<" " << canData->bus << " " << canData->messageID<< " " << canData->data << " " << canData->dataLength;
+		//char messageString[200];
+		//sprintf( messageString, "%f %d %d %s %", 0.00, canData->bus, canData->messageID, canData->data, canData->dataLength);
+		//std_msgs::String msgs;
+        	//msgs.data = messageString;
+		//msgs.data = ss.str();
+
+		//pub_.publish(msgs);
+		//ss.str(std::string());
 	}
 	
 public:
