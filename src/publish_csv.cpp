@@ -6,6 +6,7 @@
 #include "sensor_msgs/TimeReference.h"
 #include "header_package/can_decode.h"
 #include "visualization_msgs/Marker.h"
+#include "can_to_ros/can_msgs.h"
 
 
 
@@ -13,6 +14,7 @@ int main(int argc, char **argv){
     ros::init(argc, argv, "my_node");
     ros::NodeHandle nh1("~");
  
+    // ros::Publisher pub_ = nh1.advertise<can_to_ros::can_msgs>("/raw_data", 1000);
     ros::Publisher pub_ = nh1.advertise<std_msgs::String>("/raw_data", 1000);
 
 
@@ -49,6 +51,14 @@ int main(int argc, char **argv){
         if (inputLine.empty()) continue; // if there is an empty line then skip it
 
         std::replace(inputLine.begin(), inputLine.end(), ',', ' '); // replace the commas with white space
+
+        // can_to_ros::can_msgs msgs;
+        // msgs.timestamp=0.00;
+        // msgs.bus=1;
+        // msgs.messageid=180;
+        // msgs.candata="fdgs5456466";
+        // msgs.datalength=20;
+
         std_msgs::String msgs;
         msgs.data=inputLine;
         pub_.publish(msgs);
