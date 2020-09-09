@@ -32,7 +32,7 @@ int main(int argc, char **argv){
         return 1;
     }
 
-    ros::Rate rate(2650.0); // the publish rate is 1/delta_t 
+    ros::Rate rate(2800.0); // the publish rate is 1/delta_t 
 
     inFile.open(argv[1]);
     if( !inFile.is_open())

@@ -122,8 +122,7 @@ public:
       marker.pose.position.y = (data.var1 * -1.0); // 
       marker.pose.position.z = data.var3; // rel speed
       // marker.pose.position.x = 5.0;
-      // marker.pose.position.y = -2.0;
-      marker.pose.position.z = 0.0;
+      // marker.pose.position.y = -2.0
       marker.pose.orientation.x = 0.0;
       marker.pose.orientation.y = 0.0;
       marker.pose.orientation.z = 0.0;
@@ -172,7 +171,6 @@ public:
       marker.pose.position.z = data.var3; // rel speed
       // marker.pose.position.x = 5.0;
       // marker.pose.position.y = -2.0;
-      marker.pose.position.z = 0.0;
       marker.pose.orientation.x = 0.0;
       marker.pose.orientation.y = 0.0;
       marker.pose.orientation.z = 0.0;
@@ -221,7 +219,7 @@ public:
       marker.pose.position.z = data.var3; // rel speed
       // marker.pose.position.x = 5.0;
       // marker.pose.position.y = -2.0;
-      marker.pose.position.z = 0.0;
+      
       marker.pose.orientation.x = 0.0;
       marker.pose.orientation.y = 0.0;
       marker.pose.orientation.z = 0.0;
@@ -270,7 +268,7 @@ public:
       marker.pose.position.z = data.var3; // rel speed
       // marker.pose.position.x = 5.0;
       // marker.pose.position.y = -2.0;
-      marker.pose.position.z = 0.0;
+      
       marker.pose.orientation.x = 0.0;
       marker.pose.orientation.y = 0.0;
       marker.pose.orientation.z = 0.0;
@@ -319,7 +317,7 @@ public:
       marker.pose.position.z = data.var3; // rel speed
       // marker.pose.position.x = 5.0;
       // marker.pose.position.y = -2.0;
-      marker.pose.position.z = 0.0;
+      
       marker.pose.orientation.x = 0.0;
       marker.pose.orientation.y = 0.0;
       marker.pose.orientation.z = 0.0;
@@ -368,7 +366,7 @@ public:
       marker.pose.position.z = data.var3; // rel speed
       // marker.pose.position.x = 5.0;
       // marker.pose.position.y = -2.0;
-      marker.pose.position.z = 0.0;
+      
       marker.pose.orientation.x = 0.0;
       marker.pose.orientation.y = 0.0;
       marker.pose.orientation.z = 0.0;
@@ -417,7 +415,7 @@ public:
       marker.pose.position.z = data.var3; // rel speed
       // marker.pose.position.x = 5.0;
       // marker.pose.position.y = -2.0;
-      marker.pose.position.z = 0.0;
+     
       marker.pose.orientation.x = 0.0;
       marker.pose.orientation.y = 0.0;
       marker.pose.orientation.z = 0.0;
@@ -466,7 +464,7 @@ public:
       marker.pose.position.z = data.var3; // rel speed
       // marker.pose.position.x = 5.0;
       // marker.pose.position.y = -2.0;
-      marker.pose.position.z = 0.0;
+      
       marker.pose.orientation.x = 0.0;
       marker.pose.orientation.y = 0.0;
       marker.pose.orientation.z = 0.0;
@@ -515,7 +513,7 @@ public:
       marker.pose.position.z = data.var3; // rel speed
       // marker.pose.position.x = 5.0;
       // marker.pose.position.y = -2.0;
-      marker.pose.position.z = 0.0;
+      
       marker.pose.orientation.x = 0.0;
       marker.pose.orientation.y = 0.0;
       marker.pose.orientation.z = 0.0;
@@ -564,7 +562,7 @@ public:
       marker.pose.position.z = data.var3; // rel speed
       // marker.pose.position.x = 5.0;
       // marker.pose.position.y = -2.0;
-      marker.pose.position.z = 0.0;
+      
       marker.pose.orientation.x = 0.0;
       marker.pose.orientation.y = 0.0;
       marker.pose.orientation.z = 0.0;
@@ -613,7 +611,7 @@ public:
       marker.pose.position.z = data.var3; // rel speed
       // marker.pose.position.x = 5.0;
       // marker.pose.position.y = -2.0;
-      marker.pose.position.z = 0.0;
+      
       marker.pose.orientation.x = 0.0;
       marker.pose.orientation.y = 0.0;
       marker.pose.orientation.z = 0.0;
@@ -662,7 +660,7 @@ public:
       marker.pose.position.z = data.var3; // rel speed
       // marker.pose.position.x = 5.0;
       // marker.pose.position.y = -2.0;
-      marker.pose.position.z = 0.0;
+     
       marker.pose.orientation.x = 0.0;
       marker.pose.orientation.y = 0.0;
       marker.pose.orientation.z = 0.0;
@@ -711,7 +709,7 @@ public:
       marker.pose.position.z = data.var3; // rel speed
       // marker.pose.position.x = 5.0;
       // marker.pose.position.y = -2.0;
-      marker.pose.position.z = 0.0;
+      
       marker.pose.orientation.x = 0.0;
       marker.pose.orientation.y = 0.0;
       marker.pose.orientation.z = 0.0;
@@ -760,7 +758,7 @@ public:
       marker.pose.position.z = data.var3; // rel speed
       // marker.pose.position.x = 5.0;
       // marker.pose.position.y = -2.0;
-      marker.pose.position.z = 0.0;
+     
       marker.pose.orientation.x = 0.0;
       marker.pose.orientation.y = 0.0;
       marker.pose.orientation.z = 0.0;
@@ -809,7 +807,7 @@ public:
       marker.pose.position.z = data.var3; // rel speed
       // marker.pose.position.x = 5.0;
       // marker.pose.position.y = -2.0;
-      marker.pose.position.z = 0.0;
+      
       marker.pose.orientation.x = 0.0;
       marker.pose.orientation.y = 0.0;
       marker.pose.orientation.z = 0.0;
@@ -858,7 +856,7 @@ public:
       marker.pose.position.z = data.var3; // rel speed
       // marker.pose.position.x = 5.0;
       // marker.pose.position.y = -2.0;
-      marker.pose.position.z = 0.0;
+      
       marker.pose.orientation.x = 0.0;
       marker.pose.orientation.y = 0.0;
       marker.pose.orientation.z = 0.0;
