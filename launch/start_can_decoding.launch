@@ -14,7 +14,7 @@
 
 <!-- <node pkg="can_to_ros" name="listener" type="listener.py" output="screen" /> -->
 
-<node pkg="can_to_ros" type ="can_coach_subs.py" name="can_coach_subs" output="screen"  />
+<!-- <node pkg="can_to_ros" type ="can_coach_subs.py" name="can_coach_subs" output="screen"  /> -->
 
 
 <node pkg= "rosbag" name="record" type="record"  args="-a -x '/raw_data' -O $(env HOME)/$(arg bag_name)_CAN_GPS" />

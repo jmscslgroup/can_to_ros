@@ -76,9 +76,9 @@ public:
         // int min= ptm->tm_min;
         // int sec= ptm->tm_sec;
         // std::cout << hour<<":"<<min<< ":"<< sec<< std::endl;
-      if ( data.var1 < 252){
+      // if ( data.var1 < 252){
      lead_dist_pub.publish(dist);
-      }
+      // }
 
     }
     else if (MessageID == 552 && Bus==0)
@@ -120,6 +120,7 @@ public:
       marker.action =0;
       marker.pose.position.x = data.var2; // 
       marker.pose.position.y = (data.var1 * -1.0); // 
+      marker.pose.position.z = data.var3; // rel speed
       // marker.pose.position.x = 5.0;
       // marker.pose.position.y = -2.0;
       marker.pose.position.z = 0.0;
@@ -168,6 +169,7 @@ public:
       marker.action =0;
       marker.pose.position.x = data.var2; // 
       marker.pose.position.y = (data.var1 * -1.0); // 
+      marker.pose.position.z = data.var3; // rel speed
       // marker.pose.position.x = 5.0;
       // marker.pose.position.y = -2.0;
       marker.pose.position.z = 0.0;
@@ -216,6 +218,7 @@ public:
       marker.action =0;
       marker.pose.position.x = data.var2; // 
       marker.pose.position.y = (data.var1 * -1.0); // 
+      marker.pose.position.z = data.var3; // rel speed
       // marker.pose.position.x = 5.0;
       // marker.pose.position.y = -2.0;
       marker.pose.position.z = 0.0;
@@ -264,6 +267,7 @@ public:
       marker.action =0;
       marker.pose.position.x = data.var2; // 
       marker.pose.position.y = (data.var1 * -1.0); // 
+      marker.pose.position.z = data.var3; // rel speed
       // marker.pose.position.x = 5.0;
       // marker.pose.position.y = -2.0;
       marker.pose.position.z = 0.0;
@@ -312,6 +316,7 @@ public:
       marker.action =0;
       marker.pose.position.x = data.var2; // 
       marker.pose.position.y = (data.var1 * -1.0); // 
+      marker.pose.position.z = data.var3; // rel speed
       // marker.pose.position.x = 5.0;
       // marker.pose.position.y = -2.0;
       marker.pose.position.z = 0.0;
@@ -360,6 +365,7 @@ public:
       marker.action =0;
       marker.pose.position.x = data.var2; // 
       marker.pose.position.y = (data.var1 * -1.0); // 
+      marker.pose.position.z = data.var3; // rel speed
       // marker.pose.position.x = 5.0;
       // marker.pose.position.y = -2.0;
       marker.pose.position.z = 0.0;
@@ -408,6 +414,7 @@ public:
       marker.action =0;
       marker.pose.position.x = data.var2; // 
       marker.pose.position.y = (data.var1 * -1.0); // 
+      marker.pose.position.z = data.var3; // rel speed
       // marker.pose.position.x = 5.0;
       // marker.pose.position.y = -2.0;
       marker.pose.position.z = 0.0;
@@ -456,6 +463,7 @@ public:
       marker.action =0;
       marker.pose.position.x = data.var2; // 
       marker.pose.position.y = (data.var1 * -1.0); // 
+      marker.pose.position.z = data.var3; // rel speed
       // marker.pose.position.x = 5.0;
       // marker.pose.position.y = -2.0;
       marker.pose.position.z = 0.0;
@@ -504,6 +512,7 @@ public:
       marker.action =0;
       marker.pose.position.x = data.var2; // 
       marker.pose.position.y = (data.var1 * -1.0); // 
+      marker.pose.position.z = data.var3; // rel speed
       // marker.pose.position.x = 5.0;
       // marker.pose.position.y = -2.0;
       marker.pose.position.z = 0.0;
@@ -552,6 +561,7 @@ public:
       marker.action =0;
       marker.pose.position.x = data.var2; // 
       marker.pose.position.y = (data.var1 * -1.0); // 
+      marker.pose.position.z = data.var3; // rel speed
       // marker.pose.position.x = 5.0;
       // marker.pose.position.y = -2.0;
       marker.pose.position.z = 0.0;
@@ -600,6 +610,7 @@ public:
       marker.action =0;
       marker.pose.position.x = data.var2; // 
       marker.pose.position.y = (data.var1 * -1.0); // 
+      marker.pose.position.z = data.var3; // rel speed
       // marker.pose.position.x = 5.0;
       // marker.pose.position.y = -2.0;
       marker.pose.position.z = 0.0;
@@ -648,6 +659,7 @@ public:
       marker.action =0;
       marker.pose.position.x = data.var2; // 
       marker.pose.position.y = (data.var1 * -1.0); // 
+      marker.pose.position.z = data.var3; // rel speed
       // marker.pose.position.x = 5.0;
       // marker.pose.position.y = -2.0;
       marker.pose.position.z = 0.0;
@@ -696,6 +708,7 @@ public:
       marker.action =0;
       marker.pose.position.x = data.var2; // 
       marker.pose.position.y = (data.var1 * -1.0); // 
+      marker.pose.position.z = data.var3; // rel speed
       // marker.pose.position.x = 5.0;
       // marker.pose.position.y = -2.0;
       marker.pose.position.z = 0.0;
@@ -744,6 +757,7 @@ public:
       marker.action =0;
       marker.pose.position.x = data.var2; // 
       marker.pose.position.y = (data.var1 * -1.0); // 
+      marker.pose.position.z = data.var3; // rel speed
       // marker.pose.position.x = 5.0;
       // marker.pose.position.y = -2.0;
       marker.pose.position.z = 0.0;
@@ -792,6 +806,7 @@ public:
       marker.action =0;
       marker.pose.position.x = data.var2; // 
       marker.pose.position.y = (data.var1 * -1.0); // 
+      marker.pose.position.z = data.var3; // rel speed
       // marker.pose.position.x = 5.0;
       // marker.pose.position.y = -2.0;
       marker.pose.position.z = 0.0;
@@ -840,6 +855,7 @@ public:
       marker.action =0;
       marker.pose.position.x = data.var2; // 
       marker.pose.position.y = (data.var1 * -1.0); // 
+      marker.pose.position.z = data.var3; // rel speed
       // marker.pose.position.x = 5.0;
       // marker.pose.position.y = -2.0;
       marker.pose.position.z = 0.0;
