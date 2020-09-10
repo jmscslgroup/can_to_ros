@@ -136,7 +136,7 @@ def callbackvel(data):
 def callback384(data):
     global gmyDetections
     #print('a1 callback')
-    gmyDetections.append([data.pose.position.x, data.pose.position.y])
+    gmyDetections.append([data.pose.position.x, data.pose.position.y,data.pose.position.z])
     #np.append(gmyDetections,[[data.pose.position.x, data.pose.position.y]],axis=0) 
     # print ("trackA0")
     # print(data.pose.position.x, data.pose.position.y)
@@ -279,8 +279,8 @@ try:
 					if len(myPoints) > 0: #if there is a point other than from 869 in cluster
 						iLead = random.choice(myPoints)#just choose one randomly
 						lead = gmyDetections[iLead][0:2] #lead coordinates
-						relv = gmyDetections[iLead][2]
-						
+						#relv = gmyDetections[iLead][2]
+						print('this is myDetections: ',gmyDetections[iLead])
 						#print(lead,relv)
 						gnewLeadMeasurement = None
 						gmyDetections = []#np.empty_like([[0,0]])
