@@ -279,8 +279,8 @@ try:
 					if len(myPoints) > 0: #if there is a point other than from 869 in cluster
 						iLead = random.choice(myPoints)#just choose one randomly
 						lead = gmyDetections[iLead][0:2] #lead coordinates
-						#relv = gmyDetections[iLead][2]
-						print('this is myDetections: ',gmyDetections[iLead])
+						relv = gmyDetections[iLead][2]
+						#print('this is myDetections: ',gmyDetections[iLead])
 						#print(lead,relv)
 						gnewLeadMeasurement = None
 						gmyDetections = []#np.empty_like([[0,0]])
