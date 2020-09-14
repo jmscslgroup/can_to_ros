@@ -68,15 +68,15 @@ fast = '/home/eternity/fastSound.wav' #add a relative path so it works for other
 slow = '/home/eternity/slowSound.wav' #add a relative path so it works for others
 
 def printit():
-	###This is the function that gives the sound feedback to the driver. It need to know the 'mode', or test that the driver is in.
-	###It subscribes to both the mode, and keeps track of the current mode.
+	"""This is the function that gives the sound feedback to the driver. It need to know the 'mode', or test that the driver is in.
+	It subscribes to both the mode, and keeps track of the current mode."""
 		
 	t = threading.Timer(0.5, printit)
 	t.start()
 	
 	# print(time.time())
     # print('anything')
-	#print(th, lead, relv)
+	print(th, lead, relv)
 	print('test')
 	if th > 2.1:
 		rospy.loginfo("faster")
@@ -244,7 +244,7 @@ try:
 	while not rospy.is_shutdown():
 		print('starting while loop')
 		velocity = gnewVel
-		print(velocity)
+		#print(velocity)
 		while not rospy.is_shutdown():
 			
 			now = time.time()
@@ -266,7 +266,7 @@ try:
 				if len(gmyDetections) > 0: #and leadMeasurement != None: # if there are new radar measurements
 
 					#radarPlus = np.concatenate((gmyDetections,[[0,gnewLeadMeasurement]]) )#radar measurements plus 869 measurement
-					print(gmyDetections)
+					#print(gmyDetections)
 					labels = lt.clusterRadar([gnewLeadMeasurement,0],gmyDetections) #cluster algorithm gives labels
 
 					myPoints = labels #indices[:-1] #take out 869 from the key points
