@@ -64,8 +64,8 @@ start = time.time()
 
 #def testToSound():
 	#this function gets input from the simulink model on the current 
-fast = '/home/eternity/fastSound.wav' #add a relative path so it works for others
-slow = '/home/eternity/slowSound.wav' #add a relative path so it works for others
+fast = '../fastSound.wav' #add a relative path so it works for others
+slow = '../slowSound.wav' #add a relative path so it works for others
 
 def printit():
 	"""This is the function that gives the sound feedback to the driver. It need to know the 'mode', or test that the driver is in.
@@ -77,7 +77,8 @@ def printit():
 	# print(time.time())
     # print('anything')
 	print(th, lead, relv)
-	print('test')
+	# print('test')
+	
 	if th > 2.1:
 		rospy.loginfo("faster")
 		# playsound(fast)
@@ -85,11 +86,11 @@ def printit():
 		#play_obj = sa.play_buffer(faster,1,2,44100) #two higher beeps indicating speed up
 	if th < 2.1 and th > 2.05:
 		rospy.loginfo("fast")
-		# playsound(fast)
+		playsound(fast)
 		#play_obj = sa.play_buffer(fast,1,2,44100)
 	if th < 1.9 and th != -1:
 		# if th < 1.8:
-		# playsound(slow)
+		playsound(slow)
 		rospy.loginfo("slower")
         #play_obj = sa.play_buffer(slower,1,2,44100)
 	if th > 1.9 and th < 1.95:
