@@ -28,9 +28,6 @@ from std_msgs.msg import Float64
 from visualization_msgs.msg import Marker
 from geometry_msgs.msg import TwistStamped
 
-from pydub import AudioSegment
-from pydub.playback import play
-from pydub.generators import Sine, Sawtooth, WhiteNoise, Pulse, Square
 import threading, time, random
 
 from playsound import playsound
