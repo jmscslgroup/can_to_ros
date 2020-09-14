@@ -38,10 +38,10 @@ validTime = time.time()
 counter = 0
 # osascript.osascript("set volume output volume " + volume)
 
-low = Sine(300)
-high = Sine(600)
-slow = low.to_audio_segment(duration=200)
-fast = high.to_audio_segment(duration=200)
+#low = Sine(300)
+#high = Sine(600)
+#slow = low.to_audio_segment(duration=200)
+#fast = high.to_audio_segment(duration=200)
 
 #play(slow)
 #play(fast)
@@ -71,31 +71,32 @@ def printit():
 	###This is the function that gives the sound feedback to the driver. It need to know the 'mode', or test that the driver is in.
 	###It subscribes to both the mode, and keeps track of the current mode.
 		
-	
+	t = threading.Timer(0.5, printit)
+	t.start()
 	
 	# print(time.time())
     # print('anything')
-	print(th, lead, relv)
+	#print(th, lead, relv)
+	print('test')
 	if th > 2.1:
 		rospy.loginfo("faster")
-		playsound(fast)
+		# playsound(fast)
 		#if th > 2.2:
 		#play_obj = sa.play_buffer(faster,1,2,44100) #two higher beeps indicating speed up
 	if th < 2.1 and th > 2.05:
 		rospy.loginfo("fast")
-		playsound(fast)
+		# playsound(fast)
 		#play_obj = sa.play_buffer(fast,1,2,44100)
 	if th < 1.9 and th != -1:
 		# if th < 1.8:
-		playsound(slow)
+		# playsound(slow)
 		rospy.loginfo("slower")
         #play_obj = sa.play_buffer(slower,1,2,44100)
 	if th > 1.9 and th < 1.95:
-		playsound(slow)
+		# playsound(slow)
         #play_obj = sa.play_buffer(slow,1,2,44100)
 		rospy.loginfo("slow")
-	t = threading.Timer(0.5, printit)
-	t.start()
+	
 	
 	return t
 
@@ -107,12 +108,9 @@ def sound():
 		play(fast)
 	if th == -1:
 		pass
-	threading.Timer(interval,sound).start()
+	#threading.Timer(interval,sound).start()
 
 interval = .5
-
-#ticker = threading.Event()
-
 
 gnewLeadMeasurement = 1
 gmyDetections = []#np.empty_like([[0,0]])
@@ -244,7 +242,7 @@ try:
 	# sound()
 	t = printit()
 	while not rospy.is_shutdown():
-        # print('starting while loop')
+		print('starting while loop')
 		velocity = gnewVel
 		print(velocity)
 		while not rospy.is_shutdown():
@@ -259,7 +257,7 @@ try:
 
 
 			leader.predict()
-			#print(gmyDetections)
+			# print(gmyDetections)
 			if gnewLeadMeasurement != None:
 				
 				#leadPosition,relv,newVelocity,newAccel = lt.getClusteredRadar(writer = None,recentLeadMeasurement = leadDist,velNaccel= True,gnewLeadMeasurement = gnewLeadMeasurement, gmyDetections = gmyDetections) #0.03 second timeout
@@ -268,7 +266,7 @@ try:
 				if len(gmyDetections) > 0: #and leadMeasurement != None: # if there are new radar measurements
 
 					#radarPlus = np.concatenate((gmyDetections,[[0,gnewLeadMeasurement]]) )#radar measurements plus 869 measurement
-
+					print(gmyDetections)
 					labels = lt.clusterRadar([gnewLeadMeasurement,0],gmyDetections) #cluster algorithm gives labels
 
 					myPoints = labels #indices[:-1] #take out 869 from the key points
@@ -312,5 +310,6 @@ try:
 		t.cancel()
 		r.sleep()
 	print('before spin')
+	t.cancel()
 except ValueError:
     print("Oops!  Try again...")
