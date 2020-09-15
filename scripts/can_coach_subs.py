@@ -62,10 +62,16 @@ vmax = 100 #maximum volume
 lastBeep = time.time()
 start = time.time()
 
+#playsound('../slowSound.wav')
 #def testToSound():
 	#this function gets input from the simulink model on the current 
-fast = '../fastSound.wav' #add a relative path so it works for others
-slow = '../slowSound.wav' #add a relative path so it works for others
+try:
+	fast = '/home/eternity/catkin_ws/src/can_to_ros/fastSound.wav' #path from typical installation
+	playsound(fast)
+except:
+	print('you need to change the absolute path to the sound files in "can_coach_subs.py"')
+slow = '/home/eternity/catkin_ws/src/can_to_ros/slowSound.wav' #path from typical installation
+playsound(fast)
 
 def printit():
 	"""This is the function that gives the sound feedback to the driver. It need to know the 'mode', or test that the driver is in.
@@ -81,7 +87,7 @@ def printit():
 	
 	if th > 2.1:
 		rospy.loginfo("faster")
-		# playsound(fast)
+		playsound(fast)
 		#if th > 2.2:
 		#play_obj = sa.play_buffer(faster,1,2,44100) #two higher beeps indicating speed up
 	if th < 2.1 and th > 2.05:
@@ -94,12 +100,12 @@ def printit():
 		rospy.loginfo("slower")
         #play_obj = sa.play_buffer(slower,1,2,44100)
 	if th > 1.9 and th < 1.95:
-		# playsound(slow)
+		playsound(slow)
         #play_obj = sa.play_buffer(slow,1,2,44100)
 		rospy.loginfo("slow")
 	
 	
-	return t
+	# return t
 
 def sound():
 	print(time.ctime())
@@ -241,7 +247,7 @@ try:
 
 	r = rospy.Rate(50)
 	# sound()
-	t = printit()
+	printit()
 	while not rospy.is_shutdown():
 		print('starting while loop')
 		velocity = gnewVel
@@ -308,9 +314,9 @@ try:
 			velocity = gnewVel
                 
 		print('before sleep')
-		t.cancel()
+		# t.cancel()
 		r.sleep()
 	print('before spin')
-	t.cancel()
+	# t.cancel()
 except ValueError:
     print("Oops!  Try again...")
