@@ -53,7 +53,7 @@ def printit(mode):
 	t = threading.Timer(0.5, printit)
 	t.start()
 	print(th, lead, relv)
-
+	rospy.set_param('relv', relv)
 	if mode == 'cth' or mode == 'dth': #this is used for tests 1 and 2
 		if th > thSet+thBounds:
 			rospy.loginfo("faster")
