@@ -58,7 +58,7 @@ private:
 		
 		pub_.publish(msgs);
 
-		sprintf( messageTofile, "%d.%06d,", (unsigned int)0, (int)0);
+		sprintf( messageTofile, "%f,", ros::Time::now().toSec());
 		sprintf( messageTofile,"%s%d,%d,", messageTofile, (int)canData->bus, canData->messageID);
 		for (int i = 0; i < canData->dataLength; i++) {
 			sprintf( messageTofile, "%s%02x", messageTofile, canData->data[i]);
