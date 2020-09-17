@@ -31,7 +31,7 @@ gnewVel=0.0
 #initializing CAN Coach variables
 velocity = 40
 th = 3.14159
-relv = -50
+relv = 0
 lead = 0
 #initializing sound feedback variables
 mode = "vmatch"
@@ -46,15 +46,15 @@ except:
 	print('you need to change the absolute path to the sound files in "can_coach_subs.py"')
 slow = '/home/eternity/catkin_ws/src/can_to_ros/slowSound.wav' #path from typical installation 
 
-def printit(mode):
+def printit():
 	"""This is the function that gives the sound feedback to the driver. It need to know the 'mode', or test that the driver is in.
 	It subscribes to both the mode, and keeps track of the current mode."""
 		
 	t = threading.Timer(0.5, printit)
 	t.start()
-	print(th, lead, relv)
-
+	global relv
 	if mode == 'cth' or mode == 'dth': #this is used for tests 1 and 2
+		print(th, lead, relv)
 		if th > thSet+thBounds:
 			rospy.loginfo("faster")
 			playsound(fast)
@@ -62,10 +62,11 @@ def printit(mode):
 			playsound(slow)
 			rospy.loginfo("slower")
 	if mode == 'vmatch': #this is used for test 3
-		if relv > 0:
+		print(relv)
+		if relv > 0 + 0.4: #0.2 m/s is less than 0.5 mph
 			rospy.loginfo("faster vmatch")
 			playsound(fast)
-		if relv < 0:
+		if relv < 0 - 0.4: #0.2 m/s is less than 0.5 mph
 			rospy.loginfo("slower vmatch")
 			playsound(slow)
 	if mode == 'ghost': #this is used for test 4
