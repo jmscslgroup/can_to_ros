@@ -52,12 +52,9 @@ def printit():
 		
 	t = threading.Timer(0.5, printit)
 	t.start()
-<<<<<<< HEAD
 	global relv
-=======
-	print(th, lead, relv)
 	rospy.set_param('relv', relv)
->>>>>>> b2ba9f6dc16efe05534c7567fec08a724088dd48
+
 	if mode == 'cth' or mode == 'dth': #this is used for tests 1 and 2
 		print(th, lead, relv)
 		if th > thSet+thBounds:
@@ -75,6 +72,7 @@ def printit():
 			rospy.loginfo("slower vmatch")
 			playsound(slow)
 	if mode == 'ghost': #this is used for test 4
+		#make sure to add a print() that reflects the data being processed for this test
 		if ghostTh > thSet+thBounds:
 			rospy.loginfo("faster")
 			playsound(fast)
