@@ -52,7 +52,12 @@ def printit():
 		
 	t = threading.Timer(0.5, printit)
 	t.start()
+<<<<<<< HEAD
 	global relv
+=======
+	print(th, lead, relv)
+	rospy.set_param('relv', relv)
+>>>>>>> b2ba9f6dc16efe05534c7567fec08a724088dd48
 	if mode == 'cth' or mode == 'dth': #this is used for tests 1 and 2
 		print(th, lead, relv)
 		if th > thSet+thBounds:

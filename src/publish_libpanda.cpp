@@ -1,5 +1,5 @@
 /*
- Authors: Sfwan, Elmadani, Matt Bunting
+ Authors: Safwan Elmadani, Matt Bunting
  Copyright (c) 2020 Arizona Board of Regents
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -32,6 +32,7 @@
 // Libpanda headers:
 #include <panda.h>
 #include <sstream>
+#include <fstream>
 // A simple concrete instance of a CAN listener
 class CanToRosPublisher : public Panda::CanListener {
 
@@ -39,9 +40,12 @@ private:
 	ros::NodeHandle nh1;
 	ros::Publisher pub_;
 	std::stringstream ss;
+	std::ofstream csvfile;
+	
 	
 	void newDataNotification( Panda::CanFrame* canData ) {
 	char messageString[200];
+	char messageTofile[200];
 		sprintf( messageString, "%d.%06d ", (unsigned int)0, (int)0);
 		sprintf( messageString,"%s%d %d ", messageString, (int)canData->bus, canData->messageID);
 		for (int i = 0; i < canData->dataLength; i++) {
@@ -50,9 +54,20 @@ private:
 		sprintf( messageString, "%s %d", messageString, canData->dataLength);
 		
 		std_msgs::String msgs;
-    		msgs.data = messageString;
+    	msgs.data = messageString;
 		
 		pub_.publish(msgs);
+
+		sprintf( messageTofile, "%d.%06d,", (unsigned int)0, (int)0);
+		sprintf( messageTofile,"%s%d,%d,", messageTofile, (int)canData->bus, canData->messageID);
+		for (int i = 0; i < canData->dataLength; i++) {
+			sprintf( messageTofile, "%s%02x", messageTofile, canData->data[i]);
+		}
+		sprintf( messageTofile, "%s,%d", messageTofile, canData->dataLength);
+
+		csvfile << messageTofile << std::endl;
+
+
 		//sprintf( messageString, "%f %d %d %s %", 0.00, canData->bus, canData->messageID, canD
 		// Gets called for every incomiming can data with data:
 		
@@ -77,6 +92,9 @@ private:
 public:
 	CanToRosPublisher() {
 		pub_ = nh1.advertise<std_msgs::String>("/realtime_raw_data", 1000);
+		csvfile.open("canbus-data.csv");
+		csvfile <<"Time" << ","<< "Bus" << "," << "MessageID" << "," << "Message" << ","<< "MessageLength" << std::endl;
+
 	}
 	
 };
