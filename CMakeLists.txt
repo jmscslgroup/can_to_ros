@@ -210,14 +210,14 @@ include_directories(
 # catkin_add_nosetests(test)
 
 INCLUDE_DIRECTORIES(
-../../libpanda/include 
-../../libpanda/include/panda
-../../libpanda/include/mogi
-../../libpanda/NMEAParser/Software/NMEAParserLib/include)
+/opt/libpanda/include 
+/opt/libpanda/include/panda
+/opt/libpanda/include/mogi
+/opt/libpanda/NMEAParser/Software/NMEAParserLib/include)
 
 LINK_DIRECTORIES(
-../../libpanda/build 
-../../libpanda/build/utilities )
+/opt/libpanda/build 
+/opt/libpanda/build/utilities )
 
 
 add_executable(gpsfix src/gps_node.cpp)
