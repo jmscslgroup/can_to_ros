@@ -212,7 +212,7 @@ try:
 						lead = gmyDetections[iLead][0:2] #lead coordinates
 						relv = gmyDetections[iLead][2]
 						gnewLeadMeasurement = None
-						gmyDetections = []#reset the radar message buffer
+						gmyDetections = [] #reset the radar message buffer
 						leader.update(lead) #update kf
 			else:
 				if len(gmyDetections) > 64: # if there are 64 radar measurements and no gnewLeadMeasurement
