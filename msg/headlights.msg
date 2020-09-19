@@ -1,0 +1,5 @@
+time timestamp
+uint8 light_state_changed
+uint8 high_beams_on
+uint8 head_lamps_on
+uint8 running_lights_on
