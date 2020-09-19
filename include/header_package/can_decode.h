@@ -11,7 +11,7 @@
 
 typedef struct values_struct
 {
-   float var1, var2, var3;
+   float var1, var2, var3, var4;
 } values;
 
 class decode_msgs{
@@ -68,6 +68,7 @@ values decode_msgs::decode_message( unsigned int msg_id, std::string msg){
   returnedVal.var1=0.0;
   returnedVal.var2=0.0;
   returnedVal.var3=0.0;
+  returnedVal.var4=0.0;
   float angle;
   if (msg_id == 180){
   
@@ -246,6 +247,41 @@ values decode_msgs::decode_message( unsigned int msg_id, std::string msg){
     }
     returnedVal.var1=float(temp_accel)*0.001;
     //std::cout << this->long_accel << "  Accel" << std::endl; 
+
+    return returnedVal;
+    }
+
+    if (msg_id == 1570){ ///// new message 
+    // int temp_headlights;
+    int LIGHT_STATE_CHANGED=0;
+    int HIGH_BEAMS_ON=0;
+    int HEAD_LAMPS_ON=0;
+    int RUNNING_LIGHTS_ON=0;
+    std::stringstream hex_ss(msg);
+    hex_ss >> std::hex >> n;
+
+    binary = std::bitset<64>(n).to_string();
+    //std::cout << binary << std::endl;
+    // std::string byte1 = binary.substr(0,8);
+    std::string byte2 = binary.substr(8,8);
+    // std::string byte3 = binary.substr(16,8);
+    std::string byte4 = binary.substr(24,8);
+
+    // std::cout << byte1 << std::endl;
+    // std::cout << byte2 << std::endl;
+    // std::cout << byte3 << std::endl;
+    // std::cout << byte4 << std::endl;
+
+    LIGHT_STATE_CHANGED =std::stoi(byte2.substr(0,1)); // bit 15
+    HIGH_BEAMS_ON =std::stoi(byte4.substr(1,1));
+    HEAD_LAMPS_ON =std::stoi(byte4.substr(2,1));
+    RUNNING_LIGHTS_ON =std::stoi(byte4.substr(3,1));
+
+    returnedVal.var1=LIGHT_STATE_CHANGED;
+    returnedVal.var2=HIGH_BEAMS_ON;
+    returnedVal.var3=HEAD_LAMPS_ON;
+    returnedVal.var4=RUNNING_LIGHTS_ON;
+
 
     return returnedVal;
     }

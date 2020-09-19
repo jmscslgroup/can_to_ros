@@ -115,7 +115,7 @@ private:
 using namespace std;
 int main(int argc, char **argv) {
 	// Initialize ROS stuff:
-	ros::init(argc, argv, "my_node");
+	ros::init(argc, argv, "publish_libpanda");
 
 	ROS_INFO("Got parameter : %s", argv[1]);
 

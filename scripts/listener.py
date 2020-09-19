@@ -51,9 +51,8 @@ def callback384(data):
 
 
 def listener():
-
     rospy.init_node('listener', anonymous=True)
-
+    print(rospy.Time.now().to_sec())
     rospy.Subscriber("/vehicle/vel", TwistStamped, speed_callback)
     rospy.Subscriber("/vehicle/distanceEstimator/dist", PointStamped, leaddist_callback)
     rospy.Subscriber("/track_a0", Marker, callback384)

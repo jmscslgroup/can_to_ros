@@ -53,6 +53,7 @@ find_package(catkin REQUIRED COMPONENTS
 add_message_files(
    FILES
    can_msgs.msg
+   headlights.msg
 #   Message2.msg
  )
 

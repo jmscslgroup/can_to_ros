@@ -8,6 +8,9 @@
 #include "geometry_msgs/PointStamped.h"
 #include "geometry_msgs/AccelStamped.h"
 #include "geometry_msgs/TwistStamped.h"
+#include "can_to_ros/headlights.h"
+#include "std_msgs/UInt8.h"
+
 
 
 class SubscribeAndPublish
@@ -53,6 +56,9 @@ public:
     trackb14_pub = n_.advertise<geometry_msgs::PointStamped>("/track_b14", 1000);
     trackb15_pub = n_.advertise<geometry_msgs::PointStamped>("/track_b15", 1000);
 
+    // headlights_pub = n_.advertise<can_to_ros::headlights>("/highbeams", 1000);
+    headlights_pub = n_.advertise< std_msgs::UInt8>("/highbeams", 1000);
+
 
     //Topic you want to subscribe
     sub_ = n_.subscribe("/realtime_raw_data", 1000, &SubscribeAndPublish::callback, this);
@@ -79,8 +85,23 @@ public:
       // if ( data.var1 < 252){
      lead_dist_pub.publish(dist);
       // }
-
     }
+
+    else if (MessageID == 1570 && Bus ==0)
+    {
+    data = obj.decode_message (MessageID, Message);
+    std_msgs::UInt8 msg;
+    msg.data=data.var2;
+
+    // can_to_ros::headlights msg;
+    // msg.timestamp=ros::Time(std::stod(Time));
+    // msg.light_state_changed=data.var1;
+    // msg.high_beams_on=data.var2;
+    // msg.head_lamps_on=data.var3;
+    // msg.running_lights_on=data.var4;
+    headlights_pub.publish(msg);
+    }
+
     else if (MessageID == 552 && Bus==0)
     { 
       data = obj.decode_message (MessageID, Message);
@@ -1126,6 +1147,7 @@ private:
   ros::Publisher trackb13_pub;
   ros::Publisher trackb14_pub;
   ros::Publisher trackb15_pub;
+  ros::Publisher headlights_pub;
 
   ros::Subscriber sub_;
   decode_msgs obj;
