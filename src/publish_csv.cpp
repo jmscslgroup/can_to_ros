@@ -21,9 +21,13 @@ int main(int argc, char **argv){
     ROS_INFO("Got parameter : %s", argv[1]);
   
     std::ifstream inFile;
+    std::ofstream outFile;
     std::string user_input="";
     std::string inputLine="";
-    int MessageID;
+    // std::string Time,Buffer,Message,MessageLength;
+    // int MessageID, Bus;
+    // values data;
+    // decode_msgs obj;
 
     bool firstLine=true;
     if (argc != 2)
@@ -32,7 +36,9 @@ int main(int argc, char **argv){
         return 1;
     }
 
+// outFile.open("headlights.csv");
     ros::Rate rate(2800.0); // the publish rate is 1/delta_t 
+// outFile << "Time,"<< "LIGHT_STATE_CHANGED,"<< "HIGH_BEAMS_ON," << "HEAD_LAMPS_ON,"<< "RUNNING_LIGHTS_ON"<< std::endl;
 
     inFile.open(argv[1]);
     if( !inFile.is_open())
@@ -41,7 +47,7 @@ int main(int argc, char **argv){
       return 1;
     }
 
-    while (ros::ok()){
+    while (ros::ok()){  //ros::ok()
         
         if (!getline(inFile, inputLine)) break;
         if (firstLine){ // skip the first line
@@ -51,6 +57,14 @@ int main(int argc, char **argv){
         if (inputLine.empty()) continue; // if there is an empty line then skip it
 
         std::replace(inputLine.begin(), inputLine.end(), ',', ' '); // replace the commas with white space
+        // std::stringstream ss(inputLine);
+        // ss >> Time>> Bus>> MessageID>> Message>> MessageLength;
+        
+        // if (MessageID == 1570 && Bus ==0){
+        // data = obj.decode_message (MessageID, Message);
+
+        // outFile << Time << "," << data.var1<< ","<< data.var2 <<"," << data.var3 <<","<< data.var4 << std::endl;
+        // }
 
         // can_to_ros::can_msgs msgs;
         // msgs.timestamp=0.00;
@@ -64,10 +78,11 @@ int main(int argc, char **argv){
         pub_.publish(msgs);
         rate.sleep();    
 
+
     }
 
     std::cout << "Finish publishing raw data "<< std::endl;   
 
- ros::spin();
+//  ros::spin();
   return 0;
 }
