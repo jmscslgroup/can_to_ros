@@ -57,7 +57,9 @@ public:
     trackb15_pub = n_.advertise<geometry_msgs::PointStamped>("/track_b15", 1000);
 
     // headlights_pub = n_.advertise<can_to_ros::headlights>("/highbeams", 1000);
-    headlights_pub = n_.advertise< std_msgs::UInt8>("/highbeams", 1000);
+    // headlights_pub = n_.advertise< std_msgs::UInt8>("/highbeams", 1000);
+    
+    headlights_pub = n_.advertise< geometry_msgs::Twist>("/highbeams", 1000);
 
 
     //Topic you want to subscribe
@@ -90,8 +92,10 @@ public:
     else if (MessageID == 1570 && Bus ==0)
     {
     data = obj.decode_message (MessageID, Message);
-    std_msgs::UInt8 msg;
-    msg.data=data.var2;
+    geometry_msgs::Twist msg;
+    // std_msgs::UInt8 msg;
+
+    msg.linear.x=data.var2;
 
     // can_to_ros::headlights msg;
     // msg.timestamp=ros::Time(std::stod(Time));
