@@ -11,7 +11,7 @@ import random
 import threading
 
 import rospy
-from std_msgs.msg import String
+from std_msgs.msg import String, UInt8
 from geometry_msgs.msg import TwistStamped
 from geometry_msgs.msg import PointStamped
 from std_msgs.msg import Float64
@@ -34,9 +34,11 @@ th = 3.14159
 relv = 0
 lead = 0
 #initializing sound feedback variables
-mode = "vmatch"
-thSet = 2
+mode = 0
+setPoint = 2.25
+#thSet = 2
 thBounds = 0.05
+feedbackType = 0
 
 #testing that sound works as things start up
 try:
@@ -53,30 +55,37 @@ def printit():
 	t = threading.Timer(0.5, printit)
 	t.start()
 	global relv
+	global feedbackType
+	global setPoint
 	rospy.set_param('relv', relv)
-
-	if mode == 'cth' or mode == 'dth': #this is used for tests 1 and 2
+	print(mode)
+	if feedbackType == 0:
+		pass
+	elif feedbackType == 1: #this is used for tests 1 and 2
 		print(th, lead, relv)
-		if th > thSet+thBounds:
+		if th > setPoint+thBounds:
 			rospy.loginfo("faster")
 			playsound(fast)
-		if th < thSet-thBounds and th != -1:
+		if th < setPoint-thBounds and th != -1:
 			playsound(slow)
 			rospy.loginfo("slower")
-	if mode == 'vmatch': #this is used for test 3
+	elif feedbackType == 2: #this is used for test 3
 		print(relv)
-		if relv > 0 + 0.4: #0.2 m/s is less than 0.5 mph
+		if relv > 0 + 0.4: #0.4 m/s is less than 1 mph
 			rospy.loginfo("faster vmatch")
 			playsound(fast)
-		if relv < 0 - 0.4: #0.2 m/s is less than 0.5 mph
+		if relv < 0 - 0.4: #0.4 m/s is less than 1 mph
 			rospy.loginfo("slower vmatch")
 			playsound(slow)
-	if mode == 'ghost': #this is used for test 4
+	if mode == 8: #this is used for test 4
+		print('you got to ghost mode')
 		#make sure to add a print() that reflects the data being processed for this test
-		if ghostTh > thSet+thBounds:
+		#do something to start the bagfile?
+		#subscribe to the ghost topic, ghostTh calculated from velocity and ghostSpacing
+		if ghostTh > setPoint+thBounds:
 			rospy.loginfo("faster")
 			playsound(fast)
-		if ghostTh < thSet-thBounds and ghostTh != -1:
+		if ghostTh < setPoint-thBounds and ghostTh != -1:
 			playsound(slow)
 			rospy.loginfo("slower")
 
@@ -159,11 +168,20 @@ def callback399(data):
 	#3 is vmatch
 	#4 is ghost car
 		#wherever bagfile starts, publish ghostTh
+def callbackMode(data):
+	global mode
+	mode = data
 
 #subscribe to th set point message -- thSet
 	#1 is 1.35
 	#2 is 1.8
 	#3 is 2.25
+def callbackSetPoint(data):
+	global setPoint
+	setPoint = data
+def callbackFeedbackType(data): #none = 0, th = 1, vmatch = 2
+	global feedbackType
+	feedbackType = data
 
  
 try:
@@ -171,6 +189,7 @@ try:
 	rospy.Subscriber("/vehicle/vel", TwistStamped,callbackvel)
 	print('subscribing')
 	rospy.Subscriber("/vehicle/distanceEstimator/dist", PointStamped, callback869)
+	#radar messages
 	rospy.Subscriber("/track_a0", Marker, callback384)
 	rospy.Subscriber("/track_a1", Marker, callback385)
 	rospy.Subscriber("/track_a2", Marker, callback386)
@@ -187,13 +206,20 @@ try:
 	rospy.Subscriber("/track_a13", Marker, callback397)
 	rospy.Subscriber("/track_a14", Marker, callback398)
 	rospy.Subscriber("/track_a15", Marker, callback399)
+	#director messages
+	rospy.Subscriber("/setpoint", Float64, callbackSetPoint)
+	rospy.Subscriber("/mode", UInt8, callbackMode)
+	rospy.Subscriber("/feedback_type",UInt8, callbackFeedbackType)
+	
 
 	r = rospy.Rate(50)
-
+	velocity = gnewVel
+	lastMode = mode
+	lastSetPoint = setPoint
 	printit()
 	while not rospy.is_shutdown():
 		print('starting while loop')
-		velocity = gnewVel
+		
 		while not rospy.is_shutdown():
 
 			if velocity > 0:
@@ -228,7 +254,28 @@ try:
 						leader.update(lead) #update kf
         #this feedback system operates under the assumption that there is a lead vehicle
 			velocity = gnewVel
-                
+            #maybe have the sounds play in here?
+			if mode != lastMode:
+				if mode == 1: print('Vmatch instructed')
+				if mode == 2: print('Vmatch coached')
+				if mode == 3: print('Normal Driving')
+				if mode == 4: print('Drive with a 2.25 second th')
+				if mode == 5: print('Listen to CAN coach, 2.25 s th.')
+				if mode == 6: print('Attempt to drive with the specified following distance. It will change minute by minute.')
+				if mode == 7: print('Listen to can coach.')
+				if mode == 8: print('Listen to CAN Coach, you are following a virtual car.')
+				
+				lastMode = mode
+			if setPoint != lastSetPoint:
+				if setPoint == 1.35:
+					print('drive with set 1')
+				if setPoint == 1.8:
+					print('drive with set 2')
+				if setPoint == 2.25:
+					print('drive with set 3')
+				
+				lastSetPoint = setPoint
+            
 		print('before sleep')
 		# t.cancel()
 		r.sleep()
