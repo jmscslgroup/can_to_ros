@@ -33,6 +33,7 @@
 #include <panda.h>
 #include <sstream>
 #include <fstream>
+
 // A simple concrete instance of a CAN listener
 class CanToRosPublisher : public Panda::CanListener {
 
@@ -91,8 +92,15 @@ private:
 	
 public:
 	CanToRosPublisher() {
+		std::time_t t=time(0);
+		struct tm * now = localtime( & t );
+		char buffer [256];
+		strftime (buffer,80,"%Y-%m-%d-%X.csv",now);
+		std::string filename=buffer;
+		std::replace(filename.begin(), filename.end(), ':', '-'); 
+        // cout << filename << std::endl;
 		pub_ = nh1.advertise<std_msgs::String>("/realtime_raw_data", 1000);
-		csvfile.open("canbus-data.csv");
+		csvfile.open(filename);
 		csvfile <<"Time" << ","<< "Bus" << "," << "MessageID" << "," << "Message" << ","<< "MessageLength" << std::endl;
 
 	}
