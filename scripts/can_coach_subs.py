@@ -38,9 +38,23 @@ mode = 0
 setPoint = 2.25
 #thSet = 2
 thBounds = 0.05
-feedbackType = 0
+feedbackType = 1
 
 #testing that sound works as things start up
+soundpath = '/home/eternity/catkin_ws/src/can_to_ros/sounds/'
+welcome1 = 'mode1welcome.wav'
+welcome2 = 'mode2welcome.wav'
+welcome3 = 'mode3welcome.wav'
+welcome4 = 'mode4welcome.wav'
+normal = 'normal.wav'
+instructedcth = 'instructed0.wav'
+coach = 'coached.wav' #for coaching in the first three modes
+instructedSet3 = 'instructed2-3.wav'
+instructedSet2 = 'instructed2-2.wav'
+instructedSet1 = 'instructed2-1.wav'
+instructedVmatch = 'instructed3.wav'
+ghostCoach = 'coached4.wav'
+
 try:
 	fast = '/home/eternity/catkin_ws/src/can_to_ros/fastSound.wav' #path from typical installation
 	playsound(fast)
@@ -52,42 +66,44 @@ def printit():
 	"""This is the function that gives the sound feedback to the driver. It need to know the 'mode', or test that the driver is in.
 	It subscribes to both the mode, and keeps track of the current mode."""
 		
-	t = threading.Timer(0.5, printit)
-	t.start()
+	t = threading.currentThread()#Timer(0.5, printit)
 	global relv
 	global feedbackType
 	global setPoint
-	rospy.set_param('relv', relv)
-	print(mode)
-	if feedbackType == 0:
-		pass
-	elif feedbackType == 1: #this is used for tests 1 and 2
-		print(th, lead, relv)
-		if th > setPoint+thBounds:
-			rospy.loginfo("faster")
-			playsound(fast)
-		if th < setPoint-thBounds and th != -1:
-			playsound(slow)
-			rospy.loginfo("slower")
-	elif feedbackType == 2: #this is used for test 3
-		print(relv)
-		if relv > 0 + 0.4: #0.4 m/s is less than 1 mph
-			rospy.loginfo("faster vmatch")
-			playsound(fast)
-		if relv < 0 - 0.4: #0.4 m/s is less than 1 mph
-			rospy.loginfo("slower vmatch")
-			playsound(slow)
-	if mode == 8: #this is used for test 4
-		print('you got to ghost mode')
-		#make sure to add a print() that reflects the data being processed for this test
-		#do something to start the bagfile?
-		#subscribe to the ghost topic, ghostTh calculated from velocity and ghostSpacing
-		if ghostTh > setPoint+thBounds:
-			rospy.loginfo("faster")
-			playsound(fast)
-		if ghostTh < setPoint-thBounds and ghostTh != -1:
-			playsound(slow)
-			rospy.loginfo("slower")
+	rospy.set_param('relv', relv) #need to make this into a publisher
+	while getattr(t,"do_run", True):
+		print(mode, feedbackType,setPoint, th)
+		if feedbackType == 0:
+			pass
+		elif feedbackType == 1: #this is used for tests 1 and 2
+			print(th, lead, relv)
+			if th > 2.25+thBounds: #+0.05
+				rospy.loginfo("faster")
+				playsound(fast)
+			if th < 2.25-thBounds and th != -1: #-0.05
+				playsound(slow)
+				rospy.loginfo("slower")
+		elif feedbackType == 2: #this is used for test 3
+			print(relv)
+			if relv > 0 + 0.4: #0.4 m/s is less than 1 mph
+				rospy.loginfo("faster vmatch")
+				playsound(fast)
+			if relv < 0 - 0.4: #0.4 m/s is less than 1 mph
+				rospy.loginfo("slower vmatch")
+				playsound(slow)
+		if mode == 8: #this is used for test 4
+			print('you got to ghost mode')
+			#make sure to add a print() that reflects the data being processed for this test
+			#do something to start the bagfile?
+			#subscribe to the ghost topic, ghostTh calculated from velocity and ghostSpacing
+			if ghostTh > setPoint+thBounds:
+				rospy.loginfo("faster")
+				playsound(fast)
+			if ghostTh < setPoint-thBounds and ghostTh != -1:
+				playsound(slow)
+				rospy.loginfo("slower")
+		time.sleep(0.3)
+	print("Stopping sound thread, as you wish.")
 
 def callback869(data):
     global gnewLeadMeasurement
@@ -170,7 +186,7 @@ def callback399(data):
 		#wherever bagfile starts, publish ghostTh
 def callbackMode(data):
 	global mode
-	mode = data
+	mode = data.data
 
 #subscribe to th set point message -- thSet
 	#1 is 1.35
@@ -178,10 +194,10 @@ def callbackMode(data):
 	#3 is 2.25
 def callbackSetPoint(data):
 	global setPoint
-	setPoint = data
+	setPoint = data.data
 def callbackFeedbackType(data): #none = 0, th = 1, vmatch = 2
 	global feedbackType
-	feedbackType = data
+	feedbackType = data.data
 
  
 try:
@@ -216,12 +232,13 @@ try:
 	velocity = gnewVel
 	lastMode = mode
 	lastSetPoint = setPoint
-	printit()
+	t = threading.Thread(target = printit)
+	t.start()
 	while not rospy.is_shutdown():
 		print('starting while loop')
 		
 		while not rospy.is_shutdown():
-
+			
 			if velocity > 0:
 				th = (leader.get_coords()[0])/(velocity) #distance divided by meters per second
 			else:
@@ -256,30 +273,57 @@ try:
 			velocity = gnewVel
             #maybe have the sounds play in here?
 			if mode != lastMode:
-				if mode == 1: print('Vmatch instructed')
-				if mode == 2: print('Vmatch coached')
-				if mode == 3: print('Normal Driving')
-				if mode == 4: print('Drive with a 2.25 second th')
-				if mode == 5: print('Listen to CAN coach, 2.25 s th.')
-				if mode == 6: print('Attempt to drive with the specified following distance. It will change minute by minute.')
-				if mode == 7: print('Listen to can coach.')
-				if mode == 8: print('Listen to CAN Coach, you are following a virtual car.')
+				if mode == 1: 
+					print('entering mode 1')
+					playsound(soundpath+welcome1)
+					playsound(soundpath+normal)
+					#print('Vmatch instructed') not implemented yet, currently normal
+				if mode == 2:
+					print('entering mode 2')
+					playsound(soundpath+instructedcth)
+					 #print('Vmatch coached')
+				if mode == 3: 
+					print('entering mode 3')
+					playsound(soundpath+coach)
+					#print('Normal Driving')
+				if mode == 4: 
+					playsound(soundpath+welcome2)
+					#print('Drive with a 2.25 second th')
+				if mode == 5: 
+					playsound(soundpath+coach)
+					#print('Listen to CAN coach, 2.25 s th.')
+				if mode == 6: 
+					playsound(soundpath+instructedVmatch)
+					#print('Attempt to drive with the specified following distance. It will change minute by minute.')
+				if mode == 7: 
+					playsound(soundpath+coach)
+					#print('Listen to can coach.')
+				if mode == 8: 
+					playsound(soundpath+ghostCoach)
+					#print('Listen to CAN Coach, you are following a virtual car.')
 				
 				lastMode = mode
 			if setPoint != lastSetPoint:
 				if setPoint == 1.35:
+					playsound(soundpath+instructedSet1)
 					print('drive with set 1')
 				if setPoint == 1.8:
+					playsound(soundpath+instructedSet2)
 					print('drive with set 2')
 				if setPoint == 2.25:
+					playsound(soundpath+instructedSet3)
 					print('drive with set 3')
 				
 				lastSetPoint = setPoint
             
 		print('before sleep')
 		# t.cancel()
+		t.do_run = False
+		t.join()
 		r.sleep()
 	print('before spin')
 	# t.cancel()
+	t.do_run = False
+	t.join()
 except ValueError:
     print("Oops!  Try again...")
