@@ -71,16 +71,17 @@ def printit():
 	global feedbackType
 	global setPoint
 	rospy.set_param('relv', relv) #need to make this into a publisher
+	
 	while getattr(t,"do_run", True):
 		print(mode, feedbackType,setPoint, th)
 		if feedbackType == 0:
 			pass
 		elif feedbackType == 1: #this is used for tests 1 and 2
 			print(th, lead, relv)
-			if th > 2.25+thBounds: #+0.05
+			if th > setPoint+thBounds: #+0.05
 				rospy.loginfo("faster")
 				playsound(fast)
-			if th < 2.25-thBounds and th != -1: #-0.05
+			if th < setPoint-thBounds and th != -1: #-0.05
 				playsound(slow)
 				rospy.loginfo("slower")
 		elif feedbackType == 2: #this is used for test 3
@@ -201,6 +202,7 @@ def callbackFeedbackType(data): #none = 0, th = 1, vmatch = 2
 
  
 try:
+	relv_pub = rospy.Publisher('/relv', Float64, queue_size = 10)
 	rospy.init_node('can_coach_subs', anonymous=True)
 	rospy.Subscriber("/vehicle/vel", TwistStamped,callbackvel)
 	print('subscribing')
@@ -226,6 +228,9 @@ try:
 	rospy.Subscriber("/setpoint", Float64, callbackSetPoint)
 	rospy.Subscriber("/mode", UInt8, callbackMode)
 	rospy.Subscriber("/feedback_type",UInt8, callbackFeedbackType)
+	
+	
+	
 	
 
 	r = rospy.Rate(50)
@@ -266,6 +271,7 @@ try:
 						iLead = random.choice(myPoints)#just choose one randomly
 						lead = gmyDetections[iLead][0:2] #lead coordinates
 						relv = gmyDetections[iLead][2] #lead relv
+						relv_pub.publish(relv)
 						
 						gmyDetections = []#reset the radar message buffer
 						leader.update(lead) #update kf
