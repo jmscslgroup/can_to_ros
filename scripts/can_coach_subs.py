@@ -203,6 +203,7 @@ def callbackFeedbackType(data): #none = 0, th = 1, vmatch = 2
  
 try:
 	relv_pub = rospy.Publisher('/relv', Float64, queue_size = 10)
+	
 	rospy.init_node('can_coach_subs', anonymous=True)
 	rospy.Subscriber("/vehicle/vel", TwistStamped,callbackvel)
 	print('subscribing')
@@ -259,6 +260,8 @@ try:
 						iLead = random.choice(myPoints)#just choose one randomly
 						lead = gmyDetections[iLead][0:2] #lead coordinates
 						relv = gmyDetections[iLead][2]
+						relv_pub.publish(relv)
+						
 						gnewLeadMeasurement = None
 						gmyDetections = [] #reset the radar message buffer
 						leader.update(lead) #update kf
