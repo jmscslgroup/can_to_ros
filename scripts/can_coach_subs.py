@@ -261,6 +261,7 @@ try:
 						lead = gmyDetections[iLead][0:2] #lead coordinates
 						relv = gmyDetections[iLead][2]
 						relv_pub.publish(relv)
+						print('should have published relv')
 						
 						gnewLeadMeasurement = None
 						gmyDetections = [] #reset the radar message buffer
