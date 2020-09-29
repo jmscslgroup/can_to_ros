@@ -116,67 +116,67 @@ def callbackvel(data):
 
 def callback384(data):
     global gmyDetections
-    gmyDetections.append([data.pose.position.x, data.pose.position.y,data.pose.position.z])
+    gmyDetections.append([data.point.x, data.point.y,data.point.z])
     
 def callback385(data):
     global gmyDetections
-    gmyDetections.append([data.pose.position.x, data.pose.position.y,data.pose.position.z])
+    gmyDetections.append([data.point.x, data.point.y,data.point.z])
     
 def callback386(data):
 	global gmyDetections
-	gmyDetections.append([data.pose.position.x, data.pose.position.y,data.pose.position.z])
+	gmyDetections.append([data.point.x, data.point.y,data.point.z])
 
 def callback387(data):
 	global gmyDetections
-	gmyDetections.append([data.pose.position.x, data.pose.position.y,data.pose.position.z])
+	gmyDetections.append([data.point.x, data.point.y,data.point.z])
 
 def callback388(data):
 	global gmyDetections
-	gmyDetections.append([data.pose.position.x, data.pose.position.y,data.pose.position.z])
+	gmyDetections.append([data.point.x, data.point.y,data.point.z])
 
 def callback389(data):
     global gmyDetections
-    gmyDetections.append([data.pose.position.x, data.pose.position.y,data.pose.position.z])
+    gmyDetections.append([data.point.x, data.point.y,data.point.z])
 
 def callback390(data):
     global gmyDetections
-    gmyDetections.append([data.pose.position.x, data.pose.position.y,data.pose.position.z])
+    gmyDetections.append([data.point.x, data.point.y,data.point.z])
 
 def callback391(data):
     global gmyDetections
-    gmyDetections.append([data.pose.position.x, data.pose.position.y,data.pose.position.z])
+    gmyDetections.append([data.point.x, data.point.y,data.point.z])
 
 def callback392(data):
     global gmyDetections
-    gmyDetections.append([data.pose.position.x, data.pose.position.y,data.pose.position.z])
+    gmyDetections.append([data.point.x, data.point.y,data.point.z])
 
 def callback393(data):
     global gmyDetections
-    gmyDetections.append([data.pose.position.x, data.pose.position.y,data.pose.position.z])
+    gmyDetections.append([data.point.x, data.point.y,data.point.z])
 
 def callback394(data):
     global gmyDetections
-    gmyDetections.append([data.pose.position.x, data.pose.position.y,data.pose.position.z])
+    gmyDetections.append([data.point.x, data.point.y,data.point.z])
     
 def callback395(data):
     global gmyDetections
-    gmyDetections.append([data.pose.position.x, data.pose.position.y,data.pose.position.z])
+    gmyDetections.append([data.point.x, data.point.y,data.point.z])
  
 def callback396(data):
     global gmyDetections
-    gmyDetections.append([data.pose.position.x, data.pose.position.y,data.pose.position.z])
+    gmyDetections.append([data.point.x, data.point.y,data.point.z])
   
 def callback397(data):
     global gmyDetections
-    gmyDetections.append([data.pose.position.x, data.pose.position.y,data.pose.position.z])
+    gmyDetections.append([data.point.x, data.point.y,data.point.z])
     
 def callback398(data):
     global gmyDetections
-    gmyDetections.append([data.pose.position.x, data.pose.position.y,data.pose.position.z])
+    gmyDetections.append([data.point.x, data.point.y,data.point.z])
 
 def callback399(data):
     global gmyDetections
-    gmyDetections.append([data.pose.position.x, data.pose.position.y,data.pose.position.z])
+    gmyDetections.append([data.point.x, data.point.y,data.point.z])
 
 #subscribe to the mode message
 	#0 is standby -- no can coach feedback
@@ -203,28 +203,29 @@ def callbackFeedbackType(data): #none = 0, th = 1, vmatch = 2
  
 try:
 	relv_pub = rospy.Publisher('/relv', Float64, queue_size = 10)
+	sg_pub = rospy.Publisher('/space_gap',Float64, queue_size = 10)
 	
 	rospy.init_node('can_coach_subs', anonymous=True)
 	rospy.Subscriber("/vehicle/vel", TwistStamped,callbackvel)
 	print('subscribing')
 	rospy.Subscriber("/vehicle/distanceEstimator/dist", PointStamped, callback869)
 	#radar messages
-	rospy.Subscriber("/track_a0", Marker, callback384)
-	rospy.Subscriber("/track_a1", Marker, callback385)
-	rospy.Subscriber("/track_a2", Marker, callback386)
-	rospy.Subscriber("/track_a3", Marker, callback387)
-	rospy.Subscriber("/track_a4", Marker, callback388)
-	rospy.Subscriber("/track_a5", Marker, callback389)
-	rospy.Subscriber("/track_a6", Marker, callback390)
-	rospy.Subscriber("/track_a7", Marker, callback391)
-	rospy.Subscriber("/track_a8", Marker, callback392)
-	rospy.Subscriber("/track_a9", Marker, callback393)
-	rospy.Subscriber("/track_a10", Marker, callback394)
-	rospy.Subscriber("/track_a11", Marker, callback395)
-	rospy.Subscriber("/track_a12", Marker, callback396)
-	rospy.Subscriber("/track_a13", Marker, callback397)
-	rospy.Subscriber("/track_a14", Marker, callback398)
-	rospy.Subscriber("/track_a15", Marker, callback399)
+	rospy.Subscriber("/track_a0", PointStamped, callback384)
+	rospy.Subscriber("/track_a1", PointStamped, callback385)
+	rospy.Subscriber("/track_a2", PointStamped, callback386)
+	rospy.Subscriber("/track_a3", PointStamped, callback387)
+	rospy.Subscriber("/track_a4", PointStamped, callback388)
+	rospy.Subscriber("/track_a5", PointStamped, callback389)
+	rospy.Subscriber("/track_a6", PointStamped, callback390)
+	rospy.Subscriber("/track_a7", PointStamped, callback391)
+	rospy.Subscriber("/track_a8", PointStamped, callback392)
+	rospy.Subscriber("/track_a9", PointStamped, callback393)
+	rospy.Subscriber("/track_a10",PointStamped, callback394)
+	rospy.Subscriber("/track_a11",PointStamped, callback395)
+	rospy.Subscriber("/track_a12",PointStamped, callback396)
+	rospy.Subscriber("/track_a13",PointStamped, callback397)
+	rospy.Subscriber("/track_a14",PointStamped, callback398)
+	rospy.Subscriber("/track_a15",PointStamped, callback399)
 	#director messages
 	rospy.Subscriber("/setpoint", Float64, callbackSetPoint)
 	rospy.Subscriber("/mode", UInt8, callbackMode)
@@ -261,11 +262,13 @@ try:
 						lead = gmyDetections[iLead][0:2] #lead coordinates
 						relv = gmyDetections[iLead][2]
 						relv_pub.publish(relv)
+						
 						print('should have published relv')
 						
 						gnewLeadMeasurement = None
 						gmyDetections = [] #reset the radar message buffer
 						leader.update(lead) #update kf
+						sg_pub.publish(leader.get_coords()[0])
 			else:
 				if len(gmyDetections) > 64: # if there are 64 radar measurements and no gnewLeadMeasurement
 					labels = lt.clusterRadar(leader.get_coords().tolist(),gmyDetections) #cluster algorithm gives labels
@@ -275,10 +278,11 @@ try:
 						iLead = random.choice(myPoints)#just choose one randomly
 						lead = gmyDetections[iLead][0:2] #lead coordinates
 						relv = gmyDetections[iLead][2] #lead relv
-						relv_pub.publish(relv)
 						
-						gmyDetections = []#reset the radar message buffer
+						relv_pub.publish(relv)
 						leader.update(lead) #update kf
+						sg_pub.publish(leader.get_coords()[0])
+						
         #this feedback system operates under the assumption that there is a lead vehicle
 			velocity = gnewVel
             #maybe have the sounds play in here?
@@ -286,6 +290,8 @@ try:
 				if mode == 1: 
 					print('entering mode 1')
 					playsound(soundpath+welcome1)
+						gmyDetections = []#reset the radar message buffer
+						leader.update(lead) #update kf
 					playsound(soundpath+normal)
 					#print('Vmatch instructed') not implemented yet, currently normal
 				if mode == 2:
@@ -297,18 +303,26 @@ try:
 					playsound(soundpath+coach)
 					#print('Normal Driving')
 				if mode == 4: 
+					print('entering mode 4')
 					playsound(soundpath+welcome2)
+					playsound(soundpath+instructedSet3)
 					#print('Drive with a 2.25 second th')
 				if mode == 5: 
+					print('entering mode 5')
 					playsound(soundpath+coach)
 					#print('Listen to CAN coach, 2.25 s th.')
 				if mode == 6: 
+					print('entering mode 6')
+					playsound(soundpath+welcome3)
 					playsound(soundpath+instructedVmatch)
 					#print('Attempt to drive with the specified following distance. It will change minute by minute.')
 				if mode == 7: 
+					print('entering mode 7')
 					playsound(soundpath+coach)
 					#print('Listen to can coach.')
 				if mode == 8: 
+					print('entering mode 8')hardware meeting
+					playsound(soundpath+welcome4)
 					playsound(soundpath+ghostCoach)
 					#print('Listen to CAN Coach, you are following a virtual car.')
 				

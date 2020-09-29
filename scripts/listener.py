@@ -10,10 +10,10 @@ from std_msgs.msg import Float32
 import datetime as dt
 import csv
 from scipy import integrate
-import pandas as pd
-import scipy
-import matplotlib.pyplot as plt
-import numpy as np
+#import pandas as pd
+#import scipy
+#import matplotlib.pyplot as plt
+#import numpy as np
 
 
 # file=open("lead_speed_est.csv", 'w')
