@@ -1,0 +1,26 @@
+<launch>
+
+<!--arg name="can_path" /> -->
+
+<!-- <arg name="gps_path" /> -->
+<arg name="bag_name" default="bagfile"/>
+
+<!-- <group ns="catvehicle"> -->
+
+<!--node pkg="can_to_ros" type ="publish_csv" name="publish_csv" args="$(arg can_path)" output="screen" /> -->
+<!--node pkg="can_to_ros" type ="publish_libpanda" name ="publish_libpanda" output="screen" />-->
+<!--node pkg="can_to_ros" type ="subs" name="subs" />-->
+
+<node pkg="integrator" type ="integrator_node" name="integrator_node" />
+<node pkg="ghost_integrator" type ="ghost_integrator_node" name="ghost_integrator_node" />
+
+<node pkg="rosbag" type="play" name="player" output="screen" args="-s 600 /media/eternity/5B03-CAD3/can_coach_2020-09-25-17-26-59.bag --topics /vehicle/vel /vehicle/vel:=/ghost_vehicle/vel" />
+
+<!-- <node pkg="can_to_ros" type ="gpsfix" name="gpsfix" args="$(arg gps_path)"  />  -->
+
+<!--node pkg="can_to_ros" type ="can_coach_subs.py" name="can_coach_subs" output="screen"  /> -->
+<!--node pkg="can_to_ros" name="listener" type="listener.py" output="screen" /> -->
+
+<!-- <node pkg= "rosbag" name="record" type="record"  args="/ghost_vehicle/vel -O $(env HOME)/ghost_relv" /> -->
+<!-- </group> -->
+</launch>
