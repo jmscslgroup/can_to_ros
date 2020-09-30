@@ -4,11 +4,11 @@ pico2wave -w 'sounds/test.wav' "The script is running to generate or update all 
 
 
 #Welcome to each mode
-pico2wave -w 'sounds/mode1welcome.wav' "Welcome to Mode 1. This is the first test of the drive."
-pico2wave -w 'sounds/mode2welcome.wav' "Welcome to Mode 2. This is the second test of the drive."
-pico2wave -w 'sounds/mode3welcome.wav' "Welcome to Mode 3. This is the third test of the drive."
+pico2wave -w 'sounds/mode1welcome.wav' "Welcome to, the can coach experiments. This is the beginning of the drive."
+pico2wave -w 'sounds/mode2welcome.wav' "Welcome to, the next section. This is the third test of the drive."
+pico2wave -w 'sounds/mode3welcome.wav' "Welcome to, velocity matching. This is the, first test of the drive."
 pico2wave -w 'sounds/mode4welcome.wav' "Welcome to Mode 4. This is the fourth test of the drive."
-pico2wave -w 'sounds/mode0welcome.wav' "Welcome to Mode 0. This is a 'paused' state. When you are ready, proceed to the next mode, by pulling the high beams stalk twice."
+pico2wave -w 'sounds/mode0welcome.wav' "Welcome to, the second test of the drive."
 
 #Introduction to each subsection of each mode
 

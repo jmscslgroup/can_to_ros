@@ -9,6 +9,7 @@ import liveRadar as lt
 import kalmanTracking as kt
 import random
 import threading
+import os
 
 import rospy
 from std_msgs.msg import String, UInt8
@@ -39,6 +40,7 @@ setPoint = 2.25
 #thSet = 2
 thBounds = 0.05
 feedbackType = 1
+ghostTh = 2.25
 
 #testing that sound works as things start up
 soundpath = '/home/eternity/catkin_ws/src/can_to_ros/sounds/'
@@ -46,6 +48,7 @@ welcome1 = 'mode1welcome.wav'
 welcome2 = 'mode2welcome.wav'
 welcome3 = 'mode3welcome.wav'
 welcome4 = 'mode4welcome.wav'
+cthIntro = 'mode0welcome.wav'
 normal = 'normal.wav'
 instructedcth = 'instructed0.wav'
 coach = 'coached.wav' #for coaching in the first three modes
@@ -70,6 +73,7 @@ def printit():
 	global relv
 	global feedbackType
 	global setPoint
+	global ghostTh
 	rospy.set_param('relv', relv) #need to make this into a publisher
 	
 	while getattr(t,"do_run", True):
@@ -94,9 +98,7 @@ def printit():
 				playsound(slow)
 		if mode == 8: #this is used for test 4
 			print('you got to ghost mode')
-			#make sure to add a print() that reflects the data being processed for this test
-			#do something to start the bagfile?
-			#subscribe to the ghost topic, ghostTh calculated from velocity and ghostSpacing
+			
 			if ghostTh > setPoint+thBounds:
 				rospy.loginfo("faster")
 				playsound(fast)
@@ -200,6 +202,15 @@ def callbackFeedbackType(data): #none = 0, th = 1, vmatch = 2
 	global feedbackType
 	feedbackType = data.data
 
+#subscribe to the ghost distance
+def callbackGhostDist(data):
+	global ghostDist
+	ghostDist = data.point.x
+
+#subscribe to the ego distance
+def callbackEgoDist(data):
+	global egoDist
+	egoDist = data.point.x
  
 try:
 	relv_pub = rospy.Publisher('/relv', Float64, queue_size = 10)
@@ -230,6 +241,9 @@ try:
 	rospy.Subscriber("/setpoint", Float64, callbackSetPoint)
 	rospy.Subscriber("/mode", UInt8, callbackMode)
 	rospy.Subscriber("/feedback_type",UInt8, callbackFeedbackType)
+	#ghost messages
+	rospy.Subscriber("/ghost_dist_traveled",PointStamped,callbackGhostDist)
+	rospy.Subscriber("/ego_dist_traveled",PointStamped,callbackEgoDist)
 	
 	
 	
@@ -263,14 +277,16 @@ try:
 						relv = gmyDetections[iLead][2]
 						relv_pub.publish(relv)
 						
-						print('should have published relv')
+						#print('should have published relv')
 						
 						gnewLeadMeasurement = None
 						gmyDetections = [] #reset the radar message buffer
 						leader.update(lead) #update kf
+						print('publishing space gap')
 						sg_pub.publish(leader.get_coords()[0])
 			else:
 				if len(gmyDetections) > 64: # if there are 64 radar measurements and no gnewLeadMeasurement
+					print('estimate not from 869')
 					labels = lt.clusterRadar(leader.get_coords().tolist(),gmyDetections) #cluster algorithm gives labels
 					myPoints = labels
 					
@@ -281,50 +297,56 @@ try:
 						
 						relv_pub.publish(relv)
 						leader.update(lead) #update kf
+						print('publishing space gap')
 						sg_pub.publish(leader.get_coords()[0])
 						
         #this feedback system operates under the assumption that there is a lead vehicle
 			velocity = gnewVel
+			if mode == 8:
+				ghostSG = ghostDist - egoDist
+				ghostTh = ghostSG/velocity
+				
             #maybe have the sounds play in here?
 			if mode != lastMode:
-				if mode == 1: 
+				if mode == 1: #Normal
 					print('entering mode 1')
 					playsound(soundpath+welcome1)
-						gmyDetections = []#reset the radar message buffer
-						leader.update(lead) #update kf
 					playsound(soundpath+normal)
-					#print('Vmatch instructed') not implemented yet, currently normal
-				if mode == 2:
+				
+				if mode == 2: #cth instructed
 					print('entering mode 2')
 					playsound(soundpath+instructedcth)
-					 #print('Vmatch coached')
-				if mode == 3: 
+					playsound(soundpath+cthIntro)
+					
+				if mode == 3: #cth coached
 					print('entering mode 3')
 					playsound(soundpath+coach)
-					#print('Normal Driving')
-				if mode == 4: 
+					
+				if mode == 4: #dth instructed
 					print('entering mode 4')
 					playsound(soundpath+welcome2)
 					playsound(soundpath+instructedSet3)
-					#print('Drive with a 2.25 second th')
-				if mode == 5: 
+					
+				if mode == 5: #dth coached
 					print('entering mode 5')
 					playsound(soundpath+coach)
-					#print('Listen to CAN coach, 2.25 s th.')
-				if mode == 6: 
+					
+				if mode == 6: #vmatch instructed
 					print('entering mode 6')
 					playsound(soundpath+welcome3)
 					playsound(soundpath+instructedVmatch)
-					#print('Attempt to drive with the specified following distance. It will change minute by minute.')
-				if mode == 7: 
+				if mode == 7: #vmatch coached
 					print('entering mode 7')
 					playsound(soundpath+coach)
-					#print('Listen to can coach.')
-				if mode == 8: 
-					print('entering mode 8')hardware meeting
+					
+				if mode == 8: #ghost mode
+					print('entering mode 8')
 					playsound(soundpath+welcome4)
 					playsound(soundpath+ghostCoach)
-					#print('Listen to CAN Coach, you are following a virtual car.')
+					print('starting ghost bagfile')
+			
+					ghostLaunchCmd = 'roslaunch can_to_ros ghost_mode.launch'
+					os.system(ghostLaunchCmd)
 				
 				lastMode = mode
 			if setPoint != lastSetPoint:
