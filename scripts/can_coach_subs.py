@@ -10,6 +10,7 @@ import kalmanTracking as kt
 import random
 import threading
 import os
+import subprocess
 
 import rospy
 from std_msgs.msg import String, UInt8
@@ -35,13 +36,15 @@ th = 3.14159
 relv = 0
 lead = 0
 #initializing sound feedback variables
-mode = 0
+mode = 8  
 setPoint = 2.25
 #thSet = 2
 thBounds = 0.05
 feedbackType = 1
 ghostTh = 2.25
-
+ghostSG=0
+ghostDist=0
+egoDist=0
 #testing that sound works as things start up
 soundpath = '/home/eternity/catkin_ws/src/can_to_ros/sounds/'
 welcome1 = 'mode1welcome.wav'
@@ -59,11 +62,11 @@ instructedVmatch = 'instructed3.wav'
 ghostCoach = 'coached4.wav'
 
 try:
-	fast = '/home/eternity/catkin_ws/src/can_to_ros/fastSound.wav' #path from typical installation
-	playsound(fast)
+	fast = '/media/sf_sfwithVM/test_ws/src/can_to_ros/fastSound.wav' #path from typical installation
+	# playsound(fast)
 except:
 	print('you need to change the absolute path to the sound files in "can_coach_subs.py"')
-slow = '/home/eternity/catkin_ws/src/can_to_ros/slowSound.wav' #path from typical installation 
+slow = '/media/sf_sfwithVM/test_ws/src/can_to_ros/slowSound.wav' #path from typical installation 
 
 def printit():
 	"""This is the function that gives the sound feedback to the driver. It need to know the 'mode', or test that the driver is in.
@@ -74,36 +77,38 @@ def printit():
 	global feedbackType
 	global setPoint
 	global ghostTh
+	global ghostSG
 	rospy.set_param('relv', relv) #need to make this into a publisher
 	
 	while getattr(t,"do_run", True):
-		print(mode, feedbackType,setPoint, th)
+		# print(mode, feedbackType,setPoint, th)
 		if feedbackType == 0:
 			pass
-		elif feedbackType == 1: #this is used for tests 1 and 2
+		elif feedbackType == 1 and mode != 8: #this is used for tests 1 and 2
 			print(th, lead, relv)
 			if th > setPoint+thBounds: #+0.05
 				rospy.loginfo("faster")
-				playsound(fast)
+				# playsound(fast)
 			if th < setPoint-thBounds and th != -1: #-0.05
-				playsound(slow)
+				# playsound(slow)
 				rospy.loginfo("slower")
 		elif feedbackType == 2: #this is used for test 3
 			print(relv)
 			if relv > 0 + 0.4: #0.4 m/s is less than 1 mph
 				rospy.loginfo("faster vmatch")
-				playsound(fast)
+				# playsound(fast)
 			if relv < 0 - 0.4: #0.4 m/s is less than 1 mph
 				rospy.loginfo("slower vmatch")
-				playsound(slow)
+				# playsound(slow)
 		if mode == 8: #this is used for test 4
 			print('you got to ghost mode')
-			
+			if abs(ghostSG) < 0.01:
+				print("Im calculating ghost", ghostTh)
 			if ghostTh > setPoint+thBounds:
 				rospy.loginfo("faster")
-				playsound(fast)
+				# playsound(fast)
 			if ghostTh < setPoint-thBounds and ghostTh != -1:
-				playsound(slow)
+				# playsound(slow)
 				rospy.loginfo("slower")
 		time.sleep(0.3)
 	print("Stopping sound thread, as you wish.")
@@ -187,9 +192,9 @@ def callback399(data):
 	#3 is vmatch
 	#4 is ghost car
 		#wherever bagfile starts, publish ghostTh
-def callbackMode(data):
-	global mode
-	mode = data.data
+# def callbackMode(data):
+# 	global mode
+# 	mode = data.data
 
 #subscribe to th set point message -- thSet
 	#1 is 1.35
@@ -239,24 +244,27 @@ try:
 	rospy.Subscriber("/track_a15",PointStamped, callback399)
 	#director messages
 	rospy.Subscriber("/setpoint", Float64, callbackSetPoint)
-	rospy.Subscriber("/mode", UInt8, callbackMode)
+	# rospy.Subscriber("/mode", UInt8, callbackMode)
 	rospy.Subscriber("/feedback_type",UInt8, callbackFeedbackType)
 	#ghost messages
 	rospy.Subscriber("/ghost_dist_traveled",PointStamped,callbackGhostDist)
 	rospy.Subscriber("/ego_dist_traveled",PointStamped,callbackEgoDist)
 	
-	
-	
+
+	# ghostLaunchCmd = 'roslaunch can_to_ros ghost_mode.launch'
+	# # os.system(ghostLaunchCmd)
+	# subprocess.Popen(ghostLaunchCmd, shell=True)
+	# subprocess.call(ghostLaunchCmd, shell=True) 
 	
 
 	r = rospy.Rate(50)
 	velocity = gnewVel
-	lastMode = mode
+	lastMode = mode  
 	lastSetPoint = setPoint
 	t = threading.Thread(target = printit)
 	t.start()
 	while not rospy.is_shutdown():
-		print('starting while loop')
+		# print('starting while loop')
 		
 		while not rospy.is_shutdown():
 			
@@ -282,11 +290,11 @@ try:
 						gnewLeadMeasurement = None
 						gmyDetections = [] #reset the radar message buffer
 						leader.update(lead) #update kf
-						print('publishing space gap')
+						# print('publishing space gap')
 						sg_pub.publish(leader.get_coords()[0])
 			else:
 				if len(gmyDetections) > 64: # if there are 64 radar measurements and no gnewLeadMeasurement
-					print('estimate not from 869')
+					# print('estimate not from 869')
 					labels = lt.clusterRadar(leader.get_coords().tolist(),gmyDetections) #cluster algorithm gives labels
 					myPoints = labels
 					
@@ -297,15 +305,17 @@ try:
 						
 						relv_pub.publish(relv)
 						leader.update(lead) #update kf
-						print('publishing space gap')
+						# print('publishing space gap')
 						sg_pub.publish(leader.get_coords()[0])
 						
         #this feedback system operates under the assumption that there is a lead vehicle
 			velocity = gnewVel
 			if mode == 8:
-				ghostSG = ghostDist - egoDist
-				ghostTh = ghostSG/velocity
-				
+				ghostSG = ghostDist - egoDist + 40
+				# print("ghostSG", ghostSG)
+				if (velocity > 0):
+					ghostTh = ghostSG/velocity
+			
             #maybe have the sounds play in here?
 			if mode != lastMode:
 				if mode == 1: #Normal
@@ -344,9 +354,10 @@ try:
 					playsound(soundpath+welcome4)
 					playsound(soundpath+ghostCoach)
 					print('starting ghost bagfile')
-			
+
 					ghostLaunchCmd = 'roslaunch can_to_ros ghost_mode.launch'
-					os.system(ghostLaunchCmd)
+					# os.system(ghostLaunchCmd)
+					subprocess.Popen(ghostLaunchCmd, shell=True)
 				
 				lastMode = mode
 			if setPoint != lastSetPoint:

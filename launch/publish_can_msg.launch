@@ -1,73 +1,31 @@
 <launch>
 
-<arg name="csv_path" />
-<arg name="gps_path" />
-<arg name="bag_name" />
+ <arg name="can_path" />
+<arg name="node_start_delay" default="20.0" />  
 
 <group ns="catvehicle">
-<param name="robot_description"
-         command="$(find xacro)/xacro.py '$(find can_to_ros)/urdf/catvehicle.xacro' roboname:='catvehicle'" />
 
-  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
-  <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
+<node pkg="can_to_ros" type ="publish_csv" name="publish_csv" args="$(arg can_path)" output="screen" />
 
-
-<!--<include file="$(find can_to_ros)/launch/catvehicle.launch">-->
-<!--    <arg name="robot_name" value="catvehicle"/>-->
-<!--    <arg name="init_pose" value="-x 1 -y 1 -z 0"/>-->
-<!--    <arg name="config_file" value="catvehicle_control.yaml"/>-->
-<!--</include>-->
-
-<!-- <node pkg="can_to_ros" type ="piping.sh" name="bashscript" output="screen" /> 
-<node pkg="can_to_ros" type ="gpsfix" name="gpsfix" args="$(arg gps_file)" output="screen" />  -->
+<node pkg="can_to_ros" type ="subs" name="subs" output="screen" /> 
 
 
-<node pkg="can_to_ros" type ="speed_node" name="speed_node" args="$(arg csv_path)"  /> 
-<node pkg="can_to_ros" type ="strangle_node" name="strangle_node" args="$(arg csv_path)"  /> 
-<node pkg="can_to_ros" type ="leaddist_node" name="leaddist_node" args="$(arg csv_path)"  /> 
-<node pkg="can_to_ros" type ="accel_node" name="accel_node" args="$(arg csv_path)"  /> 
-<node pkg="can_to_ros" type ="track_a0" name="track_a0" args="$(arg csv_path)" output="screen" />
-<node pkg="can_to_ros" type ="track_a1" name="track_a1" args="$(arg csv_path)"  />
-<node pkg="can_to_ros" type ="track_a2" name="track_a2" args="$(arg csv_path)"  />
-<node pkg="can_to_ros" type ="track_a3" name="track_a3" args="$(arg csv_path)"  />
-<node pkg="can_to_ros" type ="track_a4" name="track_a4" args="$(arg csv_path)"  />
-<node pkg="can_to_ros" type ="track_a5" name="track_a5" args="$(arg csv_path)"  />
-<node pkg="can_to_ros" type ="track_a6" name="track_a6" args="$(arg csv_path)"  />
-<node pkg="can_to_ros" type ="track_a7" name="track_a7" args="$(arg csv_path)"  />
-<node pkg="can_to_ros" type ="track_a8" name="track_a8" args="$(arg csv_path)"  />
-<node pkg="can_to_ros" type ="track_a9" name="track_a9" args="$(arg csv_path)"  />
-<node pkg="can_to_ros" type ="track_a10" name="track_a10" args="$(arg csv_path)"  />
-<node pkg="can_to_ros" type ="track_a11" name="track_a11" args="$(arg csv_path)"  />
-<node pkg="can_to_ros" type ="track_a12" name="track_a12" args="$(arg csv_path)"  />
-<node pkg="can_to_ros" type ="track_a13" name="track_a13" args="$(arg csv_path)"  />
-<node pkg="can_to_ros" type ="track_a14" name="track_a14" args="$(arg csv_path)"  />
-<node pkg="can_to_ros" type ="track_a15" name="track_a15" args="$(arg csv_path)"  />
-<node pkg="can_to_ros" type ="track_b0" name="track_b0" args="$(arg csv_path)"  />
-<node pkg="can_to_ros" type ="track_b1" name="track_b1" args="$(arg csv_path)"  />
-<node pkg="can_to_ros" type ="track_b2" name="track_b2" args="$(arg csv_path)"  />
-<node pkg="can_to_ros" type ="track_b3" name="track_b3" args="$(arg csv_path)"  />
-<node pkg="can_to_ros" type ="track_b4" name="track_b4" args="$(arg csv_path)"  />
-<node pkg="can_to_ros" type ="track_b5" name="track_b5" args="$(arg csv_path)"  />
-<node pkg="can_to_ros" type ="track_b6" name="track_b6" args="$(arg csv_path)"  />
-<node pkg="can_to_ros" type ="track_b7" name="track_b7" args="$(arg csv_path)"  />
-<node pkg="can_to_ros" type ="track_b8" name="track_b8" args="$(arg csv_path)"  />
-<node pkg="can_to_ros" type ="track_b9" name="track_b9" args="$(arg csv_path)"  />
-<node pkg="can_to_ros" type ="track_b10" name="track_b10" args="$(arg csv_path)"  />
-<node pkg="can_to_ros" type ="track_b11" name="track_b11" args="$(arg csv_path)"  />
-<node pkg="can_to_ros" type ="track_b12" name="track_b12" args="$(arg csv_path)"  />
-<node pkg="can_to_ros" type ="track_b13" name="track_b13" args="$(arg csv_path)"  />
-<node pkg="can_to_ros" type ="track_b14" name="track_b14" args="$(arg csv_path)"  />
-<node pkg="can_to_ros" type ="track_b15" name="track_b15" args="$(arg csv_path)"  />
+<node pkg="integrator" type ="integrator_node" name="integrator_node" launch-prefix="bash -c 'sleep $(arg node_start_delay); $0 $@' " />
+<node pkg="ghost_integrator" type ="ghost_integrator_node" name="ghost_integrator_node" launch-prefix="bash -c 'sleep $(arg node_start_delay); $0 $@' " />
+
+<!-- <node pkg="can_to_ros" type ="gpsfix" name="gpsfix" args="$(arg gps_path)"  />  -->
+
+<!-- <node pkg="can_to_ros" name="listener" type="listener.py" output="screen" /> -->
+
+<!-- <node pkg="can_to_ros" type ="can_coach_subs.py" name="can_coach_subs" output="screen"  /> -->
 
 
-<node pkg="can_to_ros" type ="gpsfix" name="gpsfix" args="$(arg gps_path)"  /> 
-<node pkg= "rosbag" name="record" type="record"  args="-a -O /home/safwan/Documents/test_ws/$(arg bag_name)_CAN_GPS" />
-<!--<node pkg="can_to_ros" type ="my_frame" name="my_frame" /> -->
+<!-- <node pkg= "rosbag" name="record" type="record"  args="-a -x '/raw_data' -O $(env HOME)/$(arg bag_name)_CAN_GPS" /> -->
 
 </group>
 
 
-
+launch-prefix="bash -c 'sleep $(arg node_start_delay); $0 $@' " />
 
 <!-- <node pkg="rosbag" type="record" name="can_msg_bag" args="-o can_to_ros -a"/> -->
 

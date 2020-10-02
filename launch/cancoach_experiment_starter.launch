@@ -1,11 +1,15 @@
 <launch>
-	<arg name="prefix" default="can_coach"/>
-	<node name="recorder" pkg="rosbag" type="record" output="screen" args=" -o $(arg prefix) -a -x /realtime_raw_data"/>
+	<arg name="prefix" default="can_coach_oct01"/>
+	<node pkg="rosbag" type="play" name="player2" args="/home/safwan/can_coach_oct01.bag" />
+ 	<!-- <arg name="can_path" default="/media/sf_sfwithVM/cyverse/bagfiles/2020_09_30/2020-09-30-14-16-14_2T3MWRFVXLW056972_CAN_Messages.csv"/> -->
 	<group ns="vehicle">
-        <node pkg="can_to_ros" type ="subs" name="subs" output="screen" />
-        <node pkg="can_to_ros" type ="publish_libpanda" name="publish_libpanda" output="screen"  />
+		<!-- <node pkg="can_to_ros" type ="publish_csv" name="publish_csv" args="$(arg can_path)" output="screen" /> -->
+        <!-- <node pkg="can_to_ros" type ="subs" name="subs" output="screen" /> -->
+        <!-- <node pkg="can_to_ros" type ="publish_libpanda" name="publish_libpanda" output="screen"  /> -->
         <node pkg="can_to_ros" type ="can_coach_subs.py" name="can_coach_subs" output="screen"  />
     	</group>
-   	<node pkg="modechanger" type ="modechanger_node" name="modechanger_node_cancoach" output="screen" />
-	<node pkg="director" type ="director_node" name="director_node_cancoach" output="screen"  />
+   	<!-- <node pkg="modechanger" type ="modechanger_node" name="modechanger_node_cancoach" output="screen" /> -->
+	<!-- <node pkg="director" type ="director_node" name="director_node_cancoach" output="screen"  /> -->
+	<!-- <node name="recorder" pkg="rosbag" type="record" output="screen" args=" -O $(env HOME)/$(arg prefix) -a -x /realtime_raw_data"/> -->
+	<!-- <include file="/media/sf_sfwithVM/test_ws/src/can_to_ros/launch/ghost_mode.launch" /> -->
 </launch>
