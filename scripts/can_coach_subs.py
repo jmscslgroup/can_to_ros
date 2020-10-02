@@ -267,10 +267,11 @@ try:
 			leader.predict()
 			if gnewLeadMeasurement != None:#if there's a new 869 lead measurement
 				#cluster 869 and radar points and choose one radar point
+				#print(len(gmyDetections))
 				if len(gmyDetections) > 0: # if there are new radar measurements
 					labels = lt.clusterRadar([gnewLeadMeasurement,0],gmyDetections) #labels are points within 1m euclidean distance
 					myPoints = labels 
-					
+					#print(len(myPoints))
 					if len(myPoints) > 0: #if there is a point other than from 869 in cluster
 						iLead = random.choice(myPoints)#just choose one randomly
 						lead = gmyDetections[iLead][0:2] #lead coordinates
@@ -282,14 +283,22 @@ try:
 						gnewLeadMeasurement = None
 						gmyDetections = [] #reset the radar message buffer
 						leader.update(lead) #update kf
-						print('publishing space gap')
+						#print('publishing space gap')
+						print(leader.get_coords())
 						sg_pub.publish(leader.get_coords()[0])
+					else:
+						#print('publishing anyway')
+						#leader.update([gnewLeadMeasurement,0])
+						#sg_pub.publish(leader.get_coords()[0])
+						#sg_pub.publish(gnewLeadMeasurement)
+						gnewLeadMeasurement = None
+						
 			else:
-				if len(gmyDetections) > 64: # if there are 64 radar measurements and no gnewLeadMeasurement
-					print('estimate not from 869')
+				if len(gmyDetections) > 64: # if there are some radar measurements and no gnewLeadMeasurement
+					#print('estimate not from 869')
 					labels = lt.clusterRadar(leader.get_coords().tolist(),gmyDetections) #cluster algorithm gives labels
 					myPoints = labels
-					
+					#print(myPoints)
 					if len(myPoints) > 0: #if there is a point other than from kalman value in cluster
 						iLead = random.choice(myPoints)#just choose one randomly
 						lead = gmyDetections[iLead][0:2] #lead coordinates
@@ -297,11 +306,15 @@ try:
 						
 						relv_pub.publish(relv)
 						leader.update(lead) #update kf
-						print('publishing space gap')
+						#print('publishing space gap')
+						print(leader.get_coords())
 						sg_pub.publish(leader.get_coords()[0])
+						gmyDetections = [] #clear radar message buffer
 						
         #this feedback system operates under the assumption that there is a lead vehicle
 			velocity = gnewVel
+			#if len(gmyDetections) > 1600:
+			#	gmyDetections = []
 			if mode == 8:
 				ghostSG = ghostDist - egoDist
 				ghostTh = ghostSG/velocity

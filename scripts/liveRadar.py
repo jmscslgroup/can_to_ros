@@ -34,7 +34,7 @@ def connectPanda():
 
     return p
 
-def getRadar(can_recv, addRelv = False):
+def getRadar(can_recv, addRelv = False): 
     """Returns the information from the radar sensor if available in can frame.
     Set addRelv to True if you want the relv value too."""
     RADAR = [385,386,387,388,389,390,391,392,393,394,395,396,397,398,399]
@@ -90,7 +90,12 @@ def clusterRadar(referencePosition, radar_batch):
     # Dx2 observations in the radar_batch, returns a cluster label for each point
     #return cluster.fit_predict(radar_batch)
 	myPoints = []
+	#filter by longitude
+	
+	#if there are multiple in longitude, take the min of the lat
 	for i in range (len(radar_batch)):
+		#if (referencePosition[0]-math.floor(radar_batch[i][0])) > 0:
+		#	pass
 		dist = math.sqrt( ((referencePosition[0]-radar_batch[i][0])**2 )+ ((referencePosition[1]-radar_batch[i][1])**2) )
 		if dist < 1:
 			myPoints.append(i)
