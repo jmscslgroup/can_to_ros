@@ -265,6 +265,7 @@ try:
 			else:
 				th = -1
 			leader.predict()
+			#print(len(gmyDetections))
 			if gnewLeadMeasurement != None:#if there's a new 869 lead measurement
 				#cluster 869 and radar points and choose one radar point
 				#print(len(gmyDetections))
@@ -272,10 +273,12 @@ try:
 					labels = lt.clusterRadar([gnewLeadMeasurement,0],gmyDetections) #labels are points within 1m euclidean distance
 					myPoints = labels 
 					#print(len(myPoints))
+					
 					if len(myPoints) > 0: #if there is a point other than from 869 in cluster
 						iLead = random.choice(myPoints)#just choose one randomly
 						lead = gmyDetections[iLead][0:2] #lead coordinates
 						relv = gmyDetections[iLead][2]
+						print('869 match: ', lead)
 						relv_pub.publish(relv)
 						
 						#print('should have published relv')
@@ -284,7 +287,7 @@ try:
 						gmyDetections = [] #reset the radar message buffer
 						leader.update(lead) #update kf
 						#print('publishing space gap')
-						print(leader.get_coords())
+						#print(leader.get_coords())
 						sg_pub.publish(leader.get_coords()[0])
 					else:
 						#print('publishing anyway')
@@ -295,19 +298,20 @@ try:
 						
 			else:
 				if len(gmyDetections) > 64: # if there are some radar measurements and no gnewLeadMeasurement
-					#print('estimate not from 869')
+					print('estimate not from 869')
 					labels = lt.clusterRadar(leader.get_coords().tolist(),gmyDetections) #cluster algorithm gives labels
 					myPoints = labels
-					#print(myPoints)
+					#print(len(myPoints))
 					if len(myPoints) > 0: #if there is a point other than from kalman value in cluster
 						iLead = random.choice(myPoints)#just choose one randomly
 						lead = gmyDetections[iLead][0:2] #lead coordinates
+						print(lead, gnewLeadMeasurement)
 						relv = gmyDetections[iLead][2] #lead relv
 						
 						relv_pub.publish(relv)
 						leader.update(lead) #update kf
 						#print('publishing space gap')
-						print(leader.get_coords())
+						#print(leader.get_coords())
 						sg_pub.publish(leader.get_coords()[0])
 						gmyDetections = [] #clear radar message buffer
 						
@@ -320,7 +324,7 @@ try:
 				ghostTh = ghostSG/velocity
 				
             #maybe have the sounds play in here?
-			if mode != lastMode:
+			if 1 == 0: #mode != lastMode:
 				if mode == 1: #Normal
 					print('entering mode 1')
 					playsound(soundpath+welcome1)
@@ -362,7 +366,7 @@ try:
 					os.system(ghostLaunchCmd)
 				
 				lastMode = mode
-			if setPoint != lastSetPoint:
+			if 1 == 0: #setPoint != lastSetPoint:
 				if setPoint == 1.35:
 					playsound(soundpath+instructedSet1)
 					print('drive with set 1')
