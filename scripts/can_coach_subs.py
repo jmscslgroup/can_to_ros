@@ -278,7 +278,7 @@ try:
 						iLead = random.choice(myPoints)#just choose one randomly
 						lead = gmyDetections[iLead][0:2] #lead coordinates
 						relv = gmyDetections[iLead][2]
-						print('869 match: ', lead)
+						#print('869 match: ', lead)
 						relv_pub.publish(relv)
 						
 						#print('should have published relv')
@@ -298,14 +298,14 @@ try:
 						
 			else:
 				if len(gmyDetections) > 64: # if there are some radar measurements and no gnewLeadMeasurement
-					print('estimate not from 869')
+					#print('estimate not from 869')
 					labels = lt.clusterRadar(leader.get_coords().tolist(),gmyDetections) #cluster algorithm gives labels
 					myPoints = labels
 					#print(len(myPoints))
 					if len(myPoints) > 0: #if there is a point other than from kalman value in cluster
 						iLead = random.choice(myPoints)#just choose one randomly
 						lead = gmyDetections[iLead][0:2] #lead coordinates
-						print(lead, gnewLeadMeasurement)
+						#print(lead, gnewLeadMeasurement)
 						relv = gmyDetections[iLead][2] #lead relv
 						
 						relv_pub.publish(relv)
