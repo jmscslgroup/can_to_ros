@@ -57,8 +57,11 @@ private:
 		std_msgs::String msgs;
     	msgs.data = messageString;
 		
-		pub_.publish(msgs);
-
+		if (canData->messageID == 180 || canData->messageID == 37 || canData->messageID== 1570 
+		    || canData->messageID== 869 || (canData->messageID>= 384 && canData->messageID<=399 ) || canData->messageID== 552 )
+		{
+			pub_.publish(msgs);
+		}
 		sprintf( messageTofile, "%f,", ros::Time::now().toSec());
 		sprintf( messageTofile,"%s%d,%d,", messageTofile, (int)canData->bus, canData->messageID);
 		for (int i = 0; i < canData->dataLength; i++) {
