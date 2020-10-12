@@ -19,9 +19,9 @@ public:
   SubscribeAndPublish()
   {
     //Topic you want to publish
-    accel_pub = n_.advertise<geometry_msgs::AccelStamped>("/vehicle/accel", 1000);  
+    // accel_pub = n_.advertise<geometry_msgs::AccelStamped>("/vehicle/accel", 1000);  
     lead_dist_pub = n_.advertise<geometry_msgs::PointStamped>("/vehicle/distanceEstimator/dist", 1000);
-    str_angle_pub = n_.advertise<geometry_msgs::PointStamped>("/vehicle/steering_angle", 1000);
+    // str_angle_pub = n_.advertise<geometry_msgs::PointStamped>("/vehicle/steering_angle", 1000);
     speed_pub = n_.advertise<geometry_msgs::TwistStamped>("/vehicle/vel", 1000);
     tracka0_pub = n_.advertise<geometry_msgs::PointStamped>("/track_a0", 1000);
     tracka1_pub = n_.advertise<geometry_msgs::PointStamped>("/track_a1", 1000);
@@ -106,24 +106,24 @@ public:
     headlights_pub.publish(msg);
     }
 
-    else if (MessageID == 552 && Bus==0)
-    { 
-      data = obj.decode_message (MessageID, Message);
-      geometry_msgs::AccelStamped msg;
-      msg.header.stamp=ros::Time(std::stod(Time));
-      msg.accel.linear.x = data.var1;
-      accel_pub.publish(msg);
+    // else if (MessageID == 552 && Bus==0)
+    // { 
+    //   data = obj.decode_message (MessageID, Message);
+    //   geometry_msgs::AccelStamped msg;
+    //   msg.header.stamp=ros::Time(std::stod(Time));
+    //   msg.accel.linear.x = data.var1;
+    //   accel_pub.publish(msg);
       
-    }
-    else if (MessageID == 37 && Bus == 0)
-    { 
-       data = obj.decode_message (MessageID, Message);
-       geometry_msgs::PointStamped str_angle;
-       str_angle.header.stamp=ros::Time(std::stod(Time));
-       str_angle.point.x = data.var1;
-       str_angle_pub.publish(str_angle);
+    // }
+    // else if (MessageID == 37 && Bus == 0)
+    // { 
+    //    data = obj.decode_message (MessageID, Message);
+    //    geometry_msgs::PointStamped str_angle;
+    //    str_angle.header.stamp=ros::Time(std::stod(Time));
+    //    str_angle.point.x = data.var1;
+    //    str_angle_pub.publish(str_angle);
 
-    }
+    // }
     else if (MessageID == 180 && Bus == 0)
     { 
        data = obj.decode_message (MessageID, Message); 
