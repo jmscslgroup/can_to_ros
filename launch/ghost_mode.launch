@@ -14,7 +14,7 @@
 <node pkg="integrator" type ="integrator_node" name="integrator_node" />
 <node pkg="ghost_integrator" type ="ghost_integrator_node" name="ghost_integrator_node" />
 
-<node pkg="rosbag" type="play" name="player" output="screen" args="-s 600 /media/eternity/5B03-CAD3/can_coach_2020-09-25-17-26-59.bag --topics /vehicle/vel /vehicle/vel:=/ghost_vehicle/vel" />
+<node pkg="rosbag" type="play" name="player" args="ghost-car-constant-speed.bag --topics /vehicle/vel /vehicle/vel:=/ghost_vehicle/vel" />
 
 <!-- <node pkg="can_to_ros" type ="gpsfix" name="gpsfix" args="$(arg gps_path)"  />  -->
 

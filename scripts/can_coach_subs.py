@@ -10,6 +10,7 @@ import kalmanTracking as kt
 import random
 import threading
 import os
+import subprocess
 
 import rospy
 from std_msgs.msg import String, UInt8
@@ -22,7 +23,7 @@ from geometry_msgs.msg import TwistStamped
 import threading, time, random
 from playsound import playsound
 
-#initializeing kalman filter object
+#initializing kalman filter object
 df = 0.04
 leader = kt.KF_Object([5,0],0, 0, df, 1,1,1)
 #initializing ROS value variables
@@ -41,6 +42,10 @@ setPoint = 2.25
 thBounds = 0.05
 feedbackType = 1
 ghostTh = 2.25
+ghostSG =  0
+egoDist = 0
+ghostDist = 0
+
 
 #testing that sound works as things start up
 soundpath = '/home/eternity/catkin_ws/src/can_to_ros/sounds/'
@@ -58,6 +63,10 @@ instructedSet1 = 'instructed2-1.wav'
 instructedVmatch = 'instructed3.wav'
 ghostCoach = 'coached4.wav'
 
+shutdown = 0
+startGhost = 0
+startedGhost = 0
+
 try:
 	fast = '/home/eternity/catkin_ws/src/can_to_ros/fastSound.wav' #path from typical installation
 	playsound(fast)
@@ -74,13 +83,15 @@ def printit():
 	global feedbackType
 	global setPoint
 	global ghostTh
-	rospy.set_param('relv', relv) #need to make this into a publisher
+	global ghostSG
+	global startedGhost
+	rospy.set_param('relv', relv) #need to make this into a publisher --did that
 	
 	while getattr(t,"do_run", True):
 		print(mode, feedbackType,setPoint, th)
 		if feedbackType == 0:
 			pass
-		elif feedbackType == 1: #this is used for tests 1 and 2
+		elif feedbackType == 1 and mode != 8: #this is used for cth and dth
 			print(th, lead, relv)
 			if th > setPoint+thBounds: #+0.05
 				rospy.loginfo("faster")
@@ -98,14 +109,14 @@ def printit():
 				playsound(slow)
 		if mode == 8: #this is used for test 4
 			print('you got to ghost mode')
-			
-			if ghostTh > setPoint+thBounds:
-				rospy.loginfo("faster")
-				playsound(fast)
-			if ghostTh < setPoint-thBounds and ghostTh != -1:
-				playsound(slow)
-				rospy.loginfo("slower")
-		time.sleep(0.3)
+			if startedGhost == 1:
+				if ghostTh > setPoint+thBounds:
+					rospy.loginfo("faster")
+					playsound(fast)
+				if ghostTh < setPoint-thBounds and ghostTh != -1:
+					playsound(slow)
+					rospy.loginfo("slower")
+		time.sleep(0.4)
 	print("Stopping sound thread, as you wish.")
 
 def callback869(data):
@@ -215,6 +226,7 @@ def callbackEgoDist(data):
 try:
 	relv_pub = rospy.Publisher('/relv', Float64, queue_size = 10)
 	sg_pub = rospy.Publisher('/space_gap',Float64, queue_size = 10)
+	ghostTh_pub = rospy.Publisher('/ghostTh', Float64, queue_size = 10)
 	
 	rospy.init_node('can_coach_subs', anonymous=True)
 	rospy.Subscriber("/vehicle/vel", TwistStamped,callbackvel)
@@ -319,16 +331,37 @@ try:
 			velocity = gnewVel
 			#if len(gmyDetections) > 1600:
 			#	gmyDetections = []
-			if mode == 8:
-				ghostSG = ghostDist - egoDist
-				ghostTh = ghostSG/velocity
+			if mode == 8:#change back to 8
+				if startGhost == 1: #try to start ghost mode each loop
+					print('ready to start ghost')
+					if (velocity > 28.5) and (velocity < 29.5): #until you get into the right speed range. ghost mode launches for 40+ seconds in that range
+						print('starting ghost')
+						ghostLaunchCmd = 'roslaunch can_to_ros ghost_mode.launch'
+						subprocess.Popen(ghostLaunchCmd,shell=True)
+						startedGhost = 1 #I have already started ghost mode via launch
+						startGhost = 0 #don't start ghost again
+						startGhostTime = time.time()
+				if startedGhost == 1:
+					print('calculating ghostth')
+					if velocity > 0:
+						ghostSG = ghostDist - egoDist + 65 #65m head start for Ghost, to have it start near 65(m)/29(m/s) = 2.25s approx
+						ghostTh = ghostSG/velocity
+					else:
+						ghostTh = -1
+				###put in logic to end ghost after 450 seconds or whatever
+					if time.time() - startGhostTime > 540: #full 9 minutes of ghostMode playing 
+							shutdown = 1
+				ghostTh_pub.publish(ghostTh)
 				
-            #maybe have the sounds play in here?
-			if 1 == 0: #mode != lastMode:
+			#the sounds play in here
+			#shutdown = 1
+			if mode != lastMode:
 				if mode == 1: #Normal
 					print('entering mode 1')
 					playsound(soundpath+welcome1)
 					playsound(soundpath+normal)
+					#shutdown = 1
+					#startGhost = 1
 				
 				if mode == 2: #cth instructed
 					print('entering mode 2')
@@ -358,27 +391,34 @@ try:
 					
 				if mode == 8: #ghost mode
 					print('entering mode 8')
+					
 					playsound(soundpath+welcome4)
 					playsound(soundpath+ghostCoach)
 					print('starting ghost bagfile')
-			
-					ghostLaunchCmd = 'roslaunch can_to_ros ghost_mode.launch'
-					os.system(ghostLaunchCmd)
+					startGhost = 1
 				
 				lastMode = mode
-			if 1 == 0: #setPoint != lastSetPoint:
-				if setPoint == 1.35:
-					playsound(soundpath+instructedSet1)
-					print('drive with set 1')
-				if setPoint == 1.8:
-					playsound(soundpath+instructedSet2)
-					print('drive with set 2')
-				if setPoint == 2.25:
-					playsound(soundpath+instructedSet3)
-					print('drive with set 3')
+			if setPoint != lastSetPoint:
+				if mode != 8:#avoid playing sounds in ghost mode, it interferes with the integrator
+					if setPoint == 1.35:
+						playsound(soundpath+instructedSet1)
+						print('drive with set 1')
+					if setPoint == 1.8:
+						playsound(soundpath+instructedSet2)
+						print('drive with set 2')
+					if setPoint == 2.25:
+						playsound(soundpath+instructedSet3)
+						print('drive with set 3')
 				
 				lastSetPoint = setPoint
-            
+			#check to see if you should shutdown
+			#shutdown should happen 450 seconds after ghost mode starts
+			if shutdown == 1:
+				print('trying to shut down')
+				shutdownCmd = 'rosnode kill -a'
+				#shutdownCmd = '^C'
+				playsound(soundpath+'shutdown.wav')
+				subprocess.Popen(shutdownCmd, shell=True)
 		print('before sleep')
 		# t.cancel()
 		t.do_run = False

@@ -1,11 +1,12 @@
 <launch>
 	<arg name="prefix" default="can_coach"/>
 	<node name="recorder" pkg="rosbag" type="record" output="screen" args=" -o $(arg prefix) -a -x /realtime_raw_data"/>
+   	<node pkg="modechanger" type ="modechanger_node" name="modechanger_node_cancoach" output="screen" />
+	<node pkg="director" type ="director_node" name="director_node_cancoach" output="screen"  />
+	
 	<group ns="vehicle">
         <node pkg="can_to_ros" type ="subs" name="subs" output="screen" />
         <node pkg="can_to_ros" type ="publish_libpanda" name="publish_libpanda" output="screen"  />
         <node pkg="can_to_ros" type ="can_coach_subs.py" name="can_coach_subs" output="screen"  />
     	</group>
-   	<node pkg="modechanger" type ="modechanger_node" name="modechanger_node_cancoach" output="screen" />
-	<node pkg="director" type ="director_node" name="director_node_cancoach" output="screen"  />
 </launch>
