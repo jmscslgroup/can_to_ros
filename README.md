@@ -1,4 +1,4 @@
-# can_to_ros
+# can_to_ros (README needs to be updated)
 can_to_ros is a ROS package that reads CAN bus messages from provided csv file or in real time, decode the messages, publish them to ROS topics, and record the published messages.
 ### Prerequisites
 
