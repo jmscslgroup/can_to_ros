@@ -20,8 +20,9 @@ $ catkin_make
 ```
 $ cd /opt
 $ git clone https://github.com/jmscslgroup/libpanda.git  
-$ #Follow the installation guide [here](https://github.com/jmscslgroup/libpanda)
 ```
+Follow the installation guide [here](https://github.com/jmscslgroup/libpanda)
+
 **Cloning the ROS package**
 ```
 $ cd ~/catkin_ws/src/
