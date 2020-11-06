@@ -1,10 +1,13 @@
-# can_to_ros (README needs to be updated)
-can_to_ros is a ROS package that reads CAN bus messages from provided csv file or in real time, decode the messages, publish them to ROS topics, and record the published messages.
+# can_to_ros
+can_to_ros is a ROS package has the following purposes:
+* Reads CAN bus messages from provided csv file or in real time [(Through libpanda library)](https://github.com/jmscslgroup/libpanda), decode the messages, publish them to ROS topics, and record the published messages.
+* Implementing CAN coach system. (We can talk more about that)
 ### Prerequisites
 
+Ubuntu 18.04
 ROS melodic
 
-## Example
+## Installation
 1.Create a ROS Workspace
 ```
 $ mkdir -p ~/catkin_ws/src
@@ -15,9 +18,9 @@ $ catkin_make
 
 **Installing libpanda**
 ```
-$ cd ~/catkin_ws/
+$ cd /opt
 $ git clone https://github.com/jmscslgroup/libpanda.git  
-$ #Follow the installation guide on https://github.com/jmscslgroup/libpanda
+$ #Follow the installation guide [here](https://github.com/jmscslgroup/libpanda)
 ```
 **Cloning the ROS package**
 ```
@@ -43,11 +46,3 @@ The generated bag file can be found inside the home directory.
 ```
 **Publishing in real time (Needs to be updated)**
 
-Use roslaunch to start publishing:
-<pre>
-$roslaunch can_to_ros piping.launch bag_name:= name_of_the_bag_file.
-
-This launch file will create file inside the home directory named <b>can_data.csv</b>, and then it will pipe the data written to that file to a ros node that handles publishing raw data. 
-
-The generated bag file can be found inside the home directory.
-</pre>
