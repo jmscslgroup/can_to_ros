@@ -4,8 +4,8 @@ can_to_ros is a ROS package has the following purposes:
 * Implementing CAN coach system. (We can talk more about that)
 ### Prerequisites
 
-Ubuntu 18.04
-ROS melodic
+* Ubuntu 18.04
+* ROS melodic
 
 ## Installation
 1.Create a ROS Workspace
