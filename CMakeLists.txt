@@ -238,6 +238,9 @@ target_link_libraries(publish_libpanda ${catkin_LIBRARIES} libpandac.so) #libpan
 add_executable(realtime_publishing src/realtime_publishing.cpp)
 target_link_libraries(realtime_publishing ${catkin_LIBRARIES})
 
+add_executable(sendCommands src/sendCommands.cpp)
+target_link_libraries(sendCommands ${catkin_LIBRARIES} libpandac.so)
+
 catkin_install_python(PROGRAMS scripts/listener.py
 DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
@@ -248,6 +251,9 @@ DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 catkin_install_python(PROGRAMS scripts/can_coach_subs.py
 DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
+
+
+
 # message( " @@@@@@@@@@@@@@@@@@@@@@@ " ${PROJECT_SOURCE_DIR})
 
 

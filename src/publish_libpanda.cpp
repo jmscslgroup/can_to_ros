@@ -103,7 +103,9 @@ public:
 		std::replace(filename.begin(), filename.end(), ':', '-'); 
         // cout << filename << std::endl;
 		pub_ = nh1.advertise<std_msgs::String>("/realtime_raw_data", 1000);
-		csvfile.open(filename);
+
+		//FIXME: use libpanda to create CAN and GPS files
+		csvfile.open(filename); 
 		csvfile <<"Time" << ","<< "Bus" << "," << "MessageID" << "," << "Message" << ","<< "MessageLength" << std::endl;
 
 	}
