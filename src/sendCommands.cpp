@@ -39,7 +39,7 @@
 
 int main(int argc, char **argv) {
 	// Initialize ROS stuff:
-	ros::init(argc, argv, "publish_libpanda");
+	ros::init(argc, argv, "send_commands");
 	ROS_INFO("Initializing ..");
 
     // Initialize panda and toyota handlers
@@ -68,7 +68,7 @@ int main(int argc, char **argv) {
 		// toyotaHandler.setHudMiniCar( mJoystickState.getDX() > 0 );
 		
 		// // This will cancel the cruise control, cruise must be rest by driver to allow further controls
-		// toyotaHandler.setHudCruiseCancelRequest( mJoystickState.getSquare() );
+	    // toyotaHandler.setHudCruiseCancelRequest( mJoystickState.getSquare() );
 
         // use these functions to set the acceleration and steeting Tourque
         toyotaHandler.setAcceleration(0.0);

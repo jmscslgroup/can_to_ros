@@ -241,6 +241,10 @@ target_link_libraries(realtime_publishing ${catkin_LIBRARIES})
 add_executable(sendCommands src/sendCommands.cpp)
 target_link_libraries(sendCommands ${catkin_LIBRARIES} libpandac.so)
 
+
+add_executable(joyNode src/joyNode.cpp)
+target_link_libraries(joyNode ${catkin_LIBRARIES})
+
 catkin_install_python(PROGRAMS scripts/listener.py
 DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
