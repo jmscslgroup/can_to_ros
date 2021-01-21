@@ -28,6 +28,8 @@
 // ROS headers:
 #include "ros/ros.h"
 // #include "std_msgs/String.h"
+
+#include "std_msgs/Float64.h"
 // #include "geometry_msgs/Point.h"
 // #include "geometry_msgs/Twist.h"
 // #include "geometry_msgs/PointStamped.h"
@@ -37,11 +39,24 @@
 // Libpanda headers:
 #include "panda/toyota.h"
 
+
+void accelCommandCallback(const std_msgs::Float64.h::ConstPtr& msg)
+
+{
+// std::cout << "axes "<< joy->axes[0]<< std::endl;
+// std::cout << "buttons A "<< joy->buttons[0]<< std::endl;
+// std::cout << "buttons B "<< joy->buttons[1]<< std::endl;
+
+}
+
+
+
 int main(int argc, char **argv) {
 	// Initialize ROS stuff:
 	ros::init(argc, argv, "send_commands");
 	ROS_INFO("Initializing ..");
-
+	ros::NodeHandle n;
+    ros::Subscriber sub = n.subscribe("joy", 10, accelCommandCallback);
     // Initialize panda and toyota handlers
 	Panda::Handler pandaHandler;
 	Panda::ToyotaHandler toyotaHandler(&pandaHandler);
