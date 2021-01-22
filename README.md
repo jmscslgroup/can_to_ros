@@ -4,8 +4,8 @@ can_to_ros is a ROS package has the following purposes:
 * Implementing CAN coach system. (We can talk more about that)
 ### Prerequisites
 
-* Ubuntu 18.04
-* ROS melodic
+* Ubuntu 18.04 or 20.04
+* ROS melodic or ROS noetic
 
 ## Installation
 1.Create a ROS Workspace
@@ -37,13 +37,4 @@ $ catkin_make
 ```
 $source ./devel/setup.bash
 ```
-**Publishing from a CSV file**
-
-Use roslaunch to start publishing:
-```
-$roslaunch can_to_ros start_can_decoding.launch can_path:=/path/to/file.csv bag_name:= name_of_the_bag_file.
-
-The generated bag file can be found inside the home directory.
-```
-**Publishing in real time (Needs to be updated)**
 
