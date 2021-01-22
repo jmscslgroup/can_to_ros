@@ -71,26 +71,6 @@ private:
 
 		csvfile << messageTofile << std::endl;
 
-
-		//sprintf( messageString, "%f %d %d %s %", 0.00, canData->bus, canData->messageID, canD
-		// Gets called for every incomiming can data with data:
-		
-		// canData->messageID;					// unsigned int
-		// canData->dataLength;					// unsigned char
-		// canData->busTime;						// unsinged int
-		// canData->bus;							// unsigned char
-		// canData->data[CAN_DATA_MAX_LENGTH];	// unsigned char[8]
-		// canData->sysTime;						// struct timeval
-		
-		//ss << 0.00 <<" " << canData->bus << " " << canData->messageID<< " " << canData->data << " " << canData->dataLength;
-		//char messageString[200];
-		//sprintf( messageString, "%f %d %d %s %", 0.00, canData->bus, canData->messageID, canData->data, canData->dataLength);
-		//std_msgs::String msgs;
-        	//msgs.data = messageString;
-		//msgs.data = ss.str();
-
-		//pub_.publish(msgs);
-		//ss.str(std::string());
 	}
 	
 public:

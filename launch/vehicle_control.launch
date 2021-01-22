@@ -1,0 +1,8 @@
+<launch>
+<!-- include information for the joystick, etc. -->
+<node pkg="can_to_ros" type="commandDuration" name="commandDuration" output="screen" />
+
+
+<node pkg="can_to_ros" type="publishCommands" name="publishCommands" output="screen"/>
+
+</launch>

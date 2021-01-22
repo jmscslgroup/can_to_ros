@@ -238,9 +238,16 @@ target_link_libraries(publish_libpanda ${catkin_LIBRARIES} libpandac.so) #libpan
 add_executable(realtime_publishing src/realtime_publishing.cpp)
 target_link_libraries(realtime_publishing ${catkin_LIBRARIES})
 
-add_executable(sendCommands src/sendCommands.cpp)
-target_link_libraries(sendCommands ${catkin_LIBRARIES} libpandac.so)
+# add_executable(sendCommands src/sendCommands.cpp)
+# target_link_libraries(sendCommands ${catkin_LIBRARIES} libpandac.so)
 
+
+add_executable(commandDuration src/commandDuration.cpp)
+target_link_libraries(commandDuration ${catkin_LIBRARIES})
+
+
+add_executable(publishCommands src/publishCommands.cpp)
+target_link_libraries(publishCommands ${catkin_LIBRARIES})
 
 add_executable(joyNode src/joyNode.cpp)
 target_link_libraries(joyNode ${catkin_LIBRARIES})

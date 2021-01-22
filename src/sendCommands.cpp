@@ -24,80 +24,77 @@
  */
 
 #include <iostream>
-
 // ROS headers:
 #include "ros/ros.h"
-// #include "std_msgs/String.h"
-
 #include "std_msgs/Float64.h"
-// #include "geometry_msgs/Point.h"
-// #include "geometry_msgs/Twist.h"
-// #include "geometry_msgs/PointStamped.h"
-// #include "sensor_msgs/TimeReference.h"
-// #include "header_package/can_decode.h"
-// #include "visualization_msgs/Marker.h"
 // Libpanda headers:
 #include "panda/toyota.h"
+#include <panda.h>
 
 
-void accelCommandCallback(const std_msgs::Float64.h::ConstPtr& msg)
+class Control {
 
-{
-// std::cout << "axes "<< joy->axes[0]<< std::endl;
-// std::cout << "buttons A "<< joy->buttons[0]<< std::endl;
-// std::cout << "buttons B "<< joy->buttons[1]<< std::endl;
+private:
+	// Initialize panda and toyota handlers
+	Panda::Handler pandaHandler;
+	Panda::ToyotaHandler toyotaHandler(&pandaHandler);
+	ros::Subscriber sub_;
 
+public:
+Control(){
+
+	ros::NodeHandle n_;
+	ros::Subscriber sub_;
+	// intializing a subscriber
+	sub_ = n_.subscribe("/commands", 1000, &Control::callback, this);
+
+	// Initialize panda and toyota handlers
+	// Let's roll
+	pandaHandler.initialize();
+	toyotaHandler.start();
+	// Setting HUD elements:
+	// hudLaneLeft += mJoystickState.getButtonL1Rising();
+	// hudLaneLeft -= mJoystickState.getButtonL2Rising();
+	// hudLaneRight += mJoystickState.getButtonR1Rising();
+	// hudLaneRight -= mJoystickState.getButtonR2Rising();
+	// toyotaHandler.setHudLanes(hudLaneLeft, hudLaneRight);
+	
+	// toyotaHandler.setHudLdaAlert( mJoystickState.getTriangle() );
+	// toyotaHandler.setHudTwoBeeps( mJoystickState.getX() );
+	// toyotaHandler.setHudRepeatedBeeps( mJoystickState.getSelect() );
+	// toyotaHandler.setHudBarrier( mJoystickState.getDY() > 0 );
+	// toyotaHandler.setHudMiniCar( mJoystickState.getDX() > 0 );
+	
+	// // This will cancel the cruise control, cruise must be rest by driver to allow further controls
+	// toyotaHandler.setHudCruiseCancelRequest( mJoystickState.getSquare() );
+	
 }
 
+void callback(const std_msgs::Float64::ConstPtr& msg)
+{
+	// use these functions to set the acceleration and steeting Tourque
+	toyotaHandler.setAcceleration(0.0);
+	toyotaHandler.setSteerTorque(0.0);  // doesnt work yet
+
+}
+~Control(){
+	// Will never reach here
+	toyotaHandler.stop();
+	pandaHandler.stop();
+}
+
+};
 
 
 int main(int argc, char **argv) {
 	// Initialize ROS stuff:
 	ros::init(argc, argv, "send_commands");
 	ROS_INFO("Initializing ..");
-	ros::NodeHandle n;
-    ros::Subscriber sub = n.subscribe("joy", 10, accelCommandCallback);
-    // Initialize panda and toyota handlers
-	Panda::Handler pandaHandler;
-	Panda::ToyotaHandler toyotaHandler(&pandaHandler);
-	
-	// Let's roll
-	pandaHandler.initialize();
-	toyotaHandler.start();
-    //publish rate 
-    ros::Rate rate(10.0); 
+	Control vehicleControl;
+    
+    ros::spin();
 
-    while (ros::ok())
-    {  
-        // Setting HUD elements:
-		// hudLaneLeft += mJoystickState.getButtonL1Rising();
-		// hudLaneLeft -= mJoystickState.getButtonL2Rising();
-		// hudLaneRight += mJoystickState.getButtonR1Rising();
-		// hudLaneRight -= mJoystickState.getButtonR2Rising();
-		// toyotaHandler.setHudLanes(hudLaneLeft, hudLaneRight);
-		
-		// toyotaHandler.setHudLdaAlert( mJoystickState.getTriangle() );
-		// toyotaHandler.setHudTwoBeeps( mJoystickState.getX() );
-		// toyotaHandler.setHudRepeatedBeeps( mJoystickState.getSelect() );
-		// toyotaHandler.setHudBarrier( mJoystickState.getDY() > 0 );
-		// toyotaHandler.setHudMiniCar( mJoystickState.getDX() > 0 );
-		
-		// // This will cancel the cruise control, cruise must be rest by driver to allow further controls
-	    // toyotaHandler.setHudCruiseCancelRequest( mJoystickState.getSquare() );
-
-        // use these functions to set the acceleration and steeting Tourque
-        toyotaHandler.setAcceleration(0.0);
-		toyotaHandler.setSteerTorque(0.0);  // doesnt work yet
-
-        ros::spin();
-	    rate.sleep();    
-
-    }
-
-
-    // Will never reach here
-	toyotaHandler.stop();
-	pandaHandler.stop();
+  
 
     return 0;
 }
