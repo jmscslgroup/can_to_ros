@@ -18,7 +18,7 @@ int main(int argc, char **argv)
 
     // Here you build your twist message
     accel_msg.data=1.0;
-
+    ros::Duration(5).sleep();
     ros::Time beginTime = ros::Time::now();
     ros::Duration secondsIWantToSendMessagesFor = ros::Duration(3.0); 
     ros::Time endTime = beginTime + secondsIWantToSendMessagesFor;
@@ -32,7 +32,7 @@ int main(int argc, char **argv)
         ros::Duration(0.1).sleep();
     }
     std::cout<< "Finished sending accel command." << std::endl;
-    
+
     accel_msg.data=0.0;
     endTime=ros::Time::now() + ros::Duration(1.0);
      while (ros::Time::now() < endTime)
