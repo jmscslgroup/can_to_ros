@@ -35,6 +35,6 @@ $ catkin_make
 ```
 4.Source your enviroment:
 ```
-$source ./devel/setup.bash
+$source ~/catkin_ws/devel/setup.bash
 ```
 
