@@ -17,8 +17,8 @@ int main(int argc, char **argv)
     std_msgs::Float64 accel_msg;
 
     // Here you build your twist message
-    accel_msg.data=1.0;
-    ros::Duration(5).sleep();
+    accel_msg.data=1.0;   // setting the accelaration value
+    // ros::Duration(5).sleep();
     ros::Time beginTime = ros::Time::now();
     ros::Duration secondsIWantToSendMessagesFor = ros::Duration(3.0); 
     ros::Time endTime = beginTime + secondsIWantToSendMessagesFor;
