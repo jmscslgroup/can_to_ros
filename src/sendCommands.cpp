@@ -79,7 +79,11 @@ int main(int argc, char **argv) {
 	// Initialize panda and toyota handlers
 	pandaHandler.initialize();
 	toyotaHandler.start();
-	
+	pandaHandler.getCan().saveToCsvFile("/");
+    pandaHandler.getGps().saveToFile(nmeaFilename);
+
+
+
 	Control vehicleControl(&toyotaHandler);
     
     ros::spin();
