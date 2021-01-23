@@ -76,7 +76,7 @@ private:
 public:
 	CanToRosPublisher() {
 		std::time_t t=time(0);
-		struct tm * now = localtime( & t );
+		struct tm * now = localtime( &t );
 		char buffer [256];
 		strftime (buffer,80,"%Y-%m-%d-%X.csv",now);
 		std::string filename=buffer;

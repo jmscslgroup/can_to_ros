@@ -71,6 +71,18 @@ int main(int argc, char **argv) {
 	// Initialize ROS stuff:
 	ros::init(argc, argv, "send_commands");
 	ROS_INFO("Initializing ..");
+
+	// creating file names
+	std::time_t t=time(0);
+	struct tm * now = localtime( &t );
+	char buffer [256];
+	strftime (buffer,80,"%Y-%m-%d-%X",now);
+    std::string bufferStr=buffer;
+    std::replace(bufferStr.begin(), bufferStr.end(), ':', '-'); 
+    std::string relativePath= argv[1];
+	std::string canDataFilename = relativePath + "/" + bufferStr + "_CAN_Messages.csv";
+    std::string gpsDataFilename = relativePath + "/" + bufferStr + "_GPS_Messages.csv";
+    // std::cout << canDataFilename << std::endl << gpsDataFilename << std::endl;
 	
 	// toyota controller structure:
 	Panda::Handler pandaHandler;
@@ -79,10 +91,8 @@ int main(int argc, char **argv) {
 	// Initialize panda and toyota handlers
 	pandaHandler.initialize();
 	toyotaHandler.start();
-	pandaHandler.getCan().saveToCsvFile("/");
-    pandaHandler.getGps().saveToFile(nmeaFilename);
-
-
+	pandaHandler.getCan().saveToCsvFile(canDataFilename.c_str());
+    pandaHandler.getGps().saveToFile(gpsDataFilename.c_str());
 
 	Control vehicleControl(&toyotaHandler);
     
