@@ -30,9 +30,11 @@
 #include "panda/toyota.h"
 class Control {
 private:
+	ros::NodeHandle n_;
+	ros::Subscriber sub_;
 	// Initialize panda and toyota handlers
 	Panda::ToyotaHandler* toyotaHandler;
-	ros::Subscriber sub_;
+	
 public:
 	void callback(const std_msgs::Float64::ConstPtr& msg)
 	{
@@ -43,8 +45,6 @@ public:
 	Control(Panda::ToyotaHandler* toyotaHandler){
 		
 		this->toyotaHandler = toyotaHandler;
-		ros::NodeHandle n_;
-		// ros::Subscriber sub_;
 		// intializing a subscriber
 		sub_ = n_.subscribe("/commands", 1000, &Control::callback, this);
 		// Setting HUD elements:

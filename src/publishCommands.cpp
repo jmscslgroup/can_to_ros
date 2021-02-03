@@ -13,7 +13,7 @@ class CtrlCommands {
     ros::Subscriber sub_;
     double receivedMsg = 0.0;
 
-
+// 
  public:
     CtrlCommands(){
         command_pub = n.advertise<std_msgs::Float64>("commands", 1000);
