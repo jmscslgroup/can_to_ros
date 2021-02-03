@@ -1,5 +1,6 @@
 #include "ros/ros.h"
 #include "std_msgs/Float64.h"
+#include <stdlib.h>
 
 
 int main(int argc, char **argv)

@@ -21,6 +21,8 @@
 
  */
 #include <iostream>
+#include <stdlib.h>
+#include <fstream>
 // ROS headers:
 #include "ros/ros.h"
 #include "std_msgs/Float64.h"
@@ -42,7 +44,7 @@ public:
 		
 		this->toyotaHandler = toyotaHandler;
 		ros::NodeHandle n_;
-		ros::Subscriber sub_;
+		// ros::Subscriber sub_;
 		// intializing a subscriber
 		sub_ = n_.subscribe("/commands", 1000, &Control::callback, this);
 		// Setting HUD elements:
@@ -72,18 +74,38 @@ int main(int argc, char **argv) {
 	ros::init(argc, argv, "send_commands");
 	ROS_INFO("Initializing ..");
 
-	// creating file names
+  	// creating file names
 	std::time_t t=time(0);
 	struct tm * now = localtime( &t );
-	char buffer [256];
-	strftime (buffer,80,"%Y-%m-%d-%X",now);
-    std::string bufferStr=buffer;
-    std::replace(bufferStr.begin(), bufferStr.end(), ':', '-'); 
-    std::string relativePath= argv[1];
-	std::string canDataFilename = relativePath + "/" + bufferStr + "_CAN_Messages.csv";
-    std::string gpsDataFilename = relativePath + "/" + bufferStr + "_GPS_Messages.csv";
-    // std::cout << canDataFilename << std::endl << gpsDataFilename << std::endl;
+	char buffer1 [256];
+  	char buffer2 [256];
+	strftime (buffer1,80,"%Y-%m-%d-%X",now);
+  	std::string bufferStr=buffer1;
+  
+  	std::replace(bufferStr.begin(), bufferStr.end(), ':', '-'); 
+  
+	strftime (buffer2,80,"%Y-%m-%d",now);
+	std::string folderName = buffer2;
+	std::replace(folderName.begin(), folderName.end(), '-', '_'); 
+	std::ifstream file("/etc/libpanda.d/vin");
+	std::string vin;
+	std::getline(file, vin);
+	std::string relativePath= "/var/panda/CyverseData/JmscslgroupData/PandaData"; 
+	std::string commandToCreateFolder = "mkdir -p " + relativePath + "/" + folderName;
+
+
+	std::string canDataFilename = relativePath + "/" + bufferStr + "_" + vin + "_CAN_Messages.csv";
+	std::string gpsDataFilename = relativePath + "/" + bufferStr + "_" + vin + "_GPS_Messages.csv";
+
+	// std::cout << commandToCreateFolder << std::endl;
+	// std::cout << canDataFilename << std::endl;
+	// std::cout << gpsDataFilename << std::endl;
+
+  	system(commandToCreateFolder.c_str()); // Creating a directory
 	
+
+
+
 	// toyota controller structure:
 	Panda::Handler pandaHandler;
 	Panda::ToyotaHandler toyotaHandler(&pandaHandler);
@@ -92,7 +114,7 @@ int main(int argc, char **argv) {
 	pandaHandler.initialize();
 	toyotaHandler.start();
 	pandaHandler.getCan().saveToCsvFile(canDataFilename.c_str());
-    pandaHandler.getGps().saveToFile(gpsDataFilename.c_str());
+    pandaHandler.getGps().saveToCsvFile(gpsDataFilename.c_str());
 
 	Control vehicleControl(&toyotaHandler);
     

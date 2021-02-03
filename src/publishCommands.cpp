@@ -38,6 +38,7 @@ int main (int argc, char** argv ){
 
 ros::init(argc, argv, "command_publisher");
 
+
 CtrlCommands cmds;
 
 ros::Rate loop_rate(100);
