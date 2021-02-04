@@ -94,8 +94,8 @@ int main(int argc, char **argv) {
 	std::string commandToCreateFolder = "mkdir -p " + relativePath + "/" + folderName;
 
 
-	std::string canDataFilename = relativePath + "/" + bufferStr + "_" + vin + "_CAN_Messages.csv";
-	std::string gpsDataFilename = relativePath + "/" + bufferStr + "_" + vin + "_GPS_Messages.csv";
+	std::string canDataFilename = relativePath + "/" + folderName + "/" + bufferStr + "_" + vin + "_CAN_Messages.csv";
+	std::string gpsDataFilename = relativePath + "/" + folderName + "/" + bufferStr + "_" + vin + "_GPS_Messages.csv";
 
 	// std::cout << commandToCreateFolder << std::endl;
 	// std::cout << canDataFilename << std::endl;
