@@ -249,6 +249,9 @@ target_link_libraries(commandDuration ${catkin_LIBRARIES})
 add_executable(publishCommands src/publishCommands.cpp)
 target_link_libraries(publishCommands ${catkin_LIBRARIES})
 
+add_executable(commandDurationDelayed src/commandDurationDelayed.cpp)
+target_link_libraries(commandDurationDelayed ${catkin_LIBRARIES})
+
 # add_executable(joyNode src/joyNode.cpp)
 # target_link_libraries(joyNode ${catkin_LIBRARIES})
 
