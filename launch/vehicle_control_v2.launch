@@ -1,0 +1,9 @@
+<launch>
+<!-- include information for the joystick, etc. args="$(env HOME)"  -->
+<node pkg="can_to_ros" type="sendCommands" name="sendCommands" output="screen" />
+
+
+<node pkg="can_to_ros" type="publishCommands" name="publishCommands" output="screen"/>
+<node pkg="vehicle_control" type="vehicle_control_node" name="vehicle_control_node" output="screen"/>
+
+</launch>
