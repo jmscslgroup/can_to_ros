@@ -12,8 +12,9 @@ class Selector:
         self.rate = rospy.Rate(100)
 
     def publisher(self):
-        print ("Enter (1) for + acceleration (2) for - acceleration: ")
-        val = input("") 
+        #print ("Enter (1) for + acceleration (2) for - acceleration: ")
+        #val = input("") 
+        val = 1
 
         while not rospy.is_shutdown():
             msg = Int8()
