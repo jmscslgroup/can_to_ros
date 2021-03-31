@@ -1,13 +1,17 @@
 # can_to_ros
-can_to_ros is a ROS package has the following purposes:
-* Reads CAN bus messages from provided csv file or in real time [(Through libpanda library)](https://github.com/jmscslgroup/libpanda), decode the messages, publish them to ROS topics, and record the published messages.
-* Implementing CAN coach system. (We can talk more about that)
-### Prerequisites
 
+can_to_ros is a ROS package that provide a real-time and offline decoding of CAN bus messages.
+
+
+### Software Requirements
+-------------------------
 * Ubuntu 18.04 or 20.04
-* ROS melodic or ROS noetic
+* ROS [melodic](http://wiki.ros.org/melodic/Installation/Ubuntu) or ROS [noetic](http://wiki.ros.org/noetic/Installation)
+* [libpanda](https://github.com/jmscslgroup/libpanda) (must be installed in /opt directory)
 
 ## Installation
+---------------
+
 1.Create a ROS Workspace
 ```
 $ mkdir -p ~/catkin_ws/src
