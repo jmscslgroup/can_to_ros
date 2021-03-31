@@ -10,6 +10,16 @@ int main(int argc, char **argv)
 
   ros::NodeHandle n;
 
+    if (argc != 2)
+    { // check the nunber of the argument
+        std::cout <<"please pass accel value" << std::endl;
+        return 1;
+    }
+
+    double driver_in = 0.0;
+
+    driver_in = std::stod(argv[1]);
+
   // Advertize the publisher on the topic you like
   ros::Publisher pub = n.advertise<std_msgs::Float64 >("timed_accel", 10);
     /**
@@ -18,10 +28,10 @@ int main(int argc, char **argv)
     std_msgs::Float64 accel_msg;
 
     // Here you build your twist message
-    accel_msg.data=1.0;   // setting the accelaration value
+    accel_msg.data = driver_in;   // setting the accelaration value
     // ros::Duration(5).sleep();
     ros::Time beginTime = ros::Time::now();
-    ros::Duration secondsIWantToSendMessagesFor = ros::Duration(3.0); 
+    ros::Duration secondsIWantToSendMessagesFor = ros::Duration(5.0); // command duration
     ros::Time endTime = beginTime + secondsIWantToSendMessagesFor;
     
     while (ros::Time::now() < endTime )

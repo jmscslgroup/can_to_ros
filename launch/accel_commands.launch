@@ -1,0 +1,12 @@
+<launch>
+
+    <arg name="accel" default="0.0"/>
+    <arg name="delay_time" default="0.0"/>
+
+    <node pkg="can_to_ros" type="commandDuration" name="commandDuration" args="$(arg accel)" output="screen" />
+
+<!-- <node pkg="can_to_ros" type="selector.py" name="selector" args="$(arg accel)" output="screen" /> -->
+
+<!-- <node pkg="vehicle_control" type="vehicle_control_node" name="vehicle_control_node" output="screen"/> -->
+
+</launch>
