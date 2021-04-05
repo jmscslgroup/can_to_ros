@@ -3,7 +3,7 @@
 can_to_ros is a ROS package that provide a real-time and offline decoding of CAN bus messages. It is also integrated with [libpanda](https://github.com/jmscslgroup/libpanda) to send control commands to Toyota RAV4.
 
 
-### Software Requirements
+### Software Requirements and Dependencies
 -------------------------
 * Ubuntu 18.04/20.04 AMD64 or Ubuntu18.04/20.04 ARM 
 * ROS [melodic](http://wiki.ros.org/melodic/Installation/Ubuntu) or ROS [noetic](http://wiki.ros.org/noetic/Installation)
@@ -18,20 +18,14 @@ $ mkdir -p ~/catkin_ws/src
 $ cd ~/catkin_ws/
 $ catkin_make
 ```
-2.Clone the repos.
+2.Clone the repo.
 
-**Installing libpanda**
-```
-$ cd /opt
-$ git clone https://github.com/jmscslgroup/libpanda.git  
-```
-Follow the installation guide [here](https://github.com/jmscslgroup/libpanda)
-
-**Cloning the ROS package**
 ```
 $ cd ~/catkin_ws/src/
-$ git clone https://github.com/SafwanElmadani/can_to_ros.git
+$ git clone https://github.com/jmscslgroup/can_to_ros.git
 ```
+Note: make sure to install linpanda before running ```catkin_make```.
+
 3.Build the WS
 ```
 $ cd ~/catkin_ws
@@ -45,4 +39,4 @@ $source ~/catkin_ws/devel/setup.bash
 ### Sending Acceleration Commands to RAV4
 ----------------------------------------
 
-We created a set of slides ([Step Input Commands Test](https://docs.google.com/presentation/d/1nBOYf58OQKMXlTMIj9IBpDr5be11WevXijcDsJr9ujI/edit#slide=id.p)) that include the steps needed to send acceleration commands to a Toyota RAV4.  
+We created a set of slides ([Step Input Commands Test](https://docs.google.com/presentation/d/1nBOYf58OQKMXlTMIj9IBpDr5be11WevXijcDsJr9ujI/edit#slide=id.p)) that include the steps needed to send acceleration commands to a Toyota RAV4.
