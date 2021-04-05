@@ -1,11 +1,11 @@
 # can_to_ros
 
-can_to_ros is a ROS package that provide a real-time and offline decoding of CAN bus messages.
+can_to_ros is a ROS package that provide a real-time and offline decoding of CAN bus messages. It is also integrated with [libpanda](https://github.com/jmscslgroup/libpanda) to send control commands to Toyota RAV4.
 
 
 ### Software Requirements
 -------------------------
-* Ubuntu 18.04 or 20.04
+* Ubuntu 18.04/20.04 AMD64 or Ubuntu18.04/20.04 ARM 
 * ROS [melodic](http://wiki.ros.org/melodic/Installation/Ubuntu) or ROS [noetic](http://wiki.ros.org/noetic/Installation)
 * [libpanda](https://github.com/jmscslgroup/libpanda) (must be installed in /opt directory)
 
