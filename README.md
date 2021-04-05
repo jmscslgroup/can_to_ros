@@ -24,7 +24,7 @@ $ catkin_make
 $ cd ~/catkin_ws/src/
 $ git clone https://github.com/jmscslgroup/can_to_ros.git
 ```
-Note: make sure to install linpanda before running ```catkin_make```.
+Note: make sure to install libpanda before running ```catkin_make```.
 
 3.Build the WS
 ```
