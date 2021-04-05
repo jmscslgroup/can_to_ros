@@ -9,7 +9,7 @@ can_to_ros is a ROS package that provide a real-time and offline decoding of CAN
 * ROS [melodic](http://wiki.ros.org/melodic/Installation/Ubuntu) or ROS [noetic](http://wiki.ros.org/noetic/Installation)
 * [libpanda](https://github.com/jmscslgroup/libpanda) (must be installed in /opt directory)
 
-## Installation
+### Installation
 ---------------
 
 1.Create a ROS Workspace
@@ -42,6 +42,7 @@ $ catkin_make
 $source ~/catkin_ws/devel/setup.bash
 ```
 
-## Sending Acceleration Commands to RAV4
----------------
+### Sending Acceleration Commands to RAV4
+----------------------------------------
+
 We created a set of slides ([Step Input Commands Test](https://docs.google.com/presentation/d/1nBOYf58OQKMXlTMIj9IBpDr5be11WevXijcDsJr9ujI/edit#slide=id.p)) that include the steps needed to send acceleration commands to a Toyota RAV4.  
