@@ -42,3 +42,6 @@ $ catkin_make
 $source ~/catkin_ws/devel/setup.bash
 ```
 
+## Sending Acceleration Commands to RAV4
+---------------
+We created a set of slides ([Step Input Commands Test](https://docs.google.com/presentation/d/1nBOYf58OQKMXlTMIj9IBpDr5be11WevXijcDsJr9ujI/edit#slide=id.p)) that include the steps needed to send acceleration commands to a Toyota RAV4.  
