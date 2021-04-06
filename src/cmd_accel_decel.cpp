@@ -10,6 +10,18 @@ int main(int argc, char **argv)
 
   ros::NodeHandle n;
 
+    if (argc != 3)
+    { // check the nunber of the argument
+        std::cout <<"please pass accel value and duration" << std::endl;
+        return 1;
+    }
+
+    double driver_in = 0.0;
+    double duration_in = 0.0;
+
+    driver_in = std::stod(argv[1]);
+    duration_in = std::stod(argv[2]);
+
   // Advertize the publisher on the topic you like
   ros::Publisher pub = n.advertise<std_msgs::Float64 >("timed_accel", 10);
     /**
@@ -17,32 +29,40 @@ int main(int argc, char **argv)
      */
     std_msgs::Float64 accel_msg;
 
-    accel_msg.data=0.0;
-    ros::Time endTime=ros::Time::now() + ros::Duration(5.0);
-     while (ros::Time::now() < endTime)
+    // Here you build your twist message
+    accel_msg.data = driver_in;   // setting the acceleration value
+    // ros::Duration(5).sleep();
+    std::cout<< "accelerating" << std::endl;
+    ros::Time beginTime = ros::Time::now();
+    ros::Duration secondsIWantToSendMessagesFor = ros::Duration(duration_in); // command duration
+    ros::Time endTime = beginTime + secondsIWantToSendMessagesFor;
+    
+    while (ros::Time::now() < endTime )
     {
         pub.publish(accel_msg);
-
         // Time between messages, so you don't blast out an thousands of 
+        // messages
         ros::Duration(0.1).sleep();
     }
 
-    // Here you build your twist message
-    accel_msg.data=1.0;   // setting the accelaration value
-    // ros::Duration(5).sleep();
-    ros::Time beginTime = ros::Time::now();
-    ros::Duration secondsIWantToSendMessagesFor = ros::Duration(3.0); 
+    
+    std::cout<< "decelerating" << std::endl;
+    accel_msg.data = driver_in*(-1);   // setting the acceleration value
+
+    beginTime = ros::Time::now();
+    secondsIWantToSendMessagesFor = ros::Duration(duration_in); // command duration
     endTime = beginTime + secondsIWantToSendMessagesFor;
     
     while (ros::Time::now() < endTime )
     {
         pub.publish(accel_msg);
-
         // Time between messages, so you don't blast out an thousands of 
-        // messages in your 3 secondperiod
+        // messages
         ros::Duration(0.1).sleep();
     }
-    std::cout<< "Finished sending accel command." << std::endl;
+
+    
+    std::cout<< "Finished sending accel commands." << std::endl;
 
     accel_msg.data=0.0;
     endTime=ros::Time::now() + ros::Duration(1.0);

@@ -30,7 +30,7 @@ int main(int argc, char **argv)
     std_msgs::Float64 accel_msg;
 
     // Here you build your twist message
-    accel_msg.data = driver_in;   // setting the accelaration value
+    accel_msg.data = driver_in;   // setting the acceleration value
     // ros::Duration(5).sleep();
     ros::Time beginTime = ros::Time::now();
     ros::Duration secondsIWantToSendMessagesFor = ros::Duration(duration_in); // command duration
@@ -39,9 +39,8 @@ int main(int argc, char **argv)
     while (ros::Time::now() < endTime )
     {
         pub.publish(accel_msg);
-
         // Time between messages, so you don't blast out an thousands of 
-        // messages in your 3 secondperiod
+        // messages
         ros::Duration(0.1).sleep();
     }
     std::cout<< "Finished sending accel command." << std::endl;
