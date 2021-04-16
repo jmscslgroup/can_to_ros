@@ -4,4 +4,8 @@
 
 <node pkg="can_to_ros" type="publishCommands" name="publishCommands" output="screen"/>
 
+<node pkg="can_to_ros" type ="publish_libpanda" name="publish_libpanda" output="screen"  />
+
+<node pkg="can_to_ros" type ="subs" name="subs" output="screen" /> 
+
 </launch>
