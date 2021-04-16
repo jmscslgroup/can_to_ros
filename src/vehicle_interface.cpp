@@ -121,7 +121,7 @@ int main(int argc, char **argv) {
 	ros::init(argc, argv, "send_commands");
 	ROS_INFO("Initializing ..");
 
-	ros::NodeHandle* nh;
+	ros::NodeHandle nh;
 	
   	// creating file names
 	std::time_t t=time(0);
