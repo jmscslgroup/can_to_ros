@@ -62,31 +62,31 @@ private:
 		{
 			pub_.publish(msgs);
 		}
-		sprintf( messageTofile, "%f,", ros::Time::now().toSec());
-		sprintf( messageTofile,"%s%d,%d,", messageTofile, (int)canData->bus, canData->messageID);
-		for (int i = 0; i < canData->dataLength; i++) {
-			sprintf( messageTofile, "%s%02x", messageTofile, canData->data[i]);
-		}
-		sprintf( messageTofile, "%s,%d", messageTofile, canData->dataLength);
+		// sprintf( messageTofile, "%f,", ros::Time::now().toSec());
+		// sprintf( messageTofile,"%s%d,%d,", messageTofile, (int)canData->bus, canData->messageID);
+		// for (int i = 0; i < canData->dataLength; i++) {
+		// 	sprintf( messageTofile, "%s%02x", messageTofile, canData->data[i]);
+		// }
+		// sprintf( messageTofile, "%s,%d", messageTofile, canData->dataLength);
 
-		csvfile << messageTofile << std::endl;
+		// csvfile << messageTofile << std::endl;
 
 	}
 	
 public:
 	CanToRosPublisher() {
-		std::time_t t=time(0);
-		struct tm * now = localtime( &t );
-		char buffer [256];
-		strftime (buffer,80,"%Y-%m-%d-%X.csv",now);
-		std::string filename=buffer;
-		std::replace(filename.begin(), filename.end(), ':', '-'); 
+		// std::time_t t=time(0);
+		// struct tm * now = localtime( &t );
+		// char buffer [256];
+		// strftime (buffer,80,"%Y-%m-%d-%X.csv",now);
+		// std::string filename=buffer;
+		// std::replace(filename.begin(), filename.end(), ':', '-'); 
         // cout << filename << std::endl;
 		pub_ = nh1.advertise<std_msgs::String>("/realtime_raw_data", 1000);
 
 		//FIXME: use libpanda to create CAN and GPS files
-		csvfile.open(filename); 
-		csvfile <<"Time" << ","<< "Bus" << "," << "MessageID" << "," << "Message" << ","<< "MessageLength" << std::endl;
+		// csvfile.open(filename); 
+		// csvfile <<"Time" << ","<< "Bus" << "," << "MessageID" << "," << "Message" << ","<< "MessageLength" << std::endl;
 
 	}
 	

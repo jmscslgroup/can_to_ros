@@ -1,0 +1,13 @@
+<launch>
+
+    <arg name="speed" default="0.0"/>
+
+
+<node pkg="can_to_ros" type ="publish_libpanda" name="publish_libpanda" output="screen"  />
+<node pkg="can_to_ros" type ="subs" name="subs" output="screen" /> 
+
+<node pkg="can_to_ros" type="selector.py" name="selector" args="$(arg speed)" output="screen" />
+
+<!-- <node pkg="vehicle_control" type="vehicle_control_node" name="vehicle_control_node" output="screen"/> -->
+
+</launch>

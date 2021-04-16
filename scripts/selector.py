@@ -8,20 +8,21 @@ import sys
 class Selector:
     def __init__(self):
         rospy.init_node('selector', anonymous=True)
-        self.pub = rospy.Publisher('accel_cmd', Float64, queue_size=10)
+        self.pub = rospy.Publisher('ref_speed', Float64, queue_size=10)
         self.rate = rospy.Rate(100)
 
     def publisher(self):
         #print ("Enter (1) for + acceleration (2) for - acceleration: ")
         #val = input("") 
         if len(sys.argv) < 2:
-            print("Pleas pass accel value")
+            print("Please pass setpoint value")
             sys.exit()
         val = sys.argv[1]
+        spd = float(val) * 0.44704 #conver speed to m/s
 
         while not rospy.is_shutdown():
             msg = Float64()
-            msg.data = float(val)
+            msg.data = spd
             # rospy.loginfo(hello_str)
             self.pub.publish(msg)
             self.rate.sleep()
