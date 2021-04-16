@@ -26,8 +26,17 @@
 // ROS headers:
 #include "ros/ros.h"
 #include "std_msgs/Float64.h"
+#include "std_msgs/String.h"
+#include "geometry_msgs/Point.h"
+#include "geometry_msgs/Twist.h"
+#include "geometry_msgs/PointStamped.h"
+#include "sensor_msgs/TimeReference.h"
+#include "header_package/can_decode.h"
+#include "visualization_msgs/Marker.h"
 // Libpanda headers:
 #include "panda/toyota.h"
+#include <panda.h>
+#include <sstream>
 
 
 class Control {

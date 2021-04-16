@@ -252,6 +252,9 @@ target_link_libraries(publishCommands ${catkin_LIBRARIES})
 add_executable(cmd_accel_decel src/cmd_accel_decel.cpp)
 target_link_libraries(cmd_accel_decel ${catkin_LIBRARIES})
 
+add_executable(vehicle_interface src/vehicle_interface.cpp)
+target_link_libraries(vehicle_interface ${catkin_LIBRARIES} libpandac.so)
+
 # add_executable(joyNode src/joyNode.cpp)
 # target_link_libraries(joyNode ${catkin_LIBRARIES})
 
