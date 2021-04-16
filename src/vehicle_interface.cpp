@@ -32,7 +32,7 @@
 
 class Control {
 private:
-	ros::NodeHandle n_;
+	ros::NodeHandle* n_;
 	ros::Subscriber sub_;
 	// Initialize panda and toyota handlers
 	Panda::ToyotaHandler* toyotaHandler;
@@ -44,11 +44,12 @@ public:
 		toyotaHandler->setAcceleration(msg->data);
 		toyotaHandler->setSteerTorque(0.0);  // doesnt work yet
 	}
-	Control(Panda::ToyotaHandler* toyotaHandler){
+	Control(Panda::ToyotaHandler* toyotaHandler, ros::NodeHandle* nodeHandle) {
+		n_ = nodeHandle;
 		
 		this->toyotaHandler = toyotaHandler;
 		// intializing a subscriber
-		sub_ = n_.subscribe("/commands", 1000, &Control::callback, this);
+		sub_ = n_->subscribe("/commands", 1000, &Control::callback, this);
 	}
 	
 	~Control(){
@@ -59,7 +60,7 @@ public:
 class CanToRosPublisher : public Panda::CanListener {
 
 private:
-	ros::NodeHandle nh1;
+	ros::NodeHandle* nh1;
 	ros::Publisher pub_;
 	std::stringstream ss;
 	std::ofstream csvfile;
@@ -95,7 +96,8 @@ private:
 	}
 	
 public:
-	CanToRosPublisher() {
+	CanToRosPublisher(ros::NodeHandle* nodeHandle) {
+		nh1 = nodeHandle;
 		// std::time_t t=time(0);
 		// struct tm * now = localtime( &t );
 		// char buffer [256];
@@ -103,7 +105,7 @@ public:
 		// std::string filename=buffer;
 		// std::replace(filename.begin(), filename.end(), ':', '-'); 
         // cout << filename << std::endl;
-		pub_ = nh1.advertise<std_msgs::String>("/realtime_raw_data", 1000);
+		pub_ = nh1->advertise<std_msgs::String>("/realtime_raw_data", 1000);
 
 		//FIXME: use libpanda to create CAN and GPS files
 		// csvfile.open(filename); 
@@ -119,6 +121,8 @@ int main(int argc, char **argv) {
 	ros::init(argc, argv, "send_commands");
 	ROS_INFO("Initializing ..");
 
+	ros::NodeHandle* nh;
+	
   	// creating file names
 	std::time_t t=time(0);
 	struct tm * now = localtime( &t );
@@ -156,7 +160,7 @@ int main(int argc, char **argv) {
 	Panda::ToyotaHandler toyotaHandler(&pandaHandler);
 	
     // Initialize Libpanda with ROS publisher:
-	CanToRosPublisher canToRosPublisher;
+	CanToRosPublisher canToRosPublisher(&nh);
 	//SimpleGpsObserver myGpsObserver;
 	// Initialize Usb, this requires a connected Panda
 	//Panda::Handler pandaHandler;
@@ -169,7 +173,7 @@ int main(int argc, char **argv) {
 	pandaHandler.getCan().saveToCsvFile(canDataFilename.c_str());
     pandaHandler.getGps().saveToCsvFile(gpsDataFilename.c_str());
 
-	Control vehicleControl(&toyotaHandler);
+	Control vehicleControl(&toyotaHandler, &nh);
     
     ros::spin();
 	// Cleanup:
