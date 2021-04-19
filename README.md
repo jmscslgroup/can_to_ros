@@ -44,4 +44,4 @@ We created a set of slides ([Step Input Commands Test](https://docs.google.com/p
 ### Runnig Cruise Control Test
 ----------------------------------------
 
-The goad of this test is to replicate the cruise control functionality with a PID controller. Steps to run the test are [here](https://docs.google.com/presentation/d/1rO9q0N9FP5X4kz3IavIRWEAJL3_q3MWPg--coTE5-Ps/edit#slide=id.p)
+The goad of this test is to replicate the cruise control functionality with a PID controller. Steps to run the test are [here](https://docs.google.com/presentation/d/1rO9q0N9FP5X4kz3IavIRWEAJL3_q3MWPg--coTE5-Ps/edit#slide=id.p).
