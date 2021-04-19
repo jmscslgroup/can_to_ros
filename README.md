@@ -35,13 +35,12 @@ $ catkin_make
 ```
 $source ~/catkin_ws/devel/setup.bash
 ```
+## Tests:
+-------
+The following tests were performed on a Toyota RAV4
 
-### Sending Acceleration Commands to RAV4
-----------------------------------------
+## 1-Sending Acceleration Commands to RAV4
+We created a set of slides ([Step Input Commands Test](https://docs.google.com/presentation/d/1nBOYf58OQKMXlTMIj9IBpDr5be11WevXijcDsJr9ujI/edit#slide=id.p)) that have the steps needed to send acceleration commands to a Toyota RAV4.
 
-We created a set of slides ([Step Input Commands Test](https://docs.google.com/presentation/d/1nBOYf58OQKMXlTMIj9IBpDr5be11WevXijcDsJr9ujI/edit#slide=id.p)) that include the steps needed to send acceleration commands to a Toyota RAV4.
-
-### Runnig Cruise Control Test
-----------------------------------------
-
+## 2-Runnig Cruise Control Test
 The goad of this test is to replicate the cruise control functionality with a PID controller. Steps to run the test are [here](https://docs.google.com/presentation/d/1rO9q0N9FP5X4kz3IavIRWEAJL3_q3MWPg--coTE5-Ps/edit#slide=id.p).
