@@ -40,3 +40,8 @@ $source ~/catkin_ws/devel/setup.bash
 ----------------------------------------
 
 We created a set of slides ([Step Input Commands Test](https://docs.google.com/presentation/d/1nBOYf58OQKMXlTMIj9IBpDr5be11WevXijcDsJr9ujI/edit#slide=id.p)) that include the steps needed to send acceleration commands to a Toyota RAV4.
+
+### Runnig Cruise Control Test
+----------------------------------------
+
+The goad of this test is to replicate the cruise control functionality with a PID controller. Steps to run the test are [here](https://docs.google.com/presentation/d/1rO9q0N9FP5X4kz3IavIRWEAJL3_q3MWPg--coTE5-Ps/edit#slide=id.p)
