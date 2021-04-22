@@ -8,6 +8,5 @@
 
 <node pkg="pid_cc" type="pid_cc_node" name="pid_cc_node" output="screen"/>
 
-<node pkg= "rosbag" name="record" type="record"  output="screen" args="-a" />
 
 </launch>
