@@ -18,7 +18,7 @@ class NodeStatus:
         while not rospy.is_shutdown():
             try:
                 output = subprocess.check_output("rosnode list", shell=True).decode('utf-8')
-                if 'pid_cc_node' in output:
+                if 'ghost_mode_node' in output:
                     # print('pid is running')
                     pass  # pid node is running
                 else:

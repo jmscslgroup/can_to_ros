@@ -19,26 +19,26 @@ public:
   SubscribeAndPublish()
   {
     //Topic you want to publish
-    accel_pub = n_.advertise<geometry_msgs::AccelStamped>("/vehicle/accel", 1000);  
-    lead_dist_pub = n_.advertise<geometry_msgs::PointStamped>("/vehicle/distanceEstimator/dist", 1000);
-    str_angle_pub = n_.advertise<geometry_msgs::PointStamped>("/vehicle/steering_angle", 1000);
-    speed_pub = n_.advertise<geometry_msgs::TwistStamped>("/vehicle/vel", 1000);
-    tracka0_pub = n_.advertise<geometry_msgs::PointStamped>("/track_a0", 1000);
-    tracka1_pub = n_.advertise<geometry_msgs::PointStamped>("/track_a1", 1000);
-    tracka2_pub = n_.advertise<geometry_msgs::PointStamped>("/track_a2", 1000);
-    tracka3_pub = n_.advertise<geometry_msgs::PointStamped>("/track_a3", 1000);
-    tracka4_pub = n_.advertise<geometry_msgs::PointStamped>("/track_a4", 1000);
-    tracka5_pub = n_.advertise<geometry_msgs::PointStamped>("/track_a5", 1000);
-    tracka6_pub = n_.advertise<geometry_msgs::PointStamped>("/track_a6", 1000);
-    tracka7_pub = n_.advertise<geometry_msgs::PointStamped>("/track_a7", 1000);
-    tracka8_pub = n_.advertise<geometry_msgs::PointStamped>("/track_a8", 1000);
-    tracka9_pub = n_.advertise<geometry_msgs::PointStamped>("/track_a9", 1000);
-    tracka10_pub = n_.advertise<geometry_msgs::PointStamped>("/track_a10", 1000);
-    tracka11_pub = n_.advertise<geometry_msgs::PointStamped>("/track_a11", 1000);
-    tracka12_pub = n_.advertise<geometry_msgs::PointStamped>("/track_a12", 1000);
-    tracka13_pub = n_.advertise<geometry_msgs::PointStamped>("/track_a13", 1000);
-    tracka14_pub = n_.advertise<geometry_msgs::PointStamped>("/track_a14", 1000);
-    tracka15_pub = n_.advertise<geometry_msgs::PointStamped>("/track_a15", 1000);
+    accel_pub = n_.advertise<geometry_msgs::AccelStamped>("vehicle/accel", 1000);  
+    lead_dist_pub = n_.advertise<geometry_msgs::PointStamped>("vehicle/distanceEstimator/dist", 1000);
+    str_angle_pub = n_.advertise<geometry_msgs::PointStamped>("vehicle/steering_angle", 1000);
+    speed_pub = n_.advertise<geometry_msgs::TwistStamped>("vehicle/vel", 1000);
+    tracka0_pub = n_.advertise<geometry_msgs::PointStamped>("track_a0", 1000);
+    tracka1_pub = n_.advertise<geometry_msgs::PointStamped>("track_a1", 1000);
+    tracka2_pub = n_.advertise<geometry_msgs::PointStamped>("track_a2", 1000);
+    tracka3_pub = n_.advertise<geometry_msgs::PointStamped>("track_a3", 1000);
+    tracka4_pub = n_.advertise<geometry_msgs::PointStamped>("track_a4", 1000);
+    tracka5_pub = n_.advertise<geometry_msgs::PointStamped>("track_a5", 1000);
+    tracka6_pub = n_.advertise<geometry_msgs::PointStamped>("track_a6", 1000);
+    tracka7_pub = n_.advertise<geometry_msgs::PointStamped>("track_a7", 1000);
+    tracka8_pub = n_.advertise<geometry_msgs::PointStamped>("track_a8", 1000);
+    tracka9_pub = n_.advertise<geometry_msgs::PointStamped>("track_a9", 1000);
+    tracka10_pub = n_.advertise<geometry_msgs::PointStamped>("track_a10", 1000);
+    tracka11_pub = n_.advertise<geometry_msgs::PointStamped>("track_a11", 1000);
+    tracka12_pub = n_.advertise<geometry_msgs::PointStamped>("track_a12", 1000);
+    tracka13_pub = n_.advertise<geometry_msgs::PointStamped>("track_a13", 1000);
+    tracka14_pub = n_.advertise<geometry_msgs::PointStamped>("track_a14", 1000);
+    tracka15_pub = n_.advertise<geometry_msgs::PointStamped>("track_a15", 1000);
     // trackb0_pub = n_.advertise<geometry_msgs::PointStamped>("/track_b0", 1000);
     // trackb1_pub = n_.advertise<geometry_msgs::PointStamped>("/track_b1", 1000);
     // trackb2_pub = n_.advertise<geometry_msgs::PointStamped>("/track_b2", 1000);
@@ -59,7 +59,7 @@ public:
     // headlights_pub = n_.advertise<can_to_ros::headlights>("/highbeams", 1000);
     // headlights_pub = n_.advertise< std_msgs::UInt8>("/highbeams", 1000);
     
-    headlights_pub = n_.advertise< geometry_msgs::Twist>("/highbeams", 1000);
+    headlights_pub = n_.advertise< geometry_msgs::Twist>("highbeams", 1000);
 
 
     //Topic you want to subscribe
@@ -68,9 +68,12 @@ public:
 
   void callback(const std_msgs::String::ConstPtr& raw_data)
   {
-    std::stringstream ss(raw_data->data);
-    ss >> Time>> Bus>> MessageID>> Message>> MessageLength;
     
+    std::stringstream ss(raw_data->data);
+    
+    ss >> Time>> Bus>> MessageID>> Message>> MessageLength;
+
+    // std::cout << MessageID << std::endl;
     if(MessageID == 869 && Bus == 0 )
     {
      data = obj.decode_message (MessageID, Message);
@@ -126,6 +129,7 @@ public:
     }
     else if (MessageID == 180 && Bus == 0)
     { 
+      // std::cout << "speed msg" << std::endl;
        data = obj.decode_message (MessageID, Message); 
        geometry_msgs::TwistStamped msg;
        msg.header.stamp=ros::Time(std::stod(Time));
@@ -614,7 +618,7 @@ private:
   ros::Subscriber sub_;
   decode_msgs obj;
   std::string Time,Buffer,Message,MessageLength;
-  int MessageID, Bus;
+  double MessageID, Bus;
   values data;
 
 };//End of class SubscribeAndPublish
