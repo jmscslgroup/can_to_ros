@@ -2,12 +2,11 @@
 
 <arg name="speed" default="0.0"/>
 
-<!-- <node pkg="can_to_ros" type ="subs" name="subs" output="screen" />  -->
+<node pkg="rosbag" type="play" name="player" args="$(find ghost_mode)/ghost_car2.bag --topics /ghost/vehicle/vel" />
 
+<node pkg="can_to_ros" type ="subs" name="subs" output="screen" /> 
 
-<node pkg="rosbag" type="play" name="player" args="ghost_mode/ghost_car2.bag --topics /ghost/vehicle/vel" />
-
-<!-- <node pkg="ghost_mode" type="ghost_mode_node" name="ghost_mode_node" output="screen"/> -->
+<node pkg="ghost_mode" type="ghost_mode_node" name="ghost_mode_node" output="screen"/>
 
 
 </launch>
