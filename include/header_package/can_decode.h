@@ -285,5 +285,6 @@ values decode_msgs::decode_message( unsigned int msg_id, std::string msg){
 
     return returnedVal;
     }
+    return returnedVal;
 
 }
