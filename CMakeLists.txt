@@ -253,6 +253,10 @@ target_link_libraries(commandDuration ${catkin_LIBRARIES})
 add_executable(publishCommands src/publishCommands.cpp)
 target_link_libraries(publishCommands ${catkin_LIBRARIES})
 
+
+add_executable(publishCommandsFS src/publishCommandsFS.cpp)
+target_link_libraries(publishCommandsFS ${catkin_LIBRARIES})
+
 add_executable(cmd_accel_decel src/cmd_accel_decel.cpp)
 target_link_libraries(cmd_accel_decel ${catkin_LIBRARIES})
 
