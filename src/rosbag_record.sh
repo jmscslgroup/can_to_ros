@@ -7,7 +7,7 @@ DATE=$(date +%Y_%m_%d)
 
 FILENAME="${DATE}_${VIN}"
 
-DIR_PATH="/home/safwan/var/panda/CyverseData/JmscslgroupData/bagfiles/${DATE}/"
+DIR_PATH="/var/panda/CyverseData/JmscslgroupData/bagfiles/${DATE}/"
 
 mkdir -p ${DIR_PATH}
 
