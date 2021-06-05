@@ -1,0 +1,7 @@
+
+<launch>
+
+<node pkg="can_to_ros" type ="rosbag_record.sh" name="bashscript" output="screen" /> 
+
+
+</launch>
