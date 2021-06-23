@@ -8,5 +8,7 @@
 
 <node pkg="pid_cc" type="pid_cc_node" name="pid_cc_node" output="screen"/>
 
+<node pkg="can_to_ros" type ="rosbag_record.sh" name="bashscript2" output="screen" /> 
+
 
 </launch>

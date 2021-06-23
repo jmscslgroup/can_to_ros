@@ -5,7 +5,9 @@ VIN=$(cat /etc/libpanda.d/vin)
 
 DATE=$(date +%Y_%m_%d)
 
-FILENAME="${DATE}_${VIN}"
+TIME=$(date +%Y_%m_%d_%k_%M_%S)
+
+FILENAME="${TIME}_${VIN}"
 
 DIR_PATH="/var/panda/CyverseData/JmscslgroupData/bagfiles/${DATE}/"
 

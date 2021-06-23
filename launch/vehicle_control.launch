@@ -6,6 +6,6 @@
 
 <node pkg="can_to_ros" type="node_status.py" name="node_status" output="screen" />
 
-<node pkg="can_to_ros" type ="rosbag_record.sh" name="bashscript" output="screen" /> 
+<node pkg="can_to_ros" type ="rosbag_record.sh" name="bashscript1" output="screen" /> 
 
 </launch>
