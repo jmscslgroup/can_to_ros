@@ -144,8 +144,8 @@ public:
       marker.header.frame_id = "front_laser_link";
       marker.header.stamp = ros::Time(std::stod(Time));
 
-      marker.point.x = data.var2; // 
-      marker.point.y = (data.var1 * -1.0); // 
+      marker.point.x = data.var2; // long
+      marker.point.y = (data.var1 * -1.0); // lat
       marker.point.z = data.var3; // rel speed
 
 

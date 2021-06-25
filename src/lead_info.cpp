@@ -11,6 +11,7 @@
 #include "geometry_msgs/Twist.h"
 //#include "can_to_ros/headlights.h"
 #include "std_msgs/UInt8.h"
+#include <cstdlib>
 
 
 
@@ -25,29 +26,34 @@ public:
     //Topic you want to subscribe
     tracka0_sub = n_.subscribe("track_a0", 100, &LeadInfo::callback, this);
     tracka1_sub = n_.subscribe("track_a1", 100, &LeadInfo::callback, this);
-    tracka0_sub = n_.subscribe("track_a2", 100, &LeadInfo::callback, this);
-    tracka1_sub = n_.subscribe("track_a3", 100, &LeadInfo::callback, this);
-    tracka0_sub = n_.subscribe("track_a4", 100, &LeadInfo::callback, this);
-    tracka1_sub = n_.subscribe("track_a5", 100, &LeadInfo::callback, this);
-    tracka0_sub = n_.subscribe("track_a6", 100, &LeadInfo::callback, this);
-    tracka1_sub = n_.subscribe("track_a7", 100, &LeadInfo::callback, this);
-    tracka0_sub = n_.subscribe("track_a8", 100, &LeadInfo::callback, this);
-    tracka1_sub = n_.subscribe("track_a9", 100, &LeadInfo::callback, this);
-    tracka0_sub = n_.subscribe("track_a10", 100, &LeadInfo::callback, this);
-    tracka1_sub = n_.subscribe("track_a11", 100, &LeadInfo::callback, this);
-    tracka0_sub = n_.subscribe("track_a12", 100, &LeadInfo::callback, this);
-    tracka1_sub = n_.subscribe("track_a13", 100, &LeadInfo::callback, this);
-    tracka0_sub = n_.subscribe("track_a14", 100, &LeadInfo::callback, this);
-    tracka1_sub = n_.subscribe("track_a15", 100, &LeadInfo::callback, this);
+    tracka2_sub = n_.subscribe("track_a2", 100, &LeadInfo::callback, this);
+    tracka3_sub = n_.subscribe("track_a3", 100, &LeadInfo::callback, this);
+    tracka4_sub = n_.subscribe("track_a4", 100, &LeadInfo::callback, this);
+    tracka5_sub = n_.subscribe("track_a5", 100, &LeadInfo::callback, this);
+    tracka6_sub = n_.subscribe("track_a6", 100, &LeadInfo::callback, this);
+    tracka7_sub = n_.subscribe("track_a7", 100, &LeadInfo::callback, this);
+    tracka8_sub = n_.subscribe("track_a8", 100, &LeadInfo::callback, this);
+    tracka9_sub = n_.subscribe("track_a9", 100, &LeadInfo::callback, this);
+    tracka10_sub = n_.subscribe("track_a10", 100, &LeadInfo::callback, this);
+    tracka11_sub = n_.subscribe("track_a11", 100, &LeadInfo::callback, this);
+    tracka12_sub = n_.subscribe("track_a12", 100, &LeadInfo::callback, this);
+    tracka13_sub = n_.subscribe("track_a13", 100, &LeadInfo::callback, this);
+    tracka14_sub = n_.subscribe("track_a14", 100, &LeadInfo::callback, this);
+    tracka15_sub = n_.subscribe("track_a15", 100, &LeadInfo::callback, this);
   }
 
   void callback(const geometry_msgs::PointStamped::ConstPtr& radar)
   {
+      std::cout << "long: " << radar->point.x << std::endl; 
+      std::cout << "lat: " << radar->point.y << std::endl; 
+      if (abs(radar->point.y) <= 0.5){
+          geometry_msgs::Twist msg;
+          msg.linear.x = radar->point.x;
+          msg.linear.y = radar->point.y;
+          msg.linear.z = radar->point.z;
+          relative_vel_pub.publish(msg);
 
-      geometry_msgs::Twist msg;
-      msg.linear.x = radar->point.x;
-      relative_vel_pub.publish(msg);
-   
+      }
     }
 
 private:
