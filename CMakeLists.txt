@@ -236,6 +236,9 @@ target_link_libraries(subs ${catkin_LIBRARIES})
 add_executable(subs_fs src/subs_fs.cpp)
 target_link_libraries(subs_fs ${catkin_LIBRARIES})
 
+add_executable(lead_info src/lead_info.cpp)
+target_link_libraries(lead_info ${catkin_LIBRARIES})
+
 add_executable(publish_libpanda src/publish_libpanda.cpp)
 target_link_libraries(publish_libpanda ${catkin_LIBRARIES} libpandac.so) #libpandac.so
 

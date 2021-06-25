@@ -21,7 +21,7 @@ public:
   {
     //Topic you want to publish
     accel_pub = n_.advertise<std_msgs::Float64>("accel", 1000);  
-    lead_dist_pub = n_.advertise<std_msgs::Float64>("distanceEstimator/dist", 1000);
+    lead_dist_pub = n_.advertise<std_msgs::Float64>("lead_dist", 1000);
     str_angle_pub = n_.advertise<std_msgs::Float64>("steering_angle", 1000);
     speed_pub = n_.advertise<geometry_msgs::Twist>("vel", 1000);
     tracka0_pub = n_.advertise<geometry_msgs::PointStamped>("track_a0", 1000);

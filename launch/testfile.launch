@@ -1,7 +1,13 @@
 
 <launch>
 
-<node pkg="can_to_ros" type ="rosbag_record.sh" name="bashscript1" output="screen" /> 
+<!-- <node pkg="can_to_ros" type ="rosbag_record.sh" name="bashscript1" output="screen" />  -->
 
+
+<node pkg="can_to_ros" type="lead_info" name="lead_info" output="screen" />
+
+<node pkg="can_to_ros" type ="subs_fs" name="subs_fs" output="screen" /> 
+
+ 
 
 </launch>
