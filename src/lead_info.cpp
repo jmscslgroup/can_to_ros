@@ -48,9 +48,9 @@ public:
       std::cout << "lat: " << radar->point.y << std::endl; 
       if (abs(radar->point.y) <= 0.5){
           geometry_msgs::Twist msg;
-          msg.linear.x = radar->point.x;
-          msg.linear.y = radar->point.y;
-          msg.linear.z = radar->point.z;
+          msg.linear.x = radar->point.x; //long 
+          msg.linear.y = radar->point.y; //lat
+          msg.linear.z = radar->point.z; // rel_v
           relative_vel_pub.publish(msg);
 
       }
