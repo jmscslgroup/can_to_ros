@@ -4,7 +4,7 @@
 <!-- <arg name="gps_path" /> -->
 <arg name="bag_name" default="ghost_fs"/>
 
-<group ns="ghost">
+<!-- <group ns="ghost"> -->
 
 
 <node pkg="can_to_ros" type ="publish_csv" name="publish_csv" args="$(arg can_path)" output="screen"  /> 
@@ -19,7 +19,7 @@
 
 <node pkg= "rosbag" name="record" type="record"  args="-a -x '/realtime_raw_data' -O $(env HOME)/$(arg bag_name)" />
 
-</group>
+<!-- </group> -->
 
 
 </launch>

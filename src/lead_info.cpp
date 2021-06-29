@@ -18,10 +18,17 @@
 class LeadInfo
 {
 public:
+
+  double r_lat = 0.0;
+  double r_long = 0.0;
+  double r_velocity = 0.0;
+  double lead_distance = 0.0;
   LeadInfo()
   {
     //Topic you want to publish
     relative_vel_pub = n_.advertise<geometry_msgs::Twist>("rel_vel", 1000);
+
+    leaddist_sub = n_.subscribe("lead_dist", 100, &LeadInfo::callback_lead, this);
 
     //Topic you want to subscribe
     tracka0_sub = n_.subscribe("track_a0", 100, &LeadInfo::callback, this);
@@ -44,9 +51,14 @@ public:
 
   void callback(const geometry_msgs::PointStamped::ConstPtr& radar)
   {
-      std::cout << "long: " << radar->point.x << std::endl; 
-      std::cout << "lat: " << radar->point.y << std::endl; 
+      // std::cout << "long: " << radar->point.x << std::endl; 
+      // std::cout << "lat: " << radar->point.y << std::endl; 
+          // 20+10=30                15                20-10=10         15 
+    if ( lead_distance +10 >= radar->point.x && lead_distance -10 <= radar->point.x)  {
       if (abs(radar->point.y) <= 0.5){
+          r_lat = radar->point.y;
+          r_long = radar->point.x;
+          r_velocity =  radar->point.z;
           geometry_msgs::Twist msg;
           msg.linear.x = radar->point.x; //long 
           msg.linear.y = radar->point.y; //lat
@@ -55,10 +67,22 @@ public:
 
       }
     }
+  }
+
+
+      void callback_lead(const std_msgs::Float64::ConstPtr& dist)
+  {
+      lead_distance = dist->data; 
+      // std::cout << "lead distance is:  " << dist->data << std::endl;  
+      // std::cout << "long dist from radar: " << r_long << std::endl;
+ 
+    }
 
 private:
   ros::NodeHandle n_;
   ros::Publisher relative_vel_pub;
+
+  ros::Subscriber leaddist_sub;
 
   ros::Subscriber tracka0_sub;
   ros::Subscriber tracka1_sub;

@@ -3,9 +3,9 @@
 
 <!-- <node pkg="can_to_ros" type ="rosbag_record.sh" name="bashscript1" output="screen" />  -->
 
-<group ns="ghost">
+<!-- <group ns="ghost"> -->
     <node pkg="can_to_ros" type="lead_info" name="lead_info" output="screen" />
-</group>
+<!-- </group> -->
 
 <!-- <node pkg="can_to_ros" type ="subs_fs" name="subs_fs" output="screen" />  -->
 
