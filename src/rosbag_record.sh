@@ -5,7 +5,7 @@ VIN=$(cat /etc/libpanda.d/vin)
 
 DATE=$(date +%Y_%m_%d)
 
-TIME=$(date +%Y_%m_%d_%k_%M_%S)
+TIME=$(date +%Y_%m_%d_%H_%M_%S)
 
 FILENAME="${TIME}_${VIN}"
 
