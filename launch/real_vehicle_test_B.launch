@@ -1,0 +1,12 @@
+<launch>
+
+<node pkg="can_to_ros" type="lead_info" name="lead_info" output="screen" />
+
+<node pkg="can_to_ros" type ="subs_fs" name="subs_fs" output="screen" /> 
+
+<node pkg="velocity_controller_real_vehicle" type="velocity_controller_real_vehicle_node" name="velocity_controller_real_vehicle_node" output="screen"/>
+
+<node pkg="can_to_ros" type ="rosbag_record.sh" name="bashscript2" output="screen" /> 
+
+
+</launch>
