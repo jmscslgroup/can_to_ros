@@ -11,14 +11,17 @@ class NodeStatus:
     def __init__(self):
         rospy.init_node('NodeStatus', anonymous=True)
         self.pub = rospy.Publisher('/timed_accel', Float64, queue_size=10)
-        self.rate = rospy.Rate(10)
+        self.pub_1 = rospy.Publisher('/cmd_accel', Float64, queue_size=10)
+        self.rate = rospy.Rate(100)
 
     def publisher(self):
 
         while not rospy.is_shutdown():
             try:
                 output = subprocess.check_output("rosnode list", shell=True).decode('utf-8')
-                if 'ghost_mode_node' in output:
+                node_list = ['ghost_mode_node', 'velocity_controller_real_vehicle_node']
+
+                if any(node in output for node in node_list):
                     # print('pid is running')
                     pass  # pid node is running
                 else:
@@ -26,6 +29,7 @@ class NodeStatus:
                     msg.data = 0.0
                     # rospy.loginfo(hello_str)
                     self.pub.publish(msg)
+                    self.pub_1.publish(msg)
                     self.rate.sleep()
 
             except:
