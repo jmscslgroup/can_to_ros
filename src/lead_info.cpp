@@ -23,6 +23,7 @@ public:
   double r_long = 0.0;
   double r_velocity = 0.0;
   double lead_distance = 0.0;
+  double last_read_lead_dist = 0.0;
   LeadInfo()
   {
     //Topic you want to publish
@@ -54,8 +55,9 @@ public:
       // std::cout << "long: " << radar->point.x << std::endl; 
       // std::cout << "lat: " << radar->point.y << std::endl; 
           // 20+10=30                15                20-10=10         15 
-    if ( lead_distance +10 >= radar->point.x && lead_distance -10 <= radar->point.x)  {
+    if ( lead_distance +3 >= radar->point.x && lead_distance -3 <= radar->point.x)  {
       if (abs(radar->point.y) <= 0.5){
+          last_read_lead_dist = radar->point.x;
           r_lat = radar->point.y;
           r_long = radar->point.x;
           r_velocity =  radar->point.z;
@@ -64,6 +66,21 @@ public:
           msg.linear.y = radar->point.y; //lat
           msg.linear.z = radar->point.z; // rel_v
           relative_vel_pub.publish(msg);
+
+      }
+    }
+    else if (last_read_lead_dist +3 >= radar->point.x && last_read_lead_dist -3 <= radar->point.x){
+
+      if (abs(radar->point.y) <= 0.5){
+        last_read_lead_dist = radar->point.x;
+        r_lat = radar->point.y;
+        r_long = radar->point.x;
+        r_velocity =  radar->point.z;
+        geometry_msgs::Twist msg;
+        msg.linear.x = radar->point.x; //long 
+        msg.linear.y = radar->point.y; //lat
+        msg.linear.z = radar->point.z; // rel_v
+        relative_vel_pub.publish(msg);
 
       }
     }
