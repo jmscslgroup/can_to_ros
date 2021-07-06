@@ -16,7 +16,3 @@
 <node pkg="can_to_ros" type ="rosbag_record.sh" name="bashscript1" output="screen" args="$(arg description)"/> 
 
 </launch>
-
-
-
-

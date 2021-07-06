@@ -1,6 +1,7 @@
 <launch>
 
 <arg name="bagfile" default="ghost_car2.bag"/>
+<arg name="description" default="_ghost_mode_velocityfollowing"/>
 
 <node pkg="rosbag" type="play" name="player" args="$(find can_to_ros)/bagfiles/$(arg bagfile) --topics /ghost/vehicle/vel" />
 
@@ -8,7 +9,8 @@
 
 <node pkg="ghost_mode" type="ghost_mode_node" name="ghost_mode_node" output="screen"/>
 
-<node pkg="can_to_ros" type ="rosbag_record.sh" name="bashscript2" output="screen" /> 
+<node pkg="can_to_ros" type ="rosbag_record.sh" name="bashscript2" output="screen" args="$(arg description)" /> 
+
 
 
 </launch>
