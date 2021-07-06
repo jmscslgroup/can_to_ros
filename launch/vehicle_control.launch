@@ -1,11 +1,15 @@
 <launch>
+
+<arg name="description" default="_all"/>
 <!-- include information for the joystick, etc. args="$(env HOME)"  -->
-<node pkg="can_to_ros" type="vehicle_interface" name="vehicle_interface" output="screen" />
+<!-- <node pkg="can_to_ros" type="vehicle_interface" name="vehicle_interface" output="screen" /> -->
 
 <node pkg="can_to_ros" type="publishCommands" name="publishCommands" output="screen"/>
 
+<node pkg="can_to_ros" type ="subs_fs" name="subs_fs" output="screen" /> 
+
 <node pkg="can_to_ros" type="node_status.py" name="node_status" output="screen" />
 
-<node pkg="can_to_ros" type ="rosbag_record.sh" name="bashscript1" output="screen" /> 
+<node pkg="can_to_ros" type ="rosbag_record.sh" name="bashscript1" output="screen" args="$(arg description)"/> 
 
 </launch>

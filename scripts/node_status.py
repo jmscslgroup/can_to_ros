@@ -19,12 +19,14 @@ class NodeStatus:
         while not rospy.is_shutdown():
             try:
                 output = subprocess.check_output("rosnode list", shell=True).decode('utf-8')
-                node_list = ['ghost_mode_node', 'velocity_controller_real_vehicle_node', 'velocity_controller_node']
+                node_list = ['ghost_mode_node', 'velocity_controller_real_vehicle_node', 'velocity_controller_node', 'cmd_accel_decel', 'commandDuration']
 
                 if any(node in output for node in node_list):
                     # print('pid is running')
+                    # print("Working")
                     pass  # pid node is running
                 else:
+                    # print("something")
                     msg = Float64()
                     msg.data = 0.0
                     # rospy.loginfo(hello_str)

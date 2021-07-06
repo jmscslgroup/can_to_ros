@@ -2,12 +2,14 @@
 
     <arg name="accel" default="0.0"/>
     <arg name="duration" default="10.0"/>
+    <arg name="description" default="_cmd_"/>
+
 
     <node pkg="can_to_ros" type="commandDuration" name="commandDuration" args="$(arg accel) $(arg duration)" output="screen" />
 
 <!-- <node pkg="can_to_ros" type="selector.py" name="selector" args="$(arg accel)" output="screen" /> -->
 
 <!-- <node pkg="vehicle_control" type="vehicle_control_node" name="vehicle_control_node" output="screen"/> -->
-    <node pkg="can_to_ros" type ="rosbag_record.sh" name="bashscript2" output="screen" /> 
+    <node pkg="can_to_ros" type ="rosbag_record.sh" name="bashscript2" output="screen" args="$(arg description)$(arg accel)" /> 
 
 </launch>
