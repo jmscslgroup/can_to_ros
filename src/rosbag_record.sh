@@ -11,7 +11,7 @@ TIME=$(date +%Y_%m_%d_%H_%M_%S)
 
 FILENAME="${TIME}_${VIN}"
 
-DIR_PATH="/home/safwan/var/panda/CyverseData/JmscslgroupData/bagfiles/${DATE}/"
+DIR_PATH="/var/panda/CyverseData/JmscslgroupData/bagfiles/${DATE}/"
 
 mkdir -p ${DIR_PATH}
 
