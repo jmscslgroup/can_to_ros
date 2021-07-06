@@ -6,7 +6,7 @@
 
 <node pkg="can_to_ros" type="publishCommands" name="publishCommands" output="screen"/>
 
-<node pkg="can_to_ros" type ="subs_fs" name="subs_fs" output="screen" /> 
+<node pkg="can_to_ros" type ="subs" name="subs" output="screen" /> 
 
 <node pkg="can_to_ros" type="node_status.py" name="node_status" output="screen" />
 
