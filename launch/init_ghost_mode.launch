@@ -6,14 +6,9 @@
 
 <node pkg="rosbag" type="play" name="player" args="$(find can_to_ros)/bagfiles/$(arg bagfile) --topics /ghost/vehicle/vel" />
 
-
-<node pkg="can_to_ros" type="publishCommands" name="publishCommands" output="screen"/>
-
 <node pkg="can_to_ros" type ="subs" name="subs" output="screen" /> 
 
 <node pkg="can_to_ros" type="node_status.py" name="node_status" output="screen" />
-
-
 
 <node pkg="ghost_mode" type="ghost_mode_node" name="ghost_mode_node" output="screen"/>
 

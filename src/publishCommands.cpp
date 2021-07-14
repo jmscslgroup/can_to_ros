@@ -10,14 +10,18 @@ class CtrlCommands {
     ros::NodeHandle n;
     std_msgs::Float64 mymsg;
     ros::Publisher command_pub;
-    ros::Subscriber sub_;
+    ros::Subscriber sub_0;
+    ros::Subscriber sub_1;
+
     double receivedMsg = 0.0;
 
 // 
  public:
     CtrlCommands(){
         command_pub = n.advertise<std_msgs::Float64>("commands", 1000);
-        sub_ = n.subscribe("/timed_accel", 1000, &CtrlCommands::callback, this);
+        sub_0 = n.subscribe("/timed_accel", 1000, &CtrlCommands::callback, this);
+        sub_1 = n.subscribe("/cmd_accel", 1000, &CtrlCommands::callback, this);
+
     }
 
     void callback(const std_msgs::Float64::ConstPtr& msg){
