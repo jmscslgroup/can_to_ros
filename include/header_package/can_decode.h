@@ -285,6 +285,65 @@ values decode_msgs::decode_message( unsigned int msg_id, std::string msg){
 
     return returnedVal;
     }
+
+    if (msg_id == 467){ ///// PCM_CRUISE
+    int MAIN_ON = 0;
+    int SET_SPEED = 0;
+    std::stringstream hex_ss(msg);
+    hex_ss >> std::hex >> n;
+    binary = std::bitset<64>(n).to_string();
+    //std::cout << binary << std::endl;
+
+    // std::string byte1 = binary.substr(0,8);
+    std::string byte2 = binary.substr(8,8); // MAIN ON
+    std::string byte3 = binary.substr(16,8); // SET_SPEED
+    // std::string byte4 = binary.substr(24,8);
+    // std::string byte5 = binary.substr(32,8);
+    // std::string byte6 = binary.substr(40,8);
+    // std::string byte7 = binary.substr(48,8);
+    // std::string byte7 = binary.substr(56,8);
+
+    // std::cout << byte1 << std::endl;
+    // std::cout << byte2 << std::endl;
+    // std::cout << byte3 << std::endl;
+    // std::cout << byte4 << std::endl;
+
+    MAIN_ON =std::stoi(byte2.substr(0,1)); // bit 15
+    SET_SPEED =std::stoi(byte3);
+ 
+    returnedVal.var1=MAIN_ON;
+    returnedVal.var2=SET_SPEED;
+
+    return returnedVal;
+    }
+
+    if (msg_id == 921){ ///// PCM_CRUISE_SM
+
+    int MAIN_ON = 0;
+    int UI_SET_SPEED = 0;
+
+    std::stringstream hex_ss(msg);
+    hex_ss >> std::hex >> n;
+    binary = std::bitset<64>(n).to_string();
+    //std::cout << binary << std::endl;
+
+    std::string byte1 = binary.substr(0,8);
+    // std::string byte2 = binary.substr(8,8); 
+    // std::string byte3 = binary.substr(16,8); 
+    std::string byte4 = binary.substr(24,8);
+    // std::string byte5 = binary.substr(32,8);
+    // std::string byte6 = binary.substr(40,8);
+    // std::string byte7 = binary.substr(48,8);
+    // std::string byte7 = binary.substr(56,8);
+
+    MAIN_ON =std::stoi(byte1.substr(3,1)); // bit 4
+    UI_SET_SPEED  =std::stoi(byte4);
+ 
+    returnedVal.var1=MAIN_ON;
+    returnedVal.var2=UI_SET_SPEED;
+
+    return returnedVal;
+    }
     return returnedVal;
 
 }

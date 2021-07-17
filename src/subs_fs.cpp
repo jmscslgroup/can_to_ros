@@ -9,6 +9,7 @@
 #include "geometry_msgs/PointStamped.h"
 #include "geometry_msgs/AccelStamped.h"
 #include "geometry_msgs/Twist.h"
+#include "geometry_msgs/Point.h"
 //#include "can_to_ros/headlights.h"
 #include "std_msgs/UInt8.h"
 
@@ -24,6 +25,8 @@ public:
     lead_dist_pub = n_.advertise<std_msgs::Float64>("lead_dist_869", 1000);
     str_angle_pub = n_.advertise<std_msgs::Float64>("steering_angle", 1000);
     speed_pub = n_.advertise<geometry_msgs::Twist>("vel", 1000);
+    pub_921 = n_.advertise<geometry_msgs::Point>("msg_921", 1000);
+    pub_467 = n_.advertise<geometry_msgs::Point>("msg_467", 1000);
     tracka0_pub = n_.advertise<geometry_msgs::PointStamped>("track_a0", 1000);
     tracka1_pub = n_.advertise<geometry_msgs::PointStamped>("track_a1", 1000);
     tracka2_pub = n_.advertise<geometry_msgs::PointStamped>("track_a2", 1000);
@@ -376,11 +379,43 @@ public:
 
       tracka15_pub.publish(marker);
     }
+
+       else if (MessageID == 921)
+    { 
+
+      data = obj.decode_message (MessageID, Message);
+      geometry_msgs::Point msg921;
+      
+
+      msg921.x = data.var1; //main on
+      msg921.y = data.var2; //set point
+      msg921.z = 0.0;
+
+
+      pub_921.publish(msg921);
+    }
+
+        else if (MessageID == 467)
+    { 
+
+      data = obj.decode_message (MessageID, Message);
+      geometry_msgs::Point msg467;
+      
+
+      msg467.x = data.var1; //main on
+      msg467.y = data.var2; //set point
+      msg467.z = 0.0;
+
+
+      pub_467.publish(msg467);
+    }
           
 }
 
 private:
   ros::NodeHandle n_;
+  ros::Publisher pub_921;
+  ros::Publisher pub_467;
   ros::Publisher accel_pub;
   ros::Publisher lead_dist_pub;
   ros::Publisher str_angle_pub;
