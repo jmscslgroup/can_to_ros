@@ -57,7 +57,7 @@ public:
       // std::cout << "long: " << radar->point.x << std::endl; 
       // std::cout << "lat: " << radar->point.y << std::endl; 
           // 20+10=30                15                20-10=10         15 
-    if ( lead_distance +1 >= radar->point.x && lead_distance -1 <= radar->point.x)  {
+    if ( lead_distance +1 >= radar->point.x && lead_distance -1 <= radar->point.x && radar->point.x < 252)  {
       if (abs(radar->point.y) <= 0.5){
           last_read_lead_dist = radar->point.x;
           r_lat = radar->point.y;
@@ -75,7 +75,7 @@ public:
 
       }
     }
-    else if (last_read_lead_dist +1 >= radar->point.x && last_read_lead_dist -1 <= radar->point.x){
+    else if (last_read_lead_dist +1 >= radar->point.x && last_read_lead_dist -1 <= radar->point.x && radar->point.x < 252){
 
       if (abs(radar->point.y) <= 0.5){
         last_read_lead_dist = radar->point.x;
