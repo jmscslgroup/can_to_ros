@@ -25,7 +25,7 @@ fi
 
 if [[ $2 == "false" ]]
 then
-        hs=`hostname`
+        hs=`echo $USER`
 	DIR_PATH="/home/${hs}/.ros/${DATE}/"
 fi
 
