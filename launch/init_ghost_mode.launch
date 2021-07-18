@@ -10,9 +10,7 @@
 
 <node pkg="can_to_ros" type="node_status.py" name="node_status" output="screen" />
 
-<!-- <node pkg="ghost_mode" type="ghost_mode_node" name="ghost_mode_node" output="screen"/> -->  
-
-<node pkg="mpc_ros" type="mpc_ros_node" name="mpc_ros_node" output="screen"/>  
+<node pkg="ghost_mode" type="ghost_mode_node" name="ghost_mode_node" output="screen"/>  
 
 <node pkg="can_to_ros" type ="rosbag_record_gm.sh" name="bashscript3" output="screen" args="$(arg description)" /> 
 
