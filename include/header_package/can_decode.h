@@ -307,9 +307,9 @@ values decode_msgs::decode_message( unsigned int msg_id, std::string msg){
     // std::cout << byte2 << std::endl;
     // std::cout << byte3 << std::endl;
     // std::cout << byte4 << std::endl;
-
-    MAIN_ON =std::stoi(byte2.substr(0,1)); // bit 15
-    SET_SPEED =std::stoi(byte3);
+  
+    MAIN_ON = std::stoull(byte2.substr(0,1), 0, 2); // bit 15
+    SET_SPEED = std::stoull(byte3, 0, 2);
  
     returnedVal.var1=MAIN_ON;
     returnedVal.var2=SET_SPEED;
@@ -336,8 +336,8 @@ values decode_msgs::decode_message( unsigned int msg_id, std::string msg){
     // std::string byte7 = binary.substr(48,8);
     // std::string byte7 = binary.substr(56,8);
 
-    MAIN_ON =std::stoi(byte1.substr(3,1)); // bit 4
-    UI_SET_SPEED  =std::stoi(byte4);
+    MAIN_ON = std::stoull(byte1.substr(3,1), 0, 2); // bit 4
+    UI_SET_SPEED = std::stoull(byte4, 0, 2);
  
     returnedVal.var1=MAIN_ON;
     returnedVal.var2=UI_SET_SPEED;
