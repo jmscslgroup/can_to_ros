@@ -17,6 +17,6 @@ mkdir -p ${DIR_PATH}
 
 FILEPATH1=$(rospack find ghost_mode)
 
-ghost_mode=`git -C ${FILEPATH1} branch --show-current`
+ghost_mode=`git -C ${FILEPATH1} rev-parse --abbrev-ref HEAD`
 
 rosbag record -O "${DIR_PATH}${FILENAME}${DESCRIPTION}_${ghost_mode}" -a -x /realtime_raw_data
