@@ -15,8 +15,8 @@ DIR_PATH="/var/panda/CyverseData/JmscslgroupData/bagfiles/${DATE}/"
 
 mkdir -p ${DIR_PATH}
 
-FILEPATH1=$(rospack find ghost_mode)
+# FILEPATH1=$(rospack find ghost_mode)
 
-ghost_mode=`git -C ${FILEPATH1} rev-parse --abbrev-ref HEAD`
+# ghost_mode=`git -C ${FILEPATH1} rev-parse --abbrev-ref HEAD`
 
-rosbag record -O "${DIR_PATH}${FILENAME}${DESCRIPTION}_${ghost_mode}" -a -x /realtime_raw_data
+rosbag record -O "${DIR_PATH}${FILENAME}${DESCRIPTION}" -a -x /realtime_raw_data
