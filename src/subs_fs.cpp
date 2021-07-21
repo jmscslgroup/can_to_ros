@@ -389,7 +389,7 @@ public:
 
       msg921.x = data.var1; //main on
       msg921.y = data.var2; //set point
-      msg921.z = 0.0;
+      msg921.z = data.var3; //CRUISE_CONTROL_STATE
 
 
       pub_921.publish(msg921);
