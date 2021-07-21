@@ -321,6 +321,7 @@ values decode_msgs::decode_message( unsigned int msg_id, std::string msg){
 
     int MAIN_ON = 0;
     int UI_SET_SPEED = 0;
+    int CRUISE_CONTROL_STATE = 0;
 
     std::stringstream hex_ss(msg);
     hex_ss >> std::hex >> n;
@@ -328,7 +329,7 @@ values decode_msgs::decode_message( unsigned int msg_id, std::string msg){
     //std::cout << binary << std::endl;
 
     std::string byte1 = binary.substr(0,8);
-    // std::string byte2 = binary.substr(8,8); 
+    std::string byte2 = binary.substr(8,8); 
     // std::string byte3 = binary.substr(16,8); 
     std::string byte4 = binary.substr(24,8);
     // std::string byte5 = binary.substr(32,8);
@@ -338,9 +339,12 @@ values decode_msgs::decode_message( unsigned int msg_id, std::string msg){
 
     MAIN_ON = std::stoull(byte1.substr(3,1), 0, 2); // bit 4
     UI_SET_SPEED = std::stoull(byte4, 0, 2);
+    CRUISE_CONTROL_STATE = std::stoull(byte2.substr(4,4), 0, 2); // start bit 11
+
  
     returnedVal.var1=MAIN_ON;
     returnedVal.var2=UI_SET_SPEED;
+    returnedVal.var3=CRUISE_CONTROL_STATE;
 
     return returnedVal;
     }
