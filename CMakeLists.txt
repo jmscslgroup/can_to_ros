@@ -266,6 +266,9 @@ target_link_libraries(cmd_accel_decel ${catkin_LIBRARIES})
 add_executable(vehicle_interface src/vehicle_interface.cpp)
 target_link_libraries(vehicle_interface ${catkin_LIBRARIES} libpandac.so)
 
+add_executable(simple_mini_car_from_lead_distance src/simple_mini_car_from_lead_distance.cpp)
+target_link_libraries(simple_mini_car_from_lead_distance ${catkin_LIBRARIES})
+
 # add_executable(joyNode src/joyNode.cpp)
 # target_link_libraries(joyNode ${catkin_LIBRARIES})
 

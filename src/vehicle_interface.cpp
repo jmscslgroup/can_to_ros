@@ -27,6 +27,8 @@
 #include "ros/ros.h"
 #include "std_msgs/Float64.h"
 #include "std_msgs/String.h"
+#include "std_msgs/UInt8.h"
+#include "std_msgs/Bool.h"
 #include "geometry_msgs/Point.h"
 #include "geometry_msgs/Twist.h"
 #include "geometry_msgs/PointStamped.h"
@@ -38,11 +40,26 @@
 #include <panda.h>
 #include <sstream>
 
+/*
+ This ROS node interprets a libpanda ToyotaHandler to interface ROS
+ 
+ Details:
+ 1) This publishes CAN dat of interest of a std_msgs/String type to /realtime_raw_data, where the can_to_ros node named subs_fs.cpp can interpret values
+ 
+ 2) This node subscribes for acceleration commands with a std_msgs/Float64 named /commands
+ 
+ 3) This node subscribes to /car/hud/mini_car_enable as type std_msgs/Bool to display a mini-vehicle on the car's HUD
+ 
+ 4) This node publishes two std_msgs/Bool topics named /car/panda/controls_allowed and /car/panda/gas_interceptor_detected for relaying states reported by the Panda device
+ 
+ */
+
 
 class Control {
 private:
 	ros::NodeHandle* n_;
 	ros::Subscriber sub_;
+	ros::Subscriber subscriberMiniCarHud;
 	// Initialize panda and toyota handlers
 	Panda::ToyotaHandler* toyotaHandler;
 	
@@ -53,12 +70,20 @@ public:
 		toyotaHandler->setAcceleration(msg->data);
 		toyotaHandler->setSteerTorque(0.0);  // doesnt work yet
 	}
+	
+	void callbackMiniCar(const std_msgs::Bool::ConstPtr& msg)
+	{
+		toyotaHandler->setHudMiniCar(msg->data);
+//		ROS_INFO("Recieved mini-car data: %d\n", msg->data);
+	}
+	
 	Control(Panda::ToyotaHandler* toyotaHandler, ros::NodeHandle* nodeHandle) {
 		n_ = nodeHandle;
 		
 		this->toyotaHandler = toyotaHandler;
 		// intializing a subscriber
 		sub_ = n_->subscribe("/commands", 1000, &Control::callback, this);
+		subscriberMiniCarHud = n_->subscribe("/car/hud/mini_car_enable", 1000, &Control::callbackMiniCar, this);
 	}
 	
 	~Control(){
@@ -66,14 +91,47 @@ public:
 	}
 };
 
+class PandaStatusPublisher : public Mogi::Thread {
+	Panda::ToyotaHandler* toyotaHandler;
+	ros::Publisher publisherPandaControlsEnabled;
+	ros::Publisher publisherPandaGasInterceptorDetected;
+	
+	void doAction() {
+		usleep(100000);
+		// TODO: this should run at its own rate and not be dependent on CAN events:
+		std_msgs::Bool msgControlsEnabled;
+		std_msgs::Bool msgGasInterceptorDetected;
+		
+		msgControlsEnabled.data = false;
+		msgGasInterceptorDetected.data = false;
+		if(toyotaHandler != NULL) {
+			msgControlsEnabled.data = toyotaHandler->getControlsAllowed();
+			msgGasInterceptorDetected.data = toyotaHandler->getPandaHealth().gas_interceptor_detected;
+		}
+		publisherPandaControlsEnabled.publish( msgControlsEnabled );
+		publisherPandaGasInterceptorDetected.publish( msgGasInterceptorDetected );
+	}
+	
+public:
+	PandaStatusPublisher(ros::NodeHandle* nodeHandle, Panda::ToyotaHandler* handler) {
+		this->toyotaHandler = handler;
+		publisherPandaControlsEnabled = nodeHandle->advertise<std_msgs::Bool>("/car/panda/controls_allowed", 1000);
+		publisherPandaGasInterceptorDetected = nodeHandle->advertise<std_msgs::Bool>("/car/panda/gas_interceptor_detected", 1000);
+	}
+	
+};
+
 class CanToRosPublisher : public Panda::CanListener {
 
 private:
 	ros::NodeHandle* nh1;
 	ros::Publisher pub_;
+//	ros::Publisher publisherCarSetSpeed;
+//	ros::Publisher publisherPandaControlsEnabled;
 	std::stringstream ss;
 	std::ofstream csvfile;
 	
+	Panda::ToyotaHandler* toyotaHandler;
 	
 	void newDataNotification( Panda::CanFrame* canData ) {
 	char messageString[200];
@@ -103,10 +161,29 @@ private:
 
 		// csvfile << messageTofile << std::endl;
 
+//		if ( canData->messageID == 869 ) {
+//			if( toyotaHandler != NULL ) {
+//				int valueOfLeadDistance = ((*(unsigned long*)canData->data) >> (39+1-8)) & 0xFF;
+//				//			ROS_INFO("valueOfLeadDistance = %d\n", valueOfLeadDistance);
+//				if( valueOfLeadDistance < 252 ) {
+//					toyotaHandler->setHudMiniCar( true );
+//				} else {
+//					toyotaHandler->setHudMiniCar( false );
+//				}
+//			}
+//		}
+		
+//		if ( canData->messageID == 921 ) {
+//			std_msgs::UInt8 msgCruiseSetSpeed;
+//			msgCruiseSetSpeed.data = ((*(unsigned long*)canData->data) >> (31+1-8)) & 0xFF;
+//			publisherCarSetSpeed.publish( msgCruiseSetSpeed );
+//		}
+		
 	}
 	
 public:
-	CanToRosPublisher(ros::NodeHandle* nodeHandle) {
+	CanToRosPublisher(ros::NodeHandle* nodeHandle, Panda::ToyotaHandler* handler) {
+		toyotaHandler = handler;
 		nh1 = nodeHandle;
 		// std::time_t t=time(0);
 		// struct tm * now = localtime( &t );
@@ -116,6 +193,8 @@ public:
 		// std::replace(filename.begin(), filename.end(), ':', '-'); 
         // cout << filename << std::endl;
 		pub_ = nh1->advertise<std_msgs::String>("/realtime_raw_data", 1000);
+//		publisherCarSetSpeed = nh1->advertise<std_msgs::UInt8>("/car/cruise/ui_set_speed", 1000);
+//		publisherPandaControlsEnabled = nh1->advertise<std_msgs::String>("/panda/controls_enabled", 1000);
 
 		//FIXME: use libpanda to create CAN and GPS files
 		// csvfile.open(filename); 
@@ -170,7 +249,9 @@ int main(int argc, char **argv) {
 	Panda::ToyotaHandler toyotaHandler(&pandaHandler);
 	
     // Initialize Libpanda with ROS publisher:
-	CanToRosPublisher canToRosPublisher(&nh);
+	CanToRosPublisher canToRosPublisher(&nh, &toyotaHandler);
+	
+	PandaStatusPublisher mPandaStatusPublisher(&nh, &toyotaHandler);
 	//SimpleGpsObserver myGpsObserver;
 	// Initialize Usb, this requires a connected Panda
 	//Panda::Handler pandaHandler;
@@ -180,13 +261,16 @@ int main(int argc, char **argv) {
 	// Initialize panda and toyota handlers
 	pandaHandler.initialize();
 	toyotaHandler.start();
+	mPandaStatusPublisher.start();
 	pandaHandler.getCan().saveToCsvFile(canDataFilename.c_str());
     pandaHandler.getGps().saveToCsvFile(gpsDataFilename.c_str());
 
 	Control vehicleControl(&toyotaHandler, &nh);
     
     ros::spin();
+	
 	// Cleanup:
+	mPandaStatusPublisher.stop();
 	toyotaHandler.stop();
 	pandaHandler.stop();
     return 0;
