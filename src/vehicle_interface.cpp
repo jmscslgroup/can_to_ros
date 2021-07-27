@@ -212,42 +212,18 @@ int main(int argc, char **argv) {
 
 	ros::NodeHandle nh;
 	
-  	// creating file names
-	std::time_t t=time(0);
-	struct tm * now = localtime( &t );
-	char buffer1 [256];
-  	char buffer2 [256];
-	strftime (buffer1,80,"%Y-%m-%d-%X",now);
-  	std::string bufferStr=buffer1;
-  
-  	std::replace(bufferStr.begin(), bufferStr.end(), ':', '-'); 
-  
-	strftime (buffer2,80,"%Y-%m-%d",now);
-	std::string folderName = buffer2;
-	std::replace(folderName.begin(), folderName.end(), '-', '_'); 
-	std::ifstream file("/etc/libpanda.d/vin");
-	std::string vin;
-	std::getline(file, vin);
-	std::string relativePath= "/var/panda/CyverseData/JmscslgroupData/PandaData"; 
-	std::string commandToCreateFolder = "mkdir -p " + relativePath + "/" + folderName;
-
-
-	std::string canDataFilename = relativePath + "/" + folderName + "/" + bufferStr + "_" + vin + "_CAN_Messages.csv";
-	std::string gpsDataFilename = relativePath + "/" + folderName + "/" + bufferStr + "_" + vin + "_GPS_Messages.csv";
-
-	// std::cout << commandToCreateFolder << std::endl;
-	// std::cout << canDataFilename << std::endl;
-	// std::cout << gpsDataFilename << std::endl;
-
-  	system(commandToCreateFolder.c_str()); // Creating a directory
-	
-
-
-
 	// toyota controller structure:
 	Panda::Handler pandaHandler;
+	
+	double epsilon = 0.2;	// If system time is off from GPS time by this amount, update time.
+	Panda::SetSystemTimeObserver mSetSystemTimeObserver(epsilon);
+	pandaHandler.addGpsObserver(mSetSystemTimeObserver);
+	
 	Panda::ToyotaHandler toyotaHandler(&pandaHandler);
 	
+	pandaHandler.initialize();
+	
+
     // Initialize Libpanda with ROS publisher:
 	CanToRosPublisher canToRosPublisher(&nh, &toyotaHandler);
 	
@@ -259,14 +235,61 @@ int main(int argc, char **argv) {
 	pandaHandler.addCanObserver(canToRosPublisher);
 
 	// Initialize panda and toyota handlers
-	pandaHandler.initialize();
 	toyotaHandler.start();
 	mPandaStatusPublisher.start();
-	pandaHandler.getCan().saveToCsvFile(canDataFilename.c_str());
-    pandaHandler.getGps().saveToCsvFile(gpsDataFilename.c_str());
 
 	Control vehicleControl(&toyotaHandler, &nh);
-    
+	
+	
+	
+	
+	//  Set the sytem time here:
+	ROS_INFO("Waiting to acquire satellites to set system time...");
+//	ROS_INFO(" - Each \'.\' represents 100 NMEA messages received:");
+	int lastNmeaMessageCount = 0;
+	while ( !mSetSystemTimeObserver.hasTimeBeenSet() &&
+		   ros::ok() ) {
+		if (pandaHandler.getGps().getData().successfulParseCount-lastNmeaMessageCount > 500) {
+			lastNmeaMessageCount = pandaHandler.getGps().getData().successfulParseCount;
+			ROS_INFO(" - Recieved %d NMEA strings from GPS", lastNmeaMessageCount);
+		}
+		ros::spinOnce();
+		usleep(10000);
+	}
+	
+	
+	// creating file names
+	std::time_t t=time(0);
+	struct tm * now = localtime( &t );
+	char buffer1 [256];
+	char buffer2 [256];
+	strftime (buffer1,80,"%Y-%m-%d-%X",now);
+	std::string bufferStr=buffer1;
+  
+	std::replace(bufferStr.begin(), bufferStr.end(), ':', '-');
+  
+	strftime (buffer2,80,"%Y-%m-%d",now);
+	std::string folderName = buffer2;
+	std::replace(folderName.begin(), folderName.end(), '-', '_');
+	std::ifstream file("/etc/libpanda.d/vin");
+	std::string vin;
+	std::getline(file, vin);
+	std::string relativePath= "/var/panda/CyverseData/JmscslgroupData/PandaData";
+	std::string commandToCreateFolder = "mkdir -p " + relativePath + "/" + folderName;
+
+
+	std::string canDataFilename = relativePath + "/" + folderName + "/" + bufferStr + "_" + vin + "_CAN_Messages.csv";
+	std::string gpsDataFilename = relativePath + "/" + folderName + "/" + bufferStr + "_" + vin + "_GPS_Messages.csv";
+
+	// std::cout << commandToCreateFolder << std::endl;
+	// std::cout << canDataFilename << std::endl;
+	// std::cout << gpsDataFilename << std::endl;
+
+	system(commandToCreateFolder.c_str()); // Creating a directory
+	
+	pandaHandler.getCan().saveToCsvFile(canDataFilename.c_str());
+	pandaHandler.getGps().saveToCsvFile(gpsDataFilename.c_str());
+	
     ros::spin();
 	
 	// Cleanup:

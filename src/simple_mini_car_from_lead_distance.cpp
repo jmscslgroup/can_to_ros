@@ -38,8 +38,6 @@
 #include "ros/ros.h"
 #include "std_msgs/Bool.h"
 #include "std_msgs/Float64.h"
-#include "header_package/can_decode.h"
-
 
 class SimpleLeadDistanceToMiniCar {
 private:
@@ -67,13 +65,11 @@ public:
 
 
 int main(int argc, char **argv) {
-	// Initialize ROS stuff:
 	ros::init(argc, argv, "simple_mini_car_from_lead_distance");
-	ROS_INFO("Initializing...");
+	ROS_INFO("Forwarding lead distance events...");
 
 	ros::NodeHandle nh;
 	
-    // Initialize Libpanda with ROS publisher:
 	SimpleLeadDistanceToMiniCar mSimpleLeadDistanceToMiniCar(&nh);
 	
     ros::spin();
