@@ -220,6 +220,7 @@ int main(int argc, char **argv) {
 	pandaHandler.addGpsObserver(mSetSystemTimeObserver);
 	
 	Panda::ToyotaHandler toyotaHandler(&pandaHandler);
+	pandaHandler.getCan().addObserver(&toyotaHandler);
 	
 	pandaHandler.initialize();
 	
