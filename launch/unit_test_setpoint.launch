@@ -1,0 +1,17 @@
+<launch>
+
+<arg name="description" default="_unit_test_setpoint"/>
+
+<node pkg="can_to_ros" type ="subs_fs" name="subs_fs" output="screen" /> 
+
+<node pkg="velocity_controller" type="velocity_controller_node" name="velocity_controller_node">
+	<remap from="/vehicle/vel" to="/vel" />
+</node>
+
+<node pkg="setpointreader" type="setpointreader_node" name="setpointreader_node">
+	<remap from="v_ref" to="/cmd_vel" />
+</node>
+
+<node pkg="can_to_ros" type ="rosbag_record_gm.sh" name="bashscript3" output="screen" args="$(arg description)" /> 
+
+</launch>
