@@ -115,7 +115,7 @@ class PandaStatusPublisher : public Mogi::Thread {
 public:
 	PandaStatusPublisher(ros::NodeHandle* nodeHandle, Panda::ToyotaHandler* handler) {
 		this->toyotaHandler = handler;
-		publisherPandaControlsEnabled = nodeHandle->advertise<std_msgs::Bool>("/car/panda/controls_allowed", 1000);
+		publisherPandaControlsEnabled = nodeHandle->advertise<std_msgs::Bool>("/car/libpanda/controls_allowed", 1000);
 		publisherPandaGasInterceptorDetected = nodeHandle->advertise<std_msgs::Bool>("/car/panda/gas_interceptor_detected", 1000);
 	}
 	
