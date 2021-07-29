@@ -91,31 +91,52 @@ public:
 	}
 };
 
-class PandaStatusPublisher : public Mogi::Thread {
-	Panda::ToyotaHandler* toyotaHandler;
+class PandaStatusPublisher : public Panda::ToyotaListener {
+	ros::Publisher publisherLibpandaControlsEnabled;
+	
 	ros::Publisher publisherPandaControlsEnabled;
 	ros::Publisher publisherPandaGasInterceptorDetected;
 	
-	void doAction() {
-		usleep(100000);
-		// TODO: this should run at its own rate and not be dependent on CAN events:
+//	void doAction() {
+//		usleep(100000);
+//		// TODO: this should run at its own rate and not be dependent on CAN events:
+//		std_msgs::Bool msgControlsEnabled;
+//		std_msgs::Bool msgGasInterceptorDetected;
+//
+//		msgControlsEnabled.data = false;
+//		msgGasInterceptorDetected.data = false;
+//		if(toyotaHandler != NULL) {
+//			msgControlsEnabled.data = toyotaHandler->getControlsAllowed();
+//			msgGasInterceptorDetected.data = toyotaHandler->getPandaHealth().gas_interceptor_detected;
+//		}
+//		publisherPandaControlsEnabled.publish( msgControlsEnabled );
+//		publisherPandaGasInterceptorDetected.publish( msgGasInterceptorDetected );
+//	}
+	
+	void newControlNotification(Panda::ToyotaHandler* toyotaHandler) {
+		std_msgs::Bool msgControlsEnabled;
+		
+		msgControlsEnabled.data = toyotaHandler->getPandaControlsAllowed();
+		
+		publisherLibpandaControlsEnabled.publish( msgControlsEnabled );
+	}
+	
+	void newPandaHealthNotification(const PandaHealth& pandaHealth) {
 		std_msgs::Bool msgControlsEnabled;
 		std_msgs::Bool msgGasInterceptorDetected;
 		
-		msgControlsEnabled.data = false;
-		msgGasInterceptorDetected.data = false;
-		if(toyotaHandler != NULL) {
-			msgControlsEnabled.data = toyotaHandler->getControlsAllowed();
-			msgGasInterceptorDetected.data = toyotaHandler->getPandaHealth().gas_interceptor_detected;
-		}
+		msgControlsEnabled.data = pandaHealth.controls_allowed;
+		msgGasInterceptorDetected.data = pandaHealth.gas_interceptor_detected;
+		
 		publisherPandaControlsEnabled.publish( msgControlsEnabled );
 		publisherPandaGasInterceptorDetected.publish( msgGasInterceptorDetected );
 	}
 	
 public:
-	PandaStatusPublisher(ros::NodeHandle* nodeHandle, Panda::ToyotaHandler* handler) {
-		this->toyotaHandler = handler;
-		publisherPandaControlsEnabled = nodeHandle->advertise<std_msgs::Bool>("/car/libpanda/controls_allowed", 1000);
+	PandaStatusPublisher(ros::NodeHandle* nodeHandle) {
+		publisherLibpandaControlsEnabled = nodeHandle->advertise<std_msgs::Bool>("/car/libpanda/controls_allowed", 1000);
+		
+		publisherPandaControlsEnabled = nodeHandle->advertise<std_msgs::Bool>("/car/panda/controls_allowed", 1000);
 		publisherPandaGasInterceptorDetected = nodeHandle->advertise<std_msgs::Bool>("/car/panda/gas_interceptor_detected", 1000);
 	}
 	
@@ -228,7 +249,8 @@ int main(int argc, char **argv) {
     // Initialize Libpanda with ROS publisher:
 	CanToRosPublisher canToRosPublisher(&nh, &toyotaHandler);
 	
-	PandaStatusPublisher mPandaStatusPublisher(&nh, &toyotaHandler);
+	PandaStatusPublisher mPandaStatusPublisher(&nh);
+	toyotaHandler.addObserver(&mPandaStatusPublisher);
 	//SimpleGpsObserver myGpsObserver;
 	// Initialize Usb, this requires a connected Panda
 	//Panda::Handler pandaHandler;
@@ -237,7 +259,6 @@ int main(int argc, char **argv) {
 
 	// Initialize panda and toyota handlers
 	toyotaHandler.start();
-	mPandaStatusPublisher.start();
 
 	Control vehicleControl(&toyotaHandler, &nh);
 	
@@ -294,7 +315,7 @@ int main(int argc, char **argv) {
     ros::spin();
 	
 	// Cleanup:
-	mPandaStatusPublisher.stop();
+//	mPandaStatusPublisher.stop();
 	toyotaHandler.stop();
 	pandaHandler.stop();
     return 0;
