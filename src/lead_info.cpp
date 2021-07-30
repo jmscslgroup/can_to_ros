@@ -67,7 +67,7 @@ class LeadInfo
 			radar_traces.at(0) = p;
 			
 			std::vector <int> index_vector;
-			for(int k=0; k < radar_traces.size() -1 ; ++k)
+			for(int k=0; k < radar_traces.size(); ++k)
 			{
 				if(abs(radar_traces.at(k).point.y) <=0.5)
 				{
@@ -77,7 +77,7 @@ class LeadInfo
 			
 			double min_dist = radar_traces.at( index_vector.at(0)).point.x;
 			double desired_index = 0;
-			for(int m = 1; m < index_vector.size() - 1; ++ m)
+			for(int m = 1; m < index_vector.size() ; ++ m)
 			{
 				if( radar_traces.at( index_vector.at(m) ).point.x  < min_dist )
 				{
@@ -113,7 +113,7 @@ class LeadInfo
 			p.point.z = radar->point.z;
 			radar_traces.at(1) = p;
 			std::vector <int> index_vector;
-			for(int k=0; k < radar_traces.size() -1 ; ++k)
+			for(int k=0; k < radar_traces.size(); ++k)
 			{
 				if(abs(radar_traces.at(k).point.y) <=0.5)
 				{
@@ -123,7 +123,7 @@ class LeadInfo
 			
 			double min_dist = radar_traces.at( index_vector.at(0)).point.x;
 			double desired_index = 0;
-			for(int m = 1; m < index_vector.size() - 1; ++ m)
+			for(int m = 1; m < index_vector.size() ; ++ m)
 			{
 				if( radar_traces.at( index_vector.at(m) ).point.x  < min_dist )
 				{
@@ -158,7 +158,7 @@ class LeadInfo
 			p.point.z = radar->point.z;
 			radar_traces.at(2) = p;
 			std::vector <int> index_vector;
-			for(int k=0; k < radar_traces.size() -1 ; ++k)
+			for(int k=0; k < radar_traces.size(); ++k)
 			{
 				if(abs(radar_traces.at(k).point.y) <=0.5)
 				{
@@ -168,7 +168,7 @@ class LeadInfo
 			
 			double min_dist = radar_traces.at( index_vector.at(0)).point.x;
 			double desired_index = 0;
-			for(int m = 1; m < index_vector.size() - 1; ++ m)
+			for(int m = 1; m < index_vector.size() ; ++ m)
 			{
 				if( radar_traces.at( index_vector.at(m) ).point.x  < min_dist )
 				{
@@ -203,7 +203,7 @@ class LeadInfo
 			p.point.z = radar->point.z;
 			radar_traces.at(3) = p;
 			std::vector <int> index_vector;
-			for(int k=0; k < radar_traces.size() -1 ; ++k)
+			for(int k=0; k < radar_traces.size(); ++k)
 			{
 				if(abs(radar_traces.at(k).point.y) <=0.5)
 				{
@@ -213,7 +213,7 @@ class LeadInfo
 			
 			double min_dist = radar_traces.at( index_vector.at(0)).point.x;
 			double desired_index = 0;
-			for(int m = 1; m < index_vector.size() - 1; ++ m)
+			for(int m = 1; m < index_vector.size() ; ++ m)
 			{
 				if( radar_traces.at( index_vector.at(m) ).point.x  < min_dist )
 				{
@@ -248,7 +248,7 @@ class LeadInfo
 			p.point.z = radar->point.z;
 			radar_traces.at(4) = p;
 			std::vector <int> index_vector;
-			for(int k=0; k < radar_traces.size() -1 ; ++k)
+			for(int k=0; k < radar_traces.size(); ++k)
 			{
 				if(abs(radar_traces.at(k).point.y) <=0.5)
 				{
@@ -258,7 +258,7 @@ class LeadInfo
 			
 			double min_dist = radar_traces.at( index_vector.at(0)).point.x;
 			double desired_index = 0;
-			for(int m = 1; m < index_vector.size() - 1; ++ m)
+			for(int m = 1; m < index_vector.size() ; ++ m)
 			{
 				if( radar_traces.at( index_vector.at(m) ).point.x  < min_dist )
 				{
@@ -293,7 +293,7 @@ class LeadInfo
 			p.point.z = radar->point.z;
 			radar_traces.at(5) = p;
 			std::vector <int> index_vector;
-			for(int k=0; k < radar_traces.size() -1 ; ++k)
+			for(int k=0; k < radar_traces.size(); ++k)
 			{
 				if(abs(radar_traces.at(k).point.y) <=0.5)
 				{
@@ -303,7 +303,7 @@ class LeadInfo
 			
 			double min_dist = radar_traces.at( index_vector.at(0)).point.x;
 			double desired_index = 0;
-			for(int m = 1; m < index_vector.size() - 1; ++ m)
+			for(int m = 1; m < index_vector.size() ; ++ m)
 			{
 				if( radar_traces.at( index_vector.at(m) ).point.x  < min_dist )
 				{
@@ -338,7 +338,7 @@ class LeadInfo
 			p.point.z = radar->point.z;
 			radar_traces.at(6) = p;
 			std::vector <int> index_vector;
-			for(int k=0; k < radar_traces.size() -1 ; ++k)
+			for(int k=0; k < radar_traces.size(); ++k)
 			{
 				if(abs(radar_traces.at(k).point.y) <=0.5)
 				{
@@ -348,7 +348,7 @@ class LeadInfo
 			
 			double min_dist = radar_traces.at( index_vector.at(0)).point.x;
 			double desired_index = 0;
-			for(int m = 1; m < index_vector.size() - 1; ++ m)
+			for(int m = 1; m < index_vector.size() ; ++ m)
 			{
 				if( radar_traces.at( index_vector.at(m) ).point.x  < min_dist )
 				{
@@ -383,7 +383,7 @@ class LeadInfo
 			p.point.z = radar->point.z;
 			radar_traces.at(7) = p;
 			std::vector <int> index_vector;
-			for(int k=0; k < radar_traces.size() -1 ; ++k)
+			for(int k=0; k < radar_traces.size(); ++k)
 			{
 				if(abs(radar_traces.at(k).point.y) <=0.5)
 				{
@@ -393,7 +393,7 @@ class LeadInfo
 			
 			double min_dist = radar_traces.at( index_vector.at(0)).point.x;
 			double desired_index = 0;
-			for(int m = 1; m < index_vector.size() - 1; ++ m)
+			for(int m = 1; m < index_vector.size() ; ++ m)
 			{
 				if( radar_traces.at( index_vector.at(m) ).point.x  < min_dist )
 				{
@@ -428,7 +428,7 @@ class LeadInfo
 			p.point.z = radar->point.z;
 			radar_traces.at(8) = p;
 			std::vector <int> index_vector;
-			for(int k=0; k < radar_traces.size() -1 ; ++k)
+			for(int k=0; k < radar_traces.size(); ++k)
 			{
 				if(abs(radar_traces.at(k).point.y) <=0.5)
 				{
@@ -438,7 +438,7 @@ class LeadInfo
 			
 			double min_dist = radar_traces.at( index_vector.at(0)).point.x;
 			double desired_index = 0;
-			for(int m = 1; m < index_vector.size() - 1; ++ m)
+			for(int m = 1; m < index_vector.size() ; ++ m)
 			{
 				if( radar_traces.at( index_vector.at(m) ).point.x  < min_dist )
 				{
@@ -473,7 +473,7 @@ class LeadInfo
 			p.point.z = radar->point.z;
 			radar_traces.at(9) = p;
 			std::vector <int> index_vector;
-			for(int k=0; k < radar_traces.size() -1 ; ++k)
+			for(int k=0; k < radar_traces.size(); ++k)
 			{
 				if(abs(radar_traces.at(k).point.y) <=0.5)
 				{
@@ -483,7 +483,7 @@ class LeadInfo
 			
 			double min_dist = radar_traces.at( index_vector.at(0)).point.x;
 			double desired_index = 0;
-			for(int m = 1; m < index_vector.size() - 1; ++ m)
+			for(int m = 1; m < index_vector.size() ; ++ m)
 			{
 				if( radar_traces.at( index_vector.at(m) ).point.x  < min_dist )
 				{
@@ -518,7 +518,7 @@ class LeadInfo
 			p.point.z = radar->point.z;
 			radar_traces.at(10) = p;
 			std::vector <int> index_vector;
-			for(int k=0; k < radar_traces.size() -1 ; ++k)
+			for(int k=0; k < radar_traces.size(); ++k)
 			{
 				if(abs(radar_traces.at(k).point.y) <=0.5)
 				{
@@ -528,7 +528,7 @@ class LeadInfo
 			
 			double min_dist = radar_traces.at( index_vector.at(0)).point.x;
 			double desired_index = 0;
-			for(int m = 1; m < index_vector.size() - 1; ++ m)
+			for(int m = 1; m < index_vector.size() ; ++ m)
 			{
 				if( radar_traces.at( index_vector.at(m) ).point.x  < min_dist )
 				{
@@ -563,7 +563,7 @@ class LeadInfo
 			p.point.z = radar->point.z;
 			radar_traces.at(11) = p;
 			std::vector <int> index_vector;
-			for(int k=0; k < radar_traces.size() -1 ; ++k)
+			for(int k=0; k < radar_traces.size(); ++k)
 			{
 				if(abs(radar_traces.at(k).point.y) <=0.5)
 				{
@@ -573,7 +573,7 @@ class LeadInfo
 			
 			double min_dist = radar_traces.at( index_vector.at(0)).point.x;
 			double desired_index = 0;
-			for(int m = 1; m < index_vector.size() - 1; ++ m)
+			for(int m = 1; m < index_vector.size() ; ++ m)
 			{
 				if( radar_traces.at( index_vector.at(m) ).point.x  < min_dist )
 				{
@@ -608,7 +608,7 @@ class LeadInfo
 			p.point.z = radar->point.z;
 			radar_traces.at(12) = p;
 			std::vector <int> index_vector;
-			for(int k=0; k < radar_traces.size() -1 ; ++k)
+			for(int k=0; k < radar_traces.size(); ++k)
 			{
 				if(abs(radar_traces.at(k).point.y) <=0.5)
 				{
@@ -618,7 +618,7 @@ class LeadInfo
 			
 			double min_dist = radar_traces.at( index_vector.at(0)).point.x;
 			double desired_index = 0;
-			for(int m = 1; m < index_vector.size() - 1; ++ m)
+			for(int m = 1; m < index_vector.size() ; ++ m)
 			{
 				if( radar_traces.at( index_vector.at(m) ).point.x  < min_dist )
 				{
@@ -653,7 +653,7 @@ class LeadInfo
 			p.point.z = radar->point.z;
 			radar_traces.at(13) = p;
 			std::vector <int> index_vector;
-			for(int k=0; k < radar_traces.size() -1 ; ++k)
+			for(int k=0; k < radar_traces.size(); ++k)
 			{
 				if(abs(radar_traces.at(k).point.y) <=0.5)
 				{
@@ -663,7 +663,7 @@ class LeadInfo
 			
 			double min_dist = radar_traces.at( index_vector.at(0)).point.x;
 			double desired_index = 0;
-			for(int m = 1; m < index_vector.size() - 1; ++ m)
+			for(int m = 1; m < index_vector.size() ; ++ m)
 			{
 				if( radar_traces.at( index_vector.at(m) ).point.x  < min_dist )
 				{
@@ -698,7 +698,7 @@ class LeadInfo
 			p.point.z = radar->point.z;
 			radar_traces.at(14) = p;
 			std::vector <int> index_vector;
-			for(int k=0; k < radar_traces.size() -1 ; ++k)
+			for(int k=0; k < radar_traces.size(); ++k)
 			{
 				if(abs(radar_traces.at(k).point.y) <=0.5)
 				{
@@ -708,7 +708,7 @@ class LeadInfo
 			
 			double min_dist = radar_traces.at( index_vector.at(0)).point.x;
 			double desired_index = 0;
-			for(int m = 1; m < index_vector.size() - 1; ++ m)
+			for(int m = 1; m < index_vector.size() ; ++ m)
 			{
 				if( radar_traces.at( index_vector.at(m) ).point.x  < min_dist )
 				{
@@ -743,7 +743,7 @@ class LeadInfo
 			p.point.z = radar->point.z;
 			radar_traces.at(15) = p;
 			std::vector <int> index_vector;
-			for(int k=0; k < radar_traces.size() -1 ; ++k)
+			for(int k=0; k < radar_traces.size(); ++k)
 			{
 				if(abs(radar_traces.at(k).point.y) <=0.5)
 				{
@@ -753,7 +753,7 @@ class LeadInfo
 			
 			double min_dist = radar_traces.at( index_vector.at(0)).point.x;
 			double desired_index = 0;
-			for(int m = 1; m < index_vector.size() - 1; ++ m)
+			for(int m = 1; m < index_vector.size() ; ++ m)
 			{
 				if( radar_traces.at( index_vector.at(m) ).point.x  < min_dist )
 				{
