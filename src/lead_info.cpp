@@ -91,9 +91,9 @@ class LeadInfo
 
 				r_velocity = radar_traces.at( index_vector.at(desired_index) ).point.z;
 				double lat_of_min_dist = radar_traces.at( index_vector.at(desired_index) ).point.y;
-				if (min_dist > 250.0)
+				if (min_dist > 252.0)
 				{
-					min_dist = 250.0;
+					min_dist = 252.0;
 					r_velocity = 0.0;/* r_velocity =  old_r_velocity - ( current_ego_velocity -old_ego_velocity );*/
 
 				}
@@ -141,9 +141,9 @@ class LeadInfo
 
 				r_velocity = radar_traces.at( index_vector.at(desired_index) ).point.z;
 				double lat_of_min_dist = radar_traces.at( index_vector.at(desired_index) ).point.y;
-				if (min_dist > 250.0)
+				if (min_dist > 252.0)
 				{
-					min_dist = 250.0;
+					min_dist = 252.0;
 					r_velocity = 0.0;/* r_velocity =  old_r_velocity - ( current_ego_velocity -old_ego_velocity );*/
 
 				}
@@ -190,9 +190,9 @@ class LeadInfo
 
 				r_velocity = radar_traces.at( index_vector.at(desired_index) ).point.z;
 				double lat_of_min_dist = radar_traces.at( index_vector.at(desired_index) ).point.y;
-				if (min_dist > 250.0)
+				if (min_dist > 252.0)
 				{
-					min_dist = 250.0;
+					min_dist = 252.0;
 					r_velocity = 0.0;/* r_velocity =  old_r_velocity - ( current_ego_velocity -old_ego_velocity );*/
 
 				}
@@ -239,9 +239,9 @@ class LeadInfo
 
 				r_velocity = radar_traces.at( index_vector.at(desired_index) ).point.z;
 				double lat_of_min_dist = radar_traces.at( index_vector.at(desired_index) ).point.y;
-				if (min_dist > 250.0)
+				if (min_dist > 252.0)
 				{
-					min_dist = 250.0;
+					min_dist = 252.0;
 					r_velocity = 0.0;/* r_velocity =  old_r_velocity - ( current_ego_velocity -old_ego_velocity );*/
 
 				}
@@ -289,9 +289,9 @@ class LeadInfo
 
 				r_velocity = radar_traces.at( index_vector.at(desired_index) ).point.z;
 				double lat_of_min_dist = radar_traces.at( index_vector.at(desired_index) ).point.y;
-				if (min_dist > 250.0)
+				if (min_dist > 252.0)
 				{
-					min_dist = 250.0;
+					min_dist = 252.0;
 					r_velocity = 0.0;/* r_velocity =  old_r_velocity - ( current_ego_velocity -old_ego_velocity );*/
 
 				}
@@ -339,9 +339,9 @@ class LeadInfo
 
 				r_velocity = radar_traces.at( index_vector.at(desired_index) ).point.z;
 				double lat_of_min_dist = radar_traces.at( index_vector.at(desired_index) ).point.y;
-				if (min_dist > 250.0)
+				if (min_dist > 252.0)
 				{
-					min_dist = 250.0;
+					min_dist = 252.0;
 					r_velocity = 0.0;/* r_velocity =  old_r_velocity - ( current_ego_velocity -old_ego_velocity );*/
 
 				}
@@ -389,9 +389,9 @@ class LeadInfo
 
 				r_velocity = radar_traces.at( index_vector.at(desired_index) ).point.z;
 				double lat_of_min_dist = radar_traces.at( index_vector.at(desired_index) ).point.y;
-				if (min_dist > 250.0)
+				if (min_dist > 252.0)
 				{
-					min_dist = 250.0;
+					min_dist = 252.0;
 					r_velocity = 0.0;/* r_velocity =  old_r_velocity - ( current_ego_velocity -old_ego_velocity );*/
 
 				}
@@ -439,9 +439,9 @@ class LeadInfo
 
 				r_velocity = radar_traces.at( index_vector.at(desired_index) ).point.z;
 				double lat_of_min_dist = radar_traces.at( index_vector.at(desired_index) ).point.y;
-				if (min_dist > 250.0)
+				if (min_dist > 252.0)
 				{
-					min_dist = 250.0;
+					min_dist = 252.0;
 					r_velocity = 0.0;/* r_velocity =  old_r_velocity - ( current_ego_velocity -old_ego_velocity );*/
 
 				}
@@ -489,9 +489,9 @@ class LeadInfo
 
 				r_velocity = radar_traces.at( index_vector.at(desired_index) ).point.z;
 				double lat_of_min_dist = radar_traces.at( index_vector.at(desired_index) ).point.y;
-				if (min_dist > 250.0)
+				if (min_dist > 252.0)
 				{
-					min_dist = 250.0;
+					min_dist = 252.0;
 					r_velocity = 0.0;/* r_velocity =  old_r_velocity - ( current_ego_velocity -old_ego_velocity );*/
 
 				}
@@ -539,9 +539,9 @@ class LeadInfo
 
 				r_velocity = radar_traces.at( index_vector.at(desired_index) ).point.z;
 				double lat_of_min_dist = radar_traces.at( index_vector.at(desired_index) ).point.y;
-				if (min_dist > 250.0)
+				if (min_dist > 252.0)
 				{
-					min_dist = 250.0;
+					min_dist = 252.0;
 					r_velocity = 0.0;/* r_velocity =  old_r_velocity - ( current_ego_velocity -old_ego_velocity );*/
 
 				}
@@ -589,9 +589,9 @@ class LeadInfo
 
 				r_velocity = radar_traces.at( index_vector.at(desired_index) ).point.z;
 				double lat_of_min_dist = radar_traces.at( index_vector.at(desired_index) ).point.y;
-				if (min_dist > 250.0)
+				if (min_dist > 252.0)
 				{
-					min_dist = 250.0;
+					min_dist = 252.0;
 					r_velocity = 0.0;/* r_velocity =  old_r_velocity - ( current_ego_velocity -old_ego_velocity );*/
 
 				}
@@ -639,9 +639,9 @@ class LeadInfo
 
 				r_velocity = radar_traces.at( index_vector.at(desired_index) ).point.z;
 				double lat_of_min_dist = radar_traces.at( index_vector.at(desired_index) ).point.y;
-				if (min_dist > 250.0)
+				if (min_dist > 252.0)
 				{
-					min_dist = 250.0;
+					min_dist = 252.0;
 					r_velocity = 0.0;/* r_velocity =  old_r_velocity - ( current_ego_velocity -old_ego_velocity );*/
 
 				}
@@ -689,9 +689,9 @@ class LeadInfo
 
 				r_velocity = radar_traces.at( index_vector.at(desired_index) ).point.z;
 				double lat_of_min_dist = radar_traces.at( index_vector.at(desired_index) ).point.y;
-				if (min_dist > 250.0)
+				if (min_dist > 252.0)
 				{
-					min_dist = 250.0;
+					min_dist = 252.0;
 					r_velocity = 0.0;/* r_velocity =  old_r_velocity - ( current_ego_velocity -old_ego_velocity );*/
 
 				}
@@ -739,9 +739,9 @@ class LeadInfo
 
 				r_velocity = radar_traces.at( index_vector.at(desired_index) ).point.z;
 				double lat_of_min_dist = radar_traces.at( index_vector.at(desired_index) ).point.y;
-				if (min_dist > 250.0)
+				if (min_dist > 252.0)
 				{
-					min_dist = 250.0;
+					min_dist = 252.0;
 					r_velocity = 0.0;/* r_velocity =  old_r_velocity - ( current_ego_velocity -old_ego_velocity );*/
 
 				}
@@ -789,9 +789,9 @@ class LeadInfo
 
 				r_velocity = radar_traces.at( index_vector.at(desired_index) ).point.z;
 				double lat_of_min_dist = radar_traces.at( index_vector.at(desired_index) ).point.y;
-				if (min_dist > 250.0)
+				if (min_dist > 252.0)
 				{
-					min_dist = 250.0;
+					min_dist = 252.0;
 					r_velocity = 0.0;/* r_velocity =  old_r_velocity - ( current_ego_velocity -old_ego_velocity );*/
 
 				}
@@ -839,9 +839,9 @@ class LeadInfo
 
 				r_velocity = radar_traces.at( index_vector.at(desired_index) ).point.z;
 				double lat_of_min_dist = radar_traces.at( index_vector.at(desired_index) ).point.y;
-				if (min_dist > 250.0)
+				if (min_dist > 252.0)
 				{
-					min_dist = 250.0;
+					min_dist = 252.0;
 					r_velocity = 0.0;/* r_velocity =  old_r_velocity - ( current_ego_velocity -old_ego_velocity );*/
 
 				}
