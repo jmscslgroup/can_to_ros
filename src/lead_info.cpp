@@ -24,32 +24,34 @@ public:
   double r_velocity = 0.0;
   double lead_distance = 0.0;
   double last_read_lead_dist = 0.0;
+  double old_ego_velocity = 0.0;
+  double current_ego_velocity =0.0; 
+  double old_r_velocity = 0.0;
   LeadInfo()
   {
     //Topic you want to publish
-    relative_vel_pub = n_.advertise<geometry_msgs::Twist>("rel_vel", 1000);
-    lead_dist_pub = n_.advertise<std_msgs::Float64>("lead_dist", 1000);
-
-
-    leaddist_sub = n_.subscribe("lead_dist_869", 100, &LeadInfo::callback_lead, this);
+    relative_vel_pub = n_.advertise<geometry_msgs::Twist>("rel_vel", 1);
+    lead_dist_pub = n_.advertise<std_msgs::Float64>("lead_dist", 1);
+    leaddist_sub = n_.subscribe("lead_dist_869", 1, &LeadInfo::callback_lead, this);
+    ego_vel_sub = n_.subscribe("vel", 1, &LeadInfo::callback_ego_speed, this);
 
     //Topic you want to subscribe
-    tracka0_sub = n_.subscribe("track_a0", 100, &LeadInfo::callback, this);
-    tracka1_sub = n_.subscribe("track_a1", 100, &LeadInfo::callback, this);
-    tracka2_sub = n_.subscribe("track_a2", 100, &LeadInfo::callback, this);
-    tracka3_sub = n_.subscribe("track_a3", 100, &LeadInfo::callback, this);
-    tracka4_sub = n_.subscribe("track_a4", 100, &LeadInfo::callback, this);
-    tracka5_sub = n_.subscribe("track_a5", 100, &LeadInfo::callback, this);
-    tracka6_sub = n_.subscribe("track_a6", 100, &LeadInfo::callback, this);
-    tracka7_sub = n_.subscribe("track_a7", 100, &LeadInfo::callback, this);
-    tracka8_sub = n_.subscribe("track_a8", 100, &LeadInfo::callback, this);
-    tracka9_sub = n_.subscribe("track_a9", 100, &LeadInfo::callback, this);
-    tracka10_sub = n_.subscribe("track_a10", 100, &LeadInfo::callback, this);
-    tracka11_sub = n_.subscribe("track_a11", 100, &LeadInfo::callback, this);
-    tracka12_sub = n_.subscribe("track_a12", 100, &LeadInfo::callback, this);
-    tracka13_sub = n_.subscribe("track_a13", 100, &LeadInfo::callback, this);
-    tracka14_sub = n_.subscribe("track_a14", 100, &LeadInfo::callback, this);
-    tracka15_sub = n_.subscribe("track_a15", 100, &LeadInfo::callback, this);
+    tracka0_sub = n_.subscribe("track_a0", 1, &LeadInfo::callback, this);
+    tracka1_sub = n_.subscribe("track_a1", 1, &LeadInfo::callback, this);
+    tracka2_sub = n_.subscribe("track_a2", 1, &LeadInfo::callback, this);
+    tracka3_sub = n_.subscribe("track_a3", 1, &LeadInfo::callback, this);
+    tracka4_sub = n_.subscribe("track_a4", 1, &LeadInfo::callback, this);
+    tracka5_sub = n_.subscribe("track_a5", 1, &LeadInfo::callback, this);
+    tracka6_sub = n_.subscribe("track_a6", 1, &LeadInfo::callback, this);
+    tracka7_sub = n_.subscribe("track_a7", 1, &LeadInfo::callback, this);
+    tracka8_sub = n_.subscribe("track_a8", 1, &LeadInfo::callback, this);
+    tracka9_sub = n_.subscribe("track_a9", 1, &LeadInfo::callback, this);
+    tracka10_sub = n_.subscribe("track_a10", 1, &LeadInfo::callback, this);
+    tracka11_sub = n_.subscribe("track_a11", 1, &LeadInfo::callback, this);
+    tracka12_sub = n_.subscribe("track_a12", 1, &LeadInfo::callback, this);
+    tracka13_sub = n_.subscribe("track_a13", 1, &LeadInfo::callback, this);
+    tracka14_sub = n_.subscribe("track_a14", 1, &LeadInfo::callback, this);
+    tracka15_sub = n_.subscribe("track_a15", 1, &LeadInfo::callback, this);
   }
 
   void callback(const geometry_msgs::PointStamped::ConstPtr& radar)
@@ -62,12 +64,14 @@ public:
           last_read_lead_dist = radar->point.x;
           r_lat = radar->point.y;
           r_long = radar->point.x;
+          old_r_velocity = r_velocity;
           r_velocity =  radar->point.z;
           geometry_msgs::Twist msg;
           std_msgs::Float64 dist;
           msg.linear.x = radar->point.x; //long 
           msg.linear.y = radar->point.y; //lat
           msg.linear.z = radar->point.z; // rel_v
+          
           relative_vel_pub.publish(msg);   
           dist.data = radar->point.x;
           lead_dist_pub.publish(dist);
@@ -81,6 +85,7 @@ public:
         last_read_lead_dist = radar->point.x;
         r_lat = radar->point.y;
         r_long = radar->point.x;
+        old_r_velocity = r_velocity;
         r_velocity =  radar->point.z;
         geometry_msgs::Twist msg;
         std_msgs::Float64 dist;
@@ -93,6 +98,20 @@ public:
 
       }
     }
+    else {
+
+        geometry_msgs::Twist msg;
+        std_msgs::Float64 dist;
+        msg.linear.x = 0.0; //long 
+        msg.linear.y = 0.0; //lat
+        old_r_velocity = r_velocity;
+        r_velocity =  old_r_velocity - ( current_ego_velocity -old_ego_velocity );
+        msg.linear.z = r_velocity;
+        relative_vel_pub.publish(msg);
+        dist.data = 252.0;
+        lead_dist_pub.publish(dist);
+
+      }
   }
 
 
@@ -104,12 +123,21 @@ public:
  
     }
 
+
+    void callback_ego_speed(const geometry_msgs::Twist::ConstPtr& speed)
+  {
+    old_ego_velocity = current_ego_velocity;
+    current_ego_velocity = speed->linear.x;
+    }
+
 private:
   ros::NodeHandle n_;
   ros::Publisher relative_vel_pub;
   ros::Publisher lead_dist_pub;
 
   ros::Subscriber leaddist_sub;
+
+  ros::Subscriber ego_vel_sub;
 
   ros::Subscriber tracka0_sub;
   ros::Subscriber tracka1_sub;
