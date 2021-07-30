@@ -74,34 +74,37 @@ class LeadInfo
 					index_vector.push_back(k);
 				}
 			}
-			
-			double min_dist = radar_traces.at( index_vector.at(0)).point.x;
-			double desired_index = 0;
-			for(int m = 1; m < index_vector.size() ; ++ m)
+			if (index_vector.size() > 0 )
 			{
-				if( radar_traces.at( index_vector.at(m) ).point.x  < min_dist )
+
+				double min_dist = radar_traces.at( index_vector.at(0)).point.x;
+				double desired_index = 0;
+				for(int m = 1; m < index_vector.size() ; ++ m)
 				{
-					min_dist = radar_traces.at( index_vector.at(m) ).point.x ;
-					desired_index = m;
+					if( radar_traces.at( index_vector.at(m) ).point.x  < min_dist )
+					{
+						min_dist = radar_traces.at( index_vector.at(m) ).point.x ;
+						desired_index = m;
+					}
 				}
-			}
-			old_r_velocity = r_velocity;
+				old_r_velocity = r_velocity;
 
-			r_velocity = radar_traces.at( index_vector.at(desired_index) ).point.z;
-			double lat_of_min_dist = radar_traces.at( index_vector.at(desired_index) ).point.y;
-			if (min_dist > 250.0)
-			{
-                        	r_velocity =  old_r_velocity - ( current_ego_velocity -old_ego_velocity );
+				r_velocity = radar_traces.at( index_vector.at(desired_index) ).point.z;
+				double lat_of_min_dist = radar_traces.at( index_vector.at(desired_index) ).point.y;
+				if (min_dist > 250.0)
+				{
+					r_velocity =  old_r_velocity - ( current_ego_velocity -old_ego_velocity );
 
+				}
+				geometry_msgs::Twist msg;
+				std_msgs::Float64 dist;
+				msg.linear.x = min_dist; //long
+				msg.linear.y = lat_of_min_dist; //lat
+				msg.linear.z = r_velocity; // rel_v
+				relative_vel_pub.publish(msg);
+				dist.data = min_dist;
+				lead_dist_pub.publish(dist);
 			}
-			geometry_msgs::Twist msg;
-			std_msgs::Float64 dist;
-                        msg.linear.x = min_dist; //long
-                        msg.linear.y = lat_of_min_dist; //lat
-                        msg.linear.z = r_velocity; // rel_v
-                        relative_vel_pub.publish(msg);
-                        dist.data = min_dist;
-                        lead_dist_pub.publish(dist);
 
 		}
 		void cb1(const geometry_msgs::PointStamped::ConstPtr& radar)
@@ -120,34 +123,37 @@ class LeadInfo
 					index_vector.push_back(k);
 				}
 			}
-			
-			double min_dist = radar_traces.at( index_vector.at(0)).point.x;
-			double desired_index = 0;
-			for(int m = 1; m < index_vector.size() ; ++ m)
+			if (index_vector.size() > 0 )
 			{
-				if( radar_traces.at( index_vector.at(m) ).point.x  < min_dist )
+
+				double min_dist = radar_traces.at( index_vector.at(0)).point.x;
+				double desired_index = 0;
+				for(int m = 1; m < index_vector.size() ; ++ m)
 				{
-					min_dist = radar_traces.at( index_vector.at(m) ).point.x ;
-					desired_index = m;
+					if( radar_traces.at( index_vector.at(m) ).point.x  < min_dist )
+					{
+						min_dist = radar_traces.at( index_vector.at(m) ).point.x ;
+						desired_index = m;
+					}
 				}
-			}
-			old_r_velocity = r_velocity;
+				old_r_velocity = r_velocity;
 
-			r_velocity = radar_traces.at( index_vector.at(desired_index) ).point.z;
-			double lat_of_min_dist = radar_traces.at( index_vector.at(desired_index) ).point.y;
-			if (min_dist > 250.0)
-			{
-                        	r_velocity =  old_r_velocity - ( current_ego_velocity -old_ego_velocity );
+				r_velocity = radar_traces.at( index_vector.at(desired_index) ).point.z;
+				double lat_of_min_dist = radar_traces.at( index_vector.at(desired_index) ).point.y;
+				if (min_dist > 250.0)
+				{
+					r_velocity =  old_r_velocity - ( current_ego_velocity -old_ego_velocity );
 
+				}
+				geometry_msgs::Twist msg;
+				std_msgs::Float64 dist;
+				msg.linear.x = min_dist; //long
+				msg.linear.y = lat_of_min_dist; //lat
+				msg.linear.z = r_velocity; // rel_v
+				relative_vel_pub.publish(msg);
+				dist.data = min_dist;
+				lead_dist_pub.publish(dist);
 			}
-			geometry_msgs::Twist msg;
-			std_msgs::Float64 dist;
-                        msg.linear.x = min_dist; //long
-                        msg.linear.y = lat_of_min_dist; //lat
-                        msg.linear.z = r_velocity; // rel_v
-                        relative_vel_pub.publish(msg);
-                        dist.data = min_dist;
-                        lead_dist_pub.publish(dist);
 		}
 		void cb2(const geometry_msgs::PointStamped::ConstPtr& radar)
 		{
@@ -165,34 +171,37 @@ class LeadInfo
 					index_vector.push_back(k);
 				}
 			}
-			
-			double min_dist = radar_traces.at( index_vector.at(0)).point.x;
-			double desired_index = 0;
-			for(int m = 1; m < index_vector.size() ; ++ m)
+			if (index_vector.size() > 0 )
 			{
-				if( radar_traces.at( index_vector.at(m) ).point.x  < min_dist )
+
+				double min_dist = radar_traces.at( index_vector.at(0)).point.x;
+				double desired_index = 0;
+				for(int m = 1; m < index_vector.size() ; ++ m)
 				{
-					min_dist = radar_traces.at( index_vector.at(m) ).point.x ;
-					desired_index = m;
+					if( radar_traces.at( index_vector.at(m) ).point.x  < min_dist )
+					{
+						min_dist = radar_traces.at( index_vector.at(m) ).point.x ;
+						desired_index = m;
+					}
 				}
-			}
-			old_r_velocity = r_velocity;
+				old_r_velocity = r_velocity;
 
-			r_velocity = radar_traces.at( index_vector.at(desired_index) ).point.z;
-			double lat_of_min_dist = radar_traces.at( index_vector.at(desired_index) ).point.y;
-			if (min_dist > 250.0)
-			{
-                        	r_velocity =  old_r_velocity - ( current_ego_velocity -old_ego_velocity );
+				r_velocity = radar_traces.at( index_vector.at(desired_index) ).point.z;
+				double lat_of_min_dist = radar_traces.at( index_vector.at(desired_index) ).point.y;
+				if (min_dist > 250.0)
+				{
+					r_velocity =  old_r_velocity - ( current_ego_velocity -old_ego_velocity );
 
+				}
+				geometry_msgs::Twist msg;
+				std_msgs::Float64 dist;
+				msg.linear.x = min_dist; //long
+				msg.linear.y = lat_of_min_dist; //lat
+				msg.linear.z = r_velocity; // rel_v
+				relative_vel_pub.publish(msg);
+				dist.data = min_dist;
+				lead_dist_pub.publish(dist);
 			}
-			geometry_msgs::Twist msg;
-			std_msgs::Float64 dist;
-                        msg.linear.x = min_dist; //long
-                        msg.linear.y = lat_of_min_dist; //lat
-                        msg.linear.z = r_velocity; // rel_v
-                        relative_vel_pub.publish(msg);
-                        dist.data = min_dist;
-                        lead_dist_pub.publish(dist);
 		}
 		void cb3(const geometry_msgs::PointStamped::ConstPtr& radar)
 		{
@@ -210,34 +219,38 @@ class LeadInfo
 					index_vector.push_back(k);
 				}
 			}
-			
-			double min_dist = radar_traces.at( index_vector.at(0)).point.x;
-			double desired_index = 0;
-			for(int m = 1; m < index_vector.size() ; ++ m)
+			if (index_vector.size() > 0 )
 			{
-				if( radar_traces.at( index_vector.at(m) ).point.x  < min_dist )
+
+				double min_dist = radar_traces.at( index_vector.at(0)).point.x;
+				double desired_index = 0;
+				for(int m = 1; m < index_vector.size() ; ++ m)
 				{
-					min_dist = radar_traces.at( index_vector.at(m) ).point.x ;
-					desired_index = m;
+					if( radar_traces.at( index_vector.at(m) ).point.x  < min_dist )
+					{
+						min_dist = radar_traces.at( index_vector.at(m) ).point.x ;
+						desired_index = m;
+					}
 				}
-			}
-			old_r_velocity = r_velocity;
+				old_r_velocity = r_velocity;
 
-			r_velocity = radar_traces.at( index_vector.at(desired_index) ).point.z;
-			double lat_of_min_dist = radar_traces.at( index_vector.at(desired_index) ).point.y;
-			if (min_dist > 250.0)
-			{
-                        	r_velocity =  old_r_velocity - ( current_ego_velocity -old_ego_velocity );
+				r_velocity = radar_traces.at( index_vector.at(desired_index) ).point.z;
+				double lat_of_min_dist = radar_traces.at( index_vector.at(desired_index) ).point.y;
+				if (min_dist > 250.0)
+				{
+					r_velocity =  old_r_velocity - ( current_ego_velocity -old_ego_velocity );
 
+				}
+				geometry_msgs::Twist msg;
+				std_msgs::Float64 dist;
+				msg.linear.x = min_dist; //long
+				msg.linear.y = lat_of_min_dist; //lat
+				msg.linear.z = r_velocity; // rel_v
+				relative_vel_pub.publish(msg);
+				dist.data = min_dist;
+				lead_dist_pub.publish(dist);
 			}
-			geometry_msgs::Twist msg;
-			std_msgs::Float64 dist;
-                        msg.linear.x = min_dist; //long
-                        msg.linear.y = lat_of_min_dist; //lat
-                        msg.linear.z = r_velocity; // rel_v
-                        relative_vel_pub.publish(msg);
-                        dist.data = min_dist;
-                        lead_dist_pub.publish(dist);
+			
 		}
 		void cb4(const geometry_msgs::PointStamped::ConstPtr& radar)
 		{
@@ -255,34 +268,38 @@ class LeadInfo
 					index_vector.push_back(k);
 				}
 			}
-			
-			double min_dist = radar_traces.at( index_vector.at(0)).point.x;
-			double desired_index = 0;
-			for(int m = 1; m < index_vector.size() ; ++ m)
+			if (index_vector.size() > 0 )
 			{
-				if( radar_traces.at( index_vector.at(m) ).point.x  < min_dist )
+
+				double min_dist = radar_traces.at( index_vector.at(0)).point.x;
+				double desired_index = 0;
+				for(int m = 1; m < index_vector.size() ; ++ m)
 				{
-					min_dist = radar_traces.at( index_vector.at(m) ).point.x ;
-					desired_index = m;
+					if( radar_traces.at( index_vector.at(m) ).point.x  < min_dist )
+					{
+						min_dist = radar_traces.at( index_vector.at(m) ).point.x ;
+						desired_index = m;
+					}
 				}
-			}
-			old_r_velocity = r_velocity;
+				old_r_velocity = r_velocity;
 
-			r_velocity = radar_traces.at( index_vector.at(desired_index) ).point.z;
-			double lat_of_min_dist = radar_traces.at( index_vector.at(desired_index) ).point.y;
-			if (min_dist > 250.0)
-			{
-                        	r_velocity =  old_r_velocity - ( current_ego_velocity -old_ego_velocity );
+				r_velocity = radar_traces.at( index_vector.at(desired_index) ).point.z;
+				double lat_of_min_dist = radar_traces.at( index_vector.at(desired_index) ).point.y;
+				if (min_dist > 250.0)
+				{
+					r_velocity =  old_r_velocity - ( current_ego_velocity -old_ego_velocity );
 
+				}
+				geometry_msgs::Twist msg;
+				std_msgs::Float64 dist;
+				msg.linear.x = min_dist; //long
+				msg.linear.y = lat_of_min_dist; //lat
+				msg.linear.z = r_velocity; // rel_v
+				relative_vel_pub.publish(msg);
+				dist.data = min_dist;
+				lead_dist_pub.publish(dist);
 			}
-			geometry_msgs::Twist msg;
-			std_msgs::Float64 dist;
-                        msg.linear.x = min_dist; //long
-                        msg.linear.y = lat_of_min_dist; //lat
-                        msg.linear.z = r_velocity; // rel_v
-                        relative_vel_pub.publish(msg);
-                        dist.data = min_dist;
-                        lead_dist_pub.publish(dist);
+			
 		}
 		void cb5(const geometry_msgs::PointStamped::ConstPtr& radar)
 		{
@@ -300,34 +317,38 @@ class LeadInfo
 					index_vector.push_back(k);
 				}
 			}
-			
-			double min_dist = radar_traces.at( index_vector.at(0)).point.x;
-			double desired_index = 0;
-			for(int m = 1; m < index_vector.size() ; ++ m)
+			if (index_vector.size() > 0 )
 			{
-				if( radar_traces.at( index_vector.at(m) ).point.x  < min_dist )
+
+				double min_dist = radar_traces.at( index_vector.at(0)).point.x;
+				double desired_index = 0;
+				for(int m = 1; m < index_vector.size() ; ++ m)
 				{
-					min_dist = radar_traces.at( index_vector.at(m) ).point.x ;
-					desired_index = m;
+					if( radar_traces.at( index_vector.at(m) ).point.x  < min_dist )
+					{
+						min_dist = radar_traces.at( index_vector.at(m) ).point.x ;
+						desired_index = m;
+					}
 				}
-			}
-			old_r_velocity = r_velocity;
+				old_r_velocity = r_velocity;
 
-			r_velocity = radar_traces.at( index_vector.at(desired_index) ).point.z;
-			double lat_of_min_dist = radar_traces.at( index_vector.at(desired_index) ).point.y;
-			if (min_dist > 250.0)
-			{
-                        	r_velocity =  old_r_velocity - ( current_ego_velocity -old_ego_velocity );
+				r_velocity = radar_traces.at( index_vector.at(desired_index) ).point.z;
+				double lat_of_min_dist = radar_traces.at( index_vector.at(desired_index) ).point.y;
+				if (min_dist > 250.0)
+				{
+					r_velocity =  old_r_velocity - ( current_ego_velocity -old_ego_velocity );
 
+				}
+				geometry_msgs::Twist msg;
+				std_msgs::Float64 dist;
+				msg.linear.x = min_dist; //long
+				msg.linear.y = lat_of_min_dist; //lat
+				msg.linear.z = r_velocity; // rel_v
+				relative_vel_pub.publish(msg);
+				dist.data = min_dist;
+				lead_dist_pub.publish(dist);
 			}
-			geometry_msgs::Twist msg;
-			std_msgs::Float64 dist;
-                        msg.linear.x = min_dist; //long
-                        msg.linear.y = lat_of_min_dist; //lat
-                        msg.linear.z = r_velocity; // rel_v
-                        relative_vel_pub.publish(msg);
-                        dist.data = min_dist;
-                        lead_dist_pub.publish(dist);
+			
 		}
 		void cb6(const geometry_msgs::PointStamped::ConstPtr& radar)
 		{
@@ -345,34 +366,38 @@ class LeadInfo
 					index_vector.push_back(k);
 				}
 			}
-			
-			double min_dist = radar_traces.at( index_vector.at(0)).point.x;
-			double desired_index = 0;
-			for(int m = 1; m < index_vector.size() ; ++ m)
+			if (index_vector.size() > 0 )
 			{
-				if( radar_traces.at( index_vector.at(m) ).point.x  < min_dist )
+
+				double min_dist = radar_traces.at( index_vector.at(0)).point.x;
+				double desired_index = 0;
+				for(int m = 1; m < index_vector.size() ; ++ m)
 				{
-					min_dist = radar_traces.at( index_vector.at(m) ).point.x ;
-					desired_index = m;
+					if( radar_traces.at( index_vector.at(m) ).point.x  < min_dist )
+					{
+						min_dist = radar_traces.at( index_vector.at(m) ).point.x ;
+						desired_index = m;
+					}
 				}
-			}
-			old_r_velocity = r_velocity;
+				old_r_velocity = r_velocity;
 
-			r_velocity = radar_traces.at( index_vector.at(desired_index) ).point.z;
-			double lat_of_min_dist = radar_traces.at( index_vector.at(desired_index) ).point.y;
-			if (min_dist > 250.0)
-			{
-                        	r_velocity =  old_r_velocity - ( current_ego_velocity -old_ego_velocity );
+				r_velocity = radar_traces.at( index_vector.at(desired_index) ).point.z;
+				double lat_of_min_dist = radar_traces.at( index_vector.at(desired_index) ).point.y;
+				if (min_dist > 250.0)
+				{
+					r_velocity =  old_r_velocity - ( current_ego_velocity -old_ego_velocity );
 
+				}
+				geometry_msgs::Twist msg;
+				std_msgs::Float64 dist;
+				msg.linear.x = min_dist; //long
+				msg.linear.y = lat_of_min_dist; //lat
+				msg.linear.z = r_velocity; // rel_v
+				relative_vel_pub.publish(msg);
+				dist.data = min_dist;
+				lead_dist_pub.publish(dist);
 			}
-			geometry_msgs::Twist msg;
-			std_msgs::Float64 dist;
-                        msg.linear.x = min_dist; //long
-                        msg.linear.y = lat_of_min_dist; //lat
-                        msg.linear.z = r_velocity; // rel_v
-                        relative_vel_pub.publish(msg);
-                        dist.data = min_dist;
-                        lead_dist_pub.publish(dist);
+			
 		}
 		void cb7(const geometry_msgs::PointStamped::ConstPtr& radar)
 		{
@@ -390,34 +415,38 @@ class LeadInfo
 					index_vector.push_back(k);
 				}
 			}
-			
-			double min_dist = radar_traces.at( index_vector.at(0)).point.x;
-			double desired_index = 0;
-			for(int m = 1; m < index_vector.size() ; ++ m)
+			if (index_vector.size() > 0 )
 			{
-				if( radar_traces.at( index_vector.at(m) ).point.x  < min_dist )
+
+				double min_dist = radar_traces.at( index_vector.at(0)).point.x;
+				double desired_index = 0;
+				for(int m = 1; m < index_vector.size() ; ++ m)
 				{
-					min_dist = radar_traces.at( index_vector.at(m) ).point.x ;
-					desired_index = m;
+					if( radar_traces.at( index_vector.at(m) ).point.x  < min_dist )
+					{
+						min_dist = radar_traces.at( index_vector.at(m) ).point.x ;
+						desired_index = m;
+					}
 				}
-			}
-			old_r_velocity = r_velocity;
+				old_r_velocity = r_velocity;
 
-			r_velocity = radar_traces.at( index_vector.at(desired_index) ).point.z;
-			double lat_of_min_dist = radar_traces.at( index_vector.at(desired_index) ).point.y;
-			if (min_dist > 250.0)
-			{
-                        	r_velocity =  old_r_velocity - ( current_ego_velocity -old_ego_velocity );
+				r_velocity = radar_traces.at( index_vector.at(desired_index) ).point.z;
+				double lat_of_min_dist = radar_traces.at( index_vector.at(desired_index) ).point.y;
+				if (min_dist > 250.0)
+				{
+					r_velocity =  old_r_velocity - ( current_ego_velocity -old_ego_velocity );
 
+				}
+				geometry_msgs::Twist msg;
+				std_msgs::Float64 dist;
+				msg.linear.x = min_dist; //long
+				msg.linear.y = lat_of_min_dist; //lat
+				msg.linear.z = r_velocity; // rel_v
+				relative_vel_pub.publish(msg);
+				dist.data = min_dist;
+				lead_dist_pub.publish(dist);
 			}
-			geometry_msgs::Twist msg;
-			std_msgs::Float64 dist;
-                        msg.linear.x = min_dist; //long
-                        msg.linear.y = lat_of_min_dist; //lat
-                        msg.linear.z = r_velocity; // rel_v
-                        relative_vel_pub.publish(msg);
-                        dist.data = min_dist;
-                        lead_dist_pub.publish(dist);
+			
 		}
 		void cb8(const geometry_msgs::PointStamped::ConstPtr& radar)
 		{
@@ -435,34 +464,38 @@ class LeadInfo
 					index_vector.push_back(k);
 				}
 			}
-			
-			double min_dist = radar_traces.at( index_vector.at(0)).point.x;
-			double desired_index = 0;
-			for(int m = 1; m < index_vector.size() ; ++ m)
+			if (index_vector.size() > 0 )
 			{
-				if( radar_traces.at( index_vector.at(m) ).point.x  < min_dist )
+
+				double min_dist = radar_traces.at( index_vector.at(0)).point.x;
+				double desired_index = 0;
+				for(int m = 1; m < index_vector.size() ; ++ m)
 				{
-					min_dist = radar_traces.at( index_vector.at(m) ).point.x ;
-					desired_index = m;
+					if( radar_traces.at( index_vector.at(m) ).point.x  < min_dist )
+					{
+						min_dist = radar_traces.at( index_vector.at(m) ).point.x ;
+						desired_index = m;
+					}
 				}
-			}
-			old_r_velocity = r_velocity;
+				old_r_velocity = r_velocity;
 
-			r_velocity = radar_traces.at( index_vector.at(desired_index) ).point.z;
-			double lat_of_min_dist = radar_traces.at( index_vector.at(desired_index) ).point.y;
-			if (min_dist > 250.0)
-			{
-                        	r_velocity =  old_r_velocity - ( current_ego_velocity -old_ego_velocity );
+				r_velocity = radar_traces.at( index_vector.at(desired_index) ).point.z;
+				double lat_of_min_dist = radar_traces.at( index_vector.at(desired_index) ).point.y;
+				if (min_dist > 250.0)
+				{
+					r_velocity =  old_r_velocity - ( current_ego_velocity -old_ego_velocity );
 
+				}
+				geometry_msgs::Twist msg;
+				std_msgs::Float64 dist;
+				msg.linear.x = min_dist; //long
+				msg.linear.y = lat_of_min_dist; //lat
+				msg.linear.z = r_velocity; // rel_v
+				relative_vel_pub.publish(msg);
+				dist.data = min_dist;
+				lead_dist_pub.publish(dist);
 			}
-			geometry_msgs::Twist msg;
-			std_msgs::Float64 dist;
-                        msg.linear.x = min_dist; //long
-                        msg.linear.y = lat_of_min_dist; //lat
-                        msg.linear.z = r_velocity; // rel_v
-                        relative_vel_pub.publish(msg);
-                        dist.data = min_dist;
-                        lead_dist_pub.publish(dist);
+			
 		}
 		void cb9(const geometry_msgs::PointStamped::ConstPtr& radar)
 		{
@@ -480,34 +513,38 @@ class LeadInfo
 					index_vector.push_back(k);
 				}
 			}
-			
-			double min_dist = radar_traces.at( index_vector.at(0)).point.x;
-			double desired_index = 0;
-			for(int m = 1; m < index_vector.size() ; ++ m)
+			if (index_vector.size() > 0 )
 			{
-				if( radar_traces.at( index_vector.at(m) ).point.x  < min_dist )
+
+				double min_dist = radar_traces.at( index_vector.at(0)).point.x;
+				double desired_index = 0;
+				for(int m = 1; m < index_vector.size() ; ++ m)
 				{
-					min_dist = radar_traces.at( index_vector.at(m) ).point.x ;
-					desired_index = m;
+					if( radar_traces.at( index_vector.at(m) ).point.x  < min_dist )
+					{
+						min_dist = radar_traces.at( index_vector.at(m) ).point.x ;
+						desired_index = m;
+					}
 				}
-			}
-			old_r_velocity = r_velocity;
+				old_r_velocity = r_velocity;
 
-			r_velocity = radar_traces.at( index_vector.at(desired_index) ).point.z;
-			double lat_of_min_dist = radar_traces.at( index_vector.at(desired_index) ).point.y;
-			if (min_dist > 250.0)
-			{
-                        	r_velocity =  old_r_velocity - ( current_ego_velocity -old_ego_velocity );
+				r_velocity = radar_traces.at( index_vector.at(desired_index) ).point.z;
+				double lat_of_min_dist = radar_traces.at( index_vector.at(desired_index) ).point.y;
+				if (min_dist > 250.0)
+				{
+					r_velocity =  old_r_velocity - ( current_ego_velocity -old_ego_velocity );
 
+				}
+				geometry_msgs::Twist msg;
+				std_msgs::Float64 dist;
+				msg.linear.x = min_dist; //long
+				msg.linear.y = lat_of_min_dist; //lat
+				msg.linear.z = r_velocity; // rel_v
+				relative_vel_pub.publish(msg);
+				dist.data = min_dist;
+				lead_dist_pub.publish(dist);
 			}
-			geometry_msgs::Twist msg;
-			std_msgs::Float64 dist;
-                        msg.linear.x = min_dist; //long
-                        msg.linear.y = lat_of_min_dist; //lat
-                        msg.linear.z = r_velocity; // rel_v
-                        relative_vel_pub.publish(msg);
-                        dist.data = min_dist;
-                        lead_dist_pub.publish(dist);
+			
 		}
 		void cb10(const geometry_msgs::PointStamped::ConstPtr& radar)
 		{
@@ -525,34 +562,38 @@ class LeadInfo
 					index_vector.push_back(k);
 				}
 			}
-			
-			double min_dist = radar_traces.at( index_vector.at(0)).point.x;
-			double desired_index = 0;
-			for(int m = 1; m < index_vector.size() ; ++ m)
+			if (index_vector.size() > 0 )
 			{
-				if( radar_traces.at( index_vector.at(m) ).point.x  < min_dist )
+
+				double min_dist = radar_traces.at( index_vector.at(0)).point.x;
+				double desired_index = 0;
+				for(int m = 1; m < index_vector.size() ; ++ m)
 				{
-					min_dist = radar_traces.at( index_vector.at(m) ).point.x ;
-					desired_index = m;
+					if( radar_traces.at( index_vector.at(m) ).point.x  < min_dist )
+					{
+						min_dist = radar_traces.at( index_vector.at(m) ).point.x ;
+						desired_index = m;
+					}
 				}
-			}
-			old_r_velocity = r_velocity;
+				old_r_velocity = r_velocity;
 
-			r_velocity = radar_traces.at( index_vector.at(desired_index) ).point.z;
-			double lat_of_min_dist = radar_traces.at( index_vector.at(desired_index) ).point.y;
-			if (min_dist > 250.0)
-			{
-                        	r_velocity =  old_r_velocity - ( current_ego_velocity -old_ego_velocity );
+				r_velocity = radar_traces.at( index_vector.at(desired_index) ).point.z;
+				double lat_of_min_dist = radar_traces.at( index_vector.at(desired_index) ).point.y;
+				if (min_dist > 250.0)
+				{
+					r_velocity =  old_r_velocity - ( current_ego_velocity -old_ego_velocity );
 
+				}
+				geometry_msgs::Twist msg;
+				std_msgs::Float64 dist;
+				msg.linear.x = min_dist; //long
+				msg.linear.y = lat_of_min_dist; //lat
+				msg.linear.z = r_velocity; // rel_v
+				relative_vel_pub.publish(msg);
+				dist.data = min_dist;
+				lead_dist_pub.publish(dist);
 			}
-			geometry_msgs::Twist msg;
-			std_msgs::Float64 dist;
-                        msg.linear.x = min_dist; //long
-                        msg.linear.y = lat_of_min_dist; //lat
-                        msg.linear.z = r_velocity; // rel_v
-                        relative_vel_pub.publish(msg);
-                        dist.data = min_dist;
-                        lead_dist_pub.publish(dist);
+			
 		}
 		void cb11(const geometry_msgs::PointStamped::ConstPtr& radar)
 		{
@@ -570,34 +611,38 @@ class LeadInfo
 					index_vector.push_back(k);
 				}
 			}
-			
-			double min_dist = radar_traces.at( index_vector.at(0)).point.x;
-			double desired_index = 0;
-			for(int m = 1; m < index_vector.size() ; ++ m)
+			if (index_vector.size() > 0 )
 			{
-				if( radar_traces.at( index_vector.at(m) ).point.x  < min_dist )
+
+				double min_dist = radar_traces.at( index_vector.at(0)).point.x;
+				double desired_index = 0;
+				for(int m = 1; m < index_vector.size() ; ++ m)
 				{
-					min_dist = radar_traces.at( index_vector.at(m) ).point.x ;
-					desired_index = m;
+					if( radar_traces.at( index_vector.at(m) ).point.x  < min_dist )
+					{
+						min_dist = radar_traces.at( index_vector.at(m) ).point.x ;
+						desired_index = m;
+					}
 				}
-			}
-			old_r_velocity = r_velocity;
+				old_r_velocity = r_velocity;
 
-			r_velocity = radar_traces.at( index_vector.at(desired_index) ).point.z;
-			double lat_of_min_dist = radar_traces.at( index_vector.at(desired_index) ).point.y;
-			if (min_dist > 250.0)
-			{
-                        	r_velocity =  old_r_velocity - ( current_ego_velocity -old_ego_velocity );
+				r_velocity = radar_traces.at( index_vector.at(desired_index) ).point.z;
+				double lat_of_min_dist = radar_traces.at( index_vector.at(desired_index) ).point.y;
+				if (min_dist > 250.0)
+				{
+					r_velocity =  old_r_velocity - ( current_ego_velocity -old_ego_velocity );
 
+				}
+				geometry_msgs::Twist msg;
+				std_msgs::Float64 dist;
+				msg.linear.x = min_dist; //long
+				msg.linear.y = lat_of_min_dist; //lat
+				msg.linear.z = r_velocity; // rel_v
+				relative_vel_pub.publish(msg);
+				dist.data = min_dist;
+				lead_dist_pub.publish(dist);
 			}
-			geometry_msgs::Twist msg;
-			std_msgs::Float64 dist;
-                        msg.linear.x = min_dist; //long
-                        msg.linear.y = lat_of_min_dist; //lat
-                        msg.linear.z = r_velocity; // rel_v
-                        relative_vel_pub.publish(msg);
-                        dist.data = min_dist;
-                        lead_dist_pub.publish(dist);
+			
 		}
 		void cb12(const geometry_msgs::PointStamped::ConstPtr& radar)
 		{
@@ -615,34 +660,38 @@ class LeadInfo
 					index_vector.push_back(k);
 				}
 			}
-			
-			double min_dist = radar_traces.at( index_vector.at(0)).point.x;
-			double desired_index = 0;
-			for(int m = 1; m < index_vector.size() ; ++ m)
+			if (index_vector.size() > 0 )
 			{
-				if( radar_traces.at( index_vector.at(m) ).point.x  < min_dist )
+
+				double min_dist = radar_traces.at( index_vector.at(0)).point.x;
+				double desired_index = 0;
+				for(int m = 1; m < index_vector.size() ; ++ m)
 				{
-					min_dist = radar_traces.at( index_vector.at(m) ).point.x ;
-					desired_index = m;
+					if( radar_traces.at( index_vector.at(m) ).point.x  < min_dist )
+					{
+						min_dist = radar_traces.at( index_vector.at(m) ).point.x ;
+						desired_index = m;
+					}
 				}
-			}
-			old_r_velocity = r_velocity;
+				old_r_velocity = r_velocity;
 
-			r_velocity = radar_traces.at( index_vector.at(desired_index) ).point.z;
-			double lat_of_min_dist = radar_traces.at( index_vector.at(desired_index) ).point.y;
-			if (min_dist > 250.0)
-			{
-                        	r_velocity =  old_r_velocity - ( current_ego_velocity -old_ego_velocity );
+				r_velocity = radar_traces.at( index_vector.at(desired_index) ).point.z;
+				double lat_of_min_dist = radar_traces.at( index_vector.at(desired_index) ).point.y;
+				if (min_dist > 250.0)
+				{
+					r_velocity =  old_r_velocity - ( current_ego_velocity -old_ego_velocity );
 
+				}
+				geometry_msgs::Twist msg;
+				std_msgs::Float64 dist;
+				msg.linear.x = min_dist; //long
+				msg.linear.y = lat_of_min_dist; //lat
+				msg.linear.z = r_velocity; // rel_v
+				relative_vel_pub.publish(msg);
+				dist.data = min_dist;
+				lead_dist_pub.publish(dist);
 			}
-			geometry_msgs::Twist msg;
-			std_msgs::Float64 dist;
-                        msg.linear.x = min_dist; //long
-                        msg.linear.y = lat_of_min_dist; //lat
-                        msg.linear.z = r_velocity; // rel_v
-                        relative_vel_pub.publish(msg);
-                        dist.data = min_dist;
-                        lead_dist_pub.publish(dist);
+			
 		}
 		void cb13(const geometry_msgs::PointStamped::ConstPtr& radar)
 		{
@@ -660,34 +709,38 @@ class LeadInfo
 					index_vector.push_back(k);
 				}
 			}
-			
-			double min_dist = radar_traces.at( index_vector.at(0)).point.x;
-			double desired_index = 0;
-			for(int m = 1; m < index_vector.size() ; ++ m)
+			if (index_vector.size() > 0 )
 			{
-				if( radar_traces.at( index_vector.at(m) ).point.x  < min_dist )
+
+				double min_dist = radar_traces.at( index_vector.at(0)).point.x;
+				double desired_index = 0;
+				for(int m = 1; m < index_vector.size() ; ++ m)
 				{
-					min_dist = radar_traces.at( index_vector.at(m) ).point.x ;
-					desired_index = m;
+					if( radar_traces.at( index_vector.at(m) ).point.x  < min_dist )
+					{
+						min_dist = radar_traces.at( index_vector.at(m) ).point.x ;
+						desired_index = m;
+					}
 				}
-			}
-			old_r_velocity = r_velocity;
+				old_r_velocity = r_velocity;
 
-			r_velocity = radar_traces.at( index_vector.at(desired_index) ).point.z;
-			double lat_of_min_dist = radar_traces.at( index_vector.at(desired_index) ).point.y;
-			if (min_dist > 250.0)
-			{
-                        	r_velocity =  old_r_velocity - ( current_ego_velocity -old_ego_velocity );
+				r_velocity = radar_traces.at( index_vector.at(desired_index) ).point.z;
+				double lat_of_min_dist = radar_traces.at( index_vector.at(desired_index) ).point.y;
+				if (min_dist > 250.0)
+				{
+					r_velocity =  old_r_velocity - ( current_ego_velocity -old_ego_velocity );
 
+				}
+				geometry_msgs::Twist msg;
+				std_msgs::Float64 dist;
+				msg.linear.x = min_dist; //long
+				msg.linear.y = lat_of_min_dist; //lat
+				msg.linear.z = r_velocity; // rel_v
+				relative_vel_pub.publish(msg);
+				dist.data = min_dist;
+				lead_dist_pub.publish(dist);
 			}
-			geometry_msgs::Twist msg;
-			std_msgs::Float64 dist;
-                        msg.linear.x = min_dist; //long
-                        msg.linear.y = lat_of_min_dist; //lat
-                        msg.linear.z = r_velocity; // rel_v
-                        relative_vel_pub.publish(msg);
-                        dist.data = min_dist;
-                        lead_dist_pub.publish(dist);
+			
 		}
 		void cb14(const geometry_msgs::PointStamped::ConstPtr& radar)
 		{
@@ -705,34 +758,38 @@ class LeadInfo
 					index_vector.push_back(k);
 				}
 			}
-			
-			double min_dist = radar_traces.at( index_vector.at(0)).point.x;
-			double desired_index = 0;
-			for(int m = 1; m < index_vector.size() ; ++ m)
+			if (index_vector.size() > 0 )
 			{
-				if( radar_traces.at( index_vector.at(m) ).point.x  < min_dist )
+
+				double min_dist = radar_traces.at( index_vector.at(0)).point.x;
+				double desired_index = 0;
+				for(int m = 1; m < index_vector.size() ; ++ m)
 				{
-					min_dist = radar_traces.at( index_vector.at(m) ).point.x ;
-					desired_index = m;
+					if( radar_traces.at( index_vector.at(m) ).point.x  < min_dist )
+					{
+						min_dist = radar_traces.at( index_vector.at(m) ).point.x ;
+						desired_index = m;
+					}
 				}
-			}
-			old_r_velocity = r_velocity;
+				old_r_velocity = r_velocity;
 
-			r_velocity = radar_traces.at( index_vector.at(desired_index) ).point.z;
-			double lat_of_min_dist = radar_traces.at( index_vector.at(desired_index) ).point.y;
-			if (min_dist > 250.0)
-			{
-                        	r_velocity =  old_r_velocity - ( current_ego_velocity -old_ego_velocity );
+				r_velocity = radar_traces.at( index_vector.at(desired_index) ).point.z;
+				double lat_of_min_dist = radar_traces.at( index_vector.at(desired_index) ).point.y;
+				if (min_dist > 250.0)
+				{
+					r_velocity =  old_r_velocity - ( current_ego_velocity -old_ego_velocity );
 
+				}
+				geometry_msgs::Twist msg;
+				std_msgs::Float64 dist;
+				msg.linear.x = min_dist; //long
+				msg.linear.y = lat_of_min_dist; //lat
+				msg.linear.z = r_velocity; // rel_v
+				relative_vel_pub.publish(msg);
+				dist.data = min_dist;
+				lead_dist_pub.publish(dist);
 			}
-			geometry_msgs::Twist msg;
-			std_msgs::Float64 dist;
-                        msg.linear.x = min_dist; //long
-                        msg.linear.y = lat_of_min_dist; //lat
-                        msg.linear.z = r_velocity; // rel_v
-                        relative_vel_pub.publish(msg);
-                        dist.data = min_dist;
-                        lead_dist_pub.publish(dist);
+			
 		}
 		void cb15(const geometry_msgs::PointStamped::ConstPtr& radar)
 		{
@@ -750,34 +807,38 @@ class LeadInfo
 					index_vector.push_back(k);
 				}
 			}
-			
-			double min_dist = radar_traces.at( index_vector.at(0)).point.x;
-			double desired_index = 0;
-			for(int m = 1; m < index_vector.size() ; ++ m)
+			if (index_vector.size() > 0 )
 			{
-				if( radar_traces.at( index_vector.at(m) ).point.x  < min_dist )
+
+				double min_dist = radar_traces.at( index_vector.at(0)).point.x;
+				double desired_index = 0;
+				for(int m = 1; m < index_vector.size() ; ++ m)
 				{
-					min_dist = radar_traces.at( index_vector.at(m) ).point.x ;
-					desired_index = m;
+					if( radar_traces.at( index_vector.at(m) ).point.x  < min_dist )
+					{
+						min_dist = radar_traces.at( index_vector.at(m) ).point.x ;
+						desired_index = m;
+					}
 				}
-			}
-			old_r_velocity = r_velocity;
+				old_r_velocity = r_velocity;
 
-			r_velocity = radar_traces.at( index_vector.at(desired_index) ).point.z;
-			double lat_of_min_dist = radar_traces.at( index_vector.at(desired_index) ).point.y;
-			if (min_dist > 250.0)
-			{
-                        	r_velocity =  old_r_velocity - ( current_ego_velocity -old_ego_velocity );
+				r_velocity = radar_traces.at( index_vector.at(desired_index) ).point.z;
+				double lat_of_min_dist = radar_traces.at( index_vector.at(desired_index) ).point.y;
+				if (min_dist > 250.0)
+				{
+					r_velocity =  old_r_velocity - ( current_ego_velocity -old_ego_velocity );
 
+				}
+				geometry_msgs::Twist msg;
+				std_msgs::Float64 dist;
+				msg.linear.x = min_dist; //long
+				msg.linear.y = lat_of_min_dist; //lat
+				msg.linear.z = r_velocity; // rel_v
+				relative_vel_pub.publish(msg);
+				dist.data = min_dist;
+				lead_dist_pub.publish(dist);
 			}
-			geometry_msgs::Twist msg;
-			std_msgs::Float64 dist;
-                        msg.linear.x = min_dist; //long
-                        msg.linear.y = lat_of_min_dist; //lat
-                        msg.linear.z = r_velocity; // rel_v
-                        relative_vel_pub.publish(msg);
-                        dist.data = min_dist;
-                        lead_dist_pub.publish(dist);
+			
 		}
 # if 0
 		void callback(const geometry_msgs::PointStamped::ConstPtr& radar)
