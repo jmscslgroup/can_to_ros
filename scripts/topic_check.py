@@ -6,6 +6,7 @@ from std_msgs.msg import Float64
 from std_msgs.msg import Bool
 import sys
 import subprocess
+import threading # Needed for Timer
 import time
 
 class TopicCheck:
@@ -33,24 +34,21 @@ class TopicCheck:
         self.timer.start()
 
         output = subprocess.check_output("rostopic echo -n1 /car/libpanda/controls_allowed", shell=True).decode('utf-8')
-                # output = subprocess.check_output("rostopic echo -n1 /test", shell=True).decode('utf-8')
-            
-                # print(output)
-                var1 = output.replace('data: ', '')
-                var1 = var1.replace('---', '')
-                # print(var1)
-                data = var1.strip()
+        var1 = output.replace('data: ', '')
+        var1 = var1.replace('---', '')
+        # print(var1)
+        data = var1.strip()
 
-                # while("" in data) : 
-                #     data.remove("")
+        # while("" in data) : 
+        #     data.remove("")
 
-                print(data)
+        print(data)
 
-                if (data == "True" ):
-                    subprocess.check_output("echo 1 > /etc/libpanda.d/controls_allowed", shell=True)
-                
-                elif (data == "False"):
-                    subprocess.check_output("echo 0 > /etc/libpanda.d/controls_allowed", shell=True)
+        if (data == "True" ):
+            subprocess.check_output("echo 1 > /etc/libpanda.d/controls_allowed", shell=True)
+        
+        elif (data == "False"):
+            subprocess.check_output("echo 0 > /etc/libpanda.d/controls_allowed", shell=True)
         # Do Other thing
 
     # def publisher(self):
@@ -102,5 +100,6 @@ if __name__ == '__main__':
         obj1 = TopicCheck()
         # obj1.publisher()
 
-    except:
+    except Exception as e:
+        print (e)
         print("An exception occurred")
