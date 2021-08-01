@@ -246,8 +246,8 @@ int main(int argc, char **argv) {
 
 	ros::NodeHandle nh;
 	
-//	const char filenameGpsStatus[] = "/etc/libpanda.d/pandaHaveGPS";
-//	writeToFileThenClose(filenameGpsStatus, "-1\n");
+	const char filenameGpsStatus[] = "/etc/libpanda.d/pandaHaveGPS";
+	writeToFileThenClose(filenameGpsStatus, "-1\n");
 	
 	
 	// toyota controller structure:
@@ -289,7 +289,7 @@ int main(int argc, char **argv) {
 	ROS_INFO("Starting Control relay...");
 	Control vehicleControl(&toyotaHandler, &nh);
 	
-//	writeToFileThenClose(filenameGpsStatus, "0\n");	// state 0: on but time not set
+	writeToFileThenClose(filenameGpsStatus, "0\n");	// state 0: on but time not set
 	
 	
 	
@@ -307,9 +307,9 @@ int main(int argc, char **argv) {
 		usleep(10000);
 	}
 	
-//	if(mSetSystemTimeObserver.hasTimeBeenSet()) {
-//		writeToFileThenClose(filenameGpsStatus, "1\n");	// GPS time sync done
-//	}
+	if(mSetSystemTimeObserver.hasTimeBeenSet()) {
+		writeToFileThenClose(filenameGpsStatus, "1\n");	// GPS time sync done
+	}
 	
 	
 	// creating file names
@@ -363,7 +363,7 @@ int main(int argc, char **argv) {
 //	mPandaStatusPublisher.stop();
 	toyotaHandler.stop();
 	pandaHandler.stop();
-//	writeToFileThenClose(filenameGpsStatus, "-1\n");
+	writeToFileThenClose(filenameGpsStatus, "-1\n");
 	
     return 0;
 }
