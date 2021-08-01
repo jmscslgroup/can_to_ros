@@ -247,6 +247,9 @@ int main(int argc, char **argv) {
 	Panda::SetSystemTimeObserver mSetSystemTimeObserver(epsilon);
 	pandaHandler.addGpsObserver(mSetSystemTimeObserver);
 	
+	Panda::GpsTracker mGpsTracker;	// Saves to /etc/libpanda.d/latest_gps
+	pandaHandler.addGpsObserver(mGpsTracker);
+	
 	Panda::ToyotaHandler toyotaHandler(&pandaHandler);
 //	pandaHandler.getCan().addObserver(&toyotaHandler);
 	

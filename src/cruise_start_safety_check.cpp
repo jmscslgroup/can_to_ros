@@ -101,6 +101,8 @@ public:
 				cruiseCancelMessage.data = false;
 			}
 			
+			ROS_INFO("The states for this event are: controlsAllowed = %d, commandedAccelerationWithinBounds = %d, leadVehicleVisible = %d", controlsAllowed, commandedAccelerationWithinBounds, leadVehicleVisible);
+			
 			publisherCruiseCancelRequest.publish(cruiseCancelMessage);
 			
 			lastControlsAllowed = controlsAllowed;
