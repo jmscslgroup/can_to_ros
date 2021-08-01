@@ -2,6 +2,9 @@
 
 DESCRIPTION=$1
 
+AWAKE=$(rostopic echo -n 1 /car/panda/gps_active)
+echo "We're now awake!"
+
 #Get the vin number of the vehicle
 VIN=$(cat /etc/libpanda.d/vin)
 
