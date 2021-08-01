@@ -60,6 +60,7 @@ private:
 	ros::NodeHandle* n_;
 	ros::Subscriber sub_;
 	ros::Subscriber subscriberMiniCarHud;
+	ros::Subscriber subscriberCruiseCancel;
 	// Initialize panda and toyota handlers
 	Panda::ToyotaHandler* toyotaHandler;
 	
@@ -77,6 +78,11 @@ public:
 //		ROS_INFO("Recieved mini-car data: %d\n", msg->data);
 	}
 	
+	void callbackCruiseCancel(const std_msgs::Bool::ConstPtr& msg)
+	{
+		toyotaHandler->setHudCruiseCancelRequest(msg->data);
+	}
+	
 	Control(Panda::ToyotaHandler* toyotaHandler, ros::NodeHandle* nodeHandle) {
 		n_ = nodeHandle;
 		
@@ -84,6 +90,7 @@ public:
 		// intializing a subscriber
 		sub_ = n_->subscribe("/commands", 1000, &Control::callback, this);
 		subscriberMiniCarHud = n_->subscribe("/car/hud/mini_car_enable", 1000, &Control::callbackMiniCar, this);
+		subscriberCruiseCancel = n_->subscribe("/car/hud/cruise_cancel_request", 1000, &Control::callbackCruiseCancel, this);
 	}
 	
 	~Control(){
