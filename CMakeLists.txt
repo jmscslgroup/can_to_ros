@@ -294,6 +294,10 @@ catkin_install_python(PROGRAMS scripts/node_status.py
 DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
+catkin_install_python(PROGRAMS scripts/topic_check.py
+DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+
 
 
 
