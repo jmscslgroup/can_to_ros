@@ -14,8 +14,7 @@ class TopicCheck:
         rospy.init_node('TopicCheck', anonymous=True)
         # self.pub = rospy.Publisher('/', Float64, queue_size=10)
         rospy.Subscriber("/car/libpanda/controls_allowed", Bool, self.callback)
-        self.rate = rospy.Rate(10)
-        self.timer = threading.Timer(3,self.timeout) # If 3 seconds elapse, call timeout()
+        self.timer = threading.Timer(5,self.timeout) # If 3 seconds elapse, call timeout()
         self.timer.start()
         rospy.spin()
         # self.rate = rospy.Rate(10)
@@ -30,7 +29,7 @@ class TopicCheck:
         # global timer
         print("Message received")
         self.timer.cancel()
-        self.timer = threading.Timer(3,self.timeout)
+        self.timer = threading.Timer(5,self.timeout)
         self.timer.start()
 
         output = subprocess.check_output("rostopic echo -n1 /car/libpanda/controls_allowed", shell=True).decode('utf-8')
