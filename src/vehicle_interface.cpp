@@ -337,11 +337,26 @@ int main(int argc, char **argv) {
 	pandaHandler.getCan().saveToCsvFile(canDataFilename.c_str());
 	pandaHandler.getGps().saveToCsvFile(gpsDataFilename.c_str());
 	
-    ros::spin();
+//    ros::spin();
+	
+	ros::Publisher publisherGpsActive = nh.advertise<std_msgs::Bool>("/car/panda/gps_active", 1000);
+	ros::Rate mainLoopRate(1); // 1Hz
+	while(ros::ok()) {
+		// publish that we are active:
+		std_msgs::Bool msgGpsActive;
+		msgGpsActive.data = true;
+		publisherGpsActive.publish( msgGpsActive );
+		
+		// Normal ROS rate limiting:
+		mainLoopRate.sleep();
+		ros::spinOnce();
+	}
 	
 	// Cleanup:
 //	mPandaStatusPublisher.stop();
 	toyotaHandler.stop();
 	pandaHandler.stop();
+	writeToFileThenClose(filenameGpsStatus, "-1\n");
+	
     return 0;
 }
