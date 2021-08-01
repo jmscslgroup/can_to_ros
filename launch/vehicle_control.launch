@@ -7,6 +7,9 @@
 
 <node pkg="can_to_ros" type="node_status.py" name="node_status" output="screen" required="true" />
 
-<include file="$(find transfer_pkg)/launch/rl0719_readonly.launch"/>
+<include file="$(find transfer_pkg)/launch/rl0719_readonly.launch">
+	<arg name="hwil" value="true" />
+	<arg name="readonly" value="false" />
+</include>
 
 </launch>
