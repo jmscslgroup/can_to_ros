@@ -263,12 +263,16 @@ int main(int argc, char **argv) {
 	Panda::ToyotaHandler toyotaHandler(&pandaHandler);
 //	pandaHandler.getCan().addObserver(&toyotaHandler);
 	
+	ROS_INFO("Initializing PandaHandler...");
 	pandaHandler.initialize();
 	
 
     // Initialize Libpanda with ROS publisher:
+	ROS_INFO("Starting CanToRosPublisher...");
 	CanToRosPublisher canToRosPublisher(&nh, &toyotaHandler);
 	
+	
+	ROS_INFO("Connecting  PandaStatusPublisher...");
 	PandaStatusPublisher mPandaStatusPublisher(&nh);
 	toyotaHandler.addObserver(&mPandaStatusPublisher);
 	//SimpleGpsObserver myGpsObserver;
@@ -278,8 +282,11 @@ int main(int argc, char **argv) {
 	pandaHandler.addCanObserver(canToRosPublisher);
 
 	// Initialize panda and toyota handlers
+	ROS_INFO("Starting ToyotaHandler...");
 	toyotaHandler.start();
 
+	
+	ROS_INFO("Starting Control relay...");
 	Control vehicleControl(&toyotaHandler, &nh);
 	
 //	writeToFileThenClose(filenameGpsStatus, "0\n");	// state 0: on but time not set
