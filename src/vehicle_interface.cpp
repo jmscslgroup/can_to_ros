@@ -233,11 +233,11 @@ public:
 };
 
 //// This is a quick hacky function to allow for notifications of system time being set:
-//void writeToFileThenClose(const char* filename, const char* data) {
-//	FILE* file = fopen( filename, "w+");
-//	fwrite( data, 1, strlen(data), file);
-//	fclose(file);
-//};
+void writeToFileThenClose(const char* filename, const char* data) {
+	FILE* file = fopen( filename, "w+");
+	fwrite( data, 1, strlen(data), file);
+	fclose(file);
+};
 
 int main(int argc, char **argv) {
 	// Initialize ROS stuff:
