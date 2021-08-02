@@ -1,0 +1,10 @@
+<launch>
+
+<!-- include information for the joystick, etc. args="$(env HOME)"  -->
+
+<include file="$(find transfer_pkg)/launch/rl0719_readonly.launch">
+        <arg name="hwil" value="true" />
+        <arg name="readonly" value="false" />
+</include>
+
+</launch>
