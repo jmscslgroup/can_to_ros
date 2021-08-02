@@ -126,17 +126,33 @@ values decode_msgs::decode_message( unsigned int msg_id, std::string msg){
         binary = std::bitset<56>(n).to_string(); // conver hex to binary 
 
         std::string byte5 = binary.substr(32,8);
+        std::string byte6 = binary.substr(40,8);
+        std::string byte7 = binary.substr(48,8);
+
+        std::string raw_rel_speed = byte6 + byte7.substr(0,4);
       
+        float raw_rel_speed_fl;
 
         rawVal= byte5;
        
          rawVal_Dec=std::stoull(rawVal, 0, 2);
+
+
+        if ((raw_rel_speed)[0]== '0'){
+         raw_rel_speed_fl= std::stoul( raw_rel_speed, 0, 2 );
+        }
+        else {
+
+        raw_rel_speed_fl= std::stoul(findTwoscomplement(raw_rel_speed), 0, 2 );
+          raw_rel_speed_fl=raw_rel_speed_fl * -1.0;
+        } 
 
          lead_dist= (float)rawVal_Dec;
 
         //this->steering_angle = 0.0;
         //this->speed = 0.0;
         returnedVal.var1 = rawVal_Dec;
+        returnedVal.var2 = raw_rel_speed_fl;
       return returnedVal;
 
   }

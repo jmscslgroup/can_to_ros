@@ -82,8 +82,10 @@ public:
     {
      data = obj.decode_message (MessageID, Message);
      std_msgs::Float64 dist;
+     std_msgs::Float64 rel_vel; //relative velocity
     //  std::cout << data.var1 << std::endl;
      dist.data = data.var1;
+     rel_vel.data = data.var2;
         //      std::time_t epoch1 = stod(Time);// creating a time_tobject to store time
         // struct tm * ptm=std::localtime(&epoch1); // gmtime converts time since epoch to calendar time expressed as Universal Coordinated Time
         // // struct tm is structure holding a calendar date and time broken down into its components.
