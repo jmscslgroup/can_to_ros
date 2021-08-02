@@ -55,7 +55,7 @@
 #include "std_msgs/Float64.h"
 
 #define CMD_ACCEL_MIN (-0.5)
-#define CMD_ACCEL_MAX (0.5)
+#define CMD_ACCEL_MAX (2.0)	// value > 1.5 means unbounded
 
 class CruiseStartSafetyCheck {
 private:
