@@ -31,6 +31,8 @@ public:
     relative_vel_pub = n_.advertise<geometry_msgs::Twist>("rel_vel", 1000);
     lead_dist_pub = n_.advertise<std_msgs::Float64>("lead_dist", 1000);
 
+    relative_vel_old_pub = n_.advertise<geometry_msgs::Twist>("rel_vel_old", 1000);
+
 
     leaddist_sub = n_.subscribe("lead_dist_869", 100, &LeadInfo::callback_lead, this);
 
@@ -38,65 +40,65 @@ public:
 
 
     //Topic you want to subscribe
-  //   tracka0_sub = n_.subscribe("track_a0", 100, &LeadInfo::callback, this);
-  //   tracka1_sub = n_.subscribe("track_a1", 100, &LeadInfo::callback, this);
-  //   tracka2_sub = n_.subscribe("track_a2", 100, &LeadInfo::callback, this);
-  //   tracka3_sub = n_.subscribe("track_a3", 100, &LeadInfo::callback, this);
-  //   tracka4_sub = n_.subscribe("track_a4", 100, &LeadInfo::callback, this);
-  //   tracka5_sub = n_.subscribe("track_a5", 100, &LeadInfo::callback, this);
-  //   tracka6_sub = n_.subscribe("track_a6", 100, &LeadInfo::callback, this);
-  //   tracka7_sub = n_.subscribe("track_a7", 100, &LeadInfo::callback, this);
-  //   tracka8_sub = n_.subscribe("track_a8", 100, &LeadInfo::callback, this);
-  //   tracka9_sub = n_.subscribe("track_a9", 100, &LeadInfo::callback, this);
-  //   tracka10_sub = n_.subscribe("track_a10", 100, &LeadInfo::callback, this);
-  //   tracka11_sub = n_.subscribe("track_a11", 100, &LeadInfo::callback, this);
-  //   tracka12_sub = n_.subscribe("track_a12", 100, &LeadInfo::callback, this);
-  //   tracka13_sub = n_.subscribe("track_a13", 100, &LeadInfo::callback, this);
-  //   tracka14_sub = n_.subscribe("track_a14", 100, &LeadInfo::callback, this);
-  //   tracka15_sub = n_.subscribe("track_a15", 100, &LeadInfo::callback, this);
-  // }
+    tracka0_sub = n_.subscribe("track_a0", 100, &LeadInfo::callback, this);
+    tracka1_sub = n_.subscribe("track_a1", 100, &LeadInfo::callback, this);
+    tracka2_sub = n_.subscribe("track_a2", 100, &LeadInfo::callback, this);
+    tracka3_sub = n_.subscribe("track_a3", 100, &LeadInfo::callback, this);
+    tracka4_sub = n_.subscribe("track_a4", 100, &LeadInfo::callback, this);
+    tracka5_sub = n_.subscribe("track_a5", 100, &LeadInfo::callback, this);
+    tracka6_sub = n_.subscribe("track_a6", 100, &LeadInfo::callback, this);
+    tracka7_sub = n_.subscribe("track_a7", 100, &LeadInfo::callback, this);
+    tracka8_sub = n_.subscribe("track_a8", 100, &LeadInfo::callback, this);
+    tracka9_sub = n_.subscribe("track_a9", 100, &LeadInfo::callback, this);
+    tracka10_sub = n_.subscribe("track_a10", 100, &LeadInfo::callback, this);
+    tracka11_sub = n_.subscribe("track_a11", 100, &LeadInfo::callback, this);
+    tracka12_sub = n_.subscribe("track_a12", 100, &LeadInfo::callback, this);
+    tracka13_sub = n_.subscribe("track_a13", 100, &LeadInfo::callback, this);
+    tracka14_sub = n_.subscribe("track_a14", 100, &LeadInfo::callback, this);
+    tracka15_sub = n_.subscribe("track_a15", 100, &LeadInfo::callback, this);
+  }
 
-  // void callback(const geometry_msgs::PointStamped::ConstPtr& radar)
-  // {
-  //     // std::cout << "long: " << radar->point.x << std::endl; 
-  //     // std::cout << "lat: " << radar->point.y << std::endl; 
-  //         // 20+10=30                15                20-10=10         15 
-  //   if ( lead_distance +1 >= radar->point.x && lead_distance -1 <= radar->point.x && radar->point.x < 252)  {
-  //     if (abs(radar->point.y) <= 0.5){
-  //         last_read_lead_dist = radar->point.x;
-  //         r_lat = radar->point.y;
-  //         r_long = radar->point.x;
-  //         r_velocity =  radar->point.z;
-  //         geometry_msgs::Twist msg;
-  //         std_msgs::Float64 dist;
-  //         msg.linear.x = radar->point.x; //long 
-  //         msg.linear.y = radar->point.y; //lat
-  //         msg.linear.z = radar->point.z; // rel_v
-  //         relative_vel_pub.publish(msg);   
-  //         dist.data = radar->point.x;
-  //         lead_dist_pub.publish(dist);
+  void callback(const geometry_msgs::PointStamped::ConstPtr& radar)
+  {
+      // std::cout << "long: " << radar->point.x << std::endl; 
+      // std::cout << "lat: " << radar->point.y << std::endl; 
+          // 20+10=30                15                20-10=10         15 
+    if ( lead_distance +1 >= radar->point.x && lead_distance -1 <= radar->point.x && radar->point.x < 252)  {
+      if (abs(radar->point.y) <= 0.5){
+          last_read_lead_dist = radar->point.x;
+          r_lat = radar->point.y;
+          r_long = radar->point.x;
+          r_velocity =  radar->point.z;
+          geometry_msgs::Twist msg;
+          // std_msgs::Float64 dist;
+          msg.linear.x = radar->point.x; //long 
+          msg.linear.y = radar->point.y; //lat
+          msg.linear.z = radar->point.z; // rel_v
+          relative_vel_old_pub.publish(msg);   
+          // dist.data = radar->point.x;
+          // lead_dist_pub.publish(dist);
 
 
-  //     }
-  //   }
-  //   else if (last_read_lead_dist +1 >= radar->point.x && last_read_lead_dist -1 <= radar->point.x && radar->point.x < 252){
+      }
+    }
+    else if (last_read_lead_dist +1 >= radar->point.x && last_read_lead_dist -1 <= radar->point.x && radar->point.x < 252){
 
-  //     if (abs(radar->point.y) <= 0.5){
-  //       last_read_lead_dist = radar->point.x;
-  //       r_lat = radar->point.y;
-  //       r_long = radar->point.x;
-  //       r_velocity =  radar->point.z;
-  //       geometry_msgs::Twist msg;
-  //       std_msgs::Float64 dist;
-  //       msg.linear.x = radar->point.x; //long 
-  //       msg.linear.y = radar->point.y; //lat
-  //       msg.linear.z = radar->point.z; // rel_v
-  //       relative_vel_pub.publish(msg);
-  //       dist.data = radar->point.x;
-  //       lead_dist_pub.publish(dist);
+      if (abs(radar->point.y) <= 0.5){
+        last_read_lead_dist = radar->point.x;
+        r_lat = radar->point.y;
+        r_long = radar->point.x;
+        r_velocity =  radar->point.z;
+        geometry_msgs::Twist msg;
+        // std_msgs::Float64 dist;
+        msg.linear.x = radar->point.x; //long 
+        msg.linear.y = radar->point.y; //lat
+        msg.linear.z = radar->point.z; // rel_v
+        relative_vel_old_pub.publish(msg);
+        // dist.data = radar->point.x;
+        // lead_dist_pub.publish(dist);
 
-  //     }
-  //   }
+      }
+    }
   }
 
 
@@ -126,6 +128,7 @@ public:
 private:
   ros::NodeHandle n_;
   ros::Publisher relative_vel_pub;
+  ros::Publisher relative_vel_old_pub;
   ros::Publisher lead_dist_pub;
 
   ros::Subscriber leaddist_sub;
