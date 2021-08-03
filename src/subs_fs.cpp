@@ -23,6 +23,7 @@ public:
     //Topic you want to publish
     accel_pub = n_.advertise<std_msgs::Float64>("accel", 1000);  
     lead_dist_pub = n_.advertise<std_msgs::Float64>("lead_dist_869", 1000);
+    relative_vel_pub = n_.advertise<std_msgs::Float64>("rel_vel_869", 1000);
     str_angle_pub = n_.advertise<std_msgs::Float64>("steering_angle", 1000);
     speed_pub = n_.advertise<geometry_msgs::Twist>("vel", 1000);
     pub_921 = n_.advertise<geometry_msgs::Point>("msg_921", 1000);
@@ -95,6 +96,7 @@ public:
         // std::cout << hour<<":"<<min<< ":"<< sec<< std::endl;
       // if ( data.var1 < 252){
      lead_dist_pub.publish(dist);
+     relative_vel_pub.publish(rel_vel);
       // }
     }
 
@@ -420,6 +422,7 @@ private:
   ros::Publisher pub_467;
   ros::Publisher accel_pub;
   ros::Publisher lead_dist_pub;
+  ros::Publisher relative_vel_pub;
   ros::Publisher str_angle_pub;
   ros::Publisher speed_pub;
   ros::Publisher tracka0_pub;

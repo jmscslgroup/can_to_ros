@@ -135,7 +135,7 @@ values decode_msgs::decode_message( unsigned int msg_id, std::string msg){
 
         rawVal= byte5;
        
-         rawVal_Dec=std::stoull(rawVal, 0, 2);
+        rawVal_Dec=std::stoull(rawVal, 0, 2);
 
 
         if ((raw_rel_speed)[0]== '0'){
@@ -152,7 +152,7 @@ values decode_msgs::decode_message( unsigned int msg_id, std::string msg){
         //this->steering_angle = 0.0;
         //this->speed = 0.0;
         returnedVal.var1 = rawVal_Dec;
-        returnedVal.var2 = raw_rel_speed_fl;
+        returnedVal.var2 = raw_rel_speed_fl*0.025;
       return returnedVal;
 
   }
