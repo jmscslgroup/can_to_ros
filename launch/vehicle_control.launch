@@ -10,7 +10,7 @@
 <node pkg="can_to_ros" type="topic_check.py" name="topic_check" output="screen" />
 
 
-<include file="launch/safety_checks.launch" required="true" />
+<include file="$(find can_to_ros)launch/safety_checks.launch" />
 
 
 </launch>

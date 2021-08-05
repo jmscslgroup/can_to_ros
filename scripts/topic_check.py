@@ -21,13 +21,13 @@ class TopicCheck:
 
 
     def timeout(self):
-        print("No message received for 5 seconds")
+        print("topic_check.py: No message received for 5 seconds")
         subprocess.check_output("echo -1 > /etc/libpanda.d/controls_allowed", shell=True)
         # Do something
 
     def callback(self, msg):
         # global timer
-        print("Message received")
+#        print("Message received")
         self.timer.cancel()
         self.timer = threading.Timer(5,self.timeout)
         self.timer.start()
@@ -41,7 +41,7 @@ class TopicCheck:
         # while("" in data) : 
         #     data.remove("")
 
-        print(data)
+#        print(data)
 
         if (data == "True" ):
             subprocess.check_output("echo 1 > /etc/libpanda.d/controls_allowed", shell=True)

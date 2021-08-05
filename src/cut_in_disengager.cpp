@@ -22,8 +22,20 @@
  */
 
 /*
- This ROS disengages the cruise controller on cut-ins based on the desired cmd_vel and measured lead_dist_869 message
+ This ROS disengages the cruise controller if a driver cuts in front of the vehicle and triggers a large deceleration request
 
+ This disengages based on the following events:
+  - A vehicle changes lanes into the car in from of the vehicles within the last 2 seconds
+  - The controller commands a deceleration of less than a minimum
+ 
+ Publishers:
+ 1) /cmd_accel_safe -- std_msgs/Float64 - The topic /cmd_accel is passed through to this topic if this node does not think a disengage is required
+ 2) /car/hud/cruise_cancel_request - std_msgs/Bool - This node will publish a true to this topic during a cut in, and a false after ready to allow re-engagements
+ 
+ Subscribers:
+ 1) /cmd_accel -- std_msgs/Float64 - Sniffs the controller request to check for disengagements while passing through to /cmd_accel_safe
+ 2) /lead_dist_869 -- std_msgs/Float64 - From node subs_fs, looks for cut in events
+ 
  
  */
 
