@@ -272,6 +272,9 @@ target_link_libraries(simple_mini_car_from_lead_distance ${catkin_LIBRARIES})
 add_executable(cruise_start_safety_check src/cruise_start_safety_check.cpp)
 target_link_libraries(cruise_start_safety_check ${catkin_LIBRARIES})
 
+add_executable(cut_in_disengager src/cut_in_disengager.cpp)
+target_link_libraries(cut_in_disengager ${catkin_LIBRARIES} libpandac.so)
+
 # add_executable(joyNode src/joyNode.cpp)
 # target_link_libraries(joyNode ${catkin_LIBRARIES})
 

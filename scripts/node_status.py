@@ -12,6 +12,7 @@ class NodeStatus:
         rospy.init_node('NodeStatus', anonymous=True)
         self.pub = rospy.Publisher('/timed_accel', Float64, queue_size=10)
         self.pub_1 = rospy.Publisher('/cmd_accel', Float64, queue_size=10)
+#        self.pub_1 = rospy.Publisher('/cmd_accel_safe', Float64, queue_size=10)
         self.rate = rospy.Rate(100)
 
     def publisher(self):

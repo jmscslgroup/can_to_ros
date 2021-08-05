@@ -3,18 +3,14 @@
 <!-- include information for the joystick, etc. args="$(env HOME)"  -->
 <node pkg="can_to_ros" type="vehicle_interface" name="vehicle_interface" output="screen" respawn="true" respawn_delay="2" />
 
-<node pkg="can_to_ros" type="publishCommands" name="publishCommands" output="screen" required="true"/>
+<node pkg="can_to_ros" type="publishCommands" name="publishCommands" output="screen" required="true" />
 
 <node pkg="can_to_ros" type="node_status.py" name="node_status" output="screen" required="true" />
 
 <node pkg="can_to_ros" type="topic_check.py" name="topic_check" output="screen" />
 
 
-<!--
-<include file="$(find transfer_pkg)/launch/rl0719_readonly.launch" >
-	<arg name="hwil" value="true" />
-	<arg name="readonly" value="false" />
-</include>
--->
+<include file="launch/safety_checks.launch" required="true" />
+
 
 </launch>

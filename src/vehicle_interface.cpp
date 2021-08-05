@@ -41,16 +41,18 @@
 #include <sstream>
 
 /*
- This ROS node interprets a libpanda ToyotaHandler to interface ROS
+ This ROS node interfaces libpanda's ToyotaHandler
  
- Details:
- 1) This publishes CAN dat of interest of a std_msgs/String type to /realtime_raw_data, where the can_to_ros node named subs_fs.cpp can interpret values
- 
- 2) This node subscribes for acceleration commands with a std_msgs/Float64 named /commands
- 
- 3) This node subscribes to /car/hud/mini_car_enable as type std_msgs/Bool to display a mini-vehicle on the car's HUD
- 
- 4) This node publishes two std_msgs/Bool topics named /car/panda/controls_allowed and /car/panda/gas_interceptor_detected for relaying states reported by the Panda device
+ Publishers:
+ 1) /realtime_raw_data - std_msgs/String -  This publishes CAN data of interest where the can_to_ros node named subs_fs.cpp can interpret values
+ 2) /car/panda/gas_interceptor_detected - std_msgs/Bool - Reported by the Panda is their gas interceptor hardware is detected
+ 3) /car/panda/controls_allowed - std_msgs/Bool -  Reported by the comma.ai panda.  This is not event-based from the Panda, but is regularly checked at 2 Hz to reset the Panda's heartbeat
+ 4)	/car/libpanda/controls_allowed - std_msgs/Bool -  Reported by logic within libpanda.  This is event based from libpanda using CAN messages.  When no events occur, this regularly published at 1 Hz which can be used to assess libpanda's control command health
+
+ Subscribers:
+ 1) /car/cruise/accel_input - std_msgs/Float64 - This is for acceleration commands to be sent to the car's cruise controller (priorly known as /commands)
+ 2) /car/hud/mini_car_enable - std_msgs/Bool - When true, this will display a mini-vehicle on the car's HUD which cruise control is on and engaged
+ 3) /car/hud/cruise_cancel_request - std_msgs/Bool - When true  published, the cruise controller will disengage and notify the driver with an audible chime
  
  */
 
@@ -88,7 +90,8 @@ public:
 		
 		this->toyotaHandler = toyotaHandler;
 		// intializing a subscriber
-		sub_ = n_->subscribe("/commands", 1000, &Control::callback, this);
+//		sub_ = n_->subscribe("/commands", 1000, &Control::callback, this);
+		sub_ = n_->subscribe("/car/cruise/accel_input", 1000, &Control::callback, this);
 		subscriberMiniCarHud = n_->subscribe("/car/hud/mini_car_enable", 1000, &Control::callbackMiniCar, this);
 		subscriberCruiseCancel = n_->subscribe("/car/hud/cruise_cancel_request", 1000, &Control::callbackCruiseCancel, this);
 	}
@@ -241,7 +244,7 @@ void writeToFileThenClose(const char* filename, const char* data) {
 
 int main(int argc, char **argv) {
 	// Initialize ROS stuff:
-	ros::init(argc, argv, "send_commands");
+	ros::init(argc, argv, "vehicle_interface");
 	ROS_INFO("Initializing ..");
 
 	ros::NodeHandle nh;

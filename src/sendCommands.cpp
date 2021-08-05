@@ -46,7 +46,8 @@ public:
 		
 		this->toyotaHandler = toyotaHandler;
 		// intializing a subscriber
-		sub_ = n_.subscribe("/commands", 1000, &Control::callback, this);
+//		sub_ = n_.subscribe("/commands", 1000, &Control::callback, this);
+		sub_ = n_.subscribe("/car/cruise/accel_input", 1000, &Control::callback, this);
 		// Setting HUD elements:
 		// hudLaneLeft += mJoystickState.getButtonL1Rising();
 		// hudLaneLeft -= mJoystickState.getButtonL2Rising();

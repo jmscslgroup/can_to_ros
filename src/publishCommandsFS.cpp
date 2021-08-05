@@ -16,7 +16,8 @@ class CtrlCommands {
 // 
  public:
     CtrlCommands(){
-        command_pub = n.advertise<std_msgs::Float64>("commands", 1000);
+//        command_pub = n.advertise<std_msgs::Float64>("commands", 1000);
+		command_pub = n.advertise<std_msgs::Float64>("car/cruise/accel_input", 1000);
         sub_ = n.subscribe("cmd_accel", 1000, &CtrlCommands::callback, this);
     }
 

@@ -9,6 +9,45 @@ can_to_ros is a ROS package that provide a real-time and offline decoding of CAN
 * ROS [melodic](http://wiki.ros.org/melodic/Installation/Ubuntu) or ROS [noetic](http://wiki.ros.org/noetic/Installation)
 * [libpanda](https://github.com/jmscslgroup/libpanda) (must be installed in /opt directory)
 
+## Launch File Descriptions:
+#### vehicle_control.launch
+This is automatically installed in robot_upstart with libpanda's scripts/installCanToRos.sh script
+
+Invokes the following:
+1) vehicle_interface	- Main interface for libpanda's ToyotHandler for vehicle control
+2) publishCommands	- Maintains a regular 100Hz publish rate from /cmd_accel_safe to /car/cruise/accel_input
+3) node_status.py		- Regulary publishes a 0 to /cmd_accel to maintain libpanda's command heartbeat if other commands are not sent
+4) launch/safety_checks.launch
+ - - cut_in_disengager	- Ensures that cars cutting in ahead do no coincide with large deceleration commands by disengaging the cruise controller. 
+ - - cruise_start_safety_check - Ensures that acceleration commands start within safe bounds and that a lead vehicle is seen on engage requests (otherwise a disengage is invoked)
+ 
+ 5) topic_check.py		- Checks publish rate of /car/libpanda/controls_allowed to dispaly status on Blinkt kit
+ 
+ Expected interface topics:
+ 
+ /cmd_accel - std_msgs/Float64 - This is where control commands should be sent.  cut_in_disengager will ensure convert this to /cmd_accel_safe as needed, then publishCommands will convert /cmd_accel_safe to /car/cruise/accel_input
+ /realtime_raw_data - std_msgs/String - Reports CAN data.  Use the node subs_fs.cpp to interpret these into car sensing data
+
+
+## Node Descriptions:
+
+#### vehicle_interface.cpp
+This ROS node interfaces libpanda's ToyotaHandler
+
+Publishers:
+1) /realtime_raw_data - std_msgs/String -  This publishes CAN data of interest where the can_to_ros node named subs_fs.cpp can interpret values
+2) /car/panda/gas_interceptor_detected - std_msgs/Bool - Reported by the Panda is their gas interceptor hardware is detected
+3) /car/panda/controls_allowed - std_msgs/Bool -  Reported by the comma.ai panda.  This is not event-based from the Panda, but is regularly checked at 2 Hz to reset the Panda's heartbeat
+4)	/car/libpanda/controls_allowed - std_msgs/Bool -  Reported by logic within libpanda.  This is event based from libpanda using CAN messages.  When no events occur, this regularly published at 1 Hz which can be used to assess libpanda's control command health
+
+Subscribers:
+1) /car/cruise/accel_input - std_msgs/Float64 - This is for acceleration commands to be sent to the car's cruise controller (priorly known as /commands)
+2) /car/hud/mini_car_enable - std_msgs/Bool - When true, this will display a mini-vehicle on the car's HUD which cruise control is on and engaged
+3) /car/hud/cruise_cancel_request - std_msgs/Bool - When true  published, the cruise controller will disengage and notify the driver with an audible chime
+
+
+
+
 ### Installation
 ---------------
 
