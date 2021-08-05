@@ -47,10 +47,11 @@
 #include "std_msgs/Bool.h"
 #include "std_msgs/Float64.h"
 
+#define TIME_TO_SAVE_LEAD_DISTANCE_DIFFS (2)	// in seconds
 #define CMD_ACCEL_MIN_ACCEPTABLE (-2.5)
-#define NUM_LEAD_DISTANCE_DIFFERENCES (5 * 2)	// Assuming 5Hz response, this means 2 seconds
+#define NUM_LEAD_DISTANCE_DIFFERENCES (5 * TIME_TO_SAVE_LEAD_DISTANCE_DIFFS)	// Assuming 5Hz response, this means 2 seconds
 #define CUT_IN_DISTANCE_MINIMUM (-5.0)
-#define CANCEL_REQUEST_DELAY_COUNTER (61)	// This runs based on the cmd_accel subscribe rate, will release cancel requests after this many of recieved messages
+#define CANCEL_REQUEST_DELAY_COUNTER (30 * (TIME_TO_SAVE_LEAD_DISTANCE_DIFFS + 1.0/5.0) + 1)	// This runs based on the cmd_accel subscribe rate, will release cancel requests after this many of recieved messages
 
 
 class Disengager : Mogi::Thread {
