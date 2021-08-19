@@ -31,7 +31,8 @@
 class Control {
 private:
 	ros::NodeHandle n_;
-	ros::Subscriber sub_;
+	ros::Subscriber sub_0;
+	ros::Subscriber sub_1;
 	// Initialize panda and toyota handlers
 	Panda::ToyotaHandler* toyotaHandler;
 
@@ -47,7 +48,8 @@ public:
 		this->toyotaHandler = toyotaHandler;
 		// intializing a subscriber
 //		sub_ = n_.subscribe("/commands", 1000, &Control::callback, this);
-		sub_ = n_.subscribe("/car/cruise/accel_input", 1000, &Control::callback, this);
+		sub_0 = n_.subscribe("/car/cruise/accel_input", 1000, &Control::callback, this);
+		sub_1 = n_.subscribe("/car/cruise/steer_input", 500, &Control::callback, this);
 		// Setting HUD elements:
 		// hudLaneLeft += mJoystickState.getButtonL1Rising();
 		// hudLaneLeft -= mJoystickState.getButtonL2Rising();
