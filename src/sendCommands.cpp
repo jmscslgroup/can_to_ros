@@ -31,43 +31,45 @@
 class Control {
 private:
 	ros::NodeHandle n_;
-	ros::Subscriber sub_;
+	ros::Subscriber sub_0;
+	ros::Subscriber sub_1;
 	// Initialize panda and toyota handlers
 	Panda::ToyotaHandler* toyotaHandler;
-	
+
 public:
 	void callback(const std_msgs::Float64::ConstPtr& msg)
 	{
 		// use these functions to set the acceleration and steeting Tourque
 		toyotaHandler->setAcceleration(msg->data);
-		toyotaHandler->setSteerTorque(0.0);  // doesnt work yet
+		toyotaHandler->setSteerTorque(msg->data);  // doesnt work yet
 	}
 	Control(Panda::ToyotaHandler* toyotaHandler){
-		
+
 		this->toyotaHandler = toyotaHandler;
 		// intializing a subscriber
 //		sub_ = n_.subscribe("/commands", 1000, &Control::callback, this);
-		sub_ = n_.subscribe("/car/cruise/accel_input", 1000, &Control::callback, this);
+		sub_0 = n_.subscribe("/car/cruise/accel_input", 1000, &Control::callback, this);
+		sub_1 = n_.subscribe("/car/cruise/steer_input", 500, &Control::callback, this);
 		// Setting HUD elements:
 		// hudLaneLeft += mJoystickState.getButtonL1Rising();
 		// hudLaneLeft -= mJoystickState.getButtonL2Rising();
 		// hudLaneRight += mJoystickState.getButtonR1Rising();
 		// hudLaneRight -= mJoystickState.getButtonR2Rising();
 		// toyotaHandler.setHudLanes(hudLaneLeft, hudLaneRight);
-		
+
 		// toyotaHandler.setHudLdaAlert( mJoystickState.getTriangle() );
 		// toyotaHandler.setHudTwoBeeps( mJoystickState.getX() );
 		// toyotaHandler.setHudRepeatedBeeps( mJoystickState.getSelect() );
 		// toyotaHandler.setHudBarrier( mJoystickState.getDY() > 0 );
 		// toyotaHandler.setHudMiniCar( mJoystickState.getDX() > 0 );
-		
+
 		// // This will cancel the cruise control, cruise must be rest by driver to allow further controls
 		// toyotaHandler.setHudCruiseCancelRequest( mJoystickState.getSquare() );
-		
+
 	}
-	
+
 	~Control(){
-		
+
 	}
 };
 int main(int argc, char **argv) {
@@ -82,16 +84,16 @@ int main(int argc, char **argv) {
   	char buffer2 [256];
 	strftime (buffer1,80,"%Y-%m-%d-%X",now);
   	std::string bufferStr=buffer1;
-  
-  	std::replace(bufferStr.begin(), bufferStr.end(), ':', '-'); 
-  
+
+  	std::replace(bufferStr.begin(), bufferStr.end(), ':', '-');
+
 	strftime (buffer2,80,"%Y-%m-%d",now);
 	std::string folderName = buffer2;
-	std::replace(folderName.begin(), folderName.end(), '-', '_'); 
+	std::replace(folderName.begin(), folderName.end(), '-', '_');
 	std::ifstream file("/etc/libpanda.d/vin");
 	std::string vin;
 	std::getline(file, vin);
-	std::string relativePath= "/var/panda/CyverseData/JmscslgroupData/PandaData"; 
+	std::string relativePath= "/var/panda/CyverseData/JmscslgroupData/PandaData";
 	std::string commandToCreateFolder = "mkdir -p " + relativePath + "/" + folderName;
 
 
@@ -103,14 +105,14 @@ int main(int argc, char **argv) {
 	// std::cout << gpsDataFilename << std::endl;
 
   	system(commandToCreateFolder.c_str()); // Creating a directory
-	
+
 
 
 
 	// toyota controller structure:
 	Panda::Handler pandaHandler;
 	Panda::ToyotaHandler toyotaHandler(&pandaHandler);
-	
+
 	// Initialize panda and toyota handlers
 	pandaHandler.initialize();
 	toyotaHandler.start();
@@ -118,7 +120,7 @@ int main(int argc, char **argv) {
     pandaHandler.getGps().saveToCsvFile(gpsDataFilename.c_str());
 
 	Control vehicleControl(&toyotaHandler);
-    
+
     ros::spin();
 	// Cleanup:
 	toyotaHandler.stop();
