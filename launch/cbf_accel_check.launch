@@ -1,7 +1,12 @@
 <launch>
 
         <arg name="hwil" default="true"/>
+        <arg name='readonly' default='true'/>
+
         <param name="/hwil" value="$(arg hwil)"/>
+
+        <param name="/readonly" value="$(arg readonly)"/>
+
 
 <node pkg="can_to_ros" type ="subs_fs" name="subs_fs" output="screen" if="$(arg hwil)"/>
 
