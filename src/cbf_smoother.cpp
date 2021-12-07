@@ -53,6 +53,8 @@
 #include "std_msgs/Bool.h"
 #include "std_msgs/Float64.h"
 #include "geometry_msgs/Twist.h"
+#include <algorithm>
+using namespace std;
 
 #define CUT_IN_DISTANCE (5.0)	// In meters
 
@@ -76,12 +78,6 @@
 	 a_max = a_l + (k1+k2)*(delta_v) + (k1*k2)*(s-s_min)
 	 return a_max
  */
-double cbf_filter( double v, double s, double delta_v, double a_l) {
-	double tg_accel = time_gap_filter(v,s,delta_v);
-	double ca_accel = collision_avoid_filter(s,delta_v,a_l);
-	return min( tg_accel, ca_accel);
-//	return tg_accel < ca_accel ? tg_accel : ca_accel;
-}
 
 double time_gap_filter( double v, double s, double delta_v) {
 	double k = 0.1;
@@ -96,6 +92,13 @@ double collision_avoid_filter( double s, double delta_v, double a_l) {
 	double k2 = 0.5;
 	double a_max = a_l + (k1+k2)*(delta_v) + (k1*k2)*(s-s_min);
 	return a_max;
+}
+
+double cbf_filter( double v, double s, double delta_v, double a_l) {
+        double tg_accel = time_gap_filter(v,s,delta_v);
+        double ca_accel = collision_avoid_filter(s,delta_v,a_l);
+        return min( tg_accel, ca_accel);
+//      return tg_accel < ca_accel ? tg_accel : ca_accel;
 }
 
  /*
@@ -128,7 +131,7 @@ public:
 
 		gettimeofday(&priorTime, NULL);
 	}
-}
+};
 
 /*
  ROS CBF stitching
@@ -213,7 +216,7 @@ public:
 
 	void callbackSpeed(const geometry_msgs::Twist::ConstPtr& msg) {
 		speedPrior = speed;
-		speed = msg->data.Linear.x;	// TODO check that Linear.x is the correct data for ego speed
+		speed = msg->linear.x;	// TODO check that Linear.x is the correct data for ego speed
 	}
 
 
@@ -238,18 +241,18 @@ public:
 		publisherCommandAccelerationSafe.publish( cmd_accel_safe );
 	}
 
-	Disengager(ros::NodeHandle* nodeHandle) {
+	ControlBarrierFunctionSmoother(ros::NodeHandle* nodeHandle) {
 		validLeaderAcceleration = false;
 		leaderAccelerationSampleCount = 0;
 
 		publisherCommandAccelerationSafe = nodeHandle->advertise<std_msgs::Float64>("/cmd_accel_safe", 1000);
 
 
-		subscriberMiniCarEnable = nodeHandle->subscribe("/car/hud/mini_car_enable", 1000, &CruiseStartSafetyCheck::callbackMiniCarEnable, this);
-		subscriberLeadDistance = nodeHandle->subscribe("/lead_dist_869", 1000, &Disengager::callbackLeadDistance, this);
-		subscriberLeadRelativeSpeed = nodeHandle->subscribe("/rel_vel_869", 1000, &Disengager::callbackLeadRelativeSpeed, this);
-		subscriberSpeed = nodeHandle->subscribe("/vel", 1000, &Disengager::callbackSpeed, this);
-		subscriberCommandAcceleration = nodeHandle->subscribe("/cmd_accel", 1000, &Disengager::callbackCommandAcceleration, this);
+		subscriberMiniCarEnable = nodeHandle->subscribe("/car/hud/mini_car_enable", 1000, &ControlBarrierFunctionSmoother::callbackMiniCarEnable, this);
+		subscriberLeadDistance = nodeHandle->subscribe("/lead_dist_869", 1000, &ControlBarrierFunctionSmoother::callbackLeadDistance, this);
+		subscriberLeadRelativeSpeed = nodeHandle->subscribe("/rel_vel_869", 1000, &ControlBarrierFunctionSmoother::callbackLeadRelativeSpeed, this);
+		subscriberSpeed = nodeHandle->subscribe("/vel", 1000, &ControlBarrierFunctionSmoother::callbackSpeed, this);
+		subscriberCommandAcceleration = nodeHandle->subscribe("/cmd_accel", 1000, &ControlBarrierFunctionSmoother::callbackCommandAcceleration, this);
 	}
 
 };

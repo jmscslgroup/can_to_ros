@@ -225,7 +225,6 @@ add_executable(gpsfix src/gps_node.cpp)
 target_link_libraries(gpsfix ${catkin_LIBRARIES})
 
 
-
 add_executable(publish_csv src/publish_csv.cpp)
 target_link_libraries(publish_csv ${catkin_LIBRARIES})
 
@@ -274,6 +273,9 @@ target_link_libraries(cruise_start_safety_check ${catkin_LIBRARIES})
 
 add_executable(cut_in_disengager src/cut_in_disengager.cpp)
 target_link_libraries(cut_in_disengager ${catkin_LIBRARIES} libpandac.so)
+
+add_executable(cbf_smoother src/cbf_smoother.cpp)
+target_link_libraries(cbf_smoother ${catkin_LIBRARIES})
 
 # add_executable(joyNode src/joyNode.cpp)
 # target_link_libraries(joyNode ${catkin_LIBRARIES})
