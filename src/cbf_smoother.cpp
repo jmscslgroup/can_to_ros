@@ -228,19 +228,24 @@ public:
 		std_msgs::Float64 cmd_accel;
 		cmd_accel.data = cmd_accel_pre;	// default value
 
-		if ( leadVehicleVisible && validLeaderAcceleration) {
+		double cmd_accel_cbf = 0;
+
+		std_msgs::Float64 cmd_accel_cbf_msg;
+
+		if ( leadVehicleVisible && !cutInOrCutOutOccured && validLeaderAcceleration) {
 			// Perform CBF with current states:
 			double v = speed;
 			double delta_v = leaderRelativeSpeed;
 			double s = leaderRelativeDistance;
 			double a_l = leaderAcceleration;
-      double cmd_accel_cbf = cbf_filter(v, s, delta_v, a_l);
+			cmd_accel_cbf = cbf_filter(v, s, delta_v, a_l);
 			cmd_accel.data = min(cmd_accel_pre, cmd_accel_cbf);
 		}
 
 		// Publish the output:
-		publisherCommandAcceleration.publish( cmd_accel );
-    publisherCommandAccelerationCBF.publish( cmd_accel_cbf);
+		publisherCommandAcceleration.publish(cmd_accel);
+		cmd_accel_cbf_msg.data = cmd_accel_cbf;
+		publisherCommandAccelerationCBF.publish(cmd_accel_cbf_msg);
 	}
 
 
@@ -249,7 +254,7 @@ public:
 		leaderAccelerationSampleCount = 0;
 
 		publisherCommandAcceleration = nodeHandle->advertise<std_msgs::Float64>("/cmd_accel", 1000);
-    publisherCommandAccelerationCBF = nodeHandle->advertise<std_msgs::Float64>("/cmd_accel_cbf", 1000);
+		publisherCommandAccelerationCBF = nodeHandle->advertise<std_msgs::Float64>("/cmd_accel_cbf", 1000);
 
 		subscriberMiniCarEnable = nodeHandle->subscribe("/car/hud/mini_car_enable", 1000, &ControlBarrierFunctionSmoother::callbackMiniCarEnable, this);
 		subscriberLeadDistance = nodeHandle->subscribe("/lead_dist_869", 1000, &ControlBarrierFunctionSmoother::callbackLeadDistance, this);

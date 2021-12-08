@@ -1,7 +1,7 @@
 <launch>
 
         <arg name="hwil" default="true"/>
-        <arg name='readonly' default='true'/>
+        <arg name='readonly' default='false'/>
 
         <param name="/hwil" value="$(arg hwil)"/>
 
@@ -19,12 +19,13 @@
 
 <node pkg="can_to_ros" type="cbf_smoother" name="cbf_smoother" output="screen" required="true" />
 
-<node pkg="setpointreader" type="setpointreader_node" name="setpointreader_node" output="screen" required="true" />
-
-<!-- <node pkg="velocity_controller" type="velocity_controller_node" name="velocity_controller_node" output="screen" required="true" /> -->
+<node pkg="setpointreader" type="setpointreader_node" name="setpointreader_node" output="screen" required="true" >
+	
+</node>
         <node pkg="velocity_controller" type="velocity_controller_node" name="velocity_controller_node" output="screen" if="$(eval not readonly and hwil)">
                 <remap from="/vehicle/vel" to="/vel"/>
-        </node>
+		<remap from="/cmd_accel" to="/cmd_accel_pre"/>
+	 </node>
 
 
 
