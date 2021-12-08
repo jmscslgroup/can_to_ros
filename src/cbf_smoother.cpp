@@ -253,8 +253,8 @@ public:
 		validLeaderAcceleration = false;
 		leaderAccelerationSampleCount = 0;
 
-		publisherCommandAcceleration = nodeHandle->advertise<std_msgs::Float64>("/cmd_accel", 1000);
-		publisherCommandAccelerationCBF = nodeHandle->advertise<std_msgs::Float64>("/cmd_accel_cbf", 1000);
+		publisherCommandAcceleration = nodeHandle->advertise<std_msgs::Float64>("/cmd_accel_cbf", 1000);
+		publisherCommandAccelerationCBF = nodeHandle->advertise<std_msgs::Float64>("/cmd_accel_cbf_raw", 1000);
 
 		subscriberMiniCarEnable = nodeHandle->subscribe("/car/hud/mini_car_enable", 1000, &ControlBarrierFunctionSmoother::callbackMiniCarEnable, this);
 		subscriberLeadDistance = nodeHandle->subscribe("/lead_dist_869", 1000, &ControlBarrierFunctionSmoother::callbackLeadDistance, this);

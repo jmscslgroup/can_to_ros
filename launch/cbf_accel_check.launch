@@ -14,8 +14,14 @@
 
 <node pkg="can_to_ros" type="simple_mini_car_from_lead_distance" name="simple_mini_car_from_lead_distance" output="screen" if="$(arg hwil)"/>
 
-<node pkg="can_to_ros" type="cut_in_disengager" name="cut_in_disengager" output="screen" required="true"/>
-<node pkg="can_to_ros" type="cruise_start_safety_check" name="cruise_start_safety_check" output="screen" required="true" />
+<node pkg="can_to_ros" type="cut_in_disengager" name="cut_in_disengager" output="screen" required="true">
+	<remap from="/cmd_accel" to="/cmd_accel_cbf"/>
+</node>
+
+
+<node pkg="can_to_ros" type="cruise_start_safety_check" name="cruise_start_safety_check" output="screen" required="true" >
+	
+</node>
 
 <node pkg="can_to_ros" type="cbf_smoother" name="cbf_smoother" output="screen" required="true" />
 
