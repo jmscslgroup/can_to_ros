@@ -14,25 +14,19 @@
 
 <node pkg="can_to_ros" type="simple_mini_car_from_lead_distance" name="simple_mini_car_from_lead_distance" output="screen" if="$(arg hwil)"/>
 
-<node pkg="can_to_ros" type="cut_in_disengager" name="cut_in_disengager" output="screen" required="true">
-	<remap from="/cmd_accel" to="/cmd_accel_cbf"/>
+
+<node pkg="can_to_ros" type="cbf_smoother" name="cbf_smoother" output="screen" required="true" >
+	<remap from="/cmd_accel_cbf" to="/cmd_accel"/>
 </node>
-
-
-<node pkg="can_to_ros" type="cruise_start_safety_check" name="cruise_start_safety_check" output="screen" required="true" >
-	
-</node>
-
-<node pkg="can_to_ros" type="cbf_smoother" name="cbf_smoother" output="screen" required="true" />
 
 <node pkg="setpointreader" type="setpointreader_node" name="setpointreader_node" output="screen" required="true" >
-	
+	<remap from="/v_ref" to="/cmd_vel"/>
 </node>
         <node pkg="velocity_controller" type="velocity_controller_node" name="velocity_controller_node" output="screen" if="$(eval not readonly and hwil)">
                 <remap from="/vehicle/vel" to="/vel"/>
 		<remap from="/cmd_accel" to="/cmd_accel_pre"/>
 	 </node>
 
-
+<node pkg="can_to_ros" type ="rosbag_record.sh" name="bashscript2" output="screen" args="_cbf_testing $(arg hwil)" />
 
 </launch>
