@@ -1,16 +1,30 @@
 <launch>
 
-<!-- include information for the joystick, etc. args="$(env HOME)"  -->
-<node pkg="can_to_ros" type="vehicle_interface" name="vehicle_interface" output="screen" respawn="true" respawn_delay="2" />
+        <arg name="hwil" default="true"/>
+        <arg name='readonly' default='true'/>
 
-<node pkg="can_to_ros" type="publishCommands" name="publishCommands" output="screen" required="true" />
+        <param name="/hwil" value="$(arg hwil)"/>
 
-<node pkg="can_to_ros" type="node_status.py" name="node_status" output="screen" required="true" />
-
-<node pkg="can_to_ros" type="topic_check.py" name="topic_check" output="screen" />
+        <param name="/readonly" value="$(arg readonly)"/>
 
 
-<include file="$(find can_to_ros)launch/safety_checks.launch" />
+<node pkg="can_to_ros" type ="subs_fs" name="subs_fs" output="screen" if="$(arg hwil)"/>
 
+<node pkg="can_to_ros" type="lead_info" name="lead_info" output="screen" if="$(arg hwil)"/>
+
+<node pkg="can_to_ros" type="simple_mini_car_from_lead_distance" name="simple_mini_car_from_lead_distance" output="screen" if="$(arg hwil)"/>
+
+<node pkg="can_to_ros" type="cut_in_disengager" name="cut_in_disengager" output="screen" required="true"/>
+<node pkg="can_to_ros" type="cruise_start_safety_check" name="cruise_start_safety_check" output="screen" required="true" />
+
+<node pkg="can_to_ros" type="cbf_smoother" name="cbf_smoother" output="screen" required="true" />
+
+<node pkg="setpointreader" type="setpointreader_node" name="setpointreader_node" output="screen" required="true" />
+
+<!-- <node pkg="velocity_controller" type="velocity_controller_node" name="velocity_controller_node" output="screen" required="true" /> -->
+<node pkg="velocity_controller" type="velocity_controller_node" name="velocity_controller_node" output="screen" if="$(eval not readonly and hwil)">
+    <remap from="/vehicle/vel" to="/vel"/>
+    <remap from="/cmd_accel" to="/cmd_accel_pre"/>
+</node>
 
 </launch>

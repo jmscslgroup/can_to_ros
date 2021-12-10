@@ -28,17 +28,17 @@
  a_cmd_safe = min(a_cmd, f(v,s,delta_v))
 
  Publishers:
- 1) /cmd_accel_safe -- The output acceleration "a_cmd_safe"
+ 1) /cmd_accel -- The output acceleration "a_cmd_safe" to go into the safety checker
 
  Subscribers:
- 1) /cmd_accel -- The input acceleration "a_cmd"
+ 1) /cmd_accel_pre -- The input acceleration "a_cmd" from the velocity_controller
  2) /vel -- The Ego vehicle speed "v"
  3) /lead_dist_869 -- The leader distance "s"
  4) /rel_vel_869 -- The Leader relative speed "delta_v"
  5)  -- The absolute acceleration of the leader vehicle "a_l" can be derived from v and delta_v
 
  Note from Bunting:
- We will need to infer a_l from /vel and /rel_vel_869 (v and delta_v, respectively).  However since cars cutting in and out cna change, or the leader vehicle can be lost, we need to consider if inference of a_l is valid.  First, let's get one more subscriber:
+ We will need to infer a_l from /vel and /rel_vel_869 (v and delta_v, respectively).  However since cars cutting in and out can change, or the leader vehicle can be lost, we need to consider if inference of a_l is valid.  First, let's get one more subscriber:
 
  6) /car/hud/mini_car_enable -- lets us know if the car's radar has a valid vehicle
 
@@ -170,8 +170,8 @@ private:
 	ros::Subscriber subscriberSpeed;
 	ros::Subscriber subscriberCommandAcceleration;
 
-	ros::Publisher publisherCommandAccelerationSafe;
-
+	ros::Publisher publisherCommandAcceleration;
+  ros::Publisher publisherCommandAccelerationCBF;
 
 public:
 
@@ -222,11 +222,15 @@ public:
 
 	void callbackCommandAcceleration(const std_msgs::Float64::ConstPtr& msg) {
 		// Input:
-		double cmd_accel_desired = msg->data;
+		double cmd_accel_pre= msg->data;
 
 		// Output:
-		std_msgs::Float64 cmd_accel_safe;
-		cmd_accel_safe.data = cmd_accel_desired;	// default value
+		std_msgs::Float64 cmd_accel;
+		cmd_accel.data = cmd_accel_pre;	// default value
+
+		double cmd_accel_cbf = 0;
+
+		std_msgs::Float64 cmd_accel_cbf_msg;
 
 		if ( leadVehicleVisible && !cutInOrCutOutOccured && validLeaderAcceleration) {
 			// Perform CBF with current states:
@@ -234,25 +238,29 @@ public:
 			double delta_v = leaderRelativeSpeed;
 			double s = leaderRelativeDistance;
 			double a_l = leaderAcceleration;
-			cmd_accel_safe.data = min(cmd_accel_desired, cbf_filter(v, s, delta_v, a_l));
+			cmd_accel_cbf = cbf_filter(v, s, delta_v, a_l);
+			cmd_accel.data = min(cmd_accel_pre, cmd_accel_cbf);
 		}
 
 		// Publish the output:
-		publisherCommandAccelerationSafe.publish( cmd_accel_safe );
+		publisherCommandAcceleration.publish(cmd_accel);
+		cmd_accel_cbf_msg.data = cmd_accel_cbf;
+		publisherCommandAccelerationCBF.publish(cmd_accel_cbf_msg);
 	}
+
 
 	ControlBarrierFunctionSmoother(ros::NodeHandle* nodeHandle) {
 		validLeaderAcceleration = false;
 		leaderAccelerationSampleCount = 0;
 
-		publisherCommandAccelerationSafe = nodeHandle->advertise<std_msgs::Float64>("/cmd_accel_safe", 1000);
-
+		publisherCommandAcceleration = nodeHandle->advertise<std_msgs::Float64>("/cmd_accel_cbf", 1000);
+		publisherCommandAccelerationCBF = nodeHandle->advertise<std_msgs::Float64>("/cmd_accel_cbf_raw", 1000);
 
 		subscriberMiniCarEnable = nodeHandle->subscribe("/car/hud/mini_car_enable", 1000, &ControlBarrierFunctionSmoother::callbackMiniCarEnable, this);
 		subscriberLeadDistance = nodeHandle->subscribe("/lead_dist_869", 1000, &ControlBarrierFunctionSmoother::callbackLeadDistance, this);
 		subscriberLeadRelativeSpeed = nodeHandle->subscribe("/rel_vel_869", 1000, &ControlBarrierFunctionSmoother::callbackLeadRelativeSpeed, this);
 		subscriberSpeed = nodeHandle->subscribe("/vel", 1000, &ControlBarrierFunctionSmoother::callbackSpeed, this);
-		subscriberCommandAcceleration = nodeHandle->subscribe("/cmd_accel", 1000, &ControlBarrierFunctionSmoother::callbackCommandAcceleration, this);
+		subscriberCommandAcceleration = nodeHandle->subscribe("/cmd_accel_pre", 1000, &ControlBarrierFunctionSmoother::callbackCommandAcceleration, this);
 	}
 
 };
