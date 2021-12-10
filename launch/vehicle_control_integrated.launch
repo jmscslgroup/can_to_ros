@@ -1,0 +1,42 @@
+<launch>
+
+<!--
+This launch file has the integrated controller (which runs the traffic smoothing system) as well as 
+the various other pieces required.
+
+-->
+
+<!-- include information for the joystick, etc. args="$(env HOME)"  -->
+<node pkg="can_to_ros" type="vehicle_interface" name="vehicle_interface" output="screen" respawn="true" respawn_delay="60" />
+
+<node pkg="can_to_ros" type="publishCommands" name="publishCommands" output="screen" required="true" />
+
+<node pkg="can_to_ros" type="node_status.py" name="node_status" output="screen" required="true" />
+
+<node pkg="can_to_ros" type="topic_check.py" name="topic_check" output="screen" />
+
+
+<include file="$(find can_to_ros)launch/safety_checks.launch" />
+<!--
+<include file="$(find can_to_ros)launch/safety_checks.launch" />
+-->
+
+<!--
+<node pkg="can_to_ros" type="cbf_smoother" name="cbf_smoother" output="screen" required="true" />
+-->
+
+<!-- changing to add controller -->
+<!-- <include file="$(find transfer_pkg)/launch/rl0719_readonly.launch"> -->
+<include file="$(find transfer_pkg)/launch/rl0805_v3_readonly.launch">
+	<arg name="hwil" value="true"/>
+	<arg name="readonly" value="false"/>
+</include>
+<!-- changing to Amaury controller -->
+<!--
+<include file="$(find transfer_pkg)/launch/micromodel_readonly.launch">
+ 	<arg name="hwil" value="true" />
+ 	<arg name="readonly" value="false" />
+</include>
+-->
+
+</launch>
