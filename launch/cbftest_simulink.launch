@@ -45,14 +45,14 @@
 		<remap from="/vehicle/vel" to="/vel"/>	
 		<remap from="/cmd_accel" to="/cmd_accel_pre"/>
 	</node>
-	
+<!--	
 	<node pkg="cbf" type="cbf_node" name="cbf_node" if="$(eval not readonly and hwil)">
 	</node>
 	
 	<node pkg="cbf" type="cbf_node" name="cbf_node_readonly" if="$(eval not readonly and hwil)">
 		<remap from="/cmd_accel" to="/cmd_accel_null"/>
 	</node>
-	
+-->	
 	
 	
 	<node pkg="can_to_ros" type ="rosbag_record.sh" name="bashscript2" output="screen" args="$(arg description) $(arg hwil)" /> 
