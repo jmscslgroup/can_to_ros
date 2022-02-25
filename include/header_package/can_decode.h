@@ -17,38 +17,38 @@ typedef struct values_struct
 class decode_msgs{
 public:
 values decode_message( unsigned int msg_id, std::string msg); // decoding CAN messages
-std::string findTwoscomplement(std::string str); // functon to return two's complement 
+std::string findTwoscomplement(std::string str); // functon to return two's complement
 
 };
 
-std::string decode_msgs::findTwoscomplement(std::string str) { 
-    int n = str.length(); 
-  
-    // Traverse the string to get first '1' from 
-    // the last of string 
-    int i; 
-    for (i = n-1 ; i >= 0 ; i--) 
-        if (str[i] == '1') 
-            break; 
-  
-    // If there exists no '1' concatenate 1 at the 
-    // starting of string 
-    if (i == -1) 
-        return '1' + str; 
-  
-    // Continue traversal after the position of 
-    // first '1' 
-    for (int k = i-1 ; k >= 0; k--) 
-    { 
-        //Just flip the values 
-        if (str[k] == '1') 
-            str[k] = '0'; 
+std::string decode_msgs::findTwoscomplement(std::string str) {
+    int n = str.length();
+
+    // Traverse the string to get first '1' from
+    // the last of string
+    int i;
+    for (i = n-1 ; i >= 0 ; i--)
+        if (str[i] == '1')
+            break;
+
+    // If there exists no '1' concatenate 1 at the
+    // starting of string
+    if (i == -1)
+        return '1' + str;
+
+    // Continue traversal after the position of
+    // first '1'
+    for (int k = i-1 ; k >= 0; k--)
+    {
+        //Just flip the values
+        if (str[k] == '1')
+            str[k] = '0';
         else
-            str[k] = '1'; 
-    } 
-    // return the modified string 
+            str[k] = '1';
+    }
+    // return the modified string
     return str;
-} 
+}
 
 values decode_msgs::decode_message( unsigned int msg_id, std::string msg){
   values returnedVal;
@@ -71,17 +71,17 @@ values decode_msgs::decode_message( unsigned int msg_id, std::string msg){
   returnedVal.var4=0.0;
   float angle;
   if (msg_id == 180){
-  
-        std::stringstream hex_ss(msg); 
-        hex_ss >> std::hex >> n;// making the message hex 
 
-        binary = std::bitset<64>(n).to_string(); // conver hex to binary 
+        std::stringstream hex_ss(msg);
+        hex_ss >> std::hex >> n;// making the message hex
+
+        binary = std::bitset<64>(n).to_string(); // conver hex to binary
 
          byte6 = binary.substr(40,8);
          byte7 = binary.substr(48,8);
 
         rawVal= byte6+byte7;
-       
+
          rawVal_Dec=std::stoull(rawVal, 0, 2);
 
         speedDec_kmph= (float)rawVal_Dec * 0.01;
@@ -92,11 +92,11 @@ values decode_msgs::decode_message( unsigned int msg_id, std::string msg){
   }
   if (msg_id == 37){
 
-        std::stringstream hex_ss(msg); // 
+        std::stringstream hex_ss(msg); //
         hex_ss >> std::hex >> n;
        /// std::cout << n << std::endl;
 
-       binary = std::bitset<64>(n).to_string(); // conver hex to binary 
+       binary = std::bitset<64>(n).to_string(); // conver hex to binary
 
          byte1 = binary.substr(0,8);
          byte2 = binary.substr(8,8);
@@ -119,22 +119,22 @@ values decode_msgs::decode_message( unsigned int msg_id, std::string msg){
       return returnedVal;
   }
     if (msg_id == 869){
-  
-        std::stringstream hex_ss(msg); 
-        hex_ss >> std::hex >> n;// making the message hex 
 
-        binary = std::bitset<56>(n).to_string(); // conver hex to binary 
+        std::stringstream hex_ss(msg);
+        hex_ss >> std::hex >> n;// making the message hex
+
+        binary = std::bitset<56>(n).to_string(); // conver hex to binary
 
         std::string byte5 = binary.substr(32,8);
         std::string byte6 = binary.substr(40,8);
         std::string byte7 = binary.substr(48,8);
 
         std::string raw_rel_speed = byte6 + byte7.substr(0,4);
-      
+
         float raw_rel_speed_fl;
 
         rawVal= byte5;
-       
+
         rawVal_Dec=std::stoull(rawVal, 0, 2);
 
 
@@ -145,19 +145,19 @@ values decode_msgs::decode_message( unsigned int msg_id, std::string msg){
 
         raw_rel_speed_fl= std::stoul(findTwoscomplement(raw_rel_speed), 0, 2 );
           raw_rel_speed_fl=raw_rel_speed_fl * -1.0;
-        } 
+        }
 
          lead_dist= (float)rawVal_Dec;
 
         //this->steering_angle = 0.0;
         //this->speed = 0.0;
         returnedVal.var1 = rawVal_Dec;
-        returnedVal.var2 = raw_rel_speed_fl*0.025;
+        returnedVal.var2 = raw_rel_speed_fl*0.01785;
       return returnedVal;
 
   }
   if (msg_id>= 384 && msg_id<=399 ){
-     
+
         std::stringstream hex_ss(msg);
         hex_ss >> std::hex >> n;
 
@@ -199,12 +199,12 @@ values decode_msgs::decode_message( unsigned int msg_id, std::string msg){
         //std::cout << rawVal_lat << " " << rawVal_long << " " << raw_rel_speed << std::endl;
         returnedVal.var1=rawVal_lat_fl*0.04;
         returnedVal.var2=rawVal_long_fl*0.04;
-        returnedVal.var3=raw_rel_speed_fl*0.025;
+        returnedVal.var3=raw_rel_speed_fl*0.01785;
         return returnedVal;
-  
+
   }
     if (msg_id >= 400 && msg_id <= 415){
-     
+
         std::stringstream hex_ss(msg);
         hex_ss >> std::hex >> n;
 
@@ -215,7 +215,7 @@ values decode_msgs::decode_message( unsigned int msg_id, std::string msg){
 
         std::string raw_accel= byte2.substr(0,7);
         rawVal_Dec=std::stoull(byte3, 0, 2);
-        float score= float(rawVal_Dec); 
+        float score= float(rawVal_Dec);
 
         float raw_accel_fl;
              if ((raw_accel)[0]== '0'){
@@ -228,7 +228,7 @@ values decode_msgs::decode_message( unsigned int msg_id, std::string msg){
         }
 
         //std::cout << raw_accel_fl << std::endl;
-        returnedVal.var1=raw_accel_fl*1.0;
+        returnedVal.var1=raw_accel_fl*0.14285;
         returnedVal.var2=score;
         //std::cout<< returnedVal.var2 << std::endl;
         return returnedVal;
@@ -252,7 +252,7 @@ values decode_msgs::decode_message( unsigned int msg_id, std::string msg){
 
     temp1= byte1.substr(1,7);
     rawVal= temp1+byte2;
-    
+
     if (rawVal[0]== '0'){
       temp_accel= std::stoul( rawVal, 0, 2 );
     }
@@ -262,12 +262,12 @@ values decode_msgs::decode_message( unsigned int msg_id, std::string msg){
       temp_accel=temp_accel * -1.0;
     }
     returnedVal.var1=float(temp_accel)*0.001;
-    //std::cout << this->long_accel << "  Accel" << std::endl; 
+    //std::cout << this->long_accel << "  Accel" << std::endl;
 
     return returnedVal;
     }
 
-    if (msg_id == 1570){ ///// new message 
+    if (msg_id == 1570){ ///// new message
     // int temp_headlights;
     int LIGHT_STATE_CHANGED=0;
     int HIGH_BEAMS_ON=0;
@@ -323,10 +323,10 @@ values decode_msgs::decode_message( unsigned int msg_id, std::string msg){
     // std::cout << byte2 << std::endl;
     // std::cout << byte3 << std::endl;
     // std::cout << byte4 << std::endl;
-  
+
     MAIN_ON = std::stoull(byte2.substr(0,1), 0, 2); // bit 15
     SET_SPEED = std::stoull(byte3, 0, 2);
- 
+
     returnedVal.var1=MAIN_ON;
     returnedVal.var2=SET_SPEED;
 
@@ -345,8 +345,8 @@ values decode_msgs::decode_message( unsigned int msg_id, std::string msg){
     //std::cout << binary << std::endl;
 
     std::string byte1 = binary.substr(0,8);
-    std::string byte2 = binary.substr(8,8); 
-    // std::string byte3 = binary.substr(16,8); 
+    std::string byte2 = binary.substr(8,8);
+    // std::string byte3 = binary.substr(16,8);
     std::string byte4 = binary.substr(24,8);
     // std::string byte5 = binary.substr(32,8);
     // std::string byte6 = binary.substr(40,8);
@@ -357,7 +357,7 @@ values decode_msgs::decode_message( unsigned int msg_id, std::string msg){
     UI_SET_SPEED = std::stoull(byte4, 0, 2);
     CRUISE_CONTROL_STATE = std::stoull(byte2.substr(4,4), 0, 2); // start bit 11
 
- 
+
     returnedVal.var1=MAIN_ON;
     returnedVal.var2=UI_SET_SPEED;
     returnedVal.var3=CRUISE_CONTROL_STATE;
