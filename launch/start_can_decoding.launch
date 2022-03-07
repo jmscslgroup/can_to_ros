@@ -12,8 +12,8 @@
 
 <!-- <node pkg="can_to_ros" type ="gpsfix" name="gpsfix" args="$(arg gps_path)"  />  -->
 
-<node pkg="can_to_ros" name="lead_info" type="lead_info" output="screen" />
-<node pkg= "rosbag" name="record" type="record"  args="-a -x '/realtime_raw_data' -O $(env HOME)/$(arg bag_name)" />
+<!-- <node pkg="can_to_ros" name="lead_info" type="lead_info" output="screen" /> -->
+<node pkg= "rosbag" name="record" type="record"  args="-O $(env HOME)/$(arg bag_name) /realtime_raw_data" />
 
 <!-- </group> -->
 
