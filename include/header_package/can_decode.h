@@ -75,7 +75,7 @@ values decode_msgs::decode_message( unsigned int msg_id, std::string msg){
         std::stringstream hex_ss(msg);
         hex_ss >> std::hex >> n;// making the message hex
 
-        binary = std::bitset<64>(n).to_string(); // conver hex to binary
+        binary = std::bitset<64>(n).to_string(); // convert hex to binary
 
          byte6 = binary.substr(40,8);
          byte7 = binary.substr(48,8);

@@ -96,7 +96,7 @@ def generatePrivatePubs(toROS):
 
     for canid in toROS:
             for rostopic in toROS[canid]:
-                text += "\tros::Publisher %s;\n"%(rostopic)
+                text += "\tros::Publisher %s_pub;\n"%(rostopic)
 
     text += "\n\tros::Subscriber sub_;\n\
 \tdecode_msgs obj;\n\
@@ -124,13 +124,13 @@ def buildCallbacks(toROS):
 \t\tdata = obj.decode_message (MessageID, Message);\n"%(canid)
 
             text += call
-
+        count = 0
         for rostopic in toROS[canid]:
 #             print(rostopic)
             rosmsg = toROS[canid][rostopic][0][0]
             signals = toROS[canid][rostopic][1]
-
-            text+= '\t\t%s msg;\n'%(rosmsg)
+            count += 1
+            text+= '\t\t%s msg%d;\n'%(rosmsg,count)
 
 
             if 'PointStamped' in rosmsg:
