@@ -231,9 +231,11 @@ target_link_libraries(publish_csv ${catkin_LIBRARIES})
 add_executable(subs src/subs.cpp)
 target_link_libraries(subs ${catkin_LIBRARIES})
 
-
 add_executable(subs_fs src/subs_fs.cpp)
 target_link_libraries(subs_fs ${catkin_LIBRARIES})
+
+add_executable(subs_fs_test src/subs_fs_test.cpp)
+target_link_libraries(subs_fs_test ${catkin_LIBRARIES})
 
 add_executable(lead_info src/lead_info.cpp)
 target_link_libraries(lead_info ${catkin_LIBRARIES})

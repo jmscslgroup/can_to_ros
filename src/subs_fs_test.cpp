@@ -3,7 +3,7 @@
 #include "std_msgs/Float32.h"
 #include "std_msgs/Float64.h"
 #include "sensor_msgs/TimeReference.h"
-#include "header_package/can_decode.h"
+#include "header_package/can_decode_test.h"
 #include "visualization_msgs/Marker.h"
 #include "geometry_msgs/PointStamped.h"
 #include "geometry_msgs/AccelStamped.h"
@@ -55,255 +55,255 @@ public:
 	if (MessageID == 37){
 		data = obj.decode_message (MessageID, Message);
 		std_msgs::Float64 msg1;
-		msg.data = data.var1; //STEER_ANGLE
-		steering_angle_pub.publish(msg);
+		msg1.data = data.var1; //STEER_ANGLE
+		steering_angle_pub.publish(msg1);
 
 	}
 	else if (MessageID == 180)
 	{
 		data = obj.decode_message (MessageID, Message);
 		std_msgs::Float64 msg1;
-		msg.data = data.var1; //SPEED
-		vel_pub.publish(msg);
+		msg1.data = data.var1; //SPEED
+		vel_pub.publish(msg1);
 
 	}
 	else if (MessageID == 869)
 	{
 		data = obj.decode_message (MessageID, Message);
 		std_msgs::Float64 msg1;
-		msg.data = data.var1; //LEAD_DISTANCE
-		lead_dist_pub.publish(msg);
+		msg1.data = data.var1; //LEAD_DISTANCE
+		lead_dist_pub.publish(msg1);
 
 		std_msgs::Float64 msg2;
-		msg.data = data.var2; //REL_SPEED
-		rel_vel_pub.publish(msg);
+		msg2.data = data.var2; //REL_SPEED
+		rel_vel_pub.publish(msg2);
 
 	}
 	else if (MessageID == 384)
 	{
 		data = obj.decode_message (MessageID, Message);
 		geometry_msgs::PointStamped msg1;
-		msg.header.frame_id = "front_laser_link";
-                msg.header.stamp = ros::Time(std::stod(Time));
-		msg.point.x = data.var1; //LONG_DIST
-                msg.point.y = data.var2; //LAT_DIST
-                msg.point.z = data.var3; //REL_SPEED
-		track_a0_pub.publish(msg);
+		msg1.header.frame_id = "front_laser_link";
+                msg1.header.stamp = ros::Time(std::stod(Time));
+		msg1.point.x = data.var1; //LONG_DIST
+                msg1.point.y = data.var2; //LAT_DIST
+                msg1.point.z = data.var3; //REL_SPEED
+		track_a0_pub.publish(msg1);
 
 	}
 	else if (MessageID == 385)
 	{
 		data = obj.decode_message (MessageID, Message);
 		geometry_msgs::PointStamped msg1;
-		msg.header.frame_id = "front_laser_link";
-                msg.header.stamp = ros::Time(std::stod(Time));
-		msg.point.x = data.var1; //LONG_DIST
-                msg.point.y = data.var2; //LAT_DIST
-                msg.point.z = data.var3; //REL_SPEED
-		track_a1_pub.publish(msg);
+		msg1.header.frame_id = "front_laser_link";
+                msg1.header.stamp = ros::Time(std::stod(Time));
+		msg1.point.x = data.var1; //LONG_DIST
+                msg1.point.y = data.var2; //LAT_DIST
+                msg1.point.z = data.var3; //REL_SPEED
+		track_a1_pub.publish(msg1);
 
 	}
 	else if (MessageID == 386)
 	{
 		data = obj.decode_message (MessageID, Message);
 		geometry_msgs::PointStamped msg1;
-		msg.header.frame_id = "front_laser_link";
-                msg.header.stamp = ros::Time(std::stod(Time));
-		msg.point.x = data.var1; //LONG_DIST
-                msg.point.y = data.var2; //LAT_DIST
-                msg.point.z = data.var3; //REL_SPEED
-		track_a2_pub.publish(msg);
+		msg1.header.frame_id = "front_laser_link";
+                msg1.header.stamp = ros::Time(std::stod(Time));
+		msg1.point.x = data.var1; //LONG_DIST
+                msg1.point.y = data.var2; //LAT_DIST
+                msg1.point.z = data.var3; //REL_SPEED
+		track_a2_pub.publish(msg1);
 
 	}
 	else if (MessageID == 387)
 	{
 		data = obj.decode_message (MessageID, Message);
 		geometry_msgs::PointStamped msg1;
-		msg.header.frame_id = "front_laser_link";
-                msg.header.stamp = ros::Time(std::stod(Time));
-		msg.point.x = data.var1; //LONG_DIST
-                msg.point.y = data.var2; //LAT_DIST
-                msg.point.z = data.var3; //REL_SPEED
-		track_a3_pub.publish(msg);
+		msg1.header.frame_id = "front_laser_link";
+                msg1.header.stamp = ros::Time(std::stod(Time));
+		msg1.point.x = data.var1; //LONG_DIST
+                msg1.point.y = data.var2; //LAT_DIST
+                msg1.point.z = data.var3; //REL_SPEED
+		track_a3_pub.publish(msg1);
 
 	}
 	else if (MessageID == 388)
 	{
 		data = obj.decode_message (MessageID, Message);
 		geometry_msgs::PointStamped msg1;
-		msg.header.frame_id = "front_laser_link";
-                msg.header.stamp = ros::Time(std::stod(Time));
-		msg.point.x = data.var1; //LONG_DIST
-                msg.point.y = data.var2; //LAT_DIST
-                msg.point.z = data.var3; //REL_SPEED
-		track_a4_pub.publish(msg);
+		msg1.header.frame_id = "front_laser_link";
+                msg1.header.stamp = ros::Time(std::stod(Time));
+		msg1.point.x = data.var1; //LONG_DIST
+                msg1.point.y = data.var2; //LAT_DIST
+                msg1.point.z = data.var3; //REL_SPEED
+		track_a4_pub.publish(msg1);
 
 	}
 	else if (MessageID == 389)
 	{
 		data = obj.decode_message (MessageID, Message);
 		geometry_msgs::PointStamped msg1;
-		msg.header.frame_id = "front_laser_link";
-                msg.header.stamp = ros::Time(std::stod(Time));
-		msg.point.x = data.var1; //LONG_DIST
-                msg.point.y = data.var2; //LAT_DIST
-                msg.point.z = data.var3; //REL_SPEED
-		track_a5_pub.publish(msg);
+		msg1.header.frame_id = "front_laser_link";
+                msg1.header.stamp = ros::Time(std::stod(Time));
+		msg1.point.x = data.var1; //LONG_DIST
+                msg1.point.y = data.var2; //LAT_DIST
+                msg1.point.z = data.var3; //REL_SPEED
+		track_a5_pub.publish(msg1);
 
 	}
 	else if (MessageID == 390)
 	{
 		data = obj.decode_message (MessageID, Message);
 		geometry_msgs::PointStamped msg1;
-		msg.header.frame_id = "front_laser_link";
-                msg.header.stamp = ros::Time(std::stod(Time));
-		msg.point.x = data.var1; //LONG_DIST
-                msg.point.y = data.var2; //LAT_DIST
-                msg.point.z = data.var3; //REL_SPEED
-		track_a6_pub.publish(msg);
+		msg1.header.frame_id = "front_laser_link";
+                msg1.header.stamp = ros::Time(std::stod(Time));
+		msg1.point.x = data.var1; //LONG_DIST
+                msg1.point.y = data.var2; //LAT_DIST
+                msg1.point.z = data.var3; //REL_SPEED
+		track_a6_pub.publish(msg1);
 
 	}
 	else if (MessageID == 391)
 	{
 		data = obj.decode_message (MessageID, Message);
 		geometry_msgs::PointStamped msg1;
-		msg.header.frame_id = "front_laser_link";
-                msg.header.stamp = ros::Time(std::stod(Time));
-		msg.point.x = data.var1; //LONG_DIST
-                msg.point.y = data.var2; //LAT_DIST
-                msg.point.z = data.var3; //REL_SPEED
-		track_a7_pub.publish(msg);
+		msg1.header.frame_id = "front_laser_link";
+                msg1.header.stamp = ros::Time(std::stod(Time));
+		msg1.point.x = data.var1; //LONG_DIST
+                msg1.point.y = data.var2; //LAT_DIST
+                msg1.point.z = data.var3; //REL_SPEED
+		track_a7_pub.publish(msg1);
 
 	}
 	else if (MessageID == 392)
 	{
 		data = obj.decode_message (MessageID, Message);
 		geometry_msgs::PointStamped msg1;
-		msg.header.frame_id = "front_laser_link";
-                msg.header.stamp = ros::Time(std::stod(Time));
-		msg.point.x = data.var1; //LONG_DIST
-                msg.point.y = data.var2; //LAT_DIST
-                msg.point.z = data.var3; //REL_SPEED
-		track_a8_pub.publish(msg);
+		msg1.header.frame_id = "front_laser_link";
+                msg1.header.stamp = ros::Time(std::stod(Time));
+		msg1.point.x = data.var1; //LONG_DIST
+                msg1.point.y = data.var2; //LAT_DIST
+                msg1.point.z = data.var3; //REL_SPEED
+		track_a8_pub.publish(msg1);
 
 	}
 	else if (MessageID == 393)
 	{
 		data = obj.decode_message (MessageID, Message);
 		geometry_msgs::PointStamped msg1;
-		msg.header.frame_id = "front_laser_link";
-                msg.header.stamp = ros::Time(std::stod(Time));
-		msg.point.x = data.var1; //LONG_DIST
-                msg.point.y = data.var2; //LAT_DIST
-                msg.point.z = data.var3; //REL_SPEED
-		track_a9_pub.publish(msg);
+		msg1.header.frame_id = "front_laser_link";
+                msg1.header.stamp = ros::Time(std::stod(Time));
+		msg1.point.x = data.var1; //LONG_DIST
+                msg1.point.y = data.var2; //LAT_DIST
+                msg1.point.z = data.var3; //REL_SPEED
+		track_a9_pub.publish(msg1);
 
 	}
 	else if (MessageID == 394)
 	{
 		data = obj.decode_message (MessageID, Message);
 		geometry_msgs::PointStamped msg1;
-		msg.header.frame_id = "front_laser_link";
-                msg.header.stamp = ros::Time(std::stod(Time));
-		msg.point.x = data.var1; //LONG_DIST
-                msg.point.y = data.var2; //LAT_DIST
-                msg.point.z = data.var3; //REL_SPEED
-		track_a10_pub.publish(msg);
+		msg1.header.frame_id = "front_laser_link";
+                msg1.header.stamp = ros::Time(std::stod(Time));
+		msg1.point.x = data.var1; //LONG_DIST
+                msg1.point.y = data.var2; //LAT_DIST
+                msg1.point.z = data.var3; //REL_SPEED
+		track_a10_pub.publish(msg1);
 
 	}
 	else if (MessageID == 395)
 	{
 		data = obj.decode_message (MessageID, Message);
 		geometry_msgs::PointStamped msg1;
-		msg.header.frame_id = "front_laser_link";
-                msg.header.stamp = ros::Time(std::stod(Time));
-		msg.point.x = data.var1; //LONG_DIST
-                msg.point.y = data.var2; //LAT_DIST
-                msg.point.z = data.var3; //REL_SPEED
-		track_a11_pub.publish(msg);
+		msg1.header.frame_id = "front_laser_link";
+                msg1.header.stamp = ros::Time(std::stod(Time));
+		msg1.point.x = data.var1; //LONG_DIST
+                msg1.point.y = data.var2; //LAT_DIST
+                msg1.point.z = data.var3; //REL_SPEED
+		track_a11_pub.publish(msg1);
 
 	}
 	else if (MessageID == 396)
 	{
 		data = obj.decode_message (MessageID, Message);
 		geometry_msgs::PointStamped msg1;
-		msg.header.frame_id = "front_laser_link";
-                msg.header.stamp = ros::Time(std::stod(Time));
-		msg.point.x = data.var1; //LONG_DIST
-                msg.point.y = data.var2; //LAT_DIST
-                msg.point.z = data.var3; //REL_SPEED
-		track_a12_pub.publish(msg);
+		msg1.header.frame_id = "front_laser_link";
+                msg1.header.stamp = ros::Time(std::stod(Time));
+		msg1.point.x = data.var1; //LONG_DIST
+                msg1.point.y = data.var2; //LAT_DIST
+                msg1.point.z = data.var3; //REL_SPEED
+		track_a12_pub.publish(msg1);
 
 	}
 	else if (MessageID == 397)
 	{
 		data = obj.decode_message (MessageID, Message);
 		geometry_msgs::PointStamped msg1;
-		msg.header.frame_id = "front_laser_link";
-                msg.header.stamp = ros::Time(std::stod(Time));
-		msg.point.x = data.var1; //LONG_DIST
-                msg.point.y = data.var2; //LAT_DIST
-                msg.point.z = data.var3; //REL_SPEED
-		track_a13_pub.publish(msg);
+		msg1.header.frame_id = "front_laser_link";
+                msg1.header.stamp = ros::Time(std::stod(Time));
+		msg1.point.x = data.var1; //LONG_DIST
+                msg1.point.y = data.var2; //LAT_DIST
+                msg1.point.z = data.var3; //REL_SPEED
+		track_a13_pub.publish(msg1);
 
 	}
 	else if (MessageID == 398)
 	{
 		data = obj.decode_message (MessageID, Message);
 		geometry_msgs::PointStamped msg1;
-		msg.header.frame_id = "front_laser_link";
-                msg.header.stamp = ros::Time(std::stod(Time));
-		msg.point.x = data.var1; //LONG_DIST
-                msg.point.y = data.var2; //LAT_DIST
-                msg.point.z = data.var3; //REL_SPEED
-		track_a14_pub.publish(msg);
+		msg1.header.frame_id = "front_laser_link";
+                msg1.header.stamp = ros::Time(std::stod(Time));
+		msg1.point.x = data.var1; //LONG_DIST
+                msg1.point.y = data.var2; //LAT_DIST
+                msg1.point.z = data.var3; //REL_SPEED
+		track_a14_pub.publish(msg1);
 
 	}
 	else if (MessageID == 399)
 	{
 		data = obj.decode_message (MessageID, Message);
 		geometry_msgs::PointStamped msg1;
-		msg.header.frame_id = "front_laser_link";
-                msg.header.stamp = ros::Time(std::stod(Time));
-		msg.point.x = data.var1; //LONG_DIST
-                msg.point.y = data.var2; //LAT_DIST
-                msg.point.z = data.var3; //REL_SPEED
-		track_a15_pub.publish(msg);
+		msg1.header.frame_id = "front_laser_link";
+                msg1.header.stamp = ros::Time(std::stod(Time));
+		msg1.point.x = data.var1; //LONG_DIST
+                msg1.point.y = data.var2; //LAT_DIST
+                msg1.point.z = data.var3; //REL_SPEED
+		track_a15_pub.publish(msg1);
 
 	}
 	else if (MessageID == 1570)
 	{
 		data = obj.decode_message (MessageID, Message);
 		std_msgs::Float64 msg1;
-		msg.data = data.var1; //HIGH_BEAMS_ON
-		highbeams_pub.publish(msg);
+		msg1.data = data.var1; //HIGH_BEAMS_ON
+		highbeams_pub.publish(msg1);
 
 	}
 	else if (MessageID == 467)
 	{
 		data = obj.decode_message (MessageID, Message);
 		geometry_msgs::Point msg1;
-	msgx = data.var1; //MAIN_ON
-	msgy = data.var2; //SET_SPEED
-		pcm_cruise_2_pub.publish(msg);
+	msg1.x = data.var1; //MAIN_ON
+	msg1.y = data.var2; //SET_SPEED
+		pcm_cruise_2_pub.publish(msg1);
 
 	}
 	else if (MessageID == 921)
 	{
 		data = obj.decode_message (MessageID, Message);
 		geometry_msgs::Point msg1;
-	msgx = data.var1; //MAIN_ON
-	msgy = data.var2; //UI_SET_SPEED
-	msgz = data.var3; //CRUISE_CONTROL_STATE
-		cruise_state_pub.publish(msg);
+	msg1.x = data.var1; //MAIN_ON
+	msg1.y = data.var2; //UI_SET_SPEED
+	msg1.z = data.var3; //CRUISE_CONTROL_STATE
+		cruise_state_pub.publish(msg1);
 
 	}
 	else if (MessageID == 552)
 	{
 		data = obj.decode_message (MessageID, Message);
 		std_msgs::Float64 msg1;
-		msg.data = data.var1; //ACCEL_X
-		accel_pub.publish(msg);
+		msg1.data = data.var1; //ACCEL_X
+		accel_pub.publish(msg1);
 
 	}
 }

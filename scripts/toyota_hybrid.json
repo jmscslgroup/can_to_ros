@@ -1,1 +1,0 @@
-{"180": {"vel": [["std_msgs::Float64"], ["SPEED"]]}, "869": {"lead_dist": [["std_msgs::Float64"], ["LEAD_DISTANCE"]], "rel_vel": [["std_msgs::Float64"], ["REL_SPEED"]]}, "384": {"track_a0": [["geometry_msgs::PointStamped"], ["LONG_DIST", "LAT_DIST", "REL_SPEED"]]}, "552": {"accel": [["std_msgs::Float64"], ["ACCEL_X"]]}}
