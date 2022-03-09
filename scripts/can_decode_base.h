@@ -59,6 +59,7 @@ values decode_msgs::decode_message( unsigned int msg_id, std::string msg){
   std::string raw3;
   std::string raw4;
   std::string rawVal;
+  float scaled;
   unsigned long long raw_dec;
   returnedVal.var1=0.0;
   returnedVal.var2=0.0;
