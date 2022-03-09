@@ -170,8 +170,8 @@ def buildCallbacks(toROS):
 
             if 'PointStamped' in rosmsg:
                 ###treat as a pointstamped
-                text+= '\t\tmsg.header.frame_id = "front_laser_link";\n\
-                msg%d.header.stamp = ros::Time(std::stod(Time));\n'%(count)
+                text+= '\t\tmsg%d.header.frame_id = "front_laser_link";\n\
+                msg%d.header.stamp = ros::Time(std::stod(Time));\n'%(count,count)
 
                 text+= '\t\tmsg%d.point.x = data.var1; //%s\n\
                 msg%d.point.y = data.var2; //%s\n\
@@ -193,7 +193,7 @@ def buildCallbacks(toROS):
 
 
 
-            text += '\t\t%s_pub.publish(msg);\n\n'%(rostopic)
+            text += '\t\t%s_pub.publish(msg%d);\n\n'%(rostopic,count)
         text += '\t}\n'
     text += '}\n'
     return text
