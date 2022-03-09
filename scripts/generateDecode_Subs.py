@@ -287,7 +287,7 @@ text += '\n}\n'
 
 #output into C++ file(s)
 #TODO make them the real files (after testing)
-file1 = open('can_decode_test.h', 'w')
+file1 = open('../include/header_package/can_decode_test.h', 'w')
 file2 = open('can_decode_base.h','r')
 file1.writelines(file2.read())
 file2.close()
