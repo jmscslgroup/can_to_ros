@@ -96,7 +96,7 @@ def findSubstring(signal, varNum):
         rawVal_dec = "\tif ((raw%d)[0] == '0'){\n\
         \traw_dec= std::stoul( raw%d, 0, 2 );\n\t}\n\telse {\n\
         \traw_dec = std::stoul(findTwosComplement(raw%d), 0, 2);\n\
-        \traw_dec = \traw_dec * -1.0\n\
+        \traw_dec = \traw_dec * -1.0;\n\
         \t}\n"%(varNum,varNum,varNum)
 
     scale = "\tscaled = (float)raw_dec * %0.6f + %0.6f;\n"%(signal.scale,signal.offset)
