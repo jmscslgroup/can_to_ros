@@ -1,4 +1,3 @@
-import strym as s
 import cantools
 import json
 
@@ -20,13 +19,44 @@ def findDBC(vin_details):
     print('the DBC is set as %s'%(dbcfile))
     return jsonfile, dbcfile
 
+def initializeDBC_Cantools(fileName):
+    db = cantools.database.Database()
+    with open(fileName,'r') as fin:
+        db.add_dbc_string(fin.read())
+    return db
+
+def findMessageInfo(messageNameorNum,db):
+    """This function does text parsing on a dbc file to select the relevant pieces
+    of information.
+
+    It looks first for the kind of message that is desired, which
+    is specified by messageNameorNum. It then looks through db, which is a Database object from cantools
+    that corresponds to the lines of the dbc file. It returns the message, which
+    includes the message attributes, its signals and their attributes as well."""
+
+#Breakdown of a signal: name, start, length, byte_order, is_signed, is_float, scale, offset, minimum, maximum, unit, is_Multiplexer, idk=None ,idk=None , comment
+    if type(messageNameorNum) is str:
+        try:
+            messageInfo = db.get_message_by_name(messageNameorNum) #if string used, get message by name, e.g. 'KINEMATICS'
+        except:
+            print("warning: str addr not in DBC")
+            messageInfo = "not in DBC"
+    elif type(messageNameorNum) is int:
+        try:
+            messageInfo = db.get_message_by_frame_id(messageNameorNum) #if number use, get message by frame id, e.g. 36
+        except:
+            print("warning: int addr not in DBC")
+            messageInfo = "not in DBC"
+
+    return messageInfo
+
 def signalCheck(signal):
     print(signal.start,signal.length,signal.scale, signal.offset, signal.unit, signal.is_signed)
 
 def getSignals(key, dictionary, dbc):
     """Inputting the msgID as key, the dictionary of signals to go into ROS, and the dbc where the
     signal decoding is defined. You get the cantools msg and signals back."""
-    msg = s.findMessageInfo(key,dbc)
+    msg = findMessageInfo(key,dbc)
     signalNames=dictionary[key]
 
     signals = []
@@ -237,7 +267,7 @@ vin_details = json.load(f)
 #find the correct DBC and ROS msg dict based on the vin details
 jsonfile, dbcfile = findDBC(vin_details)
 #load the correct DBC file to decode CAN to ROS
-dbc = s.initializeDBC_Cantools(dbcfile)
+dbc = initializeDBC_Cantools(dbcfile)
 
 # Opening ROS JSON file
 f = open('./'+jsonfile)
