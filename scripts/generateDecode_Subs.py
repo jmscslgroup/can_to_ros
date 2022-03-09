@@ -88,16 +88,16 @@ def findSubstring(signal, varNum):
     #find the bit substring
     varNum+=1
     pos = bitConversion(signal.start)
-    rawVal = "\tstd::string raw = binary.substr(%d,%d); //%s\n"%(pos,pos+signal.length,signal.name)
+    rawVal = "\tstd::string raw%d = binary.substr(%d,%d); //%s\n"%(varNum,pos,pos+signal.length,signal.name)
 
     if not signal.is_signed:
-        rawVal_dec = "\traw_dec = std::stoull(raw, 0, 2);\n"
+        rawVal_dec = "\traw_dec = std::stoull(raw%d, 0, 2);\n"%(varNum)
     else:
-        rawVal_dec = "\tif ((raw)[0] == '0'){\n\
-        \traw_dec= std::stoul( raw, 0, 2 );\n\t}\n\telse {\n\
-        \traw_dec = std::stoul(findTwosComplement(raw), 0, 2);\n\
+        rawVal_dec = "\tif ((raw%d)[0] == '0'){\n\
+        \traw_dec= std::stoul( raw%d, 0, 2 );\n\t}\n\telse {\n\
+        \traw_dec = std::stoul(findTwosComplement(raw%d), 0, 2);\n\
         \traw_dec = \traw_dec * -1.0\n\
-        \t}\n"
+        \t}\n"%(varNum,varNum,varNum)
 
     scale = "\tscaled = (float)raw_dec * %0.6f + %0.6f;\n"%(signal.scale,signal.offset)
 

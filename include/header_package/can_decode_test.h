@@ -17,11 +17,11 @@ typedef struct values_struct
 class decode_msgs{
 public:
 values decode_message( unsigned int msg_id, std::string msg); // decoding CAN messages
-std::string findTwoscomplement(std::string str); // functon to return two's complement
+std::string findTwosComplement(std::string str); // functon to return two's complement
 
 };
 
-std::string decode_msgs::findTwoscomplement(std::string str) {
+std::string decode_msgs::findTwosComplement(std::string str) {
     int n = str.length();
 
     // Traverse the string to get first '1' from
@@ -54,8 +54,12 @@ values decode_msgs::decode_message( unsigned int msg_id, std::string msg){
   values returnedVal;
   unsigned long long int n;
   std::string binary;
-
+  std::string raw;
+  std::string raw2;
+  std::string raw3;
+  std::string raw4;
   std::string rawVal;
+  unsigned long long raw_dec;
   returnedVal.var1=0.0;
   returnedVal.var2=0.0;
   returnedVal.var3=0.0;
