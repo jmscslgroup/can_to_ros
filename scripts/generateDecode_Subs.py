@@ -71,7 +71,7 @@ def decodeBuilder(msg, signals):
     decode = "if (msg_id == %d){\n\
     \tstd::stringstream hex_ss(msg);\n\
     \thex_ss >> std::hex >> n;// making the message hex\n\
-    \tbinary = std::bitset<{%d}>(n).to_string(); // convert hex to binary\n\n"%(msg.frame_id,msg.length*8)
+    \tbinary = std::bitset<%d>(n).to_string(); // convert hex to binary\n\n"%(msg.frame_id,msg.length*8)
 
     #for each signal in the set of signals:
     signalString = ""
