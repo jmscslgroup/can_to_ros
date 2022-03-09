@@ -88,7 +88,7 @@ def findSubstring(signal, varNum):
     #find the bit substring
     varNum+=1
     pos = bitConversion(signal.start)
-    rawVal = "\tstd::string raw%d = binary.substr(%d,%d); //%s\n"%(varNum,pos,pos+signal.length,signal.name)
+    rawVal = "\tstd::string raw%d = binary.substr(%d,%d); //%s\n"%(varNum,pos,signal.length,signal.name)
 
     if not signal.is_signed:
         rawVal_dec = "\traw_dec = std::stoull(raw%d, 0, 2);\n"%(varNum)
