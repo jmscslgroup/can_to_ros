@@ -171,22 +171,22 @@ def buildCallbacks(toROS):
             if 'PointStamped' in rosmsg:
                 ###treat as a pointstamped
                 text+= '\t\tmsg.header.frame_id = "front_laser_link";\n\
-                msg.header.stamp = ros::Time(std::stod(Time));\n'
+                msg%d.header.stamp = ros::Time(std::stod(Time));\n'%(count)
 
-                text+= '\t\tmsg.point.x = data.var1; //%s\n\
-                msg.point.y = data.var2; //%s\n\
-                msg.point.z = data.var3; //%s\n' %(signals[0],signals[1],signals[2])#check to see if this works for radar signals, may need to change the decode_message
+                text+= '\t\tmsg%d.point.x = data.var1; //%s\n\
+                msg%d.point.y = data.var2; //%s\n\
+                msg%d.point.z = data.var3; //%s\n' %(count,signals[0],count,signals[1],count,signals[2])#check to see if this works for radar signals, may need to change the decode_message
 
             elif 'Float64' in rosmsg:
                 ##treat as a float64
 #                 print(canid,signals)
 #                 print(signals in toDecode.get(canid))
-                text += '\t\tmsg.data = data.var%d; //%s\n'%(toDecode.get(canid).index(signals[0])+1,signals[0])
+                text += '\t\tmsg%d.data = data.var%d; //%s\n'%(count,toDecode.get(canid).index(signals[0])+1,signals[0])
             elif 'Point' in rosmsg:
                 ##treat as point
-                var = ['x','y','z']
+                var = ['.x','.y','.z']
                 for i in range(0,len(signals)):
-                    text += '\tmsg%s = data.var%s; //%s\n'%(var[i],i+1,signals[i])
+                    text += '\tmsg%d%s = data.var%s; //%s\n'%(count,var[i],i+1,signals[i])
 
             else:
                 print('this rosmg not accounted for: ' + rosmsg)
