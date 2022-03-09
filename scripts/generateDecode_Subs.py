@@ -283,7 +283,7 @@ text = ''
 for i in toDecode.keys():
     msg, signals = getSignals(i,toDecode,dbc)
     text += decodeBuilder(msg, signals)
-text += '\n}\n'
+text += 'returnedVal;\n}\n'
 
 #output into C++ file(s)
 #TODO make them the real files (after testing)
