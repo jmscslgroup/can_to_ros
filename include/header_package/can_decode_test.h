@@ -59,6 +59,8 @@ values decode_msgs::decode_message( unsigned int msg_id, std::string msg){
   std::string raw3;
   std::string raw4;
   std::string rawVal;
+  float scaled;
+  float conversion;
   unsigned long long raw_dec;
   returnedVal.var1=0.0;
   returnedVal.var2=0.0;
@@ -67,15 +69,15 @@ values decode_msgs::decode_message( unsigned int msg_id, std::string msg){
 if (msg_id == 37){
     	std::stringstream hex_ss(msg);
     	hex_ss >> std::hex >> n;// making the message hex
-    	binary = std::bitset<{64}>(n).to_string(); // convert hex to binary
+    	binary = std::bitset<64>(n).to_string(); // convert hex to binary
 
-	std::string raw = binary.substr(4,16); //STEER_ANGLE
-	if ((raw)[0] == '0'){
-        	raw_dec= std::stoul( raw, 0, 2 );
+	std::string raw1 = binary.substr(4,12); //STEER_ANGLE
+	if ((raw1)[0] == '0'){
+        	raw_dec= std::stoul( raw1, 0, 2 );
 	}
 	else {
-        	raw_dec = std::stoul(findTwosComplement(raw), 0, 2);
-        	raw_dec = 	raw_dec * -1.0
+        	raw_dec = std::stoul(findTwosComplement(raw1), 0, 2);
+        	raw_dec = 	raw_dec * -1.0;
         	}
 	scaled = (float)raw_dec * 1.500000 + 0.000000;
 	returnedVal.var1 = scaled;
@@ -85,10 +87,10 @@ if (msg_id == 37){
 if (msg_id == 180){
     	std::stringstream hex_ss(msg);
     	hex_ss >> std::hex >> n;// making the message hex
-    	binary = std::bitset<{64}>(n).to_string(); // convert hex to binary
+    	binary = std::bitset<64>(n).to_string(); // convert hex to binary
 
-	std::string raw = binary.substr(40,56); //SPEED
-	raw_dec = std::stoull(raw, 0, 2);
+	std::string raw1 = binary.substr(40,16); //SPEED
+	raw_dec = std::stoull(raw1, 0, 2);
 	scaled = (float)raw_dec * 0.010000 + 0.000000;
 	conversion = ceilf((scaled* (10.0/36.0)) * 100) / 100;
 	returnedVal.var1 = conversion;
@@ -98,20 +100,20 @@ if (msg_id == 180){
 if (msg_id == 869){
     	std::stringstream hex_ss(msg);
     	hex_ss >> std::hex >> n;// making the message hex
-    	binary = std::bitset<{56}>(n).to_string(); // convert hex to binary
+    	binary = std::bitset<56>(n).to_string(); // convert hex to binary
 
-	std::string raw = binary.substr(32,40); //LEAD_DISTANCE
-	raw_dec = std::stoull(raw, 0, 2);
+	std::string raw1 = binary.substr(32,8); //LEAD_DISTANCE
+	raw_dec = std::stoull(raw1, 0, 2);
 	scaled = (float)raw_dec * 1.000000 + 0.000000;
 	returnedVal.var1 = scaled;
 
-	std::string raw = binary.substr(40,52); //REL_SPEED
-	if ((raw)[0] == '0'){
-        	raw_dec= std::stoul( raw, 0, 2 );
+	std::string raw2 = binary.substr(40,12); //REL_SPEED
+	if ((raw2)[0] == '0'){
+        	raw_dec= std::stoul( raw2, 0, 2 );
 	}
 	else {
-        	raw_dec = std::stoul(findTwosComplement(raw), 0, 2);
-        	raw_dec = 	raw_dec * -1.0
+        	raw_dec = std::stoul(findTwosComplement(raw2), 0, 2);
+        	raw_dec = 	raw_dec * -1.0;
         	}
 	scaled = (float)raw_dec * 0.001785 + 0.000000;
 	returnedVal.var2 = scaled;
@@ -121,31 +123,31 @@ if (msg_id == 869){
 if (msg_id == 384){
     	std::stringstream hex_ss(msg);
     	hex_ss >> std::hex >> n;// making the message hex
-    	binary = std::bitset<{64}>(n).to_string(); // convert hex to binary
+    	binary = std::bitset<64>(n).to_string(); // convert hex to binary
 
-	std::string raw = binary.substr(8,21); //LONG_DIST
-	raw_dec = std::stoull(raw, 0, 2);
+	std::string raw1 = binary.substr(8,13); //LONG_DIST
+	raw_dec = std::stoull(raw1, 0, 2);
 	scaled = (float)raw_dec * 0.040000 + 0.000000;
 	returnedVal.var1 = scaled;
 
-	std::string raw = binary.substr(24,35); //LAT_DIST
-	if ((raw)[0] == '0'){
-        	raw_dec= std::stoul( raw, 0, 2 );
+	std::string raw2 = binary.substr(24,11); //LAT_DIST
+	if ((raw2)[0] == '0'){
+        	raw_dec= std::stoul( raw2, 0, 2 );
 	}
 	else {
-        	raw_dec = std::stoul(findTwosComplement(raw), 0, 2);
-        	raw_dec = 	raw_dec * -1.0
+        	raw_dec = std::stoul(findTwosComplement(raw2), 0, 2);
+        	raw_dec = 	raw_dec * -1.0;
         	}
 	scaled = (float)raw_dec * 0.040000 + 0.000000;
 	returnedVal.var2 = scaled;
 
-	std::string raw = binary.substr(40,52); //REL_SPEED
-	if ((raw)[0] == '0'){
-        	raw_dec= std::stoul( raw, 0, 2 );
+	std::string raw3 = binary.substr(40,12); //REL_SPEED
+	if ((raw3)[0] == '0'){
+        	raw_dec= std::stoul( raw3, 0, 2 );
 	}
 	else {
-        	raw_dec = std::stoul(findTwosComplement(raw), 0, 2);
-        	raw_dec = 	raw_dec * -1.0
+        	raw_dec = std::stoul(findTwosComplement(raw3), 0, 2);
+        	raw_dec = 	raw_dec * -1.0;
         	}
 	scaled = (float)raw_dec * 0.025000 + 0.000000;
 	returnedVal.var3 = scaled;
@@ -155,31 +157,31 @@ if (msg_id == 384){
 if (msg_id == 385){
     	std::stringstream hex_ss(msg);
     	hex_ss >> std::hex >> n;// making the message hex
-    	binary = std::bitset<{64}>(n).to_string(); // convert hex to binary
+    	binary = std::bitset<64>(n).to_string(); // convert hex to binary
 
-	std::string raw = binary.substr(8,21); //LONG_DIST
-	raw_dec = std::stoull(raw, 0, 2);
+	std::string raw1 = binary.substr(8,13); //LONG_DIST
+	raw_dec = std::stoull(raw1, 0, 2);
 	scaled = (float)raw_dec * 0.040000 + 0.000000;
 	returnedVal.var1 = scaled;
 
-	std::string raw = binary.substr(24,35); //LAT_DIST
-	if ((raw)[0] == '0'){
-        	raw_dec= std::stoul( raw, 0, 2 );
+	std::string raw2 = binary.substr(24,11); //LAT_DIST
+	if ((raw2)[0] == '0'){
+        	raw_dec= std::stoul( raw2, 0, 2 );
 	}
 	else {
-        	raw_dec = std::stoul(findTwosComplement(raw), 0, 2);
-        	raw_dec = 	raw_dec * -1.0
+        	raw_dec = std::stoul(findTwosComplement(raw2), 0, 2);
+        	raw_dec = 	raw_dec * -1.0;
         	}
 	scaled = (float)raw_dec * 0.040000 + 0.000000;
 	returnedVal.var2 = scaled;
 
-	std::string raw = binary.substr(40,52); //REL_SPEED
-	if ((raw)[0] == '0'){
-        	raw_dec= std::stoul( raw, 0, 2 );
+	std::string raw3 = binary.substr(40,12); //REL_SPEED
+	if ((raw3)[0] == '0'){
+        	raw_dec= std::stoul( raw3, 0, 2 );
 	}
 	else {
-        	raw_dec = std::stoul(findTwosComplement(raw), 0, 2);
-        	raw_dec = 	raw_dec * -1.0
+        	raw_dec = std::stoul(findTwosComplement(raw3), 0, 2);
+        	raw_dec = 	raw_dec * -1.0;
         	}
 	scaled = (float)raw_dec * 0.025000 + 0.000000;
 	returnedVal.var3 = scaled;
@@ -189,31 +191,31 @@ if (msg_id == 385){
 if (msg_id == 386){
     	std::stringstream hex_ss(msg);
     	hex_ss >> std::hex >> n;// making the message hex
-    	binary = std::bitset<{64}>(n).to_string(); // convert hex to binary
+    	binary = std::bitset<64>(n).to_string(); // convert hex to binary
 
-	std::string raw = binary.substr(8,21); //LONG_DIST
-	raw_dec = std::stoull(raw, 0, 2);
+	std::string raw1 = binary.substr(8,13); //LONG_DIST
+	raw_dec = std::stoull(raw1, 0, 2);
 	scaled = (float)raw_dec * 0.040000 + 0.000000;
 	returnedVal.var1 = scaled;
 
-	std::string raw = binary.substr(24,35); //LAT_DIST
-	if ((raw)[0] == '0'){
-        	raw_dec= std::stoul( raw, 0, 2 );
+	std::string raw2 = binary.substr(24,11); //LAT_DIST
+	if ((raw2)[0] == '0'){
+        	raw_dec= std::stoul( raw2, 0, 2 );
 	}
 	else {
-        	raw_dec = std::stoul(findTwosComplement(raw), 0, 2);
-        	raw_dec = 	raw_dec * -1.0
+        	raw_dec = std::stoul(findTwosComplement(raw2), 0, 2);
+        	raw_dec = 	raw_dec * -1.0;
         	}
 	scaled = (float)raw_dec * 0.040000 + 0.000000;
 	returnedVal.var2 = scaled;
 
-	std::string raw = binary.substr(40,52); //REL_SPEED
-	if ((raw)[0] == '0'){
-        	raw_dec= std::stoul( raw, 0, 2 );
+	std::string raw3 = binary.substr(40,12); //REL_SPEED
+	if ((raw3)[0] == '0'){
+        	raw_dec= std::stoul( raw3, 0, 2 );
 	}
 	else {
-        	raw_dec = std::stoul(findTwosComplement(raw), 0, 2);
-        	raw_dec = 	raw_dec * -1.0
+        	raw_dec = std::stoul(findTwosComplement(raw3), 0, 2);
+        	raw_dec = 	raw_dec * -1.0;
         	}
 	scaled = (float)raw_dec * 0.025000 + 0.000000;
 	returnedVal.var3 = scaled;
@@ -223,31 +225,31 @@ if (msg_id == 386){
 if (msg_id == 387){
     	std::stringstream hex_ss(msg);
     	hex_ss >> std::hex >> n;// making the message hex
-    	binary = std::bitset<{64}>(n).to_string(); // convert hex to binary
+    	binary = std::bitset<64>(n).to_string(); // convert hex to binary
 
-	std::string raw = binary.substr(8,21); //LONG_DIST
-	raw_dec = std::stoull(raw, 0, 2);
+	std::string raw1 = binary.substr(8,13); //LONG_DIST
+	raw_dec = std::stoull(raw1, 0, 2);
 	scaled = (float)raw_dec * 0.040000 + 0.000000;
 	returnedVal.var1 = scaled;
 
-	std::string raw = binary.substr(24,35); //LAT_DIST
-	if ((raw)[0] == '0'){
-        	raw_dec= std::stoul( raw, 0, 2 );
+	std::string raw2 = binary.substr(24,11); //LAT_DIST
+	if ((raw2)[0] == '0'){
+        	raw_dec= std::stoul( raw2, 0, 2 );
 	}
 	else {
-        	raw_dec = std::stoul(findTwosComplement(raw), 0, 2);
-        	raw_dec = 	raw_dec * -1.0
+        	raw_dec = std::stoul(findTwosComplement(raw2), 0, 2);
+        	raw_dec = 	raw_dec * -1.0;
         	}
 	scaled = (float)raw_dec * 0.040000 + 0.000000;
 	returnedVal.var2 = scaled;
 
-	std::string raw = binary.substr(40,52); //REL_SPEED
-	if ((raw)[0] == '0'){
-        	raw_dec= std::stoul( raw, 0, 2 );
+	std::string raw3 = binary.substr(40,12); //REL_SPEED
+	if ((raw3)[0] == '0'){
+        	raw_dec= std::stoul( raw3, 0, 2 );
 	}
 	else {
-        	raw_dec = std::stoul(findTwosComplement(raw), 0, 2);
-        	raw_dec = 	raw_dec * -1.0
+        	raw_dec = std::stoul(findTwosComplement(raw3), 0, 2);
+        	raw_dec = 	raw_dec * -1.0;
         	}
 	scaled = (float)raw_dec * 0.025000 + 0.000000;
 	returnedVal.var3 = scaled;
@@ -257,31 +259,31 @@ if (msg_id == 387){
 if (msg_id == 388){
     	std::stringstream hex_ss(msg);
     	hex_ss >> std::hex >> n;// making the message hex
-    	binary = std::bitset<{64}>(n).to_string(); // convert hex to binary
+    	binary = std::bitset<64>(n).to_string(); // convert hex to binary
 
-	std::string raw = binary.substr(8,21); //LONG_DIST
-	raw_dec = std::stoull(raw, 0, 2);
+	std::string raw1 = binary.substr(8,13); //LONG_DIST
+	raw_dec = std::stoull(raw1, 0, 2);
 	scaled = (float)raw_dec * 0.040000 + 0.000000;
 	returnedVal.var1 = scaled;
 
-	std::string raw = binary.substr(24,35); //LAT_DIST
-	if ((raw)[0] == '0'){
-        	raw_dec= std::stoul( raw, 0, 2 );
+	std::string raw2 = binary.substr(24,11); //LAT_DIST
+	if ((raw2)[0] == '0'){
+        	raw_dec= std::stoul( raw2, 0, 2 );
 	}
 	else {
-        	raw_dec = std::stoul(findTwosComplement(raw), 0, 2);
-        	raw_dec = 	raw_dec * -1.0
+        	raw_dec = std::stoul(findTwosComplement(raw2), 0, 2);
+        	raw_dec = 	raw_dec * -1.0;
         	}
 	scaled = (float)raw_dec * 0.040000 + 0.000000;
 	returnedVal.var2 = scaled;
 
-	std::string raw = binary.substr(40,52); //REL_SPEED
-	if ((raw)[0] == '0'){
-        	raw_dec= std::stoul( raw, 0, 2 );
+	std::string raw3 = binary.substr(40,12); //REL_SPEED
+	if ((raw3)[0] == '0'){
+        	raw_dec= std::stoul( raw3, 0, 2 );
 	}
 	else {
-        	raw_dec = std::stoul(findTwosComplement(raw), 0, 2);
-        	raw_dec = 	raw_dec * -1.0
+        	raw_dec = std::stoul(findTwosComplement(raw3), 0, 2);
+        	raw_dec = 	raw_dec * -1.0;
         	}
 	scaled = (float)raw_dec * 0.025000 + 0.000000;
 	returnedVal.var3 = scaled;
@@ -291,31 +293,31 @@ if (msg_id == 388){
 if (msg_id == 389){
     	std::stringstream hex_ss(msg);
     	hex_ss >> std::hex >> n;// making the message hex
-    	binary = std::bitset<{64}>(n).to_string(); // convert hex to binary
+    	binary = std::bitset<64>(n).to_string(); // convert hex to binary
 
-	std::string raw = binary.substr(8,21); //LONG_DIST
-	raw_dec = std::stoull(raw, 0, 2);
+	std::string raw1 = binary.substr(8,13); //LONG_DIST
+	raw_dec = std::stoull(raw1, 0, 2);
 	scaled = (float)raw_dec * 0.040000 + 0.000000;
 	returnedVal.var1 = scaled;
 
-	std::string raw = binary.substr(24,35); //LAT_DIST
-	if ((raw)[0] == '0'){
-        	raw_dec= std::stoul( raw, 0, 2 );
+	std::string raw2 = binary.substr(24,11); //LAT_DIST
+	if ((raw2)[0] == '0'){
+        	raw_dec= std::stoul( raw2, 0, 2 );
 	}
 	else {
-        	raw_dec = std::stoul(findTwosComplement(raw), 0, 2);
-        	raw_dec = 	raw_dec * -1.0
+        	raw_dec = std::stoul(findTwosComplement(raw2), 0, 2);
+        	raw_dec = 	raw_dec * -1.0;
         	}
 	scaled = (float)raw_dec * 0.040000 + 0.000000;
 	returnedVal.var2 = scaled;
 
-	std::string raw = binary.substr(40,52); //REL_SPEED
-	if ((raw)[0] == '0'){
-        	raw_dec= std::stoul( raw, 0, 2 );
+	std::string raw3 = binary.substr(40,12); //REL_SPEED
+	if ((raw3)[0] == '0'){
+        	raw_dec= std::stoul( raw3, 0, 2 );
 	}
 	else {
-        	raw_dec = std::stoul(findTwosComplement(raw), 0, 2);
-        	raw_dec = 	raw_dec * -1.0
+        	raw_dec = std::stoul(findTwosComplement(raw3), 0, 2);
+        	raw_dec = 	raw_dec * -1.0;
         	}
 	scaled = (float)raw_dec * 0.025000 + 0.000000;
 	returnedVal.var3 = scaled;
@@ -325,31 +327,31 @@ if (msg_id == 389){
 if (msg_id == 390){
     	std::stringstream hex_ss(msg);
     	hex_ss >> std::hex >> n;// making the message hex
-    	binary = std::bitset<{64}>(n).to_string(); // convert hex to binary
+    	binary = std::bitset<64>(n).to_string(); // convert hex to binary
 
-	std::string raw = binary.substr(8,21); //LONG_DIST
-	raw_dec = std::stoull(raw, 0, 2);
+	std::string raw1 = binary.substr(8,13); //LONG_DIST
+	raw_dec = std::stoull(raw1, 0, 2);
 	scaled = (float)raw_dec * 0.040000 + 0.000000;
 	returnedVal.var1 = scaled;
 
-	std::string raw = binary.substr(24,35); //LAT_DIST
-	if ((raw)[0] == '0'){
-        	raw_dec= std::stoul( raw, 0, 2 );
+	std::string raw2 = binary.substr(24,11); //LAT_DIST
+	if ((raw2)[0] == '0'){
+        	raw_dec= std::stoul( raw2, 0, 2 );
 	}
 	else {
-        	raw_dec = std::stoul(findTwosComplement(raw), 0, 2);
-        	raw_dec = 	raw_dec * -1.0
+        	raw_dec = std::stoul(findTwosComplement(raw2), 0, 2);
+        	raw_dec = 	raw_dec * -1.0;
         	}
 	scaled = (float)raw_dec * 0.040000 + 0.000000;
 	returnedVal.var2 = scaled;
 
-	std::string raw = binary.substr(40,52); //REL_SPEED
-	if ((raw)[0] == '0'){
-        	raw_dec= std::stoul( raw, 0, 2 );
+	std::string raw3 = binary.substr(40,12); //REL_SPEED
+	if ((raw3)[0] == '0'){
+        	raw_dec= std::stoul( raw3, 0, 2 );
 	}
 	else {
-        	raw_dec = std::stoul(findTwosComplement(raw), 0, 2);
-        	raw_dec = 	raw_dec * -1.0
+        	raw_dec = std::stoul(findTwosComplement(raw3), 0, 2);
+        	raw_dec = 	raw_dec * -1.0;
         	}
 	scaled = (float)raw_dec * 0.025000 + 0.000000;
 	returnedVal.var3 = scaled;
@@ -359,31 +361,31 @@ if (msg_id == 390){
 if (msg_id == 391){
     	std::stringstream hex_ss(msg);
     	hex_ss >> std::hex >> n;// making the message hex
-    	binary = std::bitset<{64}>(n).to_string(); // convert hex to binary
+    	binary = std::bitset<64>(n).to_string(); // convert hex to binary
 
-	std::string raw = binary.substr(8,21); //LONG_DIST
-	raw_dec = std::stoull(raw, 0, 2);
+	std::string raw1 = binary.substr(8,13); //LONG_DIST
+	raw_dec = std::stoull(raw1, 0, 2);
 	scaled = (float)raw_dec * 0.040000 + 0.000000;
 	returnedVal.var1 = scaled;
 
-	std::string raw = binary.substr(24,35); //LAT_DIST
-	if ((raw)[0] == '0'){
-        	raw_dec= std::stoul( raw, 0, 2 );
+	std::string raw2 = binary.substr(24,11); //LAT_DIST
+	if ((raw2)[0] == '0'){
+        	raw_dec= std::stoul( raw2, 0, 2 );
 	}
 	else {
-        	raw_dec = std::stoul(findTwosComplement(raw), 0, 2);
-        	raw_dec = 	raw_dec * -1.0
+        	raw_dec = std::stoul(findTwosComplement(raw2), 0, 2);
+        	raw_dec = 	raw_dec * -1.0;
         	}
 	scaled = (float)raw_dec * 0.040000 + 0.000000;
 	returnedVal.var2 = scaled;
 
-	std::string raw = binary.substr(40,52); //REL_SPEED
-	if ((raw)[0] == '0'){
-        	raw_dec= std::stoul( raw, 0, 2 );
+	std::string raw3 = binary.substr(40,12); //REL_SPEED
+	if ((raw3)[0] == '0'){
+        	raw_dec= std::stoul( raw3, 0, 2 );
 	}
 	else {
-        	raw_dec = std::stoul(findTwosComplement(raw), 0, 2);
-        	raw_dec = 	raw_dec * -1.0
+        	raw_dec = std::stoul(findTwosComplement(raw3), 0, 2);
+        	raw_dec = 	raw_dec * -1.0;
         	}
 	scaled = (float)raw_dec * 0.025000 + 0.000000;
 	returnedVal.var3 = scaled;
@@ -393,31 +395,31 @@ if (msg_id == 391){
 if (msg_id == 392){
     	std::stringstream hex_ss(msg);
     	hex_ss >> std::hex >> n;// making the message hex
-    	binary = std::bitset<{64}>(n).to_string(); // convert hex to binary
+    	binary = std::bitset<64>(n).to_string(); // convert hex to binary
 
-	std::string raw = binary.substr(8,21); //LONG_DIST
-	raw_dec = std::stoull(raw, 0, 2);
+	std::string raw1 = binary.substr(8,13); //LONG_DIST
+	raw_dec = std::stoull(raw1, 0, 2);
 	scaled = (float)raw_dec * 0.040000 + 0.000000;
 	returnedVal.var1 = scaled;
 
-	std::string raw = binary.substr(24,35); //LAT_DIST
-	if ((raw)[0] == '0'){
-        	raw_dec= std::stoul( raw, 0, 2 );
+	std::string raw2 = binary.substr(24,11); //LAT_DIST
+	if ((raw2)[0] == '0'){
+        	raw_dec= std::stoul( raw2, 0, 2 );
 	}
 	else {
-        	raw_dec = std::stoul(findTwosComplement(raw), 0, 2);
-        	raw_dec = 	raw_dec * -1.0
+        	raw_dec = std::stoul(findTwosComplement(raw2), 0, 2);
+        	raw_dec = 	raw_dec * -1.0;
         	}
 	scaled = (float)raw_dec * 0.040000 + 0.000000;
 	returnedVal.var2 = scaled;
 
-	std::string raw = binary.substr(40,52); //REL_SPEED
-	if ((raw)[0] == '0'){
-        	raw_dec= std::stoul( raw, 0, 2 );
+	std::string raw3 = binary.substr(40,12); //REL_SPEED
+	if ((raw3)[0] == '0'){
+        	raw_dec= std::stoul( raw3, 0, 2 );
 	}
 	else {
-        	raw_dec = std::stoul(findTwosComplement(raw), 0, 2);
-        	raw_dec = 	raw_dec * -1.0
+        	raw_dec = std::stoul(findTwosComplement(raw3), 0, 2);
+        	raw_dec = 	raw_dec * -1.0;
         	}
 	scaled = (float)raw_dec * 0.025000 + 0.000000;
 	returnedVal.var3 = scaled;
@@ -427,31 +429,31 @@ if (msg_id == 392){
 if (msg_id == 393){
     	std::stringstream hex_ss(msg);
     	hex_ss >> std::hex >> n;// making the message hex
-    	binary = std::bitset<{64}>(n).to_string(); // convert hex to binary
+    	binary = std::bitset<64>(n).to_string(); // convert hex to binary
 
-	std::string raw = binary.substr(8,21); //LONG_DIST
-	raw_dec = std::stoull(raw, 0, 2);
+	std::string raw1 = binary.substr(8,13); //LONG_DIST
+	raw_dec = std::stoull(raw1, 0, 2);
 	scaled = (float)raw_dec * 0.040000 + 0.000000;
 	returnedVal.var1 = scaled;
 
-	std::string raw = binary.substr(24,35); //LAT_DIST
-	if ((raw)[0] == '0'){
-        	raw_dec= std::stoul( raw, 0, 2 );
+	std::string raw2 = binary.substr(24,11); //LAT_DIST
+	if ((raw2)[0] == '0'){
+        	raw_dec= std::stoul( raw2, 0, 2 );
 	}
 	else {
-        	raw_dec = std::stoul(findTwosComplement(raw), 0, 2);
-        	raw_dec = 	raw_dec * -1.0
+        	raw_dec = std::stoul(findTwosComplement(raw2), 0, 2);
+        	raw_dec = 	raw_dec * -1.0;
         	}
 	scaled = (float)raw_dec * 0.040000 + 0.000000;
 	returnedVal.var2 = scaled;
 
-	std::string raw = binary.substr(40,52); //REL_SPEED
-	if ((raw)[0] == '0'){
-        	raw_dec= std::stoul( raw, 0, 2 );
+	std::string raw3 = binary.substr(40,12); //REL_SPEED
+	if ((raw3)[0] == '0'){
+        	raw_dec= std::stoul( raw3, 0, 2 );
 	}
 	else {
-        	raw_dec = std::stoul(findTwosComplement(raw), 0, 2);
-        	raw_dec = 	raw_dec * -1.0
+        	raw_dec = std::stoul(findTwosComplement(raw3), 0, 2);
+        	raw_dec = 	raw_dec * -1.0;
         	}
 	scaled = (float)raw_dec * 0.025000 + 0.000000;
 	returnedVal.var3 = scaled;
@@ -461,31 +463,31 @@ if (msg_id == 393){
 if (msg_id == 394){
     	std::stringstream hex_ss(msg);
     	hex_ss >> std::hex >> n;// making the message hex
-    	binary = std::bitset<{64}>(n).to_string(); // convert hex to binary
+    	binary = std::bitset<64>(n).to_string(); // convert hex to binary
 
-	std::string raw = binary.substr(8,21); //LONG_DIST
-	raw_dec = std::stoull(raw, 0, 2);
+	std::string raw1 = binary.substr(8,13); //LONG_DIST
+	raw_dec = std::stoull(raw1, 0, 2);
 	scaled = (float)raw_dec * 0.040000 + 0.000000;
 	returnedVal.var1 = scaled;
 
-	std::string raw = binary.substr(24,35); //LAT_DIST
-	if ((raw)[0] == '0'){
-        	raw_dec= std::stoul( raw, 0, 2 );
+	std::string raw2 = binary.substr(24,11); //LAT_DIST
+	if ((raw2)[0] == '0'){
+        	raw_dec= std::stoul( raw2, 0, 2 );
 	}
 	else {
-        	raw_dec = std::stoul(findTwosComplement(raw), 0, 2);
-        	raw_dec = 	raw_dec * -1.0
+        	raw_dec = std::stoul(findTwosComplement(raw2), 0, 2);
+        	raw_dec = 	raw_dec * -1.0;
         	}
 	scaled = (float)raw_dec * 0.040000 + 0.000000;
 	returnedVal.var2 = scaled;
 
-	std::string raw = binary.substr(40,52); //REL_SPEED
-	if ((raw)[0] == '0'){
-        	raw_dec= std::stoul( raw, 0, 2 );
+	std::string raw3 = binary.substr(40,12); //REL_SPEED
+	if ((raw3)[0] == '0'){
+        	raw_dec= std::stoul( raw3, 0, 2 );
 	}
 	else {
-        	raw_dec = std::stoul(findTwosComplement(raw), 0, 2);
-        	raw_dec = 	raw_dec * -1.0
+        	raw_dec = std::stoul(findTwosComplement(raw3), 0, 2);
+        	raw_dec = 	raw_dec * -1.0;
         	}
 	scaled = (float)raw_dec * 0.025000 + 0.000000;
 	returnedVal.var3 = scaled;
@@ -495,31 +497,31 @@ if (msg_id == 394){
 if (msg_id == 395){
     	std::stringstream hex_ss(msg);
     	hex_ss >> std::hex >> n;// making the message hex
-    	binary = std::bitset<{64}>(n).to_string(); // convert hex to binary
+    	binary = std::bitset<64>(n).to_string(); // convert hex to binary
 
-	std::string raw = binary.substr(8,21); //LONG_DIST
-	raw_dec = std::stoull(raw, 0, 2);
+	std::string raw1 = binary.substr(8,13); //LONG_DIST
+	raw_dec = std::stoull(raw1, 0, 2);
 	scaled = (float)raw_dec * 0.040000 + 0.000000;
 	returnedVal.var1 = scaled;
 
-	std::string raw = binary.substr(24,35); //LAT_DIST
-	if ((raw)[0] == '0'){
-        	raw_dec= std::stoul( raw, 0, 2 );
+	std::string raw2 = binary.substr(24,11); //LAT_DIST
+	if ((raw2)[0] == '0'){
+        	raw_dec= std::stoul( raw2, 0, 2 );
 	}
 	else {
-        	raw_dec = std::stoul(findTwosComplement(raw), 0, 2);
-        	raw_dec = 	raw_dec * -1.0
+        	raw_dec = std::stoul(findTwosComplement(raw2), 0, 2);
+        	raw_dec = 	raw_dec * -1.0;
         	}
 	scaled = (float)raw_dec * 0.040000 + 0.000000;
 	returnedVal.var2 = scaled;
 
-	std::string raw = binary.substr(40,52); //REL_SPEED
-	if ((raw)[0] == '0'){
-        	raw_dec= std::stoul( raw, 0, 2 );
+	std::string raw3 = binary.substr(40,12); //REL_SPEED
+	if ((raw3)[0] == '0'){
+        	raw_dec= std::stoul( raw3, 0, 2 );
 	}
 	else {
-        	raw_dec = std::stoul(findTwosComplement(raw), 0, 2);
-        	raw_dec = 	raw_dec * -1.0
+        	raw_dec = std::stoul(findTwosComplement(raw3), 0, 2);
+        	raw_dec = 	raw_dec * -1.0;
         	}
 	scaled = (float)raw_dec * 0.025000 + 0.000000;
 	returnedVal.var3 = scaled;
@@ -529,31 +531,31 @@ if (msg_id == 395){
 if (msg_id == 396){
     	std::stringstream hex_ss(msg);
     	hex_ss >> std::hex >> n;// making the message hex
-    	binary = std::bitset<{64}>(n).to_string(); // convert hex to binary
+    	binary = std::bitset<64>(n).to_string(); // convert hex to binary
 
-	std::string raw = binary.substr(8,21); //LONG_DIST
-	raw_dec = std::stoull(raw, 0, 2);
+	std::string raw1 = binary.substr(8,13); //LONG_DIST
+	raw_dec = std::stoull(raw1, 0, 2);
 	scaled = (float)raw_dec * 0.040000 + 0.000000;
 	returnedVal.var1 = scaled;
 
-	std::string raw = binary.substr(24,35); //LAT_DIST
-	if ((raw)[0] == '0'){
-        	raw_dec= std::stoul( raw, 0, 2 );
+	std::string raw2 = binary.substr(24,11); //LAT_DIST
+	if ((raw2)[0] == '0'){
+        	raw_dec= std::stoul( raw2, 0, 2 );
 	}
 	else {
-        	raw_dec = std::stoul(findTwosComplement(raw), 0, 2);
-        	raw_dec = 	raw_dec * -1.0
+        	raw_dec = std::stoul(findTwosComplement(raw2), 0, 2);
+        	raw_dec = 	raw_dec * -1.0;
         	}
 	scaled = (float)raw_dec * 0.040000 + 0.000000;
 	returnedVal.var2 = scaled;
 
-	std::string raw = binary.substr(40,52); //REL_SPEED
-	if ((raw)[0] == '0'){
-        	raw_dec= std::stoul( raw, 0, 2 );
+	std::string raw3 = binary.substr(40,12); //REL_SPEED
+	if ((raw3)[0] == '0'){
+        	raw_dec= std::stoul( raw3, 0, 2 );
 	}
 	else {
-        	raw_dec = std::stoul(findTwosComplement(raw), 0, 2);
-        	raw_dec = 	raw_dec * -1.0
+        	raw_dec = std::stoul(findTwosComplement(raw3), 0, 2);
+        	raw_dec = 	raw_dec * -1.0;
         	}
 	scaled = (float)raw_dec * 0.025000 + 0.000000;
 	returnedVal.var3 = scaled;
@@ -563,31 +565,31 @@ if (msg_id == 396){
 if (msg_id == 397){
     	std::stringstream hex_ss(msg);
     	hex_ss >> std::hex >> n;// making the message hex
-    	binary = std::bitset<{64}>(n).to_string(); // convert hex to binary
+    	binary = std::bitset<64>(n).to_string(); // convert hex to binary
 
-	std::string raw = binary.substr(8,21); //LONG_DIST
-	raw_dec = std::stoull(raw, 0, 2);
+	std::string raw1 = binary.substr(8,13); //LONG_DIST
+	raw_dec = std::stoull(raw1, 0, 2);
 	scaled = (float)raw_dec * 0.040000 + 0.000000;
 	returnedVal.var1 = scaled;
 
-	std::string raw = binary.substr(24,35); //LAT_DIST
-	if ((raw)[0] == '0'){
-        	raw_dec= std::stoul( raw, 0, 2 );
+	std::string raw2 = binary.substr(24,11); //LAT_DIST
+	if ((raw2)[0] == '0'){
+        	raw_dec= std::stoul( raw2, 0, 2 );
 	}
 	else {
-        	raw_dec = std::stoul(findTwosComplement(raw), 0, 2);
-        	raw_dec = 	raw_dec * -1.0
+        	raw_dec = std::stoul(findTwosComplement(raw2), 0, 2);
+        	raw_dec = 	raw_dec * -1.0;
         	}
 	scaled = (float)raw_dec * 0.040000 + 0.000000;
 	returnedVal.var2 = scaled;
 
-	std::string raw = binary.substr(40,52); //REL_SPEED
-	if ((raw)[0] == '0'){
-        	raw_dec= std::stoul( raw, 0, 2 );
+	std::string raw3 = binary.substr(40,12); //REL_SPEED
+	if ((raw3)[0] == '0'){
+        	raw_dec= std::stoul( raw3, 0, 2 );
 	}
 	else {
-        	raw_dec = std::stoul(findTwosComplement(raw), 0, 2);
-        	raw_dec = 	raw_dec * -1.0
+        	raw_dec = std::stoul(findTwosComplement(raw3), 0, 2);
+        	raw_dec = 	raw_dec * -1.0;
         	}
 	scaled = (float)raw_dec * 0.025000 + 0.000000;
 	returnedVal.var3 = scaled;
@@ -597,31 +599,31 @@ if (msg_id == 397){
 if (msg_id == 398){
     	std::stringstream hex_ss(msg);
     	hex_ss >> std::hex >> n;// making the message hex
-    	binary = std::bitset<{64}>(n).to_string(); // convert hex to binary
+    	binary = std::bitset<64>(n).to_string(); // convert hex to binary
 
-	std::string raw = binary.substr(8,21); //LONG_DIST
-	raw_dec = std::stoull(raw, 0, 2);
+	std::string raw1 = binary.substr(8,13); //LONG_DIST
+	raw_dec = std::stoull(raw1, 0, 2);
 	scaled = (float)raw_dec * 0.040000 + 0.000000;
 	returnedVal.var1 = scaled;
 
-	std::string raw = binary.substr(24,35); //LAT_DIST
-	if ((raw)[0] == '0'){
-        	raw_dec= std::stoul( raw, 0, 2 );
+	std::string raw2 = binary.substr(24,11); //LAT_DIST
+	if ((raw2)[0] == '0'){
+        	raw_dec= std::stoul( raw2, 0, 2 );
 	}
 	else {
-        	raw_dec = std::stoul(findTwosComplement(raw), 0, 2);
-        	raw_dec = 	raw_dec * -1.0
+        	raw_dec = std::stoul(findTwosComplement(raw2), 0, 2);
+        	raw_dec = 	raw_dec * -1.0;
         	}
 	scaled = (float)raw_dec * 0.040000 + 0.000000;
 	returnedVal.var2 = scaled;
 
-	std::string raw = binary.substr(40,52); //REL_SPEED
-	if ((raw)[0] == '0'){
-        	raw_dec= std::stoul( raw, 0, 2 );
+	std::string raw3 = binary.substr(40,12); //REL_SPEED
+	if ((raw3)[0] == '0'){
+        	raw_dec= std::stoul( raw3, 0, 2 );
 	}
 	else {
-        	raw_dec = std::stoul(findTwosComplement(raw), 0, 2);
-        	raw_dec = 	raw_dec * -1.0
+        	raw_dec = std::stoul(findTwosComplement(raw3), 0, 2);
+        	raw_dec = 	raw_dec * -1.0;
         	}
 	scaled = (float)raw_dec * 0.025000 + 0.000000;
 	returnedVal.var3 = scaled;
@@ -631,31 +633,31 @@ if (msg_id == 398){
 if (msg_id == 399){
     	std::stringstream hex_ss(msg);
     	hex_ss >> std::hex >> n;// making the message hex
-    	binary = std::bitset<{64}>(n).to_string(); // convert hex to binary
+    	binary = std::bitset<64>(n).to_string(); // convert hex to binary
 
-	std::string raw = binary.substr(8,21); //LONG_DIST
-	raw_dec = std::stoull(raw, 0, 2);
+	std::string raw1 = binary.substr(8,13); //LONG_DIST
+	raw_dec = std::stoull(raw1, 0, 2);
 	scaled = (float)raw_dec * 0.040000 + 0.000000;
 	returnedVal.var1 = scaled;
 
-	std::string raw = binary.substr(24,35); //LAT_DIST
-	if ((raw)[0] == '0'){
-        	raw_dec= std::stoul( raw, 0, 2 );
+	std::string raw2 = binary.substr(24,11); //LAT_DIST
+	if ((raw2)[0] == '0'){
+        	raw_dec= std::stoul( raw2, 0, 2 );
 	}
 	else {
-        	raw_dec = std::stoul(findTwosComplement(raw), 0, 2);
-        	raw_dec = 	raw_dec * -1.0
+        	raw_dec = std::stoul(findTwosComplement(raw2), 0, 2);
+        	raw_dec = 	raw_dec * -1.0;
         	}
 	scaled = (float)raw_dec * 0.040000 + 0.000000;
 	returnedVal.var2 = scaled;
 
-	std::string raw = binary.substr(40,52); //REL_SPEED
-	if ((raw)[0] == '0'){
-        	raw_dec= std::stoul( raw, 0, 2 );
+	std::string raw3 = binary.substr(40,12); //REL_SPEED
+	if ((raw3)[0] == '0'){
+        	raw_dec= std::stoul( raw3, 0, 2 );
 	}
 	else {
-        	raw_dec = std::stoul(findTwosComplement(raw), 0, 2);
-        	raw_dec = 	raw_dec * -1.0
+        	raw_dec = std::stoul(findTwosComplement(raw3), 0, 2);
+        	raw_dec = 	raw_dec * -1.0;
         	}
 	scaled = (float)raw_dec * 0.025000 + 0.000000;
 	returnedVal.var3 = scaled;
@@ -665,10 +667,10 @@ if (msg_id == 399){
 if (msg_id == 1570){
     	std::stringstream hex_ss(msg);
     	hex_ss >> std::hex >> n;// making the message hex
-    	binary = std::bitset<{64}>(n).to_string(); // convert hex to binary
+    	binary = std::bitset<64>(n).to_string(); // convert hex to binary
 
-	std::string raw = binary.substr(25,26); //HIGH_BEAMS_ON
-	raw_dec = std::stoull(raw, 0, 2);
+	std::string raw1 = binary.substr(25,1); //HIGH_BEAMS_ON
+	raw_dec = std::stoull(raw1, 0, 2);
 	scaled = (float)raw_dec * 1.000000 + 0.000000;
 	returnedVal.var1 = scaled;
 
@@ -677,15 +679,15 @@ if (msg_id == 1570){
 if (msg_id == 467){
     	std::stringstream hex_ss(msg);
     	hex_ss >> std::hex >> n;// making the message hex
-    	binary = std::bitset<{64}>(n).to_string(); // convert hex to binary
+    	binary = std::bitset<64>(n).to_string(); // convert hex to binary
 
-	std::string raw = binary.substr(8,9); //MAIN_ON
-	raw_dec = std::stoull(raw, 0, 2);
+	std::string raw1 = binary.substr(8,1); //MAIN_ON
+	raw_dec = std::stoull(raw1, 0, 2);
 	scaled = (float)raw_dec * 1.000000 + 0.000000;
 	returnedVal.var1 = scaled;
 
-	std::string raw = binary.substr(16,24); //SET_SPEED
-	raw_dec = std::stoull(raw, 0, 2);
+	std::string raw2 = binary.substr(16,8); //SET_SPEED
+	raw_dec = std::stoull(raw2, 0, 2);
 	scaled = (float)raw_dec * 1.000000 + 0.000000;
 	conversion = ceilf((scaled* (10.0/36.0)) * 100) / 100;
 	returnedVal.var2 = conversion;
@@ -695,20 +697,20 @@ if (msg_id == 467){
 if (msg_id == 921){
     	std::stringstream hex_ss(msg);
     	hex_ss >> std::hex >> n;// making the message hex
-    	binary = std::bitset<{64}>(n).to_string(); // convert hex to binary
+    	binary = std::bitset<64>(n).to_string(); // convert hex to binary
 
-	std::string raw = binary.substr(3,4); //MAIN_ON
-	raw_dec = std::stoull(raw, 0, 2);
+	std::string raw1 = binary.substr(3,1); //MAIN_ON
+	raw_dec = std::stoull(raw1, 0, 2);
 	scaled = (float)raw_dec * 1.000000 + 0.000000;
 	returnedVal.var1 = scaled;
 
-	std::string raw = binary.substr(24,32); //UI_SET_SPEED
-	raw_dec = std::stoull(raw, 0, 2);
+	std::string raw2 = binary.substr(24,8); //UI_SET_SPEED
+	raw_dec = std::stoull(raw2, 0, 2);
 	scaled = (float)raw_dec * 1.000000 + 0.000000;
 	returnedVal.var2 = scaled;
 
-	std::string raw = binary.substr(12,16); //CRUISE_CONTROL_STATE
-	raw_dec = std::stoull(raw, 0, 2);
+	std::string raw3 = binary.substr(12,4); //CRUISE_CONTROL_STATE
+	raw_dec = std::stoull(raw3, 0, 2);
 	scaled = (float)raw_dec * 1.000000 + 0.000000;
 	returnedVal.var3 = scaled;
 
@@ -717,20 +719,20 @@ if (msg_id == 921){
 if (msg_id == 552){
     	std::stringstream hex_ss(msg);
     	hex_ss >> std::hex >> n;// making the message hex
-    	binary = std::bitset<{64}>(n).to_string(); // convert hex to binary
+    	binary = std::bitset<64>(n).to_string(); // convert hex to binary
 
-	std::string raw = binary.substr(1,16); //ACCEL_X
-	if ((raw)[0] == '0'){
-        	raw_dec= std::stoul( raw, 0, 2 );
+	std::string raw1 = binary.substr(1,15); //ACCEL_X
+	if ((raw1)[0] == '0'){
+        	raw_dec= std::stoul( raw1, 0, 2 );
 	}
 	else {
-        	raw_dec = std::stoul(findTwosComplement(raw), 0, 2);
-        	raw_dec = 	raw_dec * -1.0
+        	raw_dec = std::stoul(findTwosComplement(raw1), 0, 2);
+        	raw_dec = 	raw_dec * -1.0;
         	}
 	scaled = (float)raw_dec * 0.001000 + 0.000000;
 	returnedVal.var1 = scaled;
 
 	return returnedVal;
 }
-
+	return returnedVal;
 }
