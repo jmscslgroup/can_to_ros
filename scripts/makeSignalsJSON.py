@@ -1,7 +1,7 @@
 import json
 
 #toyota_rav4 list of ROS pubs
-toyota_rav4 = {37:{'steering_angle':['std_msgs::Float64'],['STEER_ANGLE']]},
+toyota_rav4 = {37:{'steering_angle':[['std_msgs::Float64'],['STEER_ANGLE']]},
          180:{'vel':[['std_msgs::Float64'],['SPEED']]},
          869:{'lead_dist': [['std_msgs::Float64'],['LEAD_DISTANCE']] ,'rel_vel':[['std_msgs::Float64'],['REL_SPEED']]},
          384:{'track_a0':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},

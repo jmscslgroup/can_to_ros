@@ -7,17 +7,17 @@ def findDBC(vin_details):
     if vin_details['Make'] == 'TOYOTA':
         if vin_details['Model'] == 'RAV4':
             jsonfile = 'toyota_rav4.json'
-            if vin_details['ModelYear'] >= 2021:
+            if int(vin_details['ModelYear']) >= 2021:
                 #TODO: figure out where the dbc files will be
-                dbcfile = '../../strym/strym/dbc/toyota_rav4_2021.dbc'
-            elif vin_details['ModelYear'] == 2020:
-                dbcfile = '../../strym/strym/dbc/toyota_rav4_2020.dbc'
-            elif vin_details['ModelYear'] == 2019:
-                dbcfile = '../../strym/strym/dbc/toyota_rav4_2019.dbc'
+                dbcfile = '/home/circles/strym/strym/dbc/toyota_rav4_2021.dbc'
+            elif int(vin_details['ModelYear']) == 2020:
+                dbcfile = '/home/circles/strym/strym/dbc/toyota_rav4_2020.dbc'
+            elif int(vin_details['ModelYear']) == 2019:
+                dbcfile = '/home/circles/strym/strym/dbc/toyota_rav4_2019.dbc'
             if 'HV' in vin_details['Trim']:
-                dbcfile = '../../strym/strym/dbc/toyota_rav4_hybrid.dbc'
+                dbcfile = '/home/circles/strym/strym/dbc/toyota_rav4_hybrid.dbc'
     #space here to add in info for honda and nissan vehicles
-    print('the DBC is set as %s')%(dbcfile)
+    print('the DBC is set as %s'%(dbcfile))
     return jsonfile, dbcfile
 
 def signalCheck(signal):
@@ -154,9 +154,9 @@ def buildCallbacks(toROS):
                 text += '\t\tmsg.data = data.var%d; //%s\n'%(toDecode.get(canid).index(signals[0])+1,signals[0])
             elif 'Point' in rosmsg:
                 ##treat as point
-                text += '\tmsg.x = data.var1; //%s\n\
-                  \tmsg.y = data.var2; //%s\n\
-                  \tmsg.z = data.var3; //%s\n'%(signals[0],signals[1],signals[2])
+                var = ['x','y','z']
+                for i in range(0,len(signals)):
+                    text += '\tmsg%s = data.var%s; //%s\n'%(var[i],i+1,signals[i])
 
             else:
                 print('this rosmg not accounted for: ' + rosmsg)
@@ -232,7 +232,7 @@ def buildNode(toROS):
 
 
 #/etc/libpanda.d has a JSON with the make,model,trim,year
-f = open('etc/libpanda.d/vin_details.json')
+f = open('/etc/libpanda.d/vin_details.json')
 vin_details = json.load(f)
 #find the correct DBC and ROS msg dict based on the vin details
 jsonfile, dbcfile = findDBC(vin_details)
@@ -255,6 +255,7 @@ for i in toDecode.keys():
 text += '\n}\n'
 
 #output into C++ file(s)
+#TODO make them the real files (after testing)
 file1 = open('can_decode_test.h', 'w')
 file2 = open('can_decode_base.h','r')
 file1.writelines(file2.read())
@@ -269,6 +270,7 @@ file1.close()
 text = ''
 text += buildNode(toROS)
 
+#TODO make into the real file
 file1 = open('../src/subs_fs_test.cpp', 'w')
 file2 = open('../src/subs_fs_base.cpp','r')
 
