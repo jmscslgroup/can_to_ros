@@ -1,56 +1,39 @@
 import json
 
-# #toyota_hybrid list of signals
-# toDecode = {180:['SPEED'], 384:['LONG_DIST','LAT_DIST','REL_SPEED'], 552:['ACCEL_X']}
-#
-# diclist = [toDecode]
-#
-# dest_file = './toyota_hybrid_header.json' #make into ordered list for multiple vehicles
-#
-# output_file = open(dest_file, 'w', encoding='utf-8')
-# for dic in diclist:
-#     json.dump(dic, output_file)
-#     output_file.write("\n")
-
-
-#toyota_hybrid list of ROS pubs
-toROS = {180:{'vel':[['std_msgs::Float64'],['SPEED']]},
+#toyota_rav4 list of ROS pubs
+toyota_rav4 = {37:{'steering_angle':['std_msgs::Float64'],['STEER_ANGLE']]},
+         180:{'vel':[['std_msgs::Float64'],['SPEED']]},
          869:{'lead_dist': [['std_msgs::Float64'],['LEAD_DISTANCE']] ,'rel_vel':[['std_msgs::Float64'],['REL_SPEED']]},
          384:{'track_a0':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
-         552:{'accel':[['std_msgs::Float64'],['ACCEL_X']]}    
+         385:{'track_a1':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
+         386:{'track_a2':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
+         387:{'track_a3':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
+         388:{'track_a4':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
+         389:{'track_a5':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
+         390:{'track_a6':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
+         391:{'track_a7':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
+         392:{'track_a8':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
+         393:{'track_a9':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
+         394:{'track_a10':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
+         395:{'track_a11':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
+         396:{'track_a12':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
+         397:{'track_a13':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
+         398:{'track_a14':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
+         399:{'track_a15':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
+         1570:{'highbeams':[['std_msgs::Float64'],['HIGH_BEAMS_ON']]},
+         467:{'pcm_cruise_2':[['geometry_msgs::Point'],['MAIN_ON','SET_SPEED']]},
+         921:{'cruise_state':[['geometry_msgs::Point'],['MAIN_ON','UI_SET_SPEED','CRUISE_CONTROL_STATE']]},
+         552:{'accel':[['std_msgs::Float64'],['ACCEL_X']]}
+
 }
+#honda list
+#nissan list
 
-pubslist = [toROS]
+pubslist = [toyota_rav4] #ordered list of dicts to become make/model JSONs
 
-dest_file = './toyota_hybrid.json' #make into ordered list for multiple vehicles
+dest_file = './toyota_rav4.json' #make into ordered list for multiple vehicles
 
 output_file = open(dest_file, 'w', encoding='utf-8')
 for dic in pubslist:
     json.dump(dic, output_file)
     output_file.write("\n")
-
-# {'accel_cmd':[['PointStamped'],{384:['LONG_DIST','LAT_DIST','REL_SPEED'],400:['REL_ACCEL']}]}
-
-# accel_pub = n_.advertise<std_msgs::Float64>("accel", 1000);
-# lead_dist_pub = n_.advertise<std_msgs::Float64>("lead_dist_869", 1000);
-# relative_vel_pub = n_.advertise<std_msgs::Float64>("rel_vel_869", 1000);
-# str_angle_pub = n_.advertise<std_msgs::Float64>("steering_angle", 1000);
-# speed_pub = n_.advertise<geometry_msgs::Twist>("vel", 1000);
-# pub_921 = n_.advertise<geometry_msgs::Point>("msg_921", 1000);
-# pub_467 = n_.advertise<geometry_msgs::Point>("msg_467", 1000);
-# tracka0_pub = n_.advertise<geometry_msgs::PointStamped>("track_a0", 1000);
-# tracka1_pub = n_.advertise<geometry_msgs::PointStamped>("track_a1", 1000);
-# tracka2_pub = n_.advertise<geometry_msgs::PointStamped>("track_a2", 1000);
-# tracka3_pub = n_.advertise<geometry_msgs::PointStamped>("track_a3", 1000);
-# tracka4_pub = n_.advertise<geometry_msgs::PointStamped>("track_a4", 1000);
-# tracka5_pub = n_.advertise<geometry_msgs::PointStamped>("track_a5", 1000);
-# tracka6_pub = n_.advertise<geometry_msgs::PointStamped>("track_a6", 1000);
-# tracka7_pub = n_.advertise<geometry_msgs::PointStamped>("track_a7", 1000);
-# tracka8_pub = n_.advertise<geometry_msgs::PointStamped>("track_a8", 1000);
-# tracka9_pub = n_.advertise<geometry_msgs::PointStamped>("track_a9", 1000);
-# tracka10_pub = n_.advertise<geometry_msgs::PointStamped>("track_a10", 1000);
-# tracka11_pub = n_.advertise<geometry_msgs::PointStamped>("track_a11", 1000);
-# tracka12_pub = n_.advertise<geometry_msgs::PointStamped>("track_a12", 1000);
-# tracka13_pub = n_.advertise<geometry_msgs::PointStamped>("track_a13", 1000);
-# tracka14_pub = n_.advertise<geometry_msgs::PointStamped>("track_a14", 1000);
-# tracka15_pub = n_.advertise<geometry_msgs::PointStamped>("track_a15", 1000);

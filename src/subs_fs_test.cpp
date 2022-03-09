@@ -47,8 +47,8 @@ public:
 		msg.data = data.var1; //LEAD_DISTANCE
 		lead_dist_pub.publish(msg);
 
-		std_msgs::Float64 msg;
-		msg.data = data.var2; //REL_SPEED
+		std_msgs::Float64 msg2;
+		msg2.data = data.var2; //REL_SPEED
 		rel_vel_pub.publish(msg);
 
 	}

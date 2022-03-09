@@ -2,8 +2,23 @@ import strym as s
 import cantools
 import json
 
-#TODO: automatically identifying DBC from VIN
-toyota_hybrid = s.initializeDBC_Cantools('../../strym/strym/dbc/toyota_rav4_hybrid.dbc')
+
+def findDBC(vin_details):
+    if vin_details['Make'] == 'TOYOTA':
+        if vin_details['Model'] == 'RAV4':
+            jsonfile = 'toyota_rav4.json'
+            if vin_details['ModelYear'] >= 2021:
+                #TODO: figure out where the dbc files will be
+                dbcfile = '../../strym/strym/dbc/toyota_rav4_2021.dbc'
+            elif vin_details['ModelYear'] == 2020:
+                dbcfile = '../../strym/strym/dbc/toyota_rav4_2020.dbc'
+            elif vin_details['ModelYear'] == 2019:
+                dbcfile = '../../strym/strym/dbc/toyota_rav4_2019.dbc'
+            if 'HV' in vin_details['Trim']:
+                dbcfile = '../../strym/strym/dbc/toyota_rav4_hybrid.dbc'
+    #space here to add in info for honda and nissan vehicles
+    print('the DBC is set as %s')%(dbcfile)
+    return jsonfile, dbcfile
 
 def signalCheck(signal):
     print(signal.start,signal.length,signal.scale, signal.offset, signal.unit, signal.is_signed)
@@ -78,16 +93,6 @@ def keystoint(x):
         return {int(k): v for k, v in x.items()}
     except:
         return x
-
-
-def nodeBuilder(dictionary):
-    print('test')
-    #for each key in the dict, create a topic w/ msg type and title(key)
-
-    #if messageID == key in the pub's dictionary, decode and assign values,then publish
-
-    #from length of signal dict, know if there are emtpy data fields in msg, assign to 0 if so
-
 
 def generatePrivatePubs(toROS):
 
@@ -225,12 +230,19 @@ def buildNode(toROS):
 
     return text
 
-#dict for decoding, TODO: identified from VIN
-# Opening JSON file
-f = open('./toyota_hybrid.json')
 
-# returns JSON object as
-# a dictionary
+#/etc/libpanda.d has a JSON with the make,model,trim,year
+f = open('etc/libpanda.d/vin_details.json')
+vin_details = json.load(f)
+#find the correct DBC and ROS msg dict based on the vin details
+jsonfile, dbcfile = findDBC(vin_details)
+#load the correct DBC file to decode CAN to ROS
+dbc = s.initializeDBC_Cantools(dbcfile)
+
+# Opening ROS JSON file
+f = open('./'+jsonfile)
+
+# returns JSON object as a dictionary
 toROS = json.load(f, object_hook=keystoint)
 toDecode = generateToDecode(toROS)
 f.close()
@@ -238,14 +250,12 @@ f.close()
 #TODO: for each key in the decoding dictionary, add text to the can_decode.h file
 text = ''
 for i in toDecode.keys():
-    msg, signals = getSignals(i,toDecode,toyota_hybrid)
+    msg, signals = getSignals(i,toDecode,dbc)
     text += decodeBuilder(msg, signals)
 text += '\n}\n'
 
-#TODO: output into C++ file(s)
-# print(text)
+#output into C++ file(s)
 file1 = open('can_decode_test.h', 'w')
-
 file2 = open('can_decode_base.h','r')
 file1.writelines(file2.read())
 file2.close()
@@ -267,8 +277,7 @@ file2.close()
 
 file1.writelines(text)
 file1.close()
+########Finished generating subs_fs.cpp node #######
 
 
-
-
-#NEXT: test in ROS
+#NEXT: confirm working with comparison of rosbags
