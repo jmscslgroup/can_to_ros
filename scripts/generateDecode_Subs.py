@@ -93,12 +93,12 @@ def findSubstring(signal, varNum):
     if not signal.is_signed:
         rawVal_dec = "\traw_dec = std::stoull(raw%d, 0, 2);\n"%(varNum)
     else:
-        rawVal_dec = "float raw_dec_fl;\n\
+        rawVal_dec = "float %s_fl;\n\
         \tif (raw%d[0] == '0'){\n\
-        \traw_dec_fl= std::stoul( raw%d, 0, 2 );\n\t}\n\telse {\n\
-        \traw_dec_fl = std::stoul(findTwosComplement(raw%d), 0, 2);\n\
-        \traw_dec_fl = raw_dec_fl * -1.0;\n\
-        \t}\n"%(varNum,varNum,varNum)
+        \t%s_fl= std::stoul( raw%d, 0, 2 );\n\t}\n\telse {\n\
+        \t%s_fl = std::stoul(findTwosComplement(raw%d), 0, 2);\n\
+        \t%s_fl = %s_fl * -1.0;\n\
+        \t}\n"%(signal.name,varNum,signal.name,varNum,signal.name,varNum,signal.name,signal.name)
 
     if not signal.is_signed:
         scale = "\tscaled = (float)raw_dec * %0.6f + %0.6f;\n"%(signal.scale,signal.offset)
