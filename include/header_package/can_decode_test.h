@@ -72,7 +72,7 @@ if (msg_id == 37){
     	binary = std::bitset<64>(n).to_string(); // convert hex to binary
 
 	std::string raw1 = binary.substr(4,12); //STEER_ANGLE
-	if ((raw1)[0] == '0'){
+	if (raw1[0] == '0'){
         	raw_dec= std::stoul( raw1, 0, 2 );
 	}
 	else {
@@ -108,7 +108,7 @@ if (msg_id == 869){
 	returnedVal.var1 = scaled;
 
 	std::string raw2 = binary.substr(40,12); //REL_SPEED
-	if ((raw2)[0] == '0'){
+	if (raw2[0] == '0'){
         	raw_dec= std::stoul( raw2, 0, 2 );
 	}
 	else {
@@ -131,7 +131,7 @@ if (msg_id == 384){
 	returnedVal.var1 = scaled;
 
 	std::string raw2 = binary.substr(24,11); //LAT_DIST
-	if ((raw2)[0] == '0'){
+	if (raw2[0] == '0'){
         	raw_dec= std::stoul( raw2, 0, 2 );
 	}
 	else {
@@ -142,7 +142,7 @@ if (msg_id == 384){
 	returnedVal.var2 = scaled;
 
 	std::string raw3 = binary.substr(40,12); //REL_SPEED
-	if ((raw3)[0] == '0'){
+	if (raw3[0] == '0'){
         	raw_dec= std::stoul( raw3, 0, 2 );
 	}
 	else {
@@ -165,7 +165,7 @@ if (msg_id == 385){
 	returnedVal.var1 = scaled;
 
 	std::string raw2 = binary.substr(24,11); //LAT_DIST
-	if ((raw2)[0] == '0'){
+	if (raw2[0] == '0'){
         	raw_dec= std::stoul( raw2, 0, 2 );
 	}
 	else {
@@ -176,7 +176,7 @@ if (msg_id == 385){
 	returnedVal.var2 = scaled;
 
 	std::string raw3 = binary.substr(40,12); //REL_SPEED
-	if ((raw3)[0] == '0'){
+	if (raw3[0] == '0'){
         	raw_dec= std::stoul( raw3, 0, 2 );
 	}
 	else {
@@ -199,7 +199,7 @@ if (msg_id == 386){
 	returnedVal.var1 = scaled;
 
 	std::string raw2 = binary.substr(24,11); //LAT_DIST
-	if ((raw2)[0] == '0'){
+	if (raw2[0] == '0'){
         	raw_dec= std::stoul( raw2, 0, 2 );
 	}
 	else {
@@ -210,7 +210,7 @@ if (msg_id == 386){
 	returnedVal.var2 = scaled;
 
 	std::string raw3 = binary.substr(40,12); //REL_SPEED
-	if ((raw3)[0] == '0'){
+	if (raw3[0] == '0'){
         	raw_dec= std::stoul( raw3, 0, 2 );
 	}
 	else {
@@ -233,7 +233,7 @@ if (msg_id == 387){
 	returnedVal.var1 = scaled;
 
 	std::string raw2 = binary.substr(24,11); //LAT_DIST
-	if ((raw2)[0] == '0'){
+	if (raw2[0] == '0'){
         	raw_dec= std::stoul( raw2, 0, 2 );
 	}
 	else {
@@ -244,7 +244,7 @@ if (msg_id == 387){
 	returnedVal.var2 = scaled;
 
 	std::string raw3 = binary.substr(40,12); //REL_SPEED
-	if ((raw3)[0] == '0'){
+	if (raw3[0] == '0'){
         	raw_dec= std::stoul( raw3, 0, 2 );
 	}
 	else {
@@ -267,7 +267,7 @@ if (msg_id == 388){
 	returnedVal.var1 = scaled;
 
 	std::string raw2 = binary.substr(24,11); //LAT_DIST
-	if ((raw2)[0] == '0'){
+	if (raw2[0] == '0'){
         	raw_dec= std::stoul( raw2, 0, 2 );
 	}
 	else {
@@ -278,7 +278,7 @@ if (msg_id == 388){
 	returnedVal.var2 = scaled;
 
 	std::string raw3 = binary.substr(40,12); //REL_SPEED
-	if ((raw3)[0] == '0'){
+	if (raw3[0] == '0'){
         	raw_dec= std::stoul( raw3, 0, 2 );
 	}
 	else {
@@ -301,7 +301,7 @@ if (msg_id == 389){
 	returnedVal.var1 = scaled;
 
 	std::string raw2 = binary.substr(24,11); //LAT_DIST
-	if ((raw2)[0] == '0'){
+	if (raw2[0] == '0'){
         	raw_dec= std::stoul( raw2, 0, 2 );
 	}
 	else {
@@ -312,7 +312,7 @@ if (msg_id == 389){
 	returnedVal.var2 = scaled;
 
 	std::string raw3 = binary.substr(40,12); //REL_SPEED
-	if ((raw3)[0] == '0'){
+	if (raw3[0] == '0'){
         	raw_dec= std::stoul( raw3, 0, 2 );
 	}
 	else {
@@ -335,7 +335,7 @@ if (msg_id == 390){
 	returnedVal.var1 = scaled;
 
 	std::string raw2 = binary.substr(24,11); //LAT_DIST
-	if ((raw2)[0] == '0'){
+	if (raw2[0] == '0'){
         	raw_dec= std::stoul( raw2, 0, 2 );
 	}
 	else {
@@ -346,7 +346,7 @@ if (msg_id == 390){
 	returnedVal.var2 = scaled;
 
 	std::string raw3 = binary.substr(40,12); //REL_SPEED
-	if ((raw3)[0] == '0'){
+	if (raw3[0] == '0'){
         	raw_dec= std::stoul( raw3, 0, 2 );
 	}
 	else {
@@ -369,7 +369,7 @@ if (msg_id == 391){
 	returnedVal.var1 = scaled;
 
 	std::string raw2 = binary.substr(24,11); //LAT_DIST
-	if ((raw2)[0] == '0'){
+	if (raw2[0] == '0'){
         	raw_dec= std::stoul( raw2, 0, 2 );
 	}
 	else {
@@ -380,7 +380,7 @@ if (msg_id == 391){
 	returnedVal.var2 = scaled;
 
 	std::string raw3 = binary.substr(40,12); //REL_SPEED
-	if ((raw3)[0] == '0'){
+	if (raw3[0] == '0'){
         	raw_dec= std::stoul( raw3, 0, 2 );
 	}
 	else {
@@ -403,7 +403,7 @@ if (msg_id == 392){
 	returnedVal.var1 = scaled;
 
 	std::string raw2 = binary.substr(24,11); //LAT_DIST
-	if ((raw2)[0] == '0'){
+	if (raw2[0] == '0'){
         	raw_dec= std::stoul( raw2, 0, 2 );
 	}
 	else {
@@ -414,7 +414,7 @@ if (msg_id == 392){
 	returnedVal.var2 = scaled;
 
 	std::string raw3 = binary.substr(40,12); //REL_SPEED
-	if ((raw3)[0] == '0'){
+	if (raw3[0] == '0'){
         	raw_dec= std::stoul( raw3, 0, 2 );
 	}
 	else {
@@ -437,7 +437,7 @@ if (msg_id == 393){
 	returnedVal.var1 = scaled;
 
 	std::string raw2 = binary.substr(24,11); //LAT_DIST
-	if ((raw2)[0] == '0'){
+	if (raw2[0] == '0'){
         	raw_dec= std::stoul( raw2, 0, 2 );
 	}
 	else {
@@ -448,7 +448,7 @@ if (msg_id == 393){
 	returnedVal.var2 = scaled;
 
 	std::string raw3 = binary.substr(40,12); //REL_SPEED
-	if ((raw3)[0] == '0'){
+	if (raw3[0] == '0'){
         	raw_dec= std::stoul( raw3, 0, 2 );
 	}
 	else {
@@ -471,7 +471,7 @@ if (msg_id == 394){
 	returnedVal.var1 = scaled;
 
 	std::string raw2 = binary.substr(24,11); //LAT_DIST
-	if ((raw2)[0] == '0'){
+	if (raw2[0] == '0'){
         	raw_dec= std::stoul( raw2, 0, 2 );
 	}
 	else {
@@ -482,7 +482,7 @@ if (msg_id == 394){
 	returnedVal.var2 = scaled;
 
 	std::string raw3 = binary.substr(40,12); //REL_SPEED
-	if ((raw3)[0] == '0'){
+	if (raw3[0] == '0'){
         	raw_dec= std::stoul( raw3, 0, 2 );
 	}
 	else {
@@ -505,7 +505,7 @@ if (msg_id == 395){
 	returnedVal.var1 = scaled;
 
 	std::string raw2 = binary.substr(24,11); //LAT_DIST
-	if ((raw2)[0] == '0'){
+	if (raw2[0] == '0'){
         	raw_dec= std::stoul( raw2, 0, 2 );
 	}
 	else {
@@ -516,7 +516,7 @@ if (msg_id == 395){
 	returnedVal.var2 = scaled;
 
 	std::string raw3 = binary.substr(40,12); //REL_SPEED
-	if ((raw3)[0] == '0'){
+	if (raw3[0] == '0'){
         	raw_dec= std::stoul( raw3, 0, 2 );
 	}
 	else {
@@ -539,7 +539,7 @@ if (msg_id == 396){
 	returnedVal.var1 = scaled;
 
 	std::string raw2 = binary.substr(24,11); //LAT_DIST
-	if ((raw2)[0] == '0'){
+	if (raw2[0] == '0'){
         	raw_dec= std::stoul( raw2, 0, 2 );
 	}
 	else {
@@ -550,7 +550,7 @@ if (msg_id == 396){
 	returnedVal.var2 = scaled;
 
 	std::string raw3 = binary.substr(40,12); //REL_SPEED
-	if ((raw3)[0] == '0'){
+	if (raw3[0] == '0'){
         	raw_dec= std::stoul( raw3, 0, 2 );
 	}
 	else {
@@ -573,7 +573,7 @@ if (msg_id == 397){
 	returnedVal.var1 = scaled;
 
 	std::string raw2 = binary.substr(24,11); //LAT_DIST
-	if ((raw2)[0] == '0'){
+	if (raw2[0] == '0'){
         	raw_dec= std::stoul( raw2, 0, 2 );
 	}
 	else {
@@ -584,7 +584,7 @@ if (msg_id == 397){
 	returnedVal.var2 = scaled;
 
 	std::string raw3 = binary.substr(40,12); //REL_SPEED
-	if ((raw3)[0] == '0'){
+	if (raw3[0] == '0'){
         	raw_dec= std::stoul( raw3, 0, 2 );
 	}
 	else {
@@ -607,7 +607,7 @@ if (msg_id == 398){
 	returnedVal.var1 = scaled;
 
 	std::string raw2 = binary.substr(24,11); //LAT_DIST
-	if ((raw2)[0] == '0'){
+	if (raw2[0] == '0'){
         	raw_dec= std::stoul( raw2, 0, 2 );
 	}
 	else {
@@ -618,7 +618,7 @@ if (msg_id == 398){
 	returnedVal.var2 = scaled;
 
 	std::string raw3 = binary.substr(40,12); //REL_SPEED
-	if ((raw3)[0] == '0'){
+	if (raw3[0] == '0'){
         	raw_dec= std::stoul( raw3, 0, 2 );
 	}
 	else {
@@ -641,7 +641,7 @@ if (msg_id == 399){
 	returnedVal.var1 = scaled;
 
 	std::string raw2 = binary.substr(24,11); //LAT_DIST
-	if ((raw2)[0] == '0'){
+	if (raw2[0] == '0'){
         	raw_dec= std::stoul( raw2, 0, 2 );
 	}
 	else {
@@ -652,7 +652,7 @@ if (msg_id == 399){
 	returnedVal.var2 = scaled;
 
 	std::string raw3 = binary.substr(40,12); //REL_SPEED
-	if ((raw3)[0] == '0'){
+	if (raw3[0] == '0'){
         	raw_dec= std::stoul( raw3, 0, 2 );
 	}
 	else {
@@ -722,7 +722,7 @@ if (msg_id == 552){
     	binary = std::bitset<64>(n).to_string(); // convert hex to binary
 
 	std::string raw1 = binary.substr(1,15); //ACCEL_X
-	if ((raw1)[0] == '0'){
+	if (raw1[0] == '0'){
         	raw_dec= std::stoul( raw1, 0, 2 );
 	}
 	else {
