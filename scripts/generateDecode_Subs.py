@@ -93,7 +93,7 @@ def findSubstring(signal, varNum):
     if not signal.is_signed:
         rawVal_dec = "\traw_dec = std::stoull(raw%d, 0, 2);\n"%(varNum)
     else:
-        rawVal_dec = "\tif ((raw%d)[0] == '0'){\n\
+        rawVal_dec = "\tif (raw%d[0] == '0'){\n\
         \traw_dec= std::stoul( raw%d, 0, 2 );\n\t}\n\telse {\n\
         \traw_dec = std::stoul(findTwosComplement(raw%d), 0, 2);\n\
         \traw_dec = \traw_dec * -1.0;\n\
