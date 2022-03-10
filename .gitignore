@@ -1,2 +1,3 @@
 scripts/liveRadar.pyc
 scripts/kalmanTracking.pyc
+*.csv
