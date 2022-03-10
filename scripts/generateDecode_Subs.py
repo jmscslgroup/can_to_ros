@@ -103,7 +103,7 @@ def findSubstring(signal, varNum):
     if not signal.is_signed:
         scale = "\tscaled = (float)raw_dec * %0.6f + %0.6f;\n"%(signal.scale,signal.offset)
     else:
-        scale = "\tscaled = raw_dec_fl * %0.6f + %0.6f;\n"%(signal.scale,signal.offset)
+        scale = "\tscaled = %s_fl * %0.6f + %0.6f;\n"%(signal.name,signal.scale,signal.offset)
 
 
     if signal.unit == 'kph':
