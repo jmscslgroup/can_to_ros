@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+	<arg name="description" default="time_to_collision_codegen_test"/>
+	
+	<arg name="margin" default="30.0"/>
+	<arg name="use_margin" default="false"/>
+	<arg name="hwil" default="true"/>
+	<arg name="readonly" default="false"/>
+	
+	
+	<param name="/margin" value="$(arg margin)"/>
+	<param name="/use_margin" value="$(arg use_margin)"/>
+	<param name="/hwil" value="$(arg hwil)"/>
+	<param name="/readonly" value="$(arg readonly)"/>
+	
+
+	
+	<node pkg="can_to_ros" type ="subs_fs" name="subs_fs" output="screen" if="$(arg hwil)"/> 
+
+	<node pkg="can_to_ros" type="lead_info" name="lead_info" output="screen" if="$(arg hwil)"/>
+
+	<node pkg="can_to_ros" type="simple_mini_car_from_lead_distance" name="simple_mini_car_from_lead_distance" output="screen" if="$(arg hwil)"/>
+
+	<!--node pkg="can_to_ros" type="cruise_start_safety_check" name="cruise_start_safety_check" output="screen" if="$(arg hwil)"/-->
+
+	
+	<node pkg="margin" type="margin_node" name="margin_node" output="screen" if="$(arg use_margin)">
+	</node>	
+ 
+	<node pkg="setpointreader" type="setpointreader_node" name="setpointreader_node" output="screen" required="true" >
+		<remap from="/v_ref" to="/cmd_vel"/>
+	</node>
+	
+	<node pkg="velocity_controller" type="velocity_controller_node" name="velocity_controller_node" output="screen">	
+		<remap from="/vehicle/vel" to="/vel"/>	
+		<remap from="/cmd_accel" to="/cmd_accel_pre"/>
+	</node>
+	
+	<node pkg="time_to_collision" type="time_to_collision_node" name="time_to_collision_node" if="$(eval not readonly and hwil)">
+	</node>
+	
+	<node pkg="time_to_collision" type="time_to_collision_node" name="time_to_collision_node_readonly" if="$(eval not readonly and hwil)">
+		<remap from="/cmd_accel" to="/cmd_accel_null"/>
+	</node>
+	
+	
+	
+	<node pkg="can_to_ros" type ="rosbag_record.sh" name="bashscript2" output="screen" args="$(arg description) $(arg hwil)" /> 
+
+	<node pkg="transfer_pkg" type="saveparam.py" name="saveparam" output="screen" args="$(arg description) $(arg hwil)">
+	</node>
+	
+
+</launch>
