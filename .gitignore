@@ -1,3 +1,5 @@
 scripts/liveRadar.pyc
 scripts/kalmanTracking.pyc
 *.csv
+bagfiles/.DS_Store
+scripts/.ipynb_checkpoints/develForVersion2-checkpoint.ipynb
