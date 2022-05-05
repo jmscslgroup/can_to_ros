@@ -1,0 +1,29 @@
+<launch>
+
+<!-- include information for the joystick, etc. args="$(env HOME)"  -->
+<node pkg="can_to_ros" type="vehicle_interface" name="vehicle_interface" output="screen" respawn="true" respawn_delay="2" />
+
+<node pkg="can_to_ros" type="publishCommands" name="publishCommands" output="screen" required="true" />
+
+<node pkg="can_to_ros" type="node_status.py" name="node_status" output="screen" required="true" />
+
+<node pkg="can_to_ros" type="topic_check.py" name="topic_check" output="screen" />
+
+
+<include file="$(find can_to_ros)launch/safety_checks.launch" />
+
+
+<include file="$(find can_to_ros)/launch/cbf_v2_test.launch">
+	<arg name="hwil" value="true"/>
+	<arg name="readonly" value="false"/>
+	<arg name="timegap" value="2.2"/>
+	<arg name="s_min" value="15.0"/>
+	<arg name="act_delay" value="0.2"/>
+	<arg name="k_tg_0" value="0.2"/>
+	<arg name="k_tg_1" value="0.3"/>
+	<arg name="k_ca_0" value="1.0"/>
+	<arg name="k_ca_1" value="0.25"/>
+	<arg name="k_ca_2" value="1.0"/>
+</include>
+
+</launch>
