@@ -57,7 +57,7 @@
 	<node pkg="cbf_v2" type="cbf_v2_node" name="cbf_v2_node" if="$(eval not readonly and hwil)">
 	</node>
 	
-	<node pkg="cbf_v2" type="cbf_v2_node" name="cbf_v2_node_readonly" if="$(eval not readonly and hwil)">
+	<node pkg="cbf_v2" type="cbf_v2_node" name="cbf_v2_node_readonly" if="$(eval readonly and hwil)">
 		<remap from="/cmd_accel" to="/cmd_accel_null"/>
 	</node>
 	
