@@ -31,7 +31,7 @@
 	<param name="/k_ca_0" value="$(arg k_ca_0)"/>
 	<param name="/k_ca_1" value="$(arg k_ca_1)"/>
 	<param name="/k_ca_2" value="$(arg k_ca_2)"/>
-	<arg name="a_min_no_brake_check" value="$(arg a_min_no_brake_check)"/>
+	<param name="a_min_no_brake_check" value="$(arg a_min_no_brake_check)"/>
 
 	<node pkg="can_to_ros" type ="subs_fs" name="subs_fs" output="screen" if="$(arg hwil)"/> 
 
