@@ -24,6 +24,7 @@
 	<arg name="k_ca_0" value="1.0"/>
 	<arg name="k_ca_1" value="0.25"/>
 	<arg name="k_ca_2" value="1.0"/>
+	<arg name="a_min_no_brake_check" value="-0.5"/>
 </include>
 
 </launch>
