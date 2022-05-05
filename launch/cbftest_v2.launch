@@ -7,12 +7,30 @@
 	<arg name="use_margin" default="false"/>
 	<arg name="hwil" default="true"/>
 	<arg name="readonly" default="false"/>
+
+	<arg name="timegap" value="2.2"/>
+	<arg name="s_min" value="15.0"/>
+	<arg name="act_delay" value="0.2"/>
+	<arg name="k_tg_0" value="0.2"/>
+	<arg name="k_tg_1" value="0.3"/>
+	<arg name="k_ca_0" value="1.0"/>
+	<arg name="k_ca_1" value="0.25"/>
+	<arg name="k_ca_2" value="1.0"/>
 		
 	<param name="/margin" value="$(arg margin)"/>
 	<param name="/use_margin" value="$(arg use_margin)"/>
 	<param name="/hwil" value="$(arg hwil)"/>
 	<param name="/readonly" value="$(arg readonly)"/>
-	
+
+	<param name="/timegap" value="$(arg timegap)"/>
+	<param name="/s_min" value="$(arg s_min)"/>
+	<param name="/act_delay" value="$(arg act_delay)"/>
+	<param name="/k_tg_0" value="$(arg k_tg_0)"/>
+	<param name="/k_tg_1" value="$(arg k_tg_1)"/>
+	<param name="/k_ca_0" value="$(arg k_ca_0)"/>
+	<param name="/k_ca_1" value="$(arg k_ca_1)"/>
+	<param name="/k_ca_2" value="$(arg k_ca_2)"/>
+
 	<node pkg="can_to_ros" type ="subs_fs" name="subs_fs" output="screen" if="$(arg hwil)"/> 
 
 	<node pkg="can_to_ros" type="lead_info" name="lead_info" output="screen" if="$(arg hwil)"/>
