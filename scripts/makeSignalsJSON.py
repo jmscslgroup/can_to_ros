@@ -39,8 +39,8 @@ dest_files = ['./toyota_rav4.json','./nissan_rogue.json'] #make into ordered lis
 count = 0
 for dest_file in dest_files:
     output_file = open(dest_file, 'w', encoding='utf-8')
-    for dic in pubslist[count]:
-        json.dump(dic, output_file)
-        output_file.write("\n")
+    # for/ dic in pubslist[count]:
+    json.dump(pubslist[count], output_file)
+    output_file.write("\n")
     count +=1
     output_file.close()
