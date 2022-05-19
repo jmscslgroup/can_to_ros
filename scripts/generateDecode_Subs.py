@@ -17,7 +17,7 @@ def findDBC(vin_details):
                 dbcfile = '/home/circles/strym/strym/dbc/toyota_rav4_hybrid.dbc'
 #space here to add in info for honda and nissan vehicles
     if vin_details['Make'] == 'NISSAN':
-        if vin_details['Model'] == 'ROGUE':
+        if vin_details['Model'] == 'Rogue':
             jsonfile = 'nissan_rogue.json'
             if int(vin_details['ModelYear']) >= 2021:
                 #TODO: figure out where the dbc files will be
