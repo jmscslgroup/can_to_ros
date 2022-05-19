@@ -29,7 +29,8 @@ toyota_rav4 = {37:{'steering_angle':[['std_msgs::Float64'],['STEER_ANGLE']]},
 #honda list
 #nissan list
 nissan_rogue = {139:{'steering_angle':[['std_msgs::Float64'],['STEER_ANGLE']]},
-         303:{'vel':[['std_msgs::Float64'],['SPEED']]},
+         303:{'vel':[['std_msgs::Float64'],['SPEED']]}
+         }
 
 pubslist = [toyota_rav4, nissan_rogue] #ordered list of dicts to become make/model JSONs
 
