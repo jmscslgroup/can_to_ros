@@ -28,12 +28,15 @@ toyota_rav4 = {37:{'steering_angle':[['std_msgs::Float64'],['STEER_ANGLE']]},
 }
 #honda list
 #nissan list
+nissan_rogue = {139:{'steering_angle':[['std_msgs::Float64'],['STEER_ANGLE']]},
+         303:{'vel':[['std_msgs::Float64'],['SPEED']]},
 
-pubslist = [toyota_rav4] #ordered list of dicts to become make/model JSONs
+pubslist = [toyota_rav4, nissan_rogue] #ordered list of dicts to become make/model JSONs
 
-dest_file = './toyota_rav4.json' #make into ordered list for multiple vehicles
+dest_file = ['./toyota_rav4.json','./nissan_rogue.json'] #make into ordered list for multiple vehicles
 
-output_file = open(dest_file, 'w', encoding='utf-8')
-for dic in pubslist:
-    json.dump(dic, output_file)
-    output_file.write("\n")
+for dest_file in pubslist:
+    output_file = open(dest_file, 'w', encoding='utf-8')
+    for dic in pubslist:
+        json.dump(dic, output_file)
+        output_file.write("\n")

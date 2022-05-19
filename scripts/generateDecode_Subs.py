@@ -3,19 +3,25 @@ import json
 
 
 def findDBC(vin_details):
-    if vin_details['Make'] == 'TOYOTA':
-        if vin_details['Model'] == 'RAV4':
-            jsonfile = 'toyota_rav4.json'
-            if int(vin_details['ModelYear']) >= 2021:
-                #TODO: figure out where the dbc files will be
-                dbcfile = '/home/circles/strym/strym/dbc/toyota_rav4_2021.dbc'
-            elif int(vin_details['ModelYear']) == 2020:
-                dbcfile = '/home/circles/strym/strym/dbc/toyota_rav4_2020.dbc'
-            elif int(vin_details['ModelYear']) == 2019:
-                dbcfile = '/home/circles/strym/strym/dbc/toyota_rav4_2019.dbc'
-            if 'HV' in vin_details['Trim']:
-                dbcfile = '/home/circles/strym/strym/dbc/toyota_rav4_hybrid.dbc'
+        if vin_details['Make'] == 'TOYOTA':
+            if vin_details['Model'] == 'RAV4':
+                jsonfile = 'toyota_rav4.json'
+                if int(vin_details['ModelYear']) >= 2021:
+                    #TODO: figure out where the dbc files will be
+                    dbcfile = '/home/circles/strym/strym/dbc/toyota_rav4_2021.dbc'
+                elif int(vin_details['ModelYear']) == 2020:
+                    dbcfile = '/home/circles/strym/strym/dbc/toyota_rav4_2020.dbc'
+                elif int(vin_details['ModelYear']) == 2019:
+                    dbcfile = '/home/circles/strym/strym/dbc/toyota_rav4_2019.dbc'
+                if 'HV' in vin_details['Trim']:
+                    dbcfile = '/home/circles/strym/strym/dbc/toyota_rav4_hybrid.dbc'
     #space here to add in info for honda and nissan vehicles
+        if vin_details['Make'] == 'NISSAN':
+            if vin_details['Model'] == 'ROGUE':
+                jsonfile = 'nissan_rogue.json'
+                if int(vin_details['ModelYear']) >= 2021:
+                    #TODO: figure out where the dbc files will be
+                    dbcfile = '/home/circles/strym/strym/dbc/nissan_rogue_2021.dbc'
     print('the DBC is set as %s'%(dbcfile))
     return jsonfile, dbcfile
 
@@ -269,6 +275,7 @@ def buildNode(toROS):
 #/etc/libpanda.d has a JSON with the make,model,trim,year
 f = open('/etc/libpanda.d/vin_details.json')
 vin_details = json.load(f)
+f.close()
 #find the correct DBC and ROS msg dict based on the vin details
 jsonfile, dbcfile = findDBC(vin_details)
 #load the correct DBC file to decode CAN to ROS
@@ -317,4 +324,4 @@ file1.close()
 ########Finished generating subs_fs.cpp node #######
 
 
-#NEXT: confirm working with comparison of rosbags
+#FINAL: confirm working with comparison of rosbags
