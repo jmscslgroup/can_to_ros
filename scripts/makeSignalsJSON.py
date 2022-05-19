@@ -36,8 +36,11 @@ pubslist = [toyota_rav4, nissan_rogue] #ordered list of dicts to become make/mod
 
 dest_files = ['./toyota_rav4.json','./nissan_rogue.json'] #make into ordered list for multiple vehicles
 
+count = 0
 for dest_file in dest_files:
     output_file = open(dest_file, 'w', encoding='utf-8')
-    for dic in pubslist:
+    for dic in pubslist[count]:
         json.dump(dic, output_file)
         output_file.write("\n")
+    count +=1
+    output_file.close()

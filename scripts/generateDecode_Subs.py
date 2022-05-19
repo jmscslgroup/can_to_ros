@@ -285,6 +285,7 @@ dbc = initializeDBC_Cantools(dbcfile)
 f = open('./'+jsonfile)
 
 # returns JSON object as a dictionary
+print(jsonfile)
 toROS = json.load(f, object_hook=keystoint)
 toDecode = generateToDecode(toROS)
 f.close()
