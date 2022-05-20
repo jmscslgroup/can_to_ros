@@ -53,7 +53,7 @@ std::string decode_msgs::findTwosComplement(std::string str) {
 values decode_msgs::decode_message( unsigned int msg_id, std::string msg){
   values returnedVal;
   unsigned long long int n;
-  std::string binary;
+  //std::string binary;
   std::string raw;
   std::string raw2;
   std::string raw3;
@@ -66,3 +66,27 @@ values decode_msgs::decode_message( unsigned int msg_id, std::string msg){
   returnedVal.var2=0.0;
   returnedVal.var3=0.0;
   returnedVal.var4=0.0;
+
+  int len = msg.length();
+  int i = 0;
+  std::string word;
+  std::string binary;
+  while (i < len){
+      while (i < len-16){
+          // std::cout << msg.substr(i,16) << '\n';
+          word = msg.substr(i,16);
+          std::istringstream(word) >> std::hex >> n;
+          // std::cout << std::dec << "Parsing word gives " << n << '\n';
+          // std::cout << std::bitset<64>{n} << '\n';
+          binary.append(std::bitset<64>{n}.to_string());
+          i = i + 16;
+      }
+      // std::cout << msg.substr(i,1) << '\n';
+      word = msg.substr(i,1);
+      std::istringstream(word) >> std::hex >> n;
+      // std::cout << std::dec << "Parsing word gives " << n << '\n';
+      // std::cout << std::bitset<4>{n} << '\n';
+      binary.append(std::bitset<4>{n}.to_string());
+
+      i = i+1;
+  }

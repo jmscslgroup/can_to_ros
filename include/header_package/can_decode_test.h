@@ -14,6 +14,11 @@ typedef struct values_struct
    float var1, var2, var3, var4;
 } values;
 
+typedef struct bytes_64_struct
+{
+  long long int word1, word2, word3, word4, word5, word6, word7, word8;
+} bytes_64;
+
 class decode_msgs{
 public:
 values decode_message( unsigned int msg_id, std::string msg); // decoding CAN messages
@@ -52,8 +57,9 @@ std::string decode_msgs::findTwosComplement(std::string str) {
 
 values decode_msgs::decode_message( unsigned int msg_id, std::string msg){
   values returnedVal;
+  bytes_64 raw_binary;
   unsigned long long int n;
-  std::string binary;
+  // std::string binary;
   std::string raw;
   std::string raw2;
   std::string raw3;
@@ -66,10 +72,43 @@ values decode_msgs::decode_message( unsigned int msg_id, std::string msg){
   returnedVal.var2=0.0;
   returnedVal.var3=0.0;
   returnedVal.var4=0.0;
+
+  int len = msg.length();
+  int i = 0;
+  std::string word;
+  std::string binary;
+  while (i < len){
+      while (i < len-16){
+          // std::cout << msg.substr(i,16) << '\n';
+          word = msg.substr(i,16);
+          std::istringstream(word) >> std::hex >> n;
+          // std::cout << std::dec << "Parsing word gives " << n << '\n';
+          // std::cout << std::bitset<64>{n} << '\n';
+          binary.append(std::bitset<64>{n}.to_string());
+          i = i + 16;
+      }
+      // std::cout << msg.substr(i,1) << '\n';
+      word = msg.substr(i,1);
+      std::istringstream(word) >> std::hex >> n;
+      // std::cout << std::dec << "Parsing word gives " << n << '\n';
+      // std::cout << std::bitset<4>{n} << '\n';
+      binary.append(std::bitset<4>{n}.to_string());
+
+      i = i+1;
+  }
+  std::cout << binary;
+
+
+
 if (msg_id == 139){
-    	std::stringstream hex_ss(msg);
-    	hex_ss >> std::hex >> n;// making the message hex
-    	binary = std::bitset<384>(n).to_string(); // convert hex to binary
+    	// std::stringstream hex_ss(msg);
+      // int i = 0;
+
+      //feed hex into raw_binary
+      //append elements of raw_binary to string
+
+    	// hex_ss >> std::hex >> n;// making the message hex
+    	// binary = std::bitset<384>(n).to_string(); // convert hex to binary
 
 	std::string raw1 = binary.substr(48,16); //STEER_ANGLE
 	//std::cout <<"THERE IS A MESSAGE";
@@ -83,12 +122,12 @@ if (msg_id == 139){
 	return returnedVal;
 }
 if (msg_id == 303){
-    	std::stringstream hex_ss(msg);
-    	hex_ss >> std::hex >> n;// making the message hex
-    	binary = std::bitset<192>(n).to_string(); // convert hex to binary
+    	// std::stringstream hex_ss(msg);
+    	// hex_ss >> std::hex >> n;// making the message hex
+    	// binary = std::bitset<192>(n).to_string(); // convert hex to binary
 
 	std::string raw1 = binary.substr(75,11); //SPEED
-	std::cout <<raw1;
+	// std::cout <<raw1;
 
 	raw_dec = std::stoull(raw1, 0, 2);
 	scaled = (float)raw_dec * 0.050000 + 0.000000;
