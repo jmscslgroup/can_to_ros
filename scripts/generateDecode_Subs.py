@@ -184,9 +184,9 @@ def buildCallbacks(toROS):
                 text+= '\t\tmsg%d.header.frame_id = "front_laser_link";\n\
                 msg%d.header.stamp = ros::Time(std::stod(Time));\n'%(count,count)
 
-                text+= '\t\tmsg%d.point.x = data.var1; //%s\n\
+                text+= '\t\tmsg%d.point.x = data.var%d; //%s\n\
                 msg%d.point.y = data.var2; //%s\n\
-                msg%d.point.z = data.var3; //%s\n' %(count,signals[0],count,signals[1],count,signals[2])#check to see if this works for radar signals, may need to change the decode_message
+                msg%d.point.z = data.var3; //%s\n' %(count,(count-1)*3+1,signals[0],count,(count-1)*3+2,signals[1],count,(count-1)*3+3,signals[2])#check to see if this works for radar signals, may need to change the decode_message
 
             elif 'Float64' in rosmsg:
                 ##treat as a float64
