@@ -29,7 +29,15 @@ toyota_rav4 = {37:{'steering_angle':[['std_msgs::Float64'],['STEER_ANGLE']]},
 #honda list
 #nissan list
 nissan_rogue = {139:{'steering_angle':[['std_msgs::Float64'],['STEER_ANGLE']]},
-         303:{'vel':[['std_msgs::Float64'],['SPEED']]}
+         303:{'vel':[['std_msgs::Float64'],['SPEED']]},
+         771:{'sonar1A' : [['geometry_msgs::PointStamped'], ['SONAR1','SONAR2','SONAR3'] ],
+         'sonar1B' : [['geometry_msgs::PointStamped'], ['SONAR4','SONAR5','SONAR6'] ],
+         'sonar2A' : [['geometry_msgs::PointStamped'], ['SONAR7','SONAR8','SONAR9'] ],
+         'sonar2B' : [['geometry_msgs::PointStamped'], ['SONAR10','SONAR11','SONAR12'] ],
+         'sonar3A' : [['geometry_msgs::PointStamped'], ['SONAR13','SONAR14','SONAR15'] ],
+         'sonar3B' : [['geometry_msgs::PointStamped'], ['SONAR16','SONAR17','SONAR18'] ],
+         'sonar3C' : [['geometry_msgs::PointStamped'], ['SONAR19','SONAR20'] ]
+            }
          }
 
 pubslist = [toyota_rav4, nissan_rogue] #ordered list of dicts to become make/model JSONs
