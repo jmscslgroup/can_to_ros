@@ -157,7 +157,7 @@ def generatePrivatePubs(toROS):
 def buildCallbacks(toROS):
     """Use this function to generate the callbacks from the JSON"""
     # print('this is to ROS')
-    print(toROS)
+    # print(toROS)
     text = ""
     for canid in toROS:
         if len(text) > 0:
@@ -181,7 +181,7 @@ def buildCallbacks(toROS):
 
 
             if 'PointStamped' in rosmsg:
-                print(signals,len(signals))
+                # print(signals,len(signals))
                 ###treat as a pointstamped
                 text+= '\t\tmsg%d.header.frame_id = "front_laser_link";\n\
                 msg%d.header.stamp = ros::Time(std::stod(Time));\n'%(count,count)
@@ -309,6 +309,7 @@ f.close()
 #generating the C++ header file
 #TODO: for each key in the decoding dictionary, add text to the can_decode.h file
 text = ''
+print(toDecode)
 for i in toDecode.keys():
     msg, signals = getSignals(i,toDecode,dbc)
     text += decodeBuilder(msg, signals)
