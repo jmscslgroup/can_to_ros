@@ -21,6 +21,7 @@ def findDBC(vin_details):
             jsonfile = 'nissan_rogue.json'
             if int(vin_details['ModelYear']) >= 2021:
                 #TODO: figure out where the dbc files will be
+                # dbcfile = '/Users/mnice/Documents/GitHub/NissanCAN/nissan_can/nissan_rogue_2021.dbc'
                 dbcfile = '/home/circles/strym/strym/dbc/nissan_rogue_2021.dbc'
     print('the DBC is set as %s'%(dbcfile))
     return jsonfile, dbcfile
@@ -155,8 +156,8 @@ def generatePrivatePubs(toROS):
 
 def buildCallbacks(toROS):
     """Use this function to generate the callbacks from the JSON"""
-
-
+    # print('this is to ROS')
+    print(toROS)
     text = ""
     for canid in toROS:
         if len(text) > 0:
@@ -172,7 +173,7 @@ def buildCallbacks(toROS):
             text += call
         count = 0
         for rostopic in toROS[canid]:
-#             print(rostopic)
+            # print(rostopic)
             rosmsg = toROS[canid][rostopic][0][0]
             signals = toROS[canid][rostopic][1]
             count += 1
@@ -180,13 +181,20 @@ def buildCallbacks(toROS):
 
 
             if 'PointStamped' in rosmsg:
+                print(signals,len(signals))
                 ###treat as a pointstamped
                 text+= '\t\tmsg%d.header.frame_id = "front_laser_link";\n\
                 msg%d.header.stamp = ros::Time(std::stod(Time));\n'%(count,count)
 
-                text+= '\t\tmsg%d.point.x = data.var%d; //%s\n\
-                msg%d.point.y = data.var2; //%s\n\
-                msg%d.point.z = data.var3; //%s\n' %(count,(count-1)*3+1,signals[0],count,(count-1)*3+2,signals[1],count,(count-1)*3+3,signals[2])#check to see if this works for radar signals, may need to change the decode_message
+                if len(signals) == 3:
+                    text+= '\t\tmsg%d.point.x = data.var%d; //%s\n\
+                msg%d.point.y = data.var%d; //%s\n\
+                msg%d.point.z = data.var%d; //%s\n' %(count,(count-1)*3+1,signals[0],count,(count-1)*3+2,signals[1],count,(count-1)*3+3,signals[2])#check to see if this works for radar signals, may need to change the decode_message
+                elif len(signals) == 2:
+                    text+= '\t\tmsg%d.point.x = data.var%d; //%s\n\
+            msg%d.point.y = data.var%d; //%s\n' %(count,(count-1)*3+1,signals[0],count,(count-1)*3+2,signals[1])#check to see if this works for radar signals, may need to change the decode_message
+                elif len(signals) == 1:
+                    text+= '\t\tmsg%d.point.x = data.var%d; //%s\n' %(count,(count-1)*3+1,signals[0],count)#check to see if this works for radar signals, may need to change the decode_message
 
             elif 'Float64' in rosmsg:
                 ##treat as a float64
@@ -211,17 +219,21 @@ def buildCallbacks(toROS):
 
 def generateToDecode(toROS):
     """Using ROS node JSON/dictionary to generate decoding header json"""
-
+    temp = toROS
     decode = {}
-    for canid in toROS:
-#         print(toROS[canid])
-        for topic in toROS[canid]:
-#             print(toROS[canid][topic][1])
-            try:
-                decode[canid] += toROS[canid][topic][1]
-            except:
-                decode[canid] = toROS[canid][topic][1]
 
+    for canid in temp:
+#         print(toROS[canid])
+        counter = 1
+        for topic in temp[canid]:
+#             print(toROS[canid][topic][1])
+            # print('inside the for loop')
+            # print(toROS)
+            try:
+                decode[canid] += temp[canid][topic][counter]
+            except:
+                decode[canid] = temp[canid][topic][1]
+            counter += 1
 #             print(decode)
     return decode
 
@@ -287,8 +299,13 @@ f = open('./'+jsonfile)
 # returns JSON object as a dictionary
 print(jsonfile)
 toROS = json.load(f, object_hook=keystoint)
+# print('this is toROS before generateToDecode')
+# print(toROS)
 toDecode = generateToDecode(toROS)
 f.close()
+#
+# print('this is toROS after generateToDecode')
+# print(toROS)
 #generating the C++ header file
 #TODO: for each key in the decoding dictionary, add text to the can_decode.h file
 text = ''
@@ -309,10 +326,11 @@ file1.close()
 ########finished creating can_decode.h
 
 ###########Generating the subs_fs.cpp node ########
-
+# print('this is to ROS before buildNode')
+# print(toROS)
 text = ''
 text += buildNode(toROS)
-
+# print('buildNode complete')
 #TODO make into the real file
 file1 = open('../src/subs_fs_test.cpp', 'w')
 file2 = open('../src/subs_fs_base.cpp','r')
