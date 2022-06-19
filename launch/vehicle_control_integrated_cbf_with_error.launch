@@ -13,7 +13,7 @@
 <include file="$(find can_to_ros)launch/safety_checks.launch" />
 
 
-<include file="$(find can_to_ros)/launch/cbf_with_error_test.launch">
+<include file="$(find can_to_ros)/launch/cbftest_with_error.launch">
 	<arg name="hwil" value="true"/>
 	<arg name="readonly" value="false"/>
 	<arg name="k_timegap" value="0.1"/>
