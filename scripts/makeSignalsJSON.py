@@ -30,7 +30,7 @@ toyota_rav4 = {37:{'steering_angle':[['std_msgs::Float64'],['STEER_ANGLE']]},
 #nissan list
 nissan_rogue = {139:{'steering_angle':[['std_msgs::Float64'],['STEER_ANGLE']]},
          303:{'vel':[['std_msgs::Float64'],['SPEED']]},
-         381: {"radar_accels": [["geometry_msgs:PointStamped"], ["REL_ACCEL1","REL_ACCEL2","REL_ACCEL3"]],
+         381: {"radar_accels": [["geometry_msgs::PointStamped"], ["REL_ACCEL1","REL_ACCEL2","REL_ACCEL3"]],
          "radar_fourths": [["geometry_msgs::PointStamped"], ["FOURTH1","FOURTH2","FOURTH3"]],
          "radar_lead": [["geometry_msgs::PointStamped"], ["LEAD_DIST1","LEAD_DIST2","LEAD_DIST3"]],
          "radar_relvs": [["geometry_msgs::PointStamped"], ["REL_VEL1","REL_VEL2","REL_VEL3"]],
