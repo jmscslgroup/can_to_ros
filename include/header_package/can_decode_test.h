@@ -107,88 +107,89 @@ if (msg_id == 303){
 
 	return returnedVal;
 }
-if (msg_id == 381){
-	std::string raw1 = binary.substr(56,7); //REL_ACCEL1
+if (msg_id == 423){
+	std::string raw1 = binary.substr(85,12); //LEAD_DIST1
 	raw_dec = std::stoull(raw1, 0, 2);
-	scaled = (float)raw_dec * 1.000000 + 0.000000;
+	scaled = (float)raw_dec * 0.100000 + 0.000000;
 	returnedVal.var1 = scaled;
 
-	std::string raw2 = binary.substr(128,6); //REL_ACCEL2
+	std::string raw2 = binary.substr(123,1); //BUTTON_PRESS0
 	raw_dec = std::stoull(raw2, 0, 2);
 	scaled = (float)raw_dec * 1.000000 + 0.000000;
 	returnedVal.var2 = scaled;
 
-	std::string raw3 = binary.substr(200,6); //REL_ACCEL3
+	std::string raw3 = binary.substr(195,1); //BUTTON_PRESS1
 	raw_dec = std::stoull(raw3, 0, 2);
 	scaled = (float)raw_dec * 1.000000 + 0.000000;
 	returnedVal.var3 = scaled;
 
-	std::string raw4 = binary.substr(64,12); //FOURTH1
+	std::string raw4 = binary.substr(157,12); //LEAD_DIST2
 	raw_dec = std::stoull(raw4, 0, 2);
-	scaled = (float)raw_dec * 1.000000 + 0.000000;
+	scaled = (float)raw_dec * 0.100000 + 0.000000;
 	returnedVal.var4 = scaled;
 
-	std::string raw5 = binary.substr(135,13); //FOURTH2
+	std::string raw5 = binary.substr(229,12); //LEAD_DIST3
 	raw_dec = std::stoull(raw5, 0, 2);
-	scaled = (float)raw_dec * 1.000000 + 0.000000;
+	scaled = (float)raw_dec * 0.100000 + 0.000000;
 	returnedVal.var5 = scaled;
 
-	std::string raw6 = binary.substr(207,13); //FOURTH3
+	std::string raw6 = binary.substr(301,12); //LEAD_DIST4
 	raw_dec = std::stoull(raw6, 0, 2);
-	scaled = (float)raw_dec * 1.000000 + 0.000000;
+	scaled = (float)raw_dec * 0.100000 + 0.000000;
 	returnedVal.var6 = scaled;
 
-	std::string raw7 = binary.substr(85,12); //LEAD_DIST1
+	std::string raw7 = binary.substr(373,12); //LEAD_DIST5
 	raw_dec = std::stoull(raw7, 0, 2);
-	scaled = (float)raw_dec * 1.000000 + -4096.000000;
+	scaled = (float)raw_dec * 0.100000 + 0.000000;
 	returnedVal.var7 = scaled;
 
-	std::string raw8 = binary.substr(157,12); //LEAD_DIST2
+	std::string raw8 = binary.substr(445,12); //LEAD_DIST6
 	raw_dec = std::stoull(raw8, 0, 2);
-	scaled = (float)raw_dec * 1.000000 + -4096.000000;
+	scaled = (float)raw_dec * 0.100000 + 0.000000;
 	returnedVal.var8 = scaled;
 
-	std::string raw9 = binary.substr(229,12); //LEAD_DIST3
-	raw_dec = std::stoull(raw9, 0, 2);
-	scaled = (float)raw_dec * 1.000000 + -4096.000000;
-	returnedVal.var9 = scaled;
+	return returnedVal;
+}
+if (msg_id == 425){
+	std::string raw1 = binary.substr(85,12); //LEAD_DIST1
+	raw_dec = std::stoull(raw1, 0, 2);
+	scaled = (float)raw_dec * 0.100000 + 0.000000;
+	returnedVal.var1 = scaled;
 
-	std::string raw10 = binary.substr(100,11); //REL_VEL1
-float REL_VEL1_fl;
-        	if (raw10[0] == '0'){
-        	REL_VEL1_fl= std::stoul( raw10, 0, 2 );
-	}
-	else {
-        	REL_VEL1_fl = std::stoul(findTwosComplement(raw10), 0, 2);
-        	REL_VEL1_fl = REL_VEL1_fl * -1.0;
-        	}
-	scaled = REL_VEL1_fl * 0.200000 + 2.000000;
-	returnedVal.var10 = scaled;
-
-	std::string raw11 = binary.substr(170,13); //REL_VEL2
-	raw_dec = std::stoull(raw11, 0, 2);
+	std::string raw2 = binary.substr(123,1); //BUTTON_PRESS0
+	raw_dec = std::stoull(raw2, 0, 2);
 	scaled = (float)raw_dec * 1.000000 + 0.000000;
-	returnedVal.var11 = scaled;
+	returnedVal.var2 = scaled;
 
-	std::string raw12 = binary.substr(242,13); //REL_VEL3
-	raw_dec = std::stoull(raw12, 0, 2);
+	std::string raw3 = binary.substr(195,1); //BUTTON_PRESS1
+	raw_dec = std::stoull(raw3, 0, 2);
 	scaled = (float)raw_dec * 1.000000 + 0.000000;
-	returnedVal.var12 = scaled;
+	returnedVal.var3 = scaled;
 
-	std::string raw13 = binary.substr(123,1); //BUTTON_PRESS0
-	raw_dec = std::stoull(raw13, 0, 2);
-	scaled = (float)raw_dec * 1.000000 + 0.000000;
-	returnedVal.var13 = scaled;
+	std::string raw4 = binary.substr(157,12); //LEAD_DIST2
+	raw_dec = std::stoull(raw4, 0, 2);
+	scaled = (float)raw_dec * 0.100000 + 0.000000;
+	returnedVal.var4 = scaled;
 
-	std::string raw14 = binary.substr(195,1); //BUTTON_PRESS1
-	raw_dec = std::stoull(raw14, 0, 2);
-	scaled = (float)raw_dec * 1.000000 + 0.000000;
-	returnedVal.var14 = scaled;
+	std::string raw5 = binary.substr(229,12); //LEAD_DIST3
+	raw_dec = std::stoull(raw5, 0, 2);
+	scaled = (float)raw_dec * 0.100000 + 0.000000;
+	returnedVal.var5 = scaled;
 
-	std::string raw15 = binary.substr(267,1); //BUTTON_PRESS2
-	raw_dec = std::stoull(raw15, 0, 2);
-	scaled = (float)raw_dec * 1.000000 + 0.000000;
-	returnedVal.var15 = scaled;
+	std::string raw6 = binary.substr(301,12); //LEAD_DIST4
+	raw_dec = std::stoull(raw6, 0, 2);
+	scaled = (float)raw_dec * 0.100000 + 0.000000;
+	returnedVal.var6 = scaled;
+
+	std::string raw7 = binary.substr(373,12); //LEAD_DIST5
+	raw_dec = std::stoull(raw7, 0, 2);
+	scaled = (float)raw_dec * 0.100000 + 0.000000;
+	returnedVal.var7 = scaled;
+
+	std::string raw8 = binary.substr(445,12); //LEAD_DIST6
+	raw_dec = std::stoull(raw8, 0, 2);
+	scaled = (float)raw_dec * 0.100000 + 0.000000;
+	returnedVal.var8 = scaled;
 
 	return returnedVal;
 }

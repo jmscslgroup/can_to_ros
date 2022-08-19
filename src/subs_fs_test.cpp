@@ -21,11 +21,18 @@ public:
   {
 	steering_angle_pub = n_.advertise<std_msgs::Float64>("steering_angle",1000);
 	vel_pub = n_.advertise<std_msgs::Float64>("vel",1000);
-	radar_accels_pub = n_.advertise<geometry_msgs::PointStamped>("radar_accels",1000);
-	radar_fourths_pub = n_.advertise<geometry_msgs::PointStamped>("radar_fourths",1000);
-	radar_lead_pub = n_.advertise<geometry_msgs::PointStamped>("radar_lead",1000);
-	radar_relvs_pub = n_.advertise<geometry_msgs::PointStamped>("radar_relvs",1000);
-	radar_states_pub = n_.advertise<geometry_msgs::PointStamped>("radar_states",1000);
+	side_radar_track1_pub = n_.advertise<geometry_msgs::PointStamped>("side_radar_track1",1000);
+	side_radar_track2_pub = n_.advertise<geometry_msgs::PointStamped>("side_radar_track2",1000);
+	side_radar_track3_pub = n_.advertise<geometry_msgs::PointStamped>("side_radar_track3",1000);
+	side_radar_track4_pub = n_.advertise<geometry_msgs::PointStamped>("side_radar_track4",1000);
+	side_radar_track5_pub = n_.advertise<geometry_msgs::PointStamped>("side_radar_track5",1000);
+	side_radar_track6_pub = n_.advertise<geometry_msgs::PointStamped>("side_radar_track6",1000);
+	side_radar_track8_pub = n_.advertise<geometry_msgs::PointStamped>("side_radar_track8",1000);
+	side_radar_track9_pub = n_.advertise<geometry_msgs::PointStamped>("side_radar_track9",1000);
+	side_radar_track10_pub = n_.advertise<geometry_msgs::PointStamped>("side_radar_track10",1000);
+	side_radar_track11_pub = n_.advertise<geometry_msgs::PointStamped>("side_radar_track11",1000);
+	side_radar_track12_pub = n_.advertise<geometry_msgs::PointStamped>("side_radar_track12",1000);
+	side_radar_track13_pub = n_.advertise<geometry_msgs::PointStamped>("side_radar_track13",1000);
 	sonar1A_pub = n_.advertise<geometry_msgs::PointStamped>("sonar1A",1000);
 	sonar1B_pub = n_.advertise<geometry_msgs::PointStamped>("sonar1B",1000);
 	sonar2A_pub = n_.advertise<geometry_msgs::PointStamped>("sonar2A",1000);
@@ -57,48 +64,88 @@ public:
 		vel_pub.publish(msg1);
 
 	}
-	else if (MessageID == 381)
+	else if (MessageID == 423)
 	{
 		data = obj.decode_message (MessageID, Message);
 		geometry_msgs::PointStamped msg1;
 		msg1.header.frame_id = "front_laser_link";
                 msg1.header.stamp = ros::Time(std::stod(Time));
-		msg1.point.x = data.var1; //REL_ACCEL1
-                msg1.point.y = data.var2; //REL_ACCEL2
-                msg1.point.z = data.var3; //REL_ACCEL3
-		radar_accels_pub.publish(msg1);
+		msg1.point.x = data.var1; //LEAD_DIST1
+                msg1.point.y = data.var2; //BUTTON_PRESS0
+                msg1.point.z = data.var3; //BUTTON_PRESS1
+		side_radar_track1_pub.publish(msg1);
 
 		geometry_msgs::PointStamped msg2;
 		msg2.header.frame_id = "front_laser_link";
                 msg2.header.stamp = ros::Time(std::stod(Time));
-		msg2.point.x = data.var4; //FOURTH1
-                msg2.point.y = data.var5; //FOURTH2
-                msg2.point.z = data.var6; //FOURTH3
-		radar_fourths_pub.publish(msg2);
+		msg2.point.x = data.var4; //LEAD_DIST2
+		side_radar_track2_pub.publish(msg2);
 
 		geometry_msgs::PointStamped msg3;
 		msg3.header.frame_id = "front_laser_link";
                 msg3.header.stamp = ros::Time(std::stod(Time));
-		msg3.point.x = data.var7; //LEAD_DIST1
-                msg3.point.y = data.var8; //LEAD_DIST2
-                msg3.point.z = data.var9; //LEAD_DIST3
-		radar_lead_pub.publish(msg3);
+		msg3.point.x = data.var7; //LEAD_DIST3
+		side_radar_track3_pub.publish(msg3);
 
 		geometry_msgs::PointStamped msg4;
 		msg4.header.frame_id = "front_laser_link";
                 msg4.header.stamp = ros::Time(std::stod(Time));
-		msg4.point.x = data.var10; //REL_VEL1
-                msg4.point.y = data.var11; //REL_VEL2
-                msg4.point.z = data.var12; //REL_VEL3
-		radar_relvs_pub.publish(msg4);
+		msg4.point.x = data.var10; //LEAD_DIST4
+		side_radar_track4_pub.publish(msg4);
 
 		geometry_msgs::PointStamped msg5;
 		msg5.header.frame_id = "front_laser_link";
                 msg5.header.stamp = ros::Time(std::stod(Time));
-		msg5.point.x = data.var13; //BUTTON_PRESS0
-                msg5.point.y = data.var14; //BUTTON_PRESS1
-                msg5.point.z = data.var15; //BUTTON_PRESS2
-		radar_states_pub.publish(msg5);
+		msg5.point.x = data.var13; //LEAD_DIST5
+		side_radar_track5_pub.publish(msg5);
+
+		geometry_msgs::PointStamped msg6;
+		msg6.header.frame_id = "front_laser_link";
+                msg6.header.stamp = ros::Time(std::stod(Time));
+		msg6.point.x = data.var16; //LEAD_DIST6
+		side_radar_track6_pub.publish(msg6);
+
+	}
+	else if (MessageID == 425)
+	{
+		data = obj.decode_message (MessageID, Message);
+		geometry_msgs::PointStamped msg1;
+		msg1.header.frame_id = "front_laser_link";
+                msg1.header.stamp = ros::Time(std::stod(Time));
+		msg1.point.x = data.var1; //LEAD_DIST1
+                msg1.point.y = data.var2; //BUTTON_PRESS0
+                msg1.point.z = data.var3; //BUTTON_PRESS1
+		side_radar_track8_pub.publish(msg1);
+
+		geometry_msgs::PointStamped msg2;
+		msg2.header.frame_id = "front_laser_link";
+                msg2.header.stamp = ros::Time(std::stod(Time));
+		msg2.point.x = data.var4; //LEAD_DIST2
+		side_radar_track9_pub.publish(msg2);
+
+		geometry_msgs::PointStamped msg3;
+		msg3.header.frame_id = "front_laser_link";
+                msg3.header.stamp = ros::Time(std::stod(Time));
+		msg3.point.x = data.var7; //LEAD_DIST3
+		side_radar_track10_pub.publish(msg3);
+
+		geometry_msgs::PointStamped msg4;
+		msg4.header.frame_id = "front_laser_link";
+                msg4.header.stamp = ros::Time(std::stod(Time));
+		msg4.point.x = data.var10; //LEAD_DIST4
+		side_radar_track11_pub.publish(msg4);
+
+		geometry_msgs::PointStamped msg5;
+		msg5.header.frame_id = "front_laser_link";
+                msg5.header.stamp = ros::Time(std::stod(Time));
+		msg5.point.x = data.var13; //LEAD_DIST5
+		side_radar_track12_pub.publish(msg5);
+
+		geometry_msgs::PointStamped msg6;
+		msg6.header.frame_id = "front_laser_link";
+                msg6.header.stamp = ros::Time(std::stod(Time));
+		msg6.point.x = data.var16; //LEAD_DIST6
+		side_radar_track13_pub.publish(msg6);
 
 	}
 	else if (MessageID == 771)
@@ -165,11 +212,18 @@ private:
 	ros::NodeHandle n_;
 	ros::Publisher steering_angle_pub;
 	ros::Publisher vel_pub;
-	ros::Publisher radar_accels_pub;
-	ros::Publisher radar_fourths_pub;
-	ros::Publisher radar_lead_pub;
-	ros::Publisher radar_relvs_pub;
-	ros::Publisher radar_states_pub;
+	ros::Publisher side_radar_track1_pub;
+	ros::Publisher side_radar_track2_pub;
+	ros::Publisher side_radar_track3_pub;
+	ros::Publisher side_radar_track4_pub;
+	ros::Publisher side_radar_track5_pub;
+	ros::Publisher side_radar_track6_pub;
+	ros::Publisher side_radar_track8_pub;
+	ros::Publisher side_radar_track9_pub;
+	ros::Publisher side_radar_track10_pub;
+	ros::Publisher side_radar_track11_pub;
+	ros::Publisher side_radar_track12_pub;
+	ros::Publisher side_radar_track13_pub;
 	ros::Publisher sonar1A_pub;
 	ros::Publisher sonar1B_pub;
 	ros::Publisher sonar2A_pub;
