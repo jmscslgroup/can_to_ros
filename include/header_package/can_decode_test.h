@@ -140,17 +140,17 @@ if (msg_id == 381){
 
 	std::string raw7 = binary.substr(85,12); //LEAD_DIST1
 	raw_dec = std::stoull(raw7, 0, 2);
-	scaled = (float)raw_dec * 1.000000 + 0.000000;
+	scaled = (float)raw_dec * 1.000000 + -4096.000000;
 	returnedVal.var7 = scaled;
 
 	std::string raw8 = binary.substr(157,12); //LEAD_DIST2
 	raw_dec = std::stoull(raw8, 0, 2);
-	scaled = (float)raw_dec * 1.000000 + 0.000000;
+	scaled = (float)raw_dec * 1.000000 + -4096.000000;
 	returnedVal.var8 = scaled;
 
 	std::string raw9 = binary.substr(229,12); //LEAD_DIST3
 	raw_dec = std::stoull(raw9, 0, 2);
-	scaled = (float)raw_dec * 1.000000 + 0.000000;
+	scaled = (float)raw_dec * 1.000000 + -4096.000000;
 	returnedVal.var9 = scaled;
 
 	std::string raw10 = binary.substr(100,11); //REL_VEL1
