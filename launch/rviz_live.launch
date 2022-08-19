@@ -1,0 +1,23 @@
+<launch>
+<arg name="time" />
+<arg name="robot_name" default="catvehicle" />
+
+<group ns="catvehicle">
+
+<!--param name="robot_description"
+         command="$(find xacro)/xacro.py '$(find can_to_ros)/urdf/catvehicle.xacro' roboname:='catvehicle'" /-->
+
+<param name="robot_description"
+         command="$(find xacro)/xacro '$(find can_to_ros)/urdf/catvehicle.xacro' roboname:='catvehicle'" />
+
+
+<!-- get xml file from the urdf folder -->
+<param name="$(arg robot_name)/robot_description" command="cat $(find can_to_ros)/urdf/catvehicle_urdf.xml"/>
+
+
+<node pkg="rviz" type="rviz" name="rviz" args="-d $(find can_to_ros)/config/radar_traces_live.rviz" />
+
+
+</group>
+
+</launch>
