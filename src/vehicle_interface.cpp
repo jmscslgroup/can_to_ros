@@ -177,7 +177,7 @@ private:
 		std_msgs::String msgs;
     	msgs.data = messageString;
 		
-		if (canData->messageID == 180 || canData->messageID == 37 || canData->messageID== 1570 
+		if (canData->messageID == 139 || canData->messageID == 37 || canData->messageID== 1570 
 		    || canData->messageID== 869 || (canData->messageID>= 384 && canData->messageID<=399 ) 
 			|| canData->messageID== 552 || canData->messageID== 921 || canData->messageID== 467 )
 		{
@@ -286,7 +286,7 @@ int main(int argc, char **argv) {
 
 	// Initialize panda and toyota handlers
 	ROS_INFO("Starting ToyotaHandler...");
-	toyotaHandler.start();
+	//toyotaHandler.start();
 
 	
 	ROS_INFO("Starting Control relay...");

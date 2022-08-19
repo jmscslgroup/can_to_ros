@@ -45,8 +45,8 @@ private:
 	
 	
 	void newDataNotification( Panda::CanFrame* canData ) {
-	char messageString[200];
-	char messageTofile[200];
+	char messageString[20000];
+	char messageTofile[20000];
 		sprintf( messageString, "%d.%06d ", (unsigned int)0, (int)0);
 		sprintf( messageString,"%s%d %d ", messageString, (int)canData->bus, canData->messageID);
 		for (int i = 0; i < canData->dataLength; i++) {
@@ -57,8 +57,8 @@ private:
 		std_msgs::String msgs;
     	msgs.data = messageString;
 		
-		if (canData->messageID == 180 || canData->messageID == 37 || canData->messageID== 1570 
-		    || canData->messageID== 869 || (canData->messageID>= 384 && canData->messageID<=399 ) || canData->messageID== 552 )
+		if (canData->messageID == 139 || canData->messageID == 303 || canData->messageID== 771
+		    || canData->messageID== 869 || canData->messageID == 381)
 		{
 			pub_.publish(msgs);
 		}

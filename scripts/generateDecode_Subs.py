@@ -181,12 +181,12 @@ def buildCallbacks(toROS):
 
 
             if 'PointStamped' in rosmsg:
-                # print(signals,len(signals))
+                print(signals,len(signals))
                 ###treat as a pointstamped
                 text+= '\t\tmsg%d.header.frame_id = "front_laser_link";\n\
                 msg%d.header.stamp = ros::Time(std::stod(Time));\n'%(count,count)
 
-                if len(signals) == 3:
+                if len(signals) >= 3: #this is a bad fix to a msg specified with more than 3 values, when 3 is max
                     text+= '\t\tmsg%d.point.x = data.var%d; //%s\n\
                 msg%d.point.y = data.var%d; //%s\n\
                 msg%d.point.z = data.var%d; //%s\n' %(count,(count-1)*3+1,signals[0],count,(count-1)*3+2,signals[1],count,(count-1)*3+3,signals[2])#check to see if this works for radar signals, may need to change the decode_message
@@ -230,8 +230,10 @@ def generateToDecode(toROS):
             # print('inside the for loop')
             # print(toROS)
             try:
-                decode[canid] += temp[canid][topic][counter]
+                decode[canid] += temp[canid][topic][1]
             except:
+                print('I am in except')
+                print(temp[canid][topic][1])
                 decode[canid] = temp[canid][topic][1]
             counter += 1
 #             print(decode)
@@ -257,7 +259,7 @@ def generateMain(toROS):
     text = ''
 
     text +='int main(int argc, char **argv){\n\
-\tros::init(argc, argv, "subs_fs");\n\
+\tros::init(argc, argv, "subs_fs_test");\n\
 \tros::NodeHandle nh1;\n\
 \tSubscribeAndPublish SAPObject;\n\
 \tros::spin();\n\
