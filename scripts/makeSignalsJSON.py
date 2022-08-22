@@ -54,7 +54,21 @@ nissan_rogue = {139:{'steering_angle':[['std_msgs::Float64'],['STEER_ANGLE']]},
             }
          }
 
-
+nissan_rogue = {
+	 427: {"bytes0": [["geometry_msgs::PointStamped"], ["BYTES0"]],
+        "bytes1": [["geometry_msgs::PointStamped"], ["BYTES4"]],
+        "bytes2": [["geometry_msgs::PointStamped"], ["BYTES8"]],
+        "bytes3": [["geometry_msgs::PointStamped"], ["BYTES12"]],
+        "bytes4": [["geometry_msgs::PointStamped"], ["BYTES16"]],
+        "bytes5": [["geometry_msgs::PointStamped"], ["BYTES20"]],
+        "bytes6": [["geometry_msgs::PointStamped"], ["BYTES24"]],
+        "bytes7": [["geometry_msgs::PointStamped"], ["BYTES28"]],
+        "bytes8": [["geometry_msgs::PointStamped"], ["BYTES32"]],
+        "bytes9": [["geometry_msgs::PointStamped"], ["BYTES36"]],
+        "bytes10": [["geometry_msgs::PointStamped"], ["BYTES40"]],
+        "bytes11": [["geometry_msgs::PointStamped"], ["BYTES44"]]
+         }
+    }
 
 pubslist = [toyota_rav4, nissan_rogue] #ordered list of dicts to become make/model JSONs
 
