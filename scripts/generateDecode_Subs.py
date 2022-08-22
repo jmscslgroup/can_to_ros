@@ -155,7 +155,7 @@ def generatePrivatePubs(toROS):
 
     return text
 
-def buildCallbacks(toROS):
+def buildCallbacks(toROS):##add varNum?
     """Use this function to generate the callbacks from the JSON"""
     # print('this is to ROS')
     # print(toROS)
@@ -196,7 +196,7 @@ def buildCallbacks(toROS):
             msg%d.point.y = data.var%d; //%s\n' %(count,(count-1)*3+1,signals[0],count,(count-1)*3+2,signals[1])#check to see if this works for radar signals, may need to change the decode_message
                 elif len(signals) == 1:
                     #text+= '\t\tmsg%d.point.x = data.var%d; //%s\n' %(count,(count-1)*3+1,signals[0],count)#check to see if this works for radar signals, may need to change the decode_message
-                    text+= '\t\tmsg%d.point.x = data.var%d; //%s\n' %(count,(count-1)*3+1,signals[0])#check to see if this works for radar signals, may need to change the decode_message
+                    text+= '\t\tmsg%d.point.x = data.var%d; //%s\n' %(count,count,signals[0])#check to see if this works for radar signals, may need to change the decode_message
 
             elif 'Float64' in rosmsg:
                 ##treat as a float64
