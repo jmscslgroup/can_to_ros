@@ -42,8 +42,8 @@ private:
 	ros::Publisher pub_;
 	std::stringstream ss;
 	std::ofstream csvfile;
-	
-	
+
+
 	void newDataNotification( Panda::CanFrame* canData ) {
 	char messageString[200000];
 	char messageTofile[200000];
@@ -53,22 +53,22 @@ private:
 			sprintf( messageString, "%s%02x", messageString, canData->data[i]);
 		}
 		sprintf( messageString, "%s %d", messageString, canData->dataLength);
-		
+
 		std_msgs::String msgs;
     	msgs.data = messageString;
-		
+
 		if (canData->messageID == 139 || canData->messageID == 303 || canData->messageID== 771
-		    || canData->messageID== 869 
-		  //  || canData->messageID == 381 
-		  //  || canData->messageID == 382 
-		  //  || canData->messageID == 385 
-		  //  || canData->messageID == 386 
-		  //  || canData->messageID == 389 
-		  //  || canData->messageID == 390 
-		  //  || canData->messageID == 393 
-		  //  || canData->messageID == 394 
-		  //  || canData->messageID == 398 
-		  //  || canData->messageID == 399 
+		    || canData->messageID== 869
+		  //  || canData->messageID == 381
+		  //  || canData->messageID == 382
+		  //  || canData->messageID == 385
+		  //  || canData->messageID == 386
+		  //  || canData->messageID == 389
+		  //  || canData->messageID == 390
+		  //  || canData->messageID == 393
+		  //  || canData->messageID == 394
+		  //  || canData->messageID == 398
+		  //  || canData->messageID == 399
 		  //  || canData->messageID == 405
 		  //  || canData->messageID == 407
 		  //  || canData->messageID == 411
@@ -77,8 +77,12 @@ private:
 		  //  || canData->messageID == 416
 		  //  || canData->messageID == 419
 		  //  || canData->messageID == 420
-		    || canData->messageID == 423
-		    || canData->messageID == 425
+		    || canData->messageID == 923
+		    || canData->messageID == 924
+				|| canData->messageID == 936
+		    // || canData->messageID == 951
+				// || canData->messageID == 954
+		    // || canData->messageID == 958
 			)
 		{
 			pub_.publish(msgs);
@@ -93,7 +97,7 @@ private:
 		// csvfile << messageTofile << std::endl;
 
 	}
-	
+
 public:
 	CanToRosPublisher() {
 		// std::time_t t=time(0);
@@ -101,16 +105,16 @@ public:
 		// char buffer [256];
 		// strftime (buffer,80,"%Y-%m-%d-%X.csv",now);
 		// std::string filename=buffer;
-		// std::replace(filename.begin(), filename.end(), ':', '-'); 
+		// std::replace(filename.begin(), filename.end(), ':', '-');
         // cout << filename << std::endl;
 		pub_ = nh1.advertise<std_msgs::String>("/realtime_raw_data", 1000);
 
 		//FIXME: use libpanda to create CAN and GPS files
-		// csvfile.open(filename); 
+		// csvfile.open(filename);
 		// csvfile <<"Time" << ","<< "Bus" << "," << "MessageID" << "," << "Message" << ","<< "MessageLength" << std::endl;
 
 	}
-	
+
 };
 // A simple concrete instance of a GPS listener
 /*
@@ -138,15 +142,15 @@ int main(int argc, char **argv) {
 	//SimpleGpsObserver myGpsObserver;
 	// Initialize Usb, this requires a connected Panda
 	Panda::Handler pandaHandler;
-	
+
 	pandaHandler.addCanObserver(canToRosPublisher);
 	//pandaHandler.addGpsObserver(myGpsObserver);
 	// Let's roll
 	pandaHandler.initialize();
-	
+
 	// Let ROS do its thing:
 	ros::spin();
-	
+
 	// Cleanly close USB device
 	pandaHandler.stop();
 	return 0;

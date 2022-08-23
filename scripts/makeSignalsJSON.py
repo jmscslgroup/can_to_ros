@@ -28,47 +28,64 @@ toyota_rav4 = {37:{'steering_angle':[['std_msgs::Float64'],['STEER_ANGLE']]},
 }
 #honda list
 #nissan list
+# nissan_rogue = {139:{'steering_angle':[['std_msgs::Float64'],['STEER_ANGLE']]},
+#          303:{'vel':[['std_msgs::Float64'],['SPEED']]},
+#          423: {"side_radar_track1": [["geometry_msgs::PointStamped"], ["LEAD_DIST1","BUTTON_PRESS0","BUTTON_PRESS1"]],
+#          "side_radar_track2": [["geometry_msgs::PointStamped"], ["LEAD_DIST2"]],
+#          "side_radar_track3": [["geometry_msgs::PointStamped"], ["LEAD_DIST3"]],
+#          "side_radar_track4": [["geometry_msgs::PointStamped"], ["LEAD_DIST4"]],
+#          "side_radar_track5": [["geometry_msgs::PointStamped"], ["LEAD_DIST5"]],
+#          "side_radar_track6": [["geometry_msgs::PointStamped"], ["LEAD_DIST6"]],
+#          },
+# 	 425: {"side_radar_track8": [["geometry_msgs::PointStamped"], ["LEAD_DIST1","BUTTON_PRESS0","BUTTON_PRESS1"]],
+#          "side_radar_track9": [["geometry_msgs::PointStamped"], ["LEAD_DIST2"]],
+#          "side_radar_track10": [["geometry_msgs::PointStamped"], ["LEAD_DIST3"]],
+#          "side_radar_track11": [["geometry_msgs::PointStamped"], ["LEAD_DIST4"]],
+#          "side_radar_track12": [["geometry_msgs::PointStamped"], ["LEAD_DIST5"]],
+#          "side_radar_track13": [["geometry_msgs::PointStamped"], ["LEAD_DIST6"]],
+#          },
+#          771:{'sonar1A' : [['geometry_msgs::PointStamped'], ['SONAR1','SONAR2','SONAR3'] ],
+#          'sonar1B' : [['geometry_msgs::PointStamped'], ['SONAR4','SONAR5','SONAR6'] ],
+#          'sonar2A' : [['geometry_msgs::PointStamped'], ['SONAR7','SONAR8','SONAR9'] ],
+#          'sonar2B' : [['geometry_msgs::PointStamped'], ['SONAR10','SONAR11','SONAR12'] ],
+#          'sonar3A' : [['geometry_msgs::PointStamped'], ['SONAR13','SONAR14','SONAR15'] ],
+#          'sonar3B' : [['geometry_msgs::PointStamped'], ['SONAR16','SONAR17','SONAR18'] ],
+#          'sonar3C' : [['geometry_msgs::PointStamped'], ['SONAR19','SONAR20'] ]
+#             }
+#          }
 nissan_rogue = {139:{'steering_angle':[['std_msgs::Float64'],['STEER_ANGLE']]},
          303:{'vel':[['std_msgs::Float64'],['SPEED']]},
-         423: {"side_radar_track1": [["geometry_msgs::PointStamped"], ["LEAD_DIST1","BUTTON_PRESS0","BUTTON_PRESS1"]],
-         "side_radar_track2": [["geometry_msgs::PointStamped"], ["LEAD_DIST2"]],
-         "side_radar_track3": [["geometry_msgs::PointStamped"], ["LEAD_DIST3"]],
-         "side_radar_track4": [["geometry_msgs::PointStamped"], ["LEAD_DIST4"]],
-         "side_radar_track5": [["geometry_msgs::PointStamped"], ["LEAD_DIST5"]],
-         "side_radar_track6": [["geometry_msgs::PointStamped"], ["LEAD_DIST6"]],
+         923: {"front_radar_track1": [["geometry_msgs::PointStamped"], ["SIG1_LEAD"]],
+         "front_radar_track2": [["geometry_msgs::PointStamped"], ["SIG2_VEL"]],
+         "front_radar_track3": [["geometry_msgs::PointStamped"], ["SIG3_ANGLEH"]],
+         "front_radar_track4": [["geometry_msgs::PointStamped"], ["SIG4_ANGLEV"]],
          },
-	 425: {"side_radar_track8": [["geometry_msgs::PointStamped"], ["LEAD_DIST1","BUTTON_PRESS0","BUTTON_PRESS1"]],
-         "side_radar_track9": [["geometry_msgs::PointStamped"], ["LEAD_DIST2"]],
-         "side_radar_track10": [["geometry_msgs::PointStamped"], ["LEAD_DIST3"]],
-         "side_radar_track11": [["geometry_msgs::PointStamped"], ["LEAD_DIST4"]],
-         "side_radar_track12": [["geometry_msgs::PointStamped"], ["LEAD_DIST5"]],
-         "side_radar_track13": [["geometry_msgs::PointStamped"], ["LEAD_DIST6"]],
+         924: {"front_radar_track1": [["geometry_msgs::PointStamped"], ["SIG1_LEAD"]],
+         "front_radar_track2": [["geometry_msgs::PointStamped"], ["SIG2_VEL"]],
+         "front_radar_track3": [["geometry_msgs::PointStamped"], ["SIG3_ANGLEH"]],
+         "front_radar_track4": [["geometry_msgs::PointStamped"], ["SIG4_ANGLEV"]],
          },
-         771:{'sonar1A' : [['geometry_msgs::PointStamped'], ['SONAR1','SONAR2','SONAR3'] ],
-         'sonar1B' : [['geometry_msgs::PointStamped'], ['SONAR4','SONAR5','SONAR6'] ],
-         'sonar2A' : [['geometry_msgs::PointStamped'], ['SONAR7','SONAR8','SONAR9'] ],
-         'sonar2B' : [['geometry_msgs::PointStamped'], ['SONAR10','SONAR11','SONAR12'] ],
-         'sonar3A' : [['geometry_msgs::PointStamped'], ['SONAR13','SONAR14','SONAR15'] ],
-         'sonar3B' : [['geometry_msgs::PointStamped'], ['SONAR16','SONAR17','SONAR18'] ],
-         'sonar3C' : [['geometry_msgs::PointStamped'], ['SONAR19','SONAR20'] ]
-            }
+         936: {"front_radar_track1": [["geometry_msgs::PointStamped"], ["SIG1_LEAD"]],
+         "front_radar_track2": [["geometry_msgs::PointStamped"], ["SIG2_VEL"]],
+         "front_radar_track3": [["geometry_msgs::PointStamped"], ["SIG3_ANGLEH"]],
+         "front_radar_track4": [["geometry_msgs::PointStamped"], ["SIG4_ANGLEV"]],
          }
-
-nissan_rogue = {
-	 427: {"bytes0": [["geometry_msgs::PointStamped"], ["BYTES0"]],
-        "bytes1": [["geometry_msgs::PointStamped"], ["BYTES4"]],
-        "bytes2": [["geometry_msgs::PointStamped"], ["BYTES8"]],
-        "bytes3": [["geometry_msgs::PointStamped"], ["BYTES12"]],
-        "bytes4": [["geometry_msgs::PointStamped"], ["BYTES16"]],
-        "bytes5": [["geometry_msgs::PointStamped"], ["BYTES20"]],
-        "bytes6": [["geometry_msgs::PointStamped"], ["BYTES24"]],
-        "bytes7": [["geometry_msgs::PointStamped"], ["BYTES28"]],
-        "bytes8": [["geometry_msgs::PointStamped"], ["BYTES32"]],
-        "bytes9": [["geometry_msgs::PointStamped"], ["BYTES36"]],
-        "bytes10": [["geometry_msgs::PointStamped"], ["BYTES40"]],
-        "bytes11": [["geometry_msgs::PointStamped"], ["BYTES44"]]
-         }
-    }
+         } #others are 951,954,958
+# nissan_rogue = {
+# 	 427: {"bytes0": [["geometry_msgs::PointStamped"], ["BYTES0"]],
+#         "bytes1": [["geometry_msgs::PointStamped"], ["BYTES4"]],
+#         "bytes2": [["geometry_msgs::PointStamped"], ["BYTES8"]],
+#         "bytes3": [["geometry_msgs::PointStamped"], ["BYTES12"]],
+#         "bytes4": [["geometry_msgs::PointStamped"], ["BYTES16"]],
+#         "bytes5": [["geometry_msgs::PointStamped"], ["BYTES20"]],
+#         "bytes6": [["geometry_msgs::PointStamped"], ["BYTES24"]],
+#         "bytes7": [["geometry_msgs::PointStamped"], ["BYTES28"]],
+#         "bytes8": [["geometry_msgs::PointStamped"], ["BYTES32"]],
+#         "bytes9": [["geometry_msgs::PointStamped"], ["BYTES36"]],
+#         "bytes10": [["geometry_msgs::PointStamped"], ["BYTES40"]],
+#         "bytes11": [["geometry_msgs::PointStamped"], ["BYTES44"]]
+#          }
+#     }
 
 pubslist = [toyota_rav4, nissan_rogue] #ordered list of dicts to become make/model JSONs
 
