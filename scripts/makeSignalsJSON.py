@@ -55,7 +55,7 @@ toyota_rav4 = {37:{'steering_angle':[['std_msgs::Float64'],['STEER_ANGLE']]},
 #          }
 nissan_rogue = {139:{'steering_angle':[['std_msgs::Float64'],['STEER_ANGLE']]},
          303:{'vel':[['std_msgs::Float64'],['SPEED']]},
-         308:{'cruise_state':[['std_msgs::Float64'],['CRUISE_STATE']]}},
+         308:{'cruise_state':[['std_msgs::Float64'],['CRUISE_STATE']]},
          1119:{'acc_btns':[['std_msgs::Float64'],['ACC_BTNS']],
          'unknown_btns':[['std_msgs::Float64'],['SIGNAL1']],
          'lkas_btn':[['std_msgs::Float64'],['LKAS_LDW_ON']]
