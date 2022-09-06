@@ -85,7 +85,7 @@ private:
 		    // || canData->messageID == 958
 				|| canData->messageID == 1119
 		    || canData->messageID == 1487
-				|| canData->messageID == 308
+				|| (canData->messageID == 308 & canData->dataLength == 64)
 			)
 		{
 			pub_.publish(msgs);
