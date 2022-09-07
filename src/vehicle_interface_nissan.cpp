@@ -280,6 +280,8 @@ int main(int argc, char **argv) {
 	const char filenameGpsStatus[] = "/etc/libpanda.d/pandaHaveGPS";
 	writeToFileThenClose(filenameGpsStatus, "-1\n");
 
+  // toyota controller structure:
+	Panda::Handler pandaHandler;
 
 	double epsilon = 0.2;	// If system time is off from GPS time by this amount, update time.
 	Panda::SetSystemTimeObserver mSetSystemTimeObserver(epsilon);
@@ -296,8 +298,6 @@ int main(int argc, char **argv) {
 	ROS_INFO("Starting CanToRosPublisher...");
   CanToRosPublisher canToRosPublisher;
 	// CanToRosPublisher canToRosPublisher(&nh, &toyotaHandler);
-  // toyota controller structure:
-	Panda::Handler pandaHandler;
 
 	// ROS_INFO("Connecting  PandaStatusPublisher...");
 	// PandaStatusPublisher mPandaStatusPublisher(&nh);
