@@ -148,6 +148,7 @@ int main(int argc, char **argv) {
 
 	pandaHandler.addCanObserver(canToRosPublisher);
 	//pandaHandler.addGpsObserver(myGpsObserver);
+
 	// Let's roll
 	pandaHandler.initialize();
 
