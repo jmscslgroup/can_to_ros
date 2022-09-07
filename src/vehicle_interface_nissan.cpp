@@ -281,9 +281,6 @@ int main(int argc, char **argv) {
 	writeToFileThenClose(filenameGpsStatus, "-1\n");
 
 
-	// toyota controller structure:
-	Panda::Handler pandaHandler;
-
 	double epsilon = 0.2;	// If system time is off from GPS time by this amount, update time.
 	Panda::SetSystemTimeObserver mSetSystemTimeObserver(epsilon);
 	pandaHandler.addGpsObserver(mSetSystemTimeObserver);
@@ -294,15 +291,13 @@ int main(int argc, char **argv) {
 	// Panda::ToyotaHandler toyotaHandler(&pandaHandler);
 //	pandaHandler.getCan().addObserver(&toyotaHandler);
 
-	ROS_INFO("Initializing PandaHandler...");
-	pandaHandler.initialize();
-
 
     // Initialize Libpanda with ROS publisher:
 	ROS_INFO("Starting CanToRosPublisher...");
   CanToRosPublisher canToRosPublisher;
 	// CanToRosPublisher canToRosPublisher(&nh, &toyotaHandler);
-
+  // toyota controller structure:
+	Panda::Handler pandaHandler;
 
 	// ROS_INFO("Connecting  PandaStatusPublisher...");
 	// PandaStatusPublisher mPandaStatusPublisher(&nh);
@@ -317,7 +312,8 @@ int main(int argc, char **argv) {
 	// ROS_INFO("Starting ToyotaHandler...");
 	//toyotaHandler.start();
 
-
+  ROS_INFO("Initializing PandaHandler...");
+	pandaHandler.initialize();
 	// ROS_INFO("Starting Control relay...");
 	// Control vehicleControl(&toyotaHandler, &nh);
 
