@@ -155,18 +155,15 @@ public:
 class CanToRosPublisher : public Panda::CanListener {
 
 private:
-	ros::NodeHandle* nh1;
+	ros::NodeHandle nh1;
 	ros::Publisher pub_;
-//	ros::Publisher publisherCarSetSpeed;
-//	ros::Publisher publisherPandaControlsEnabled;
 	std::stringstream ss;
 	std::ofstream csvfile;
 
-	// Panda::ToyotaHandler* toyotaHandler;
 
 	void newDataNotification( Panda::CanFrame* canData ) {
-	char messageString[20000];
-	char messageTofile[20000];
+	char messageString[200000];
+	char messageTofile[200000];
 		sprintf( messageString, "%d.%06d ", (unsigned int)0, (int)0);
 		sprintf( messageString,"%s%d %d ", messageString, (int)canData->bus, canData->messageID);
 		for (int i = 0; i < canData->dataLength; i++) {
@@ -177,39 +174,39 @@ private:
 		std_msgs::String msgs;
     	msgs.data = messageString;
 
-    if (canData->messageID == 139 || canData->messageID == 303 || canData->messageID== 771
-  		    // || canData->messageID== 869
-  		  //  || canData->messageID == 381
-  		  //  || canData->messageID == 382
-  		  //  || canData->messageID == 385
-  		  //  || canData->messageID == 386
-  		  //  || canData->messageID == 389
-  		  //  || canData->messageID == 390
-  		  //  || canData->messageID == 393
-  		  //  || canData->messageID == 394
-  		  //  || canData->messageID == 398
-  		  //  || canData->messageID == 399
-  		  //  || canData->messageID == 405
-  		  //  || canData->messageID == 407
-  		  //  || canData->messageID == 411
-  		  //  || canData->messageID == 412
-  		  //  || canData->messageID == 415
-  		  //  || canData->messageID == 416
-  		  //  || canData->messageID == 419
-  		  //  || canData->messageID == 420
-  		    // || canData->messageID == 923
-  		    // || canData->messageID == 924
-  				// || canData->messageID == 936
-  		    // || canData->messageID == 951
-  				// || canData->messageID == 954
-  		    // || canData->messageID == 958
-  				|| canData->messageID == 1119
-  		    || canData->messageID == 1487
-  				|| (canData->messageID == 308 & canData->dataLength == 64)
-  			)
-  		{
-  			pub_.publish(msgs);
-  		}
+		if (canData->messageID == 139 || canData->messageID == 303 || canData->messageID== 771
+		    // || canData->messageID== 869
+		  //  || canData->messageID == 381
+		  //  || canData->messageID == 382
+		  //  || canData->messageID == 385
+		  //  || canData->messageID == 386
+		  //  || canData->messageID == 389
+		  //  || canData->messageID == 390
+		  //  || canData->messageID == 393
+		  //  || canData->messageID == 394
+		  //  || canData->messageID == 398
+		  //  || canData->messageID == 399
+		  //  || canData->messageID == 405
+		  //  || canData->messageID == 407
+		  //  || canData->messageID == 411
+		  //  || canData->messageID == 412
+		  //  || canData->messageID == 415
+		  //  || canData->messageID == 416
+		  //  || canData->messageID == 419
+		  //  || canData->messageID == 420
+		    // || canData->messageID == 923
+		    // || canData->messageID == 924
+				// || canData->messageID == 936
+		    // || canData->messageID == 951
+				// || canData->messageID == 954
+		    // || canData->messageID == 958
+				|| canData->messageID == 1119
+		    || canData->messageID == 1487
+				|| (canData->messageID == 308 & canData->dataLength == 64)
+			)
+		{
+			pub_.publish(msgs);
+		}
 		// sprintf( messageTofile, "%f,", ros::Time::now().toSec());
 		// sprintf( messageTofile,"%s%d,%d,", messageTofile, (int)canData->bus, canData->messageID);
 		// for (int i = 0; i < canData->dataLength; i++) {
@@ -219,31 +216,10 @@ private:
 
 		// csvfile << messageTofile << std::endl;
 
-//		if ( canData->messageID == 869 ) {
-//			if( toyotaHandler != NULL ) {
-//				int valueOfLeadDistance = ((*(unsigned long*)canData->data) >> (39+1-8)) & 0xFF;
-//				//			ROS_INFO("valueOfLeadDistance = %d\n", valueOfLeadDistance);
-//				if( valueOfLeadDistance < 252 ) {
-//					toyotaHandler->setHudMiniCar( true );
-//				} else {
-//					toyotaHandler->setHudMiniCar( false );
-//				}
-//			}
-//		}
-
-//		if ( canData->messageID == 921 ) {
-//			std_msgs::UInt8 msgCruiseSetSpeed;
-//			msgCruiseSetSpeed.data = ((*(unsigned long*)canData->data) >> (31+1-8)) & 0xFF;
-//			publisherCarSetSpeed.publish( msgCruiseSetSpeed );
-//		}
-
 	}
 
 public:
-	// CanToRosPublisher(ros::NodeHandle* nodeHandle, Panda::ToyotaHandler* handler) {
-	// 	toyotaHandler = handler;
-	// nh1 = nodeHandle;
-  CanToRosPublisher() {
+	CanToRosPublisher() {
 		// std::time_t t=time(0);
 		// struct tm * now = localtime( &t );
 		// char buffer [256];
@@ -251,9 +227,7 @@ public:
 		// std::string filename=buffer;
 		// std::replace(filename.begin(), filename.end(), ':', '-');
         // cout << filename << std::endl;
-		pub_ = nh1->advertise<std_msgs::String>("/realtime_raw_data", 1000);
-//		publisherCarSetSpeed = nh1->advertise<std_msgs::UInt8>("/car/cruise/ui_set_speed", 1000);
-//		publisherPandaControlsEnabled = nh1->advertise<std_msgs::String>("/panda/controls_enabled", 1000);
+		pub_ = nh1.advertise<std_msgs::String>("/realtime_raw_data", 1000);
 
 		//FIXME: use libpanda to create CAN and GPS files
 		// csvfile.open(filename);
@@ -280,6 +254,9 @@ int main(int argc, char **argv) {
 	const char filenameGpsStatus[] = "/etc/libpanda.d/pandaHaveGPS";
 	writeToFileThenClose(filenameGpsStatus, "-1\n");
 
+  ROS_INFO("Starting CanToRosPublisher...");
+  CanToRosPublisher canToRosPublisher;
+
   // toyota controller structure:
 	Panda::Handler pandaHandler;
 
@@ -295,8 +272,7 @@ int main(int argc, char **argv) {
 
 
     // Initialize Libpanda with ROS publisher:
-	ROS_INFO("Starting CanToRosPublisher...");
-  CanToRosPublisher canToRosPublisher;
+
 	// CanToRosPublisher canToRosPublisher(&nh, &toyotaHandler);
 
 	// ROS_INFO("Connecting  PandaStatusPublisher...");
