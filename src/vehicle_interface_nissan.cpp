@@ -60,52 +60,52 @@
 class Control {
 private:
 	ros::NodeHandle* n_;
-	ros::Subscriber sub_;
-	ros::Subscriber subscriberMiniCarHud;
-	ros::Subscriber subscriberCruiseCancel;
+	// ros::Subscriber sub_;
+	// ros::Subscriber subscriberMiniCarHud;
+	// ros::Subscriber subscriberCruiseCancel;
 	// Initialize panda and toyota handlers
-	Panda::ToyotaHandler* toyotaHandler;
+	// Panda::ToyotaHandler* toyotaHandler;
 
 public:
-	void callback(const std_msgs::Float64::ConstPtr& msg)
-	{
-		// use these functions to set the acceleration and steeting Tourque
-		toyotaHandler->setAcceleration(msg->data);
-		toyotaHandler->setSteerTorque(0.0);  // doesnt work yet
-	}
+	// void callback(const std_msgs::Float64::ConstPtr& msg)
+	// {
+	// 	// use these functions to set the acceleration and steeting Tourque
+	// 	toyotaHandler->setAcceleration(msg->data);
+	// 	toyotaHandler->setSteerTorque(0.0);  // doesnt work yet
+	// }
 
-	void callbackMiniCar(const std_msgs::Bool::ConstPtr& msg)
-	{
-		toyotaHandler->setHudMiniCar(msg->data);
-//		ROS_INFO("Recieved mini-car data: %d\n", msg->data);
-	}
+// 	void callbackMiniCar(const std_msgs::Bool::ConstPtr& msg)
+// 	{
+// 		toyotaHandler->setHudMiniCar(msg->data);
+// //		ROS_INFO("Recieved mini-car data: %d\n", msg->data);
+// 	}
 
-	void callbackCruiseCancel(const std_msgs::Bool::ConstPtr& msg)
-	{
-		toyotaHandler->setHudCruiseCancelRequest(msg->data);
-	}
+	// void callbackCruiseCancel(const std_msgs::Bool::ConstPtr& msg)
+	// {
+	// 	toyotaHandler->setHudCruiseCancelRequest(msg->data);
+	// }
 
-	Control(Panda::ToyotaHandler* toyotaHandler, ros::NodeHandle* nodeHandle) {
-		n_ = nodeHandle;
+// 	Control(Panda::ToyotaHandler* toyotaHandler, ros::NodeHandle* nodeHandle) {
+// 		n_ = nodeHandle;
+//
+// 		this->toyotaHandler = toyotaHandler;
+// 		// intializing a subscriber
+// //		sub_ = n_->subscribe("/commands", 1000, &Control::callback, this);
+// 		sub_ = n_->subscribe("/car/cruise/accel_input", 1000, &Control::callback, this);
+// 		subscriberMiniCarHud = n_->subscribe("/car/hud/mini_car_enable", 1000, &Control::callbackMiniCar, this);
+// 		subscriberCruiseCancel = n_->subscribe("/car/hud/cruise_cancel_request", 1000, &Control::callbackCruiseCancel, this);
+// 	}
 
-		this->toyotaHandler = toyotaHandler;
-		// intializing a subscriber
-//		sub_ = n_->subscribe("/commands", 1000, &Control::callback, this);
-		sub_ = n_->subscribe("/car/cruise/accel_input", 1000, &Control::callback, this);
-		subscriberMiniCarHud = n_->subscribe("/car/hud/mini_car_enable", 1000, &Control::callbackMiniCar, this);
-		subscriberCruiseCancel = n_->subscribe("/car/hud/cruise_cancel_request", 1000, &Control::callbackCruiseCancel, this);
-	}
-
-	~Control(){
-
-	}
+	// ~Control(){
+  //
+	// }
 };
 
-class PandaStatusPublisher : public Panda::ToyotaListener {
-	ros::Publisher publisherLibpandaControlsEnabled;
-
-	ros::Publisher publisherPandaControlsEnabled;
-	ros::Publisher publisherPandaGasInterceptorDetected;
+// class PandaStatusPublisher : public Panda::ToyotaListener {
+// 	ros::Publisher publisherLibpandaControlsEnabled;
+//
+// 	ros::Publisher publisherPandaControlsEnabled;
+// 	ros::Publisher publisherPandaGasInterceptorDetected;
 
 //	void doAction() {
 //		usleep(100000);
@@ -123,34 +123,34 @@ class PandaStatusPublisher : public Panda::ToyotaListener {
 //		publisherPandaGasInterceptorDetected.publish( msgGasInterceptorDetected );
 //	}
 
-	void newControlNotification(Panda::ToyotaHandler* toyotaHandler) {
-		std_msgs::Bool msgControlsEnabled;
+	// void newControlNotification(Panda::ToyotaHandler* toyotaHandler) {
+	// 	std_msgs::Bool msgControlsEnabled;
+  //
+	// 	msgControlsEnabled.data = toyotaHandler->getPandaControlsAllowed();
+  //
+	// 	publisherLibpandaControlsEnabled.publish( msgControlsEnabled );
+	// }
 
-		msgControlsEnabled.data = toyotaHandler->getPandaControlsAllowed();
+	// void newPandaHealthNotification(const PandaHealth& pandaHealth) {
+	// 	std_msgs::Bool msgControlsEnabled;
+	// 	std_msgs::Bool msgGasInterceptorDetected;
+  //
+	// 	msgControlsEnabled.data = pandaHealth.controls_allowed;
+	// 	msgGasInterceptorDetected.data = pandaHealth.gas_interceptor_detected;
+  //
+	// 	publisherPandaControlsEnabled.publish( msgControlsEnabled );
+	// 	publisherPandaGasInterceptorDetected.publish( msgGasInterceptorDetected );
+	// }
 
-		publisherLibpandaControlsEnabled.publish( msgControlsEnabled );
-	}
-
-	void newPandaHealthNotification(const PandaHealth& pandaHealth) {
-		std_msgs::Bool msgControlsEnabled;
-		std_msgs::Bool msgGasInterceptorDetected;
-
-		msgControlsEnabled.data = pandaHealth.controls_allowed;
-		msgGasInterceptorDetected.data = pandaHealth.gas_interceptor_detected;
-
-		publisherPandaControlsEnabled.publish( msgControlsEnabled );
-		publisherPandaGasInterceptorDetected.publish( msgGasInterceptorDetected );
-	}
-
-public:
-	PandaStatusPublisher(ros::NodeHandle* nodeHandle) {
-		publisherLibpandaControlsEnabled = nodeHandle->advertise<std_msgs::Bool>("/car/libpanda/controls_allowed", 1000);
-
-		publisherPandaControlsEnabled = nodeHandle->advertise<std_msgs::Bool>("/car/panda/controls_allowed", 1000);
-		publisherPandaGasInterceptorDetected = nodeHandle->advertise<std_msgs::Bool>("/car/panda/gas_interceptor_detected", 1000);
-	}
-
-};
+// public:
+// 	PandaStatusPublisher(ros::NodeHandle* nodeHandle) {
+// 		publisherLibpandaControlsEnabled = nodeHandle->advertise<std_msgs::Bool>("/car/libpanda/controls_allowed", 1000);
+//
+// 		publisherPandaControlsEnabled = nodeHandle->advertise<std_msgs::Bool>("/car/panda/controls_allowed", 1000);
+// 		publisherPandaGasInterceptorDetected = nodeHandle->advertise<std_msgs::Bool>("/car/panda/gas_interceptor_detected", 1000);
+// 	}
+//
+// };
 
 class CanToRosPublisher : public Panda::CanListener {
 
@@ -162,7 +162,7 @@ private:
 	std::stringstream ss;
 	std::ofstream csvfile;
 
-	Panda::ToyotaHandler* toyotaHandler;
+	// Panda::ToyotaHandler* toyotaHandler;
 
 	void newDataNotification( Panda::CanFrame* canData ) {
 	char messageString[20000];
