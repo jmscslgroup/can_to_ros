@@ -56,102 +56,6 @@
 
  */
 
-
-class Control {
-private:
-	ros::NodeHandle* n_;
-	// ros::Subscriber sub_;
-	// ros::Subscriber subscriberMiniCarHud;
-	// ros::Subscriber subscriberCruiseCancel;
-	// Initialize panda and toyota handlers
-	// Panda::ToyotaHandler* toyotaHandler;
-
-public:
-	// void callback(const std_msgs::Float64::ConstPtr& msg)
-	// {
-	// 	// use these functions to set the acceleration and steeting Tourque
-	// 	toyotaHandler->setAcceleration(msg->data);
-	// 	toyotaHandler->setSteerTorque(0.0);  // doesnt work yet
-	// }
-
-// 	void callbackMiniCar(const std_msgs::Bool::ConstPtr& msg)
-// 	{
-// 		toyotaHandler->setHudMiniCar(msg->data);
-// //		ROS_INFO("Recieved mini-car data: %d\n", msg->data);
-// 	}
-
-	// void callbackCruiseCancel(const std_msgs::Bool::ConstPtr& msg)
-	// {
-	// 	toyotaHandler->setHudCruiseCancelRequest(msg->data);
-	// }
-
-// 	Control(Panda::ToyotaHandler* toyotaHandler, ros::NodeHandle* nodeHandle) {
-// 		n_ = nodeHandle;
-//
-// 		this->toyotaHandler = toyotaHandler;
-// 		// intializing a subscriber
-// //		sub_ = n_->subscribe("/commands", 1000, &Control::callback, this);
-// 		sub_ = n_->subscribe("/car/cruise/accel_input", 1000, &Control::callback, this);
-// 		subscriberMiniCarHud = n_->subscribe("/car/hud/mini_car_enable", 1000, &Control::callbackMiniCar, this);
-// 		subscriberCruiseCancel = n_->subscribe("/car/hud/cruise_cancel_request", 1000, &Control::callbackCruiseCancel, this);
-// 	}
-
-	// ~Control(){
-  //
-	// }
-};
-
-// class PandaStatusPublisher : public Panda::ToyotaListener {
-// 	ros::Publisher publisherLibpandaControlsEnabled;
-//
-// 	ros::Publisher publisherPandaControlsEnabled;
-// 	ros::Publisher publisherPandaGasInterceptorDetected;
-
-//	void doAction() {
-//		usleep(100000);
-//		// TODO: this should run at its own rate and not be dependent on CAN events:
-//		std_msgs::Bool msgControlsEnabled;
-//		std_msgs::Bool msgGasInterceptorDetected;
-//
-//		msgControlsEnabled.data = false;
-//		msgGasInterceptorDetected.data = false;
-//		if(toyotaHandler != NULL) {
-//			msgControlsEnabled.data = toyotaHandler->getControlsAllowed();
-//			msgGasInterceptorDetected.data = toyotaHandler->getPandaHealth().gas_interceptor_detected;
-//		}
-//		publisherPandaControlsEnabled.publish( msgControlsEnabled );
-//		publisherPandaGasInterceptorDetected.publish( msgGasInterceptorDetected );
-//	}
-
-	// void newControlNotification(Panda::ToyotaHandler* toyotaHandler) {
-	// 	std_msgs::Bool msgControlsEnabled;
-  //
-	// 	msgControlsEnabled.data = toyotaHandler->getPandaControlsAllowed();
-  //
-	// 	publisherLibpandaControlsEnabled.publish( msgControlsEnabled );
-	// }
-
-	// void newPandaHealthNotification(const PandaHealth& pandaHealth) {
-	// 	std_msgs::Bool msgControlsEnabled;
-	// 	std_msgs::Bool msgGasInterceptorDetected;
-  //
-	// 	msgControlsEnabled.data = pandaHealth.controls_allowed;
-	// 	msgGasInterceptorDetected.data = pandaHealth.gas_interceptor_detected;
-  //
-	// 	publisherPandaControlsEnabled.publish( msgControlsEnabled );
-	// 	publisherPandaGasInterceptorDetected.publish( msgGasInterceptorDetected );
-	// }
-
-// public:
-// 	PandaStatusPublisher(ros::NodeHandle* nodeHandle) {
-// 		publisherLibpandaControlsEnabled = nodeHandle->advertise<std_msgs::Bool>("/car/libpanda/controls_allowed", 1000);
-//
-// 		publisherPandaControlsEnabled = nodeHandle->advertise<std_msgs::Bool>("/car/panda/controls_allowed", 1000);
-// 		publisherPandaGasInterceptorDetected = nodeHandle->advertise<std_msgs::Bool>("/car/panda/gas_interceptor_detected", 1000);
-// 	}
-//
-// };
-
 class CanToRosPublisher : public Panda::CanListener {
 
 private:
@@ -207,31 +111,11 @@ private:
 		{
 			pub_.publish(msgs);
 		}
-		// sprintf( messageTofile, "%f,", ros::Time::now().toSec());
-		// sprintf( messageTofile,"%s%d,%d,", messageTofile, (int)canData->bus, canData->messageID);
-		// for (int i = 0; i < canData->dataLength; i++) {
-		// 	sprintf( messageTofile, "%s%02x", messageTofile, canData->data[i]);
-		// }
-		// sprintf( messageTofile, "%s,%d", messageTofile, canData->dataLength);
-
-		// csvfile << messageTofile << std::endl;
-
 	}
 
 public:
 	CanToRosPublisher() {
-		// std::time_t t=time(0);
-		// struct tm * now = localtime( &t );
-		// char buffer [256];
-		// strftime (buffer,80,"%Y-%m-%d-%X.csv",now);
-		// std::string filename=buffer;
-		// std::replace(filename.begin(), filename.end(), ':', '-');
-        // cout << filename << std::endl;
 		pub_ = nh1.advertise<std_msgs::String>("/realtime_raw_data", 1000);
-
-		//FIXME: use libpanda to create CAN and GPS files
-		// csvfile.open(filename);
-		// csvfile <<"Time" << ","<< "Bus" << "," << "MessageID" << "," << "Message" << ","<< "MessageLength" << std::endl;
 
 	}
 
@@ -246,7 +130,7 @@ void writeToFileThenClose(const char* filename, const char* data) {
 
 int main(int argc, char **argv) {
 	// Initialize ROS stuff:
-	ros::init(argc, argv, "vehicle_interface");
+	ros::init(argc, argv, "vehicle_interface"); //should this be vehicle_interface_nissan
 	ROS_INFO("Initializing ..");
 
 	ros::NodeHandle nh;
@@ -267,35 +151,15 @@ int main(int argc, char **argv) {
 	Panda::GpsTracker mGpsTracker;	// Saves to /etc/libpanda.d/latest_gps
 	pandaHandler.addGpsObserver(mGpsTracker);
 
-	// Panda::ToyotaHandler toyotaHandler(&pandaHandler);
-//	pandaHandler.getCan().addObserver(&toyotaHandler);
-
 
     // Initialize Libpanda with ROS publisher:
 
-	// CanToRosPublisher canToRosPublisher(&nh, &toyotaHandler);
-
-	// ROS_INFO("Connecting  PandaStatusPublisher...");
-	// PandaStatusPublisher mPandaStatusPublisher(&nh);
-	// toyotaHandler.addObserver(&mPandaStatusPublisher);
-	//SimpleGpsObserver myGpsObserver;
-	// Initialize Usb, this requires a connected Panda
-	//Panda::Handler pandaHandler;
-
 	pandaHandler.addCanObserver(canToRosPublisher);
-
-	// Initialize panda and toyota handlers
-	// ROS_INFO("Starting ToyotaHandler...");
-	//toyotaHandler.start();
 
   ROS_INFO("Initializing PandaHandler...");
 	pandaHandler.initialize();
-	// ROS_INFO("Starting Control relay...");
-	// Control vehicleControl(&toyotaHandler, &nh);
 
 	writeToFileThenClose(filenameGpsStatus, "0\n");	// state 0: on but time not set
-
-
 
 	//  Set the sytem time here:
 	ROS_INFO("Waiting to acquire satellites to set system time...");
@@ -314,7 +178,6 @@ int main(int argc, char **argv) {
 	if(mSetSystemTimeObserver.hasTimeBeenSet()) {
 		writeToFileThenClose(filenameGpsStatus, "1\n");	// GPS time sync done
 	}
-
 
 	// creating file names
 	std::time_t t=time(0);
@@ -339,16 +202,10 @@ int main(int argc, char **argv) {
 	std::string canDataFilename = relativePath + "/" + folderName + "/" + bufferStr + "_" + vin + "_CAN_Messages.csv";
 	std::string gpsDataFilename = relativePath + "/" + folderName + "/" + bufferStr + "_" + vin + "_GPS_Messages.csv";
 
-	// std::cout << commandToCreateFolder << std::endl;
-	// std::cout << canDataFilename << std::endl;
-	// std::cout << gpsDataFilename << std::endl;
-
 	system(commandToCreateFolder.c_str()); // Creating a directory
 
 	pandaHandler.getCan().saveToCsvFile(canDataFilename.c_str());
 	pandaHandler.getGps().saveToCsvFile(gpsDataFilename.c_str());
-
-//    ros::spin();
 
 	ros::Publisher publisherGpsActive = nh.advertise<std_msgs::Bool>("/car/panda/gps_active", 1000);
 	ros::Rate mainLoopRate(1); // 1Hz
@@ -364,8 +221,6 @@ int main(int argc, char **argv) {
 	}
 
 	// Cleanup:
-//	mPandaStatusPublisher.stop();
-	// toyotaHandler.stop();
 	pandaHandler.stop();
 	writeToFileThenClose(filenameGpsStatus, "-1\n");
 
