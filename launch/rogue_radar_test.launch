@@ -2,11 +2,13 @@
 <!-- include information for the joystick, etc. args="$(env HOME)"  -->
 <arg name="description" default="_all"/>
 
-<node pkg="can_to_ros" type="publish_libpanda" name="publish_libpanda" output="screen" />
+<node pkg="can_to_ros" type="vehicle_interface_nissan" name="vehicle_interface_nissan" output="screen" />
 
 <node pkg="can_to_ros" type="subs_fs_test" name="subs_fs_test" output="screen" />
 
-<node pkg="can_to_ros" type ="rosbag_record.sh" name="bashscript1" output="screen" args="$(arg description)"/> 
+<node pkg="can_to_ros" type ="rosbag_record.sh" name="bashscript1" output="screen" args="$(arg description) true"/> 
+
+<!-- <node pkg="can_to_ros" type ="panda_csv_record.sh" name="bashscript2" output="screen"/> -->
 
 
 </launch>

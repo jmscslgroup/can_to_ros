@@ -58,7 +58,7 @@ private:
     	msgs.data = messageString;
 
 		if (canData->messageID == 139 || canData->messageID == 303 || canData->messageID== 771
-		    || canData->messageID== 869
+		    // || canData->messageID== 869
 		  //  || canData->messageID == 381
 		  //  || canData->messageID == 382
 		  //  || canData->messageID == 385
@@ -77,12 +77,15 @@ private:
 		  //  || canData->messageID == 416
 		  //  || canData->messageID == 419
 		  //  || canData->messageID == 420
-		    || canData->messageID == 923
-		    || canData->messageID == 924
-				|| canData->messageID == 936
+		    // || canData->messageID == 923
+		    // || canData->messageID == 924
+				// || canData->messageID == 936
 		    // || canData->messageID == 951
 				// || canData->messageID == 954
 		    // || canData->messageID == 958
+				|| canData->messageID == 1119
+		    || canData->messageID == 1487
+				|| (canData->messageID == 308 & canData->dataLength == 64)
 			)
 		{
 			pub_.publish(msgs);
@@ -145,6 +148,7 @@ int main(int argc, char **argv) {
 
 	pandaHandler.addCanObserver(canToRosPublisher);
 	//pandaHandler.addGpsObserver(myGpsObserver);
+
 	// Let's roll
 	pandaHandler.initialize();
 
