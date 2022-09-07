@@ -242,7 +242,7 @@ private:
 public:
 	// CanToRosPublisher(ros::NodeHandle* nodeHandle, Panda::ToyotaHandler* handler) {
 	// 	toyotaHandler = handler;
-	nh1 = nodeHandle;
+	// nh1 = nodeHandle;
   CanToRosPublisher() {
 		// std::time_t t=time(0);
 		// struct tm * now = localtime( &t );
