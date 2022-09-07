@@ -242,7 +242,7 @@ private:
 public:
 	// CanToRosPublisher(ros::NodeHandle* nodeHandle, Panda::ToyotaHandler* handler) {
 	// 	toyotaHandler = handler;
-	// 	nh1 = nodeHandle;
+	nh1 = nodeHandle;
   CanToRosPublisher() {
 		// std::time_t t=time(0);
 		// struct tm * now = localtime( &t );
@@ -275,7 +275,7 @@ int main(int argc, char **argv) {
 	ros::init(argc, argv, "vehicle_interface");
 	ROS_INFO("Initializing ..");
 
-	// ros::NodeHandle nh;
+	ros::NodeHandle nh;
 
 	const char filenameGpsStatus[] = "/etc/libpanda.d/pandaHaveGPS";
 	writeToFileThenClose(filenameGpsStatus, "-1\n");
