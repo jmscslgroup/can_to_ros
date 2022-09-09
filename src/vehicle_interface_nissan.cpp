@@ -1,5 +1,5 @@
 /*
- Author: Matt Bunting
+ Authors: Matt Bunting, Matt Nice
  Copyright (c) 2020 Arizona Board of Regents
  All rights reserved.
 
@@ -45,14 +45,6 @@
 
  Publishers:
  1) /realtime_raw_data - std_msgs/String -  This publishes CAN data of interest where the can_to_ros node named subs_fs.cpp can interpret values
- 2) /car/panda/gas_interceptor_detected - std_msgs/Bool - Reported by the Panda is their gas interceptor hardware is detected
- 3) /car/panda/controls_allowed - std_msgs/Bool -  Reported by the comma.ai panda.  This is not event-based from the Panda, but is regularly checked at 2 Hz to reset the Panda's heartbeat
- 4)	/car/libpanda/controls_allowed - std_msgs/Bool -  Reported by logic within libpanda.  This is event based from libpanda using CAN messages.  When no events occur, this regularly published at 1 Hz which can be used to assess libpanda's control command health
-
- Subscribers:
- 1) /car/cruise/accel_input - std_msgs/Float64 - This is for acceleration commands to be sent to the car's cruise controller (priorly known as /commands)
- 2) /car/hud/mini_car_enable - std_msgs/Bool - When true, this will display a mini-vehicle on the car's HUD which cruise control is on and engaged
- 3) /car/hud/cruise_cancel_request - std_msgs/Bool - When true  published, the cruise controller will disengage and notify the driver with an audible chime
 
  */
 
@@ -76,37 +68,19 @@ private:
 		sprintf( messageString, "%s %d", messageString, canData->dataLength);
 
 		std_msgs::String msgs;
-    	msgs.data = messageString;
+    msgs.data = messageString;
 
-		if (canData->messageID == 139 || canData->messageID == 303 || canData->messageID== 771
-		    // || canData->messageID== 869
-		  //  || canData->messageID == 381
-		  //  || canData->messageID == 382
-		  //  || canData->messageID == 385
-		  //  || canData->messageID == 386
-		  //  || canData->messageID == 389
-		  //  || canData->messageID == 390
-		  //  || canData->messageID == 393
-		  //  || canData->messageID == 394
-		  //  || canData->messageID == 398
-		  //  || canData->messageID == 399
-		  //  || canData->messageID == 405
-		  //  || canData->messageID == 407
-		  //  || canData->messageID == 411
-		  //  || canData->messageID == 412
-		  //  || canData->messageID == 415
-		  //  || canData->messageID == 416
-		  //  || canData->messageID == 419
-		  //  || canData->messageID == 420
-		    // || canData->messageID == 923
-		    // || canData->messageID == 924
-				// || canData->messageID == 936
-		    // || canData->messageID == 951
-				// || canData->messageID == 954
-		    // || canData->messageID == 958
-				|| canData->messageID == 1119
-		    || canData->messageID == 1487
-				|| (canData->messageID == 308 & canData->dataLength == 64)
+
+		if (
+      //this is where the msgs to be published start
+  (canData->messageID==139&canData->dataLength==48)
+  ||(canData->messageID==303&canData->dataLength==12)
+  ||(canData->messageID==308&canData->dataLength==64)
+  ||(canData->messageID==1119&canData->dataLength==20)
+  ||(canData->messageID==1487&canData->dataLength==48)
+        //this is where the msgs to be published end
+
+
 			)
 		{
 			pub_.publish(msgs);
@@ -141,7 +115,7 @@ int main(int argc, char **argv) {
   ROS_INFO("Starting CanToRosPublisher...");
   CanToRosPublisher canToRosPublisher;
 
-  // toyota controller structure:
+  //panda handling structure:
 	Panda::Handler pandaHandler;
 
 	double epsilon = 0.2;	// If system time is off from GPS time by this amount, update time.
@@ -151,9 +125,7 @@ int main(int argc, char **argv) {
 	Panda::GpsTracker mGpsTracker;	// Saves to /etc/libpanda.d/latest_gps
 	pandaHandler.addGpsObserver(mGpsTracker);
 
-
-    // Initialize Libpanda with ROS publisher:
-
+  // Initialize Libpanda with ROS publisher:
 	pandaHandler.addCanObserver(canToRosPublisher);
 
   ROS_INFO("Initializing PandaHandler...");
@@ -163,7 +135,7 @@ int main(int argc, char **argv) {
 
 	//  Set the sytem time here:
 	ROS_INFO("Waiting to acquire satellites to set system time...");
-//	ROS_INFO(" - Each \'.\' represents 100 NMEA messages received:");
+  //	ROS_INFO(" - Each \'.\' represents 100 NMEA messages received:");
 	int lastNmeaMessageCount = 0;
 	while ( !mSetSystemTimeObserver.hasTimeBeenSet() &&
 		   ros::ok() ) {
