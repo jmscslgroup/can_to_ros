@@ -21,7 +21,7 @@ def findDBC(vin_details):
             jsonfile = 'nissan_rogue.json'
             if int(vin_details['ModelYear']) >= 2021:
                 #TODO: figure out where the dbc files will be
-                # dbcfile = '/Users/mnice/Documents/GitHub/NissanCAN/nissan_can/nissan_rogue_2021.dbc'
+                # dbcfile = '/Users/mnice/Documents/GitHub/strym/strym/dbc/nissan_rogue_2021.dbc'
                 dbcfile = '/home/circles/strym/strym/dbc/nissan_rogue_2021.dbc'
                 # dbcfile = '/home/circles/strym/strym/dbc/nissan_rogue_experimental.dbc'
     print('the DBC is set as %s'%(dbcfile))
@@ -319,6 +319,13 @@ for i in toDecode.keys():
     text += decodeBuilder(msg, signals)
 text += '\treturn returnedVal;\n}\n'
 
+###put in changes for realtime_raw_data publishing in can to ros #####
+
+##open base vehicle_interface_nissan
+##find the line of the comment where the new lines go in
+##insert with sed the lines? or python similar tool
+##each line states the message ID and length to published
+
 #output into C++ file(s)
 #TODO make them the real files (after testing)
 file1 = open('../include/header_package/can_decode_test.h', 'w')
@@ -348,4 +355,4 @@ file1.close()
 ########Finished generating subs_fs.cpp node #######
 
 
-#FINAL: confirm working with comparison of rosbags
+#FINAL: confirmed working with comparison of rosbags
