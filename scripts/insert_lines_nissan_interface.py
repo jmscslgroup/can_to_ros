@@ -27,8 +27,8 @@ def findDBC(vin_details):
             jsonfile = 'nissan_rogue.json'
             if int(vin_details['ModelYear']) >= 2021:
                 #TODO: figure out where the dbc files will be
-                dbcfile = '/Users/mnice/Documents/GitHub/strym/strym/dbc/nissan_rogue_2021.dbc'
-                # dbcfile = '/home/circles/strym/strym/dbc/nissan_rogue_2021.dbc'
+                # dbcfile = '/Users/mnice/Documents/GitHub/strym/strym/dbc/nissan_rogue_2021.dbc'
+                dbcfile = '/home/circles/strym/strym/dbc/nissan_rogue_2021.dbc'
                 # dbcfile = '/home/circles/strym/strym/dbc/nissan_rogue_experimental.dbc'
     # print('the DBC is set as %s'%(dbcfile))
     return jsonfile, dbcfile
