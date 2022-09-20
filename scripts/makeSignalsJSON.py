@@ -61,11 +61,12 @@ nissan_rogue = {139:{'steering_angle':[['std_msgs::Float64'],['STEER_ANGLE']]},
          'lkas_btn':[['std_msgs::Float64'],['LKAS_LDW_ON']]
          },
          1487:{'set_speed':[['std_msgs::Float64'],['SET_SPEED']],
-         'lane_lines':[['std_msgs::Float64'],['LANE_LINES']],
+         #'lane_lines':[['std_msgs::Float64'],['LANE_LINES']],
          'state_signal':[['std_msgs::Float64'],['STATE_SIGNAL']],
          'set_distance':[['std_msgs::Float64'],['SET_DISTANCE']],
          'hud_states':[['std_msgs::Float64'],['HUD_STATES']],
          'mini_car':[['std_msgs::Float64'],['MINICAR']],
+         # 'mini_car':[['std_msgs::Float64'],['MINICAR']],
          'system_on':[['std_msgs::Float64'],['SYSTEM_ON']]}
          # 'hud_state1':[['std_msgs::Float64'],['HUD_STATE1']],
 
