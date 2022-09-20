@@ -65,9 +65,10 @@ nissan_rogue = {139:{'steering_angle':[['std_msgs::Float64'],['STEER_ANGLE']]},
          'state_signal':[['std_msgs::Float64'],['STATE_SIGNAL']],
          'set_distance':[['std_msgs::Float64'],['SET_DISTANCE']],
          'hud_states':[['std_msgs::Float64'],['HUD_STATES']],
+         'mini_car':[['std_msgs::Float64'],['MINICAR']],
          'system_on':[['std_msgs::Float64'],['SYSTEM_ON']]}
          # 'hud_state1':[['std_msgs::Float64'],['HUD_STATE1']],
-         
+
          # 951: {"front_radar_track1": [["geometry_msgs::PointStamped"], ["SIG1_LEAD"]],
          # "front_radar_track2": [["geometry_msgs::PointStamped"], ["SIG2_VEL"]],
          # "front_radar_track3": [["geometry_msgs::PointStamped"], ["SIG3_ANGLEH"]],
