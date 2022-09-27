@@ -21,14 +21,10 @@
 	<node pkg="can_to_ros" type="lead_info" name="lead_info" output="screen" if="$(arg hwil)"/>
 	<node pkg="can_to_ros" type="simple_mini_car_from_lead_distance" name="simple_mini_car_from_lead_distance" output="screen" if="$(arg hwil)"/>
 
-	<launch>
-	    <param name="model" type="string" value="$(find onnx2ros)/../controllers/rl-cruise-noplanner.onnx"/>
-	    <param name="mode" type="string" value="prompt"/>
-	    <node pkg="onnx2ros" type="prompt_mode" name="controller" output="screen"/>
-	</launch>
+	<param name="model" type="string" value="$(find onnx2ros)/../controllers/rl-cruise-noplanner.onnx"/>
+	<param name="mode" type="string" value="prompt"/>
+	<node pkg="onnx2ros" type="prompt_mode" name="controller" output="screen"/>
 
 	<node pkg="can_to_ros" type ="rosbag_record.sh" name="bashscript2" output="screen" args="$(arg description) $(arg hwil)" /> 
-	</node>
-	
 
 </launch>
