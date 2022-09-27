@@ -211,13 +211,13 @@ include_directories(
 # catkin_add_nosetests(test)
 
 INCLUDE_DIRECTORIES(
-/opt/libpanda/include 
+/opt/libpanda/include
 /opt/libpanda/include/panda
 /opt/libpanda/include/mogi
 /opt/libpanda/NMEAParser/Software/NMEAParserLib/include)
 
 LINK_DIRECTORIES(
-/opt/libpanda/build 
+/opt/libpanda/build
 /opt/libpanda/build/utilities )
 
 
@@ -267,8 +267,8 @@ target_link_libraries(cmd_accel_decel ${catkin_LIBRARIES})
 add_executable(vehicle_interface src/vehicle_interface.cpp)
 target_link_libraries(vehicle_interface ${catkin_LIBRARIES} libpandac.so)
 
-add_executable(vehicle_interface_nissan src/vehicle_interface_nissan.cpp)
-target_link_libraries(vehicle_interface_nissan ${catkin_LIBRARIES} libpandac.so)
+add_executable(vanilla_vehicle_interface src/vanilla_vehicle_interface.cpp)
+target_link_libraries(vanilla_vehicle_interface ${catkin_LIBRARIES} libpandac.so)
 
 add_executable(simple_mini_car_from_lead_distance src/simple_mini_car_from_lead_distance.cpp)
 target_link_libraries(simple_mini_car_from_lead_distance ${catkin_LIBRARIES})
@@ -312,13 +312,3 @@ DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 
 
 # message( " @@@@@@@@@@@@@@@@@@@@@@@ " ${PROJECT_SOURCE_DIR})
-
-
-
-
-
-
-
-
-
-

@@ -355,7 +355,7 @@ text += '\treturn returnedVal;\n}\n'
 
 #output into C++ file(s)
 #TODO make them the real files (after testing)
-file1 = open('../include/header_package/can_decode_test.h', 'w')
+file1 = open('../include/header_package/can_decode.h', 'w')
 file2 = open('can_decode_base.h','r')
 file1.writelines(file2.read())
 file2.close()
@@ -371,7 +371,7 @@ text = ''
 text += buildNode(toROS)
 # print('buildNode complete')
 #TODO make into the real file
-file1 = open('../src/subs_fs_test.cpp', 'w')
+file1 = open('../src/subs.cpp', 'w')
 file2 = open('../src/subs_fs_base.cpp','r')
 
 file1.writelines(file2.read())
