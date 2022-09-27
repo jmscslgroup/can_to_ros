@@ -58,6 +58,7 @@ values decode_msgs::decode_message( unsigned int msg_id, std::string msg){
   std::string raw2;
   std::string raw3;
   std::string raw4;
+  std::string raw5;
   std::string rawVal;
   float scaled;
   float conversion;
@@ -66,6 +67,7 @@ values decode_msgs::decode_message( unsigned int msg_id, std::string msg){
   returnedVal.var2=0.0;
   returnedVal.var3=0.0;
   returnedVal.var4=0.0;
+  returnedVal.var5=0.0;
 
   int len = msg.length();
   int i = 0;
@@ -689,10 +691,10 @@ if (msg_id == 921){
 	scaled = (float)raw_dec * 1.000000 + 0.000000;
 	returnedVal.var4 = scaled;
 
-	std::string raw2 = binary.substr(24,8); //UI_SET_SPEED
-	raw_dec = std::stoull(raw2, 0, 2);
+	std::string raw5 = binary.substr(24,8); //UI_SET_SPEED
+	raw_dec = std::stoull(raw5, 0, 2);
 	scaled = (float)raw_dec * 1.000000 + 0.000000;
-	returnedVal.var2 = scaled;
+	returnedVal.var5 = scaled;
 
 	return returnedVal;
 }
