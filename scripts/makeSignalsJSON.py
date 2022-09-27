@@ -24,7 +24,7 @@ toyota_rav4 = {37:{'steering_angle':[['std_msgs::Float64'],['STEER_ANGLE']]},
          1570:{'highbeams':[['std_msgs::Float64'],['HIGH_BEAMS_ON']]},
          467:{'pcm_cruise_2':[['geometry_msgs::Point'],['MAIN_ON','SET_SPEED']]},
          835:{'acc/accel_cmd':[['std_msgs::Float64'],['ACCEL_CMD']],
-         'acc/acc_info':[['std_msgs::Point'],['MINI_CAR','CAR_AHEAD','CANCEL_REQ']],
+         'acc/acc_info':[['geometry_msgs::Point'],['MINI_CAR','CAR_AHEAD','CANCEL_REQ']],
          'acc/acc_cut_in':[['std_msgs::Int16'],['ACC_CUT_IN']],
          'acc/acc_malfunction':[['std_msgs::Int16'],['ACC_MALFUNCTION']]
          },
