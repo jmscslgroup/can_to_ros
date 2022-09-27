@@ -19,7 +19,7 @@ public:
   SubscribeAndPublish()
   {
     //Topic you want to publish
-    accel_pub = n_.advertise<geometry_msgs::AccelStamped>("vehicle/accel", 1000);  
+    accel_pub = n_.advertise<geometry_msgs::AccelStamped>("vehicle/accel", 1000);
     lead_dist_pub = n_.advertise<geometry_msgs::PointStamped>("vehicle/distanceEstimator/dist", 1000);
     str_angle_pub = n_.advertise<geometry_msgs::PointStamped>("vehicle/steering_angle", 1000);
     speed_pub = n_.advertise<geometry_msgs::TwistStamped>("vehicle/vel", 1000);
@@ -58,7 +58,7 @@ public:
 
     // headlights_pub = n_.advertise<can_to_ros::headlights>("/highbeams", 1000);
     // headlights_pub = n_.advertise< std_msgs::UInt8>("/highbeams", 1000);
-    
+
     headlights_pub = n_.advertise< geometry_msgs::Twist>("highbeams", 1000);
 
 
@@ -68,9 +68,9 @@ public:
 
   void callback(const std_msgs::String::ConstPtr& raw_data)
   {
-    
+
     std::stringstream ss(raw_data->data);
-    
+
     ss >> Time>> Bus>> MessageID>> Message>> MessageLength;
 
     // std::cout << MessageID << std::endl;
@@ -110,16 +110,16 @@ public:
     }
 
     else if (MessageID == 552 && Bus==0)
-    { 
+    {
       data = obj.decode_message (MessageID, Message);
       geometry_msgs::AccelStamped msg;
       msg.header.stamp=ros::Time(std::stod(Time));
       msg.accel.linear.x = data.var1;
       accel_pub.publish(msg);
-      
+
     }
     else if (MessageID == 37 && Bus == 0)
-    { 
+    {
        data = obj.decode_message (MessageID, Message);
        geometry_msgs::PointStamped str_angle;
        str_angle.header.stamp=ros::Time(std::stod(Time));
@@ -128,39 +128,39 @@ public:
 
     }
     else if (MessageID == 180 && Bus == 0)
-    { 
+    {
       // std::cout << "speed msg" << std::endl;
-       data = obj.decode_message (MessageID, Message); 
+       data = obj.decode_message (MessageID, Message);
        geometry_msgs::TwistStamped msg;
        msg.header.stamp=ros::Time(std::stod(Time));
        msg.twist.linear.x = data.var1;
        speed_pub.publish(msg);
     }
     else if (MessageID == 384)
-    { 
+    {
 
       data = obj.decode_message (MessageID, Message);
       geometry_msgs::PointStamped marker;
       marker.header.frame_id = "front_laser_link";
       marker.header.stamp = ros::Time(std::stod(Time));
 
-      marker.point.x = data.var2; // 
-      marker.point.y = (data.var1 * -1.0); // 
+      marker.point.x = data.var2; //
+      marker.point.y = (data.var1 * -1.0); //
       marker.point.z = data.var3; // rel speed
 
 
       tracka0_pub.publish(marker);
     }
     else if (MessageID == 385)
-    { 
+    {
 
       data = obj.decode_message (MessageID, Message);
       geometry_msgs::PointStamped marker;
       marker.header.frame_id = "front_laser_link";
       marker.header.stamp = ros::Time(std::stod(Time));
 
-      marker.point.x = data.var2; // 
-      marker.point.y = (data.var1 * -1.0); // 
+      marker.point.x = data.var2; //
+      marker.point.y = (data.var1 * -1.0); //
       marker.point.z = data.var3; // rel speed
 
 
@@ -169,220 +169,220 @@ public:
       tracka1_pub.publish(marker);
     }
     else if (MessageID == 386)
-    { 
+    {
 
       data = obj.decode_message (MessageID, Message);
       geometry_msgs::PointStamped marker;
       marker.header.frame_id = "front_laser_link";
       marker.header.stamp = ros::Time(std::stod(Time));
 
-      marker.point.x = data.var2; // 
-      marker.point.y = (data.var1 * -1.0); // 
+      marker.point.x = data.var2; //
+      marker.point.y = (data.var1 * -1.0); //
       marker.point.z = data.var3; // rel speed
 
 
       tracka2_pub.publish(marker);
     }
     else if (MessageID == 387)
-    { 
+    {
 
       data = obj.decode_message (MessageID, Message);
       geometry_msgs::PointStamped marker;
       marker.header.frame_id = "front_laser_link";
       marker.header.stamp = ros::Time(std::stod(Time));
 
-      marker.point.x = data.var2; // 
-      marker.point.y = (data.var1 * -1.0); // 
+      marker.point.x = data.var2; //
+      marker.point.y = (data.var1 * -1.0); //
       marker.point.z = data.var3; // rel speed
 
 
       tracka3_pub.publish(marker);
     }
     else if (MessageID == 388)
-    { 
+    {
 
       data = obj.decode_message (MessageID, Message);
       geometry_msgs::PointStamped marker;
       marker.header.frame_id = "front_laser_link";
       marker.header.stamp = ros::Time(std::stod(Time));
-  
-      marker.point.x = data.var2; // 
-      marker.point.y = (data.var1 * -1.0); // 
+
+      marker.point.x = data.var2; //
+      marker.point.y = (data.var1 * -1.0); //
       marker.point.z = data.var3; // rel speed
 
 
       tracka4_pub.publish(marker);
     }
     else if (MessageID == 389)
-    { 
+    {
 
       data = obj.decode_message (MessageID, Message);
       geometry_msgs::PointStamped marker;
       marker.header.frame_id = "front_laser_link";
       marker.header.stamp = ros::Time(std::stod(Time));
 
-      marker.point.x = data.var2; // 
-      marker.point.y = (data.var1 * -1.0); // 
+      marker.point.x = data.var2; //
+      marker.point.y = (data.var1 * -1.0); //
       marker.point.z = data.var3; // rel speed
 
 
       tracka5_pub.publish(marker);
     }
     else if (MessageID == 390)
-    { 
+    {
 
       data = obj.decode_message (MessageID, Message);
       geometry_msgs::PointStamped marker;
       marker.header.frame_id = "front_laser_link";
       marker.header.stamp = ros::Time(std::stod(Time));
 
-      marker.point.x = data.var2; // 
-      marker.point.y = (data.var1 * -1.0); // 
+      marker.point.x = data.var2; //
+      marker.point.y = (data.var1 * -1.0); //
       marker.point.z = data.var3; // rel speed
- 
+
 
       tracka6_pub.publish(marker);
     }
     else if (MessageID == 391)
-    { 
+    {
 
       data = obj.decode_message (MessageID, Message);
       geometry_msgs::PointStamped marker;
       marker.header.frame_id = "front_laser_link";
       marker.header.stamp = ros::Time(std::stod(Time));
 
-      marker.point.x = data.var2; // 
-      marker.point.y = (data.var1 * -1.0); // 
+      marker.point.x = data.var2; //
+      marker.point.y = (data.var1 * -1.0); //
       marker.point.z = data.var3; // rel speed
 
       tracka7_pub.publish(marker);
     }
     else if (MessageID == 392)
-    { 
+    {
 
       data = obj.decode_message (MessageID, Message);
       geometry_msgs::PointStamped marker;
       marker.header.frame_id = "front_laser_link";
       marker.header.stamp = ros::Time(std::stod(Time));
 
-      marker.point.x = data.var2; // 
-      marker.point.y = (data.var1 * -1.0); // 
+      marker.point.x = data.var2; //
+      marker.point.y = (data.var1 * -1.0); //
       marker.point.z = data.var3; // rel speed
-  
+
 
       tracka8_pub.publish(marker);
     }
     else if (MessageID == 393)
-    { 
+    {
 
       data = obj.decode_message (MessageID, Message);
       geometry_msgs::PointStamped marker;
       marker.header.frame_id = "front_laser_link";
       marker.header.stamp = ros::Time(std::stod(Time));
 
-      marker.point.x = data.var2; // 
-      marker.point.y = (data.var1 * -1.0); // 
+      marker.point.x = data.var2; //
+      marker.point.y = (data.var1 * -1.0); //
       marker.point.z = data.var3; // rel speed
-  
+
       tracka9_pub.publish(marker);
     }
     else if (MessageID == 394)
-    { 
+    {
 
       data = obj.decode_message (MessageID, Message);
       geometry_msgs::PointStamped marker;
       marker.header.frame_id = "front_laser_link";
       marker.header.stamp = ros::Time(std::stod(Time));
 
-      marker.point.x = data.var2; // 
-      marker.point.y = (data.var1 * -1.0); // 
+      marker.point.x = data.var2; //
+      marker.point.y = (data.var1 * -1.0); //
       marker.point.z = data.var3; // rel speed
 
       tracka10_pub.publish(marker);
     }
         else if (MessageID == 395)
-    { 
+    {
 
       data = obj.decode_message (MessageID, Message);
       geometry_msgs::PointStamped marker;
       marker.header.frame_id = "front_laser_link";
       marker.header.stamp = ros::Time(std::stod(Time));
 
-      marker.point.x = data.var2; // 
-      marker.point.y = (data.var1 * -1.0); // 
+      marker.point.x = data.var2; //
+      marker.point.y = (data.var1 * -1.0); //
       marker.point.z = data.var3; // rel speed
 
- 
+
 
       tracka11_pub.publish(marker);
     }
         else if (MessageID == 396)
-    { 
+    {
 
       data = obj.decode_message (MessageID, Message);
       geometry_msgs::PointStamped marker;
       marker.header.frame_id = "front_laser_link";
       marker.header.stamp = ros::Time(std::stod(Time));
 
-      marker.point.x = data.var2; // 
-      marker.point.y = (data.var1 * -1.0); // 
+      marker.point.x = data.var2; //
+      marker.point.y = (data.var1 * -1.0); //
       marker.point.z = data.var3; // rel speed
 
 
       tracka12_pub.publish(marker);
     }
         else if (MessageID == 397)
-    { 
+    {
 
       data = obj.decode_message (MessageID, Message);
       geometry_msgs::PointStamped marker;
       marker.header.frame_id = "front_laser_link";
       marker.header.stamp = ros::Time(std::stod(Time));
- 
-      marker.point.x = data.var2; // 
-      marker.point.y = (data.var1 * -1.0); // 
+
+      marker.point.x = data.var2; //
+      marker.point.y = (data.var1 * -1.0); //
       marker.point.z = data.var3; // rel speed
 
 
       tracka13_pub.publish(marker);
     }
         else if (MessageID == 398)
-    { 
+    {
 
       data = obj.decode_message (MessageID, Message);
       geometry_msgs::PointStamped marker;
       marker.header.frame_id = "front_laser_link";
       marker.header.stamp = ros::Time(std::stod(Time));
 
-      marker.point.x = data.var2; // 
-      marker.point.y = (data.var1 * -1.0); // 
+      marker.point.x = data.var2; //
+      marker.point.y = (data.var1 * -1.0); //
       marker.point.z = data.var3; // rel speed
-  
+
 
       tracka14_pub.publish(marker);
     }
         else if (MessageID == 399)
-    { 
+    {
 
       data = obj.decode_message (MessageID, Message);
       geometry_msgs::PointStamped marker;
       marker.header.frame_id = "front_laser_link";
       marker.header.stamp = ros::Time(std::stod(Time));
 
-      marker.point.x = data.var2; // 
-      marker.point.y = (data.var1 * -1.0); // 
+      marker.point.x = data.var2; //
+      marker.point.y = (data.var1 * -1.0); //
       marker.point.z = data.var3; // rel speed
 
 
       tracka15_pub.publish(marker);
     }
-          
+
 
     // else if (MessageID == 400 )
-    // { 
+    // {
     //   data = obj.decode_message (MessageID, Message);
     //   geometry_msgs::PointStamped msg;
-      
+
     //   msg.header.stamp=ros::Time(std::stod(Time));
     //   msg.point.x=data.var1; // accel
     //   msg.point.y=data.var2; // var2 here is the score
@@ -392,10 +392,10 @@ public:
     // }
 
     // else if (MessageID == 401 && Bus ==1 )
-    // { 
+    // {
     //   data = obj.decode_message (MessageID, Message);
     //   geometry_msgs::PointStamped msg;
-      
+
     //   msg.header.stamp=ros::Time(std::stod(Time));
     //   msg.point.x=data.var1; // accel
     //   msg.point.y=data.var2; // var2 here is the score
@@ -404,10 +404,10 @@ public:
 
     // }
     //  else if (MessageID == 402)
-    //   { 
+    //   {
     //   data = obj.decode_message (MessageID, Message);
     //   geometry_msgs::PointStamped msg;
-      
+
     //   msg.header.stamp=ros::Time(std::stod(Time));
     //   msg.point.x=data.var1; // accel
     //   msg.point.y=data.var2; // var2 here is the score
@@ -416,10 +416,10 @@ public:
 
     // }
     // else if (MessageID == 403)
-    // { 
+    // {
     //   data = obj.decode_message (MessageID, Message);
     //   geometry_msgs::PointStamped msg;
-      
+
     //   msg.header.stamp=ros::Time(std::stod(Time));
     //   msg.point.x=data.var1; // accel
     //   msg.point.y=data.var2; // var2 here is the score
@@ -428,10 +428,10 @@ public:
 
     // }
     // else if (MessageID == 404)
-    // { 
+    // {
     //   data = obj.decode_message (MessageID, Message);
     //   geometry_msgs::PointStamped msg;
-      
+
     //   msg.header.stamp=ros::Time(std::stod(Time));
     //   msg.point.x=data.var1; // accel
     //   msg.point.y=data.var2; // var2 here is the score
@@ -439,12 +439,12 @@ public:
     //   trackb4_pub.publish(msg);
 
     // }
-      
+
     // else if (MessageID == 405)
-    // { 
+    // {
     //   data = obj.decode_message (MessageID, Message);
     //   geometry_msgs::PointStamped msg;
-      
+
     //   msg.header.stamp=ros::Time(std::stod(Time));
     //   msg.point.x=data.var1; // accel
     //   msg.point.y=data.var2; // var2 here is the score
@@ -453,10 +453,10 @@ public:
 
     // }
     //   else if (MessageID == 406)
-    // { 
+    // {
     //   data = obj.decode_message (MessageID, Message);
     //   geometry_msgs::PointStamped msg;
-      
+
     //   msg.header.stamp=ros::Time(std::stod(Time));
     //   msg.point.x=data.var1; // accel
     //   msg.point.y=data.var2; // var2 here is the score
@@ -465,10 +465,10 @@ public:
 
     // }
     // else if (MessageID == 407)
-    // { 
+    // {
     //   data = obj.decode_message (MessageID, Message);
     //   geometry_msgs::PointStamped msg;
-      
+
     //   msg.header.stamp=ros::Time(std::stod(Time));
     //   msg.point.x=data.var1; // accel
     //   msg.point.y=data.var2; // var2 here is the score
@@ -477,10 +477,10 @@ public:
 
     // }
     // else if (MessageID == 408)
-    // { 
+    // {
     //   data = obj.decode_message (MessageID, Message);
     //   geometry_msgs::PointStamped msg;
-      
+
     //   msg.header.stamp=ros::Time(std::stod(Time));
     //   msg.point.x=data.var1; // accel
     //   msg.point.y=data.var2; // var2 here is the score
@@ -489,10 +489,10 @@ public:
 
     // }
     // else if (MessageID == 409)
-    // { 
+    // {
     //   data = obj.decode_message (MessageID, Message);
     //   geometry_msgs::PointStamped msg;
-      
+
     //   msg.header.stamp=ros::Time(std::stod(Time));
     //   msg.point.x=data.var1; // accel
     //   msg.point.y=data.var2; // var2 here is the score
@@ -501,10 +501,10 @@ public:
 
     // }
     // else if (MessageID == 410)
-    // { 
+    // {
     //   data = obj.decode_message (MessageID, Message);
     //   geometry_msgs::PointStamped msg;
-      
+
     //   msg.header.stamp=ros::Time(std::stod(Time));
     //   msg.point.x=data.var1; // accel
     //   msg.point.y=data.var2; // var2 here is the score
@@ -513,10 +513,10 @@ public:
 
     // }
     // else if (MessageID == 411)
-    // { 
+    // {
     //   data = obj.decode_message (MessageID, Message);
     //   geometry_msgs::PointStamped msg;
-      
+
     //   msg.header.stamp=ros::Time(std::stod(Time));
     //   msg.point.x=data.var1; // accel
     //   msg.point.y=data.var2; // var2 here is the score
@@ -525,10 +525,10 @@ public:
 
     // }
     //   else if (MessageID == 412)
-    // { 
+    // {
     //   data = obj.decode_message (MessageID, Message);
     //   geometry_msgs::PointStamped msg;
-      
+
     //   msg.header.stamp=ros::Time(std::stod(Time));
     //   msg.point.x=data.var1; // accel
     //   msg.point.y=data.var2; // var2 here is the score
@@ -537,10 +537,10 @@ public:
 
     // }
     //  else if (MessageID == 413)
-    // { 
+    // {
     //   data = obj.decode_message (MessageID, Message);
     //   geometry_msgs::PointStamped msg;
-      
+
     //   msg.header.stamp=ros::Time(std::stod(Time));
     //   msg.point.x=data.var1; // accel
     //   msg.point.y=data.var2; // var2 here is the score
@@ -549,10 +549,10 @@ public:
 
     // }
     // else if (MessageID == 414)
-    // { 
+    // {
     //   data = obj.decode_message (MessageID, Message);
     //   geometry_msgs::PointStamped msg;
-      
+
     //   msg.header.stamp=ros::Time(std::stod(Time));
     //   msg.point.x=data.var1; // accel
     //   msg.point.y=data.var2; // var2 here is the score
@@ -561,10 +561,10 @@ public:
 
     // }
     //  else if (MessageID == 415)
-    // { 
+    // {
     //   data = obj.decode_message (MessageID, Message);
     //   geometry_msgs::PointStamped msg;
-      
+
     //   msg.header.stamp=ros::Time(std::stod(Time));
     //   msg.point.x=data.var1; // accel
     //   msg.point.y=data.var2; // var2 here is the score
@@ -631,7 +631,7 @@ int main(int argc, char **argv){
     ROS_INFO("Got parameter");
 
     SubscribeAndPublish SAPObject;
-     ros::spin();   
+     ros::spin();
 
   return 0;
 }
