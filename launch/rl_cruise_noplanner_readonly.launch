@@ -16,10 +16,17 @@
 	
 	<param name="/readonly" value="$(arg readonly)"/>
 	<param name="/hwil" value="$(arg hwil)"/>
-
+<!--
 	<node pkg="can_to_ros" type ="subs_fs" name="subs_fs" output="screen" if="$(arg hwil)"/> 
 	<node pkg="can_to_ros" type="lead_info" name="lead_info" output="screen" if="$(arg hwil)"/>
 	<node pkg="can_to_ros" type="simple_mini_car_from_lead_distance" name="simple_mini_car_from_lead_distance" output="screen" if="$(arg hwil)"/>
+-->
+	<rosparam param="SPACEGAP_SCALE">100.0</rosparam>
+	<rosparam param="SPEED_SCALE">40.0</rosparam>
+
+	<node pkg="can_to_ros" type="vehicle_interface_nissan" name="vehicle_interface_nissan" output="screen" />
+
+	<node pkg="can_to_ros" type="subs_fs_test" name="subs_fs_test" output="screen" />
 
 	<param name="model" type="string" value="$(find onnx2ros)/../controllers/rl-cruise-noplanner.onnx"/>
 	<param name="mode" type="string" value="prompt"/>
