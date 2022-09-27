@@ -16,6 +16,7 @@ def findDBC(vin_details):
             if 'HV' in vin_details['Trim']:
                 # dbcfile = '/Users/mnice/Documents/GitHub/strym/strym/dbc/toyota_rav4_hybrid.dbc'
                 dbcfile = '/home/circles/strym/strym/dbc/toyota_rav4_hybrid.dbc'
+
 #space here to add in info for honda and nissan vehicles
     if vin_details['Make'] == 'NISSAN':
         if vin_details['Model'] == 'Rogue':
@@ -145,7 +146,8 @@ def generatePrivatePubs(toROS):
 
     for canid in toROS:
             for rostopic in toROS[canid]:
-                text += "\tros::Publisher %s_pub;\n"%(rostopic)
+                rostopicVar = rostopic.replace('/','_')
+                text += "\tros::Publisher %s_pub;\n"%(rostopicVar)
 
     text += "\n\tros::Subscriber sub_;\n\
 \tdecode_msgs obj;\n\
@@ -176,47 +178,59 @@ def buildCallbacks(toROS):##add varNum?
         count = 0
         for rostopic in toROS[canid]:
             # print(rostopic)
+            found=False
+
             rosmsg = toROS[canid][rostopic][0][0]
             signals = toROS[canid][rostopic][1]
             count += 1
             text+= '\t\t%s msg%d;\n'%(rosmsg,count)
-
+            # print(rosmsg)
 
             if 'PointStamped' in rosmsg:
                 # print(signals,len(signals))
                 ###treat as a pointstamped
                 text+= '\t\tmsg%d.header.frame_id = "front_laser_link";\n\
-                msg%d.header.stamp = ros::Time(std::stod(Time));\n'%(count,count)
+    msg%d.header.stamp = ros::Time(std::stod(Time));\n'%(count,count)
 
                 if len(signals) >= 3: #this is a bad fix to a msg specified with more than 3 values, when 3 is max
                     text+= '\t\tmsg%d.point.x = data.var%d; //%s\n\
-                msg%d.point.y = data.var%d; //%s\n\
-                msg%d.point.z = data.var%d; //%s\n' %(count,(count-1)*3+1,signals[0],count,(count-1)*3+2,signals[1],count,(count-1)*3+3,signals[2])#check to see if this works for radar signals, may need to change the decode_message
+    msg%d.point.y = data.var%d; //%s\n\
+    msg%d.point.z = data.var%d; //%s\n' %(count,toDecode.get(canid).index(signals[0])+1,signals[0]\
+                ,count,toDecode.get(canid).index(signals[1])+1,signals[1],\
+                count,toDecode.get(canid).index(signals[2])+1,signals[2])#check to see if this works for radar signals, may need to change the decode_message
                 elif len(signals) == 2:
                     text+= '\t\tmsg%d.point.x = data.var%d; //%s\n\
-            msg%d.point.y = data.var%d; //%s\n' %(count,(count-1)*3+1,signals[0],count,(count-1)*3+2,signals[1])#check to see if this works for radar signals, may need to change the decode_message
+            msg%d.point.y = data.var%d; //%s\n' %(count,toDecode.get(canid).index(signals[0])+1,signals[0]\
+            ,count,toDecode.get(canid).index(signals[1])+1,signals[1])#check to see if this works for radar signals, may need to change the decode_message
                 elif len(signals) == 1:
                     #text+= '\t\tmsg%d.point.x = data.var%d; //%s\n' %(count,(count-1)*3+1,signals[0],count)#check to see if this works for radar signals, may need to change the decode_message
-                    text+= '\t\tmsg%d.point.x = data.var%d; //%s\n' %(count,count,signals[0])#check to see if this works for radar signals, may need to change the decode_message
+                    text+= '\t\tmsg%d.point.x = data.var%d; //%s\n' %(count,toDecode.get(canid).index(signals[0])+1,signals[0])#check to see if this works for radar signals, may need to change the decode_message
+                found = True
 
-            elif 'Float64' in rosmsg:
-                ##treat as a float64
-#                 print(canid,signals)
-#                 print(signals in toDecode.get(canid))
-                text += '\t\tmsg%d.data = data.var%d; //%s\n'%(count,toDecode.get(canid).index(signals[0])+1,signals[0])
             elif 'Point' in rosmsg:
                 ##treat as point
                 var = ['.x','.y','.z']
                 for i in range(0,min(len(signals),3)):
                     # print(signals)
-                    text += '\tmsg%d%s = data.var%s; //%s\n'%(count,var[i],i+1,signals[i])
-
+                    text += '\t\tmsg%d%s = data.var%s; //%s\n'%(count,var[i],toDecode.get(canid).index(signals[i])+1,signals[i])
+                    found = True
             else:
+                singleValTypes = ['Float64','Float32','Int16','Int8']
+
+                for type in singleValTypes:
+                    if type in rosmsg:
+                        ##treat as a float64
+                        print(canid,signals)
+                        print(toDecode.get(canid))
+                        text += '\t\tmsg%d.data = data.var%d; //%s\n'%(count,toDecode.get(canid).index(signals[0])+1,signals[0])
+                        found = True
+
+            if found == False:
                 print('this rosmg not accounted for: ' + rosmsg)
 
 
-
-            text += '\t\t%s_pub.publish(msg%d);\n\n'%(rostopic,count)
+            rostopicVar = rostopic.replace('/','_')
+            text += '\t\t%s_pub.publish(msg%d);\n\n'%(rostopicVar,count)
         text += '\t}\n'
     text += '}\n'
     return text
@@ -253,10 +267,10 @@ def buildAds(toROS):
             rosmsg = toROS[canid][rostopic][0][0]
             signals = toROS[canid][rostopic][1]
 
-#             print(rosmsg,rostopic)
+            # print(rosmsg,rostopic)
+            rostopicVar = rostopic.replace('/','_')
 
-
-            text += '\t%s_pub = n_.advertise<%s>("%s",1000);\n'%(rostopic,rosmsg,rostopic)
+            text += '\t%s_pub = n_.advertise<%s>("%s",1000);\n'%(rostopicVar,rosmsg,rostopic)
     return text
 
 def generateMain(toROS):
@@ -297,8 +311,11 @@ f.close()
 #find the correct DBC and ROS msg dict based on the vin details
 jsonfile, dbcfile = findDBC(vin_details)
 #load the correct DBC file to decode CAN to ROS
-dbc = initializeDBC_Cantools(dbcfile)
-
+try:
+    dbc = initializeDBC_Cantools(dbcfile)
+except FileNotFoundError:
+    dbcfile = '/Users/mnice/Documents/GitHub/strym/strym/dbc/toyota_rav4_hybrid.dbc'
+    dbc = initializeDBC_Cantools(dbcfile)
 # Opening ROS JSON file
 f = open('./'+jsonfile)
 

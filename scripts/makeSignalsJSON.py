@@ -22,9 +22,15 @@ toyota_rav4 = {37:{'steering_angle':[['std_msgs::Float64'],['STEER_ANGLE']]},
          399:{'track_a15':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
          1570:{'highbeams':[['std_msgs::Float64'],['HIGH_BEAMS_ON']]},
          467:{'pcm_cruise_2':[['geometry_msgs::Point'],['MAIN_ON','SET_SPEED']]},
+         835:{'acc/accel_cmd':[['std_msgs::Float64'],['ACCEL_CMD']],
+         'acc/acc_info':[['std_msgs::Point'],['MINI_CAR','CAR_AHEAD','CANCEL_REQ']],
+         'acc/acc_cut_in':[['std_msgs::Int16'],['ACC_CUT_IN']],
+         'acc/acc_malfunction':[['std_msgs::Int16'],['ACC_MALFUNCTION']]
+         },
          921:{'cruise_state':[['geometry_msgs::Point'],['MAIN_ON','UI_SET_SPEED','CRUISE_CONTROL_STATE']]
-,'acc/distance_setting':[['std_msgs::Int'],['DISTANCE_LINES']]
-,'acc/set_speed':[['std_msgs:Float64'],['UI_SET_SPEED']]},
+         ,'acc/distance_setting':[['std_msgs::Int16'],['DISTANCE_LINES']]
+         ,'acc/set_speed':[['std_msgs:Float64'],['UI_SET_SPEED']]
+         ,'acc/set_speed2':[['std_msgs:Float64'],['UI_SET_SPEED']]},
          552:{'accel':[['std_msgs::Float64'],['ACCEL_X']]}
 
 }
@@ -68,7 +74,6 @@ nissan_rogue = {139:{'steering_angle':[['std_msgs::Float64'],['STEER_ANGLE']]},
          'set_distance':[['std_msgs::Float64'],['SET_DISTANCE']],
          'hud_states':[['std_msgs::Float64'],['HUD_STATES']],
          'mini_car':[['std_msgs::Float64'],['MINICAR']],
-         # 'mini_car':[['std_msgs::Float64'],['MINICAR']],
          'system_on':[['std_msgs::Float64'],['SYSTEM_ON']]}
          # 'hud_state1':[['std_msgs::Float64'],['HUD_STATE1']],
 
