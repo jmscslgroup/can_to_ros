@@ -248,10 +248,16 @@ def generateToDecode(toROS):
             # print('inside the for loop')
             # print(toROS)
             try:
-                decode[canid] += temp[canid][topic][1]
+                skip=False
+                for each in temp[canid][topic][1]:
+                    if each in decode[canid]:
+                        skip=True
+                    # print('this: ',temp[canid][topic][1],' is not in this: ', decode[canid])
+                if skip == False:
+                    decode[canid] += temp[canid][topic][1]
             except:
                 # print('I am in except')
-                print(temp[canid][topic][1])
+                # print(temp[canid][topic][1])
                 decode[canid] = temp[canid][topic][1]
             counter += 1
 #             print(decode)
