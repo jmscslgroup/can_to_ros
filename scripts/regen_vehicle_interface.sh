@@ -18,7 +18,7 @@ fi
 
 ##this section reads in the values from python helper to be published
 
-OUTPUT=($(python3 insert_lines_nissan_interface.py | tr -d '[],'))
+OUTPUT=($(python3 insert_lines_vanilla_vehicle_interface.py | tr -d '[],'))
 
 ##this section writes the lines to the file
 
