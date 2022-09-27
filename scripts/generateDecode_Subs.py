@@ -1,3 +1,5 @@
+#Author: Mattehew Nice
+
 import cantools
 import json
 
@@ -26,7 +28,7 @@ def findDBC(vin_details):
                 # dbcfile = '/Users/mnice/Documents/GitHub/strym/strym/dbc/nissan_rogue_2021.dbc'
                 dbcfile = '/home/circles/strym/strym/dbc/nissan_rogue_2021.dbc'
                 # dbcfile = '/home/circles/strym/strym/dbc/nissan_rogue_experimental.dbc'
-    print('the DBC is set as %s'%(dbcfile))
+    print('The DBC is set as %s'%(dbcfile))
     return jsonfile, dbcfile
 
 def initializeDBC_Cantools(fileName):
@@ -220,8 +222,8 @@ def buildCallbacks(toROS):##add varNum?
                 for type in singleValTypes:
                     if type in rosmsg:
                         ##treat as a float64
-                        print(canid,signals)
-                        print(toDecode.get(canid))
+                        # print(canid,signals)
+                        # print(toDecode.get(canid))
                         text += '\t\tmsg%d.data = data.var%d; //%s\n'%(count,toDecode.get(canid).index(signals[0])+1,signals[0])
                         found = True
 
@@ -326,7 +328,7 @@ except FileNotFoundError:
 f = open('./'+jsonfile)
 
 # returns JSON object as a dictionary
-print(jsonfile)
+print('The generated JSON file is: ',jsonfile)
 toROS = json.load(f, object_hook=keystoint)
 # print('this is toROS before generateToDecode')
 # print(toROS)
@@ -338,7 +340,7 @@ f.close()
 #generating the C++ header file
 #TODO: for each key in the decoding dictionary, add text to the can_decode.h file
 text = ''
-print(toDecode)
+print('The JSON file contains these signals: ',toDecode)
 for i in toDecode.keys():
     msg, signals = getSignals(i,toDecode,dbc)
     text += decodeBuilder(msg, signals)

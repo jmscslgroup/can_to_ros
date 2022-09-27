@@ -1,15 +1,16 @@
 #!/bin/bash
+#Author: Matthew Nice
 
 ##this section will remove the lines between the start and end of the messages to be published
-start="$(echo "$a" | sed -n '/msgs to be published start/=' ../src/vehicle_interface_nissan.cpp)"
+start="$(echo "$a" | sed -n '/msgs to be published start/=' ../src/vanilla_vehicle_interface.cpp)"
 start=$((start+1))
 
-end="$(echo "$a" | sed -n '/msgs to be published end/=' ../src/vehicle_interface_nissan.cpp)"
+end="$(echo "$a" | sed -n '/msgs to be published end/=' ../src/vanilla_vehicle_interface.cpp)"
 end=$((end-1))
 
 if [[ $end -gt $start ]]
 then
-  cmd="sed -i '${start}, ${end} d' ../src/vehicle_interface_nissan.cpp"
+  cmd="sed -i '${start}, ${end} d' ../src/vanilla_vehicle_interface.cpp"
   echo $cmd
   eval $cmd
 fi
@@ -27,7 +28,7 @@ OUTPUT=($(python3 insert_lines_nissan_interface.py | tr -d '[],'))
 for i in ${OUTPUT[*]};
 do
   #echo $i;
-  cmdLoop="sed -i '${start} i ${i}' ../src/vehicle_interface_nissan.cpp"
+  cmdLoop="sed -i '${start} i ${i}' ../src/vanilla_vehicle_interface.cpp"
   echo $cmdLoop
   eval $cmdLoop
   start=$((start+1))

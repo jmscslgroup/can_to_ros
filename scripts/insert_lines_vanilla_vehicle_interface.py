@@ -1,3 +1,5 @@
+#Author: Mattehew Nice 
+
 import json
 import cantools
 
