@@ -8,8 +8,8 @@ read -r -p "Does this information look correct? Proceed to generating CANtoROS f
   case "$response" in
       [yY][eE][sS]|[yY])
 
-	python3 /home/circles/catkin_ws/src/can_to_ros/scripts/makeSignalsJSON.py
-	python3 /home/circles/catkin_ws/src/can_to_ros/scripts/generateDecode_Subs.py
+	python3 ./makeSignalsJSON.py
+	python3 ./generateDecode_Subs.py
   ./regen_vehicle_interface.sh
 
 	cd /home/circles/catkin_ws

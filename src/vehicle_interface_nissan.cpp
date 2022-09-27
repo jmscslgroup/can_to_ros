@@ -73,11 +73,6 @@ private:
 
 		if (
       //this is where the msgs to be published start
-  (canData->messageID==139&canData->dataLength==48)
-  ||(canData->messageID==303&canData->dataLength==12)
-  ||(canData->messageID==308&canData->dataLength==64)
-  ||(canData->messageID==1119&canData->dataLength==20)
-  ||(canData->messageID==1487&canData->dataLength==48)
       //this is where the msgs to be published end
 
 

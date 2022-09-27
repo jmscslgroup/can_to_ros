@@ -14,6 +14,7 @@ def findDBC(vin_details):
             elif int(vin_details['ModelYear']) == 2019:
                 dbcfile = '/home/circles/strym/strym/dbc/toyota_rav4_2019.dbc'
             if 'HV' in vin_details['Trim']:
+                # dbcfile = '/Users/mnice/Documents/GitHub/strym/strym/dbc/toyota_rav4_hybrid.dbc'
                 dbcfile = '/home/circles/strym/strym/dbc/toyota_rav4_hybrid.dbc'
 #space here to add in info for honda and nissan vehicles
     if vin_details['Make'] == 'NISSAN':
@@ -182,7 +183,7 @@ def buildCallbacks(toROS):##add varNum?
 
 
             if 'PointStamped' in rosmsg:
-                print(signals,len(signals))
+                # print(signals,len(signals))
                 ###treat as a pointstamped
                 text+= '\t\tmsg%d.header.frame_id = "front_laser_link";\n\
                 msg%d.header.stamp = ros::Time(std::stod(Time));\n'%(count,count)
@@ -206,7 +207,8 @@ def buildCallbacks(toROS):##add varNum?
             elif 'Point' in rosmsg:
                 ##treat as point
                 var = ['.x','.y','.z']
-                for i in range(0,len(signals)):
+                for i in range(0,min(len(signals),3)):
+                    # print(signals)
                     text += '\tmsg%d%s = data.var%s; //%s\n'%(count,var[i],i+1,signals[i])
 
             else:
@@ -234,7 +236,7 @@ def generateToDecode(toROS):
             try:
                 decode[canid] += temp[canid][topic][1]
             except:
-                print('I am in except')
+                # print('I am in except')
                 print(temp[canid][topic][1])
                 decode[canid] = temp[canid][topic][1]
             counter += 1
