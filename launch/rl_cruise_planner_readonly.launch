@@ -7,8 +7,8 @@
 	<arg name="hwil" default="true"/>
 	<arg name="SPACEGAP_SCALE" default="100.0"/>
 	<arg name="SPEED_SCALE" default="40.0"/>
-	<!-- for no planner, set these two to -1 -->
-	<arg name="SP_TARGET_SPEED" default="-1"/>
+	<!-- for planner, set these two to positive values -->
+	<arg name="SP_TARGET_SPEED" default="70"/>
 	<arg name="SP_MAX_HEADWAY" default="1"/>
 	<arg name='readonly' default='true'/>
 
@@ -31,7 +31,7 @@
 
 	<node pkg="can_to_ros" type="subs_fs_test" name="subs_fs_test" output="screen" />
 
-	<param name="model" type="string" value="$(find onnx2ros)/../controllers/rl-cruise-noplanner.onnx"/>
+	<param name="model" type="string" value="$(find onnx2ros)/../controllers/rl-cruise-planner.onnx"/>
 	<param name="mode" type="string" value="prompt"/>
 	<node pkg="onnx2ros" type="prompt_mode" name="controller" output="screen"/>
 
