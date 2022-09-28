@@ -2,6 +2,8 @@
 #include "std_msgs/String.h"
 #include "std_msgs/Float32.h"
 #include "std_msgs/Float64.h"
+#include "std_msgs/Int16.h"
+#include "std_msgs/Int8.h"
 #include "sensor_msgs/TimeReference.h"
 #include "header_package/can_decode_test.h"
 #include "visualization_msgs/Marker.h"
