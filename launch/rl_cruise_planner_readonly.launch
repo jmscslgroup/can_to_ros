@@ -26,15 +26,17 @@
 	<node pkg="can_to_ros" type="lead_info" name="lead_info" output="screen" if="$(arg hwil)"/>
 	<node pkg="can_to_ros" type="simple_mini_car_from_lead_distance" name="simple_mini_car_from_lead_distance" output="screen" if="$(arg hwil)"/>
 -->
+        <include file="$(find can_to_ros)/launch/vanilla_interface.launch"/>
 
+<!--
 	<node pkg="can_to_ros" type="vehicle_interface_nissan" name="vehicle_interface_nissan" output="screen" />
-
 	<node pkg="can_to_ros" type="subs_fs_test" name="subs_fs_test" output="screen" />
+	<node pkg="can_to_ros" type ="rosbag_record.sh" name="bashscript2" output="screen" args="$(arg description) $(arg hwil)" /> 
+-->
 
 	<param name="model" type="string" value="$(find onnx2ros)/../controllers/rl-cruise-planner.onnx"/>
 	<param name="mode" type="string" value="prompt"/>
 	<node pkg="onnx2ros" type="prompt_mode" name="controller" output="screen"/>
 
-	<node pkg="can_to_ros" type ="rosbag_record.sh" name="bashscript2" output="screen" args="$(arg description) $(arg hwil)" /> 
 
 </launch>
