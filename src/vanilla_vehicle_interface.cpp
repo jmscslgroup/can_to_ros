@@ -37,8 +37,8 @@
 #include "geometry_msgs/Twist.h"
 #include "geometry_msgs/PointStamped.h"
 #include "sensor_msgs/TimeReference.h"
-#include "sensor_msgs/NatSatFix.h"
-#include "sensor_msgs/NatSatStatus.h"
+#include "sensor_msgs/NavSatFix.h"
+#include "sensor_msgs/NavSatStatus.h"
 #include "header_package/can_decode.h"
 #include "visualization_msgs/Marker.h"
 // Libpanda headers:
@@ -127,39 +127,39 @@ private:
 	void newDataNotification( Panda::GpsData* gpsData ) {
 		time_t gpsTime_t = mktime(&gpsData->time);
 
-		sensor_msgs::NatSatFix fix_position;
+		sensor_msgs::NavSatFix fix_position;
 		sensor_msgs::TimeReference fix_time;
 		ros::Time current_time = ros::Time::now();
 
-		fix_position->header->stamp = current_time;
-		fix_position->status->status = (gpsData->info.status == 'A' ? sensor_msgs::NatSatStatus::STATUS_FIX : sensor_msgs::NatSatStatus::STATUS_NO_FIX); //Marked as active if we get the active character
-		fix_position->status->service = sensor_msgs::NatSatStatus::SERVICE_GPS; //Flagged as normal GPS
-		fix_position->latitude = gpsData->pose.latitude;
-		fix_position->longitude = gpsData->pose.longitude;
-		fix_position->altitude = gpsData->pose.altitude;
+		fix_position.header.stamp = current_time;
+		fix_position.status.status = (gpsData->info.status == 'A' ? sensor_msgs::NavSatStatus::STATUS_FIX : sensor_msgs::NavSatStatus::STATUS_NO_FIX); //Marked as active if we get the active character
+		fix_position.status.service = sensor_msgs::NavSatStatus::SERVICE_GPS; //Flagged as normal GPS
+		fix_position.latitude = gpsData->pose.latitude;
+		fix_position.longitude = gpsData->pose.longitude;
+		fix_position.altitude = gpsData->pose.altitude;
 
 		double hdop_squared_half_sqrt = sqrt(gpsData->quality.HDOP * gpsData->quality.HDOP / 2.0);
-		double vdop_squared = gpsData->quality.VDOP;
-		double[] covariance_diagonal = {hdop_squared_half_sqrt, hdop_squared_half_sqrt, vdop};
+		double vdop = gpsData->quality.VDOP;
+		double covariance_diagonal[] = {hdop_squared_half_sqrt, hdop_squared_half_sqrt, vdop};
 		for (size_t i = 0; i < 3; i++) {
 			for (size_t j = 0; j < 3; j++) {
 				size_t final_index = (i * 3) + j;
-				fix_position->position_covariance[final_index] = covariance_diagonal[i] * covariance_diagonal[j];
+				fix_position.position_covariance[final_index] = covariance_diagonal[i] * covariance_diagonal[j];
 			}
 		}
 
-		fix_position->position_covariance_type = sensor_msgs::NatSatFix::COVARIANCE_TYPE_APPROXIMATED; // Approximated as per above.
+		fix_position.position_covariance_type = sensor_msgs::NavSatFix::COVARIANCE_TYPE_APPROXIMATED; // Approximated as per above.
 
-		fix_time->time_ref = ros::Time((uint32_t)gpsTime_t, ((uint32_t)gpsData->timeMilliseconds) * 1000000);
-		fix_time->header->stamp = current_time;
-		fix_time->source = "Libpanda";
+		fix_time.time_ref = ros::Time((uint32_t)gpsTime_t, ((uint32_t)gpsData->timeMilliseconds) * 1000000);
+		fix_time.header.stamp = current_time;
+		fix_time.source = "Libpanda";
 
 		pub_fix.publish(fix_position);
 		pub_gpstime.publish(fix_time);
 	}
 public:
 	PublishGpsObserver() {
-		pub_fix = nhPublishGps.advertise<sensor_msgs::NatSatFix>("/gps_fix", 1000);
+		pub_fix = nhPublishGps.advertise<sensor_msgs::NavSatFix>("/gps_fix", 1000);
 		pub_gpstime = nhPublishGps.advertise<sensor_msgs::TimeReference>("/gps_fix_time", 1000);
 	}
 };
