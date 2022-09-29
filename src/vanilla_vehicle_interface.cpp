@@ -100,6 +100,7 @@ private:
 ||(canData->messageID==399&&canData->dataLength==8)
 ||(canData->messageID==1570&&canData->dataLength==8)
 ||(canData->messageID==467&&canData->dataLength==8)
+||(canData->messageID==835&&canData->dataLength==8)
 ||(canData->messageID==921&&canData->dataLength==8)
 ||(canData->messageID==552&&canData->dataLength==4)
       //this is where the msgs to be published end
