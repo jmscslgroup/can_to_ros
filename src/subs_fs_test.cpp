@@ -2,6 +2,7 @@
 #include "std_msgs/String.h"
 #include "std_msgs/Float32.h"
 #include "std_msgs/Float64.h"
+#include "std_msgs/Int16.h"
 #include "sensor_msgs/TimeReference.h"
 #include "header_package/can_decode_test.h"
 #include "visualization_msgs/Marker.h"
@@ -42,6 +43,8 @@ public:
 	highbeams_pub = n_.advertise<std_msgs::Float64>("highbeams",1000);
 	pcm_cruise_2_pub = n_.advertise<geometry_msgs::Point>("pcm_cruise_2",1000);
 	cruise_state_pub = n_.advertise<geometry_msgs::Point>("cruise_state",1000);
+	acc_distance_setting_pub = n_.advertise<std_msgs::Int16>("acc/distance_setting",1000);
+	acc_set_speed_pub = n_.advertise<std_msgs::Int16>("acc/set_speed",1000);
 	accel_pub = n_.advertise<std_msgs::Float64>("accel",1000);
 
 	sub_ = n_.subscribe("/realtime_raw_data", 1000, &SubscribeAndPublish::callback, this);
@@ -297,6 +300,14 @@ public:
 	msg1.z = data.var3; //CRUISE_CONTROL_STATE
 		cruise_state_pub.publish(msg1);
 
+		std_msgs::Int16 msg2;
+		msg2.data = data.var4; //DISTANCE_LINES 
+		acc_distance_setting_pub.publish(msg2);
+
+		std_msgs::Int16 msg3;
+		msg3.data = data.var5; //UI_SET_SPEED
+		acc_set_speed_pub.publish(msg3);
+
 	}
 	else if (MessageID == 552)
 	{
@@ -332,6 +343,8 @@ private:
 	ros::Publisher highbeams_pub;
 	ros::Publisher pcm_cruise_2_pub;
 	ros::Publisher cruise_state_pub;
+	ros::Publisher acc_distance_setting_pub;
+	ros::Publisher acc_set_speed_pub;
 	ros::Publisher accel_pub;
 
 	ros::Subscriber sub_;
@@ -341,7 +354,7 @@ private:
 	values data;
 };
 int main(int argc, char **argv){
-	ros::init(argc, argv, "subs_fs");
+	ros::init(argc, argv, "subs_fs_test");
 	ros::NodeHandle nh1;
 	SubscribeAndPublish SAPObject;
 	ros::spin();

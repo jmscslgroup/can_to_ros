@@ -66,7 +66,7 @@ This document lists the ROS topics and corresponding nodes, as well as if contro
  - Subscribers: rosbag_record.sh
  - Publishers: vehicle_interface
 
-#### Other
+## Other
  - These topis will eventually be integrated into an ontology under /car
 
 /realtime_raw_data - This is a report of specific CAN messages of interest for the vehicle sensor and control state.  See vehicle_interface for specific messages of interest.  The node subs_fs is responsible for parsing this data into separate message topics in more usable types

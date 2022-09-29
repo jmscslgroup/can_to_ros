@@ -11,7 +11,7 @@
 
 typedef struct values_struct
 {
-   float var1, var2, var3, var4;
+   float var1,var2,var3,var4,var5,var6,var7,var8,var9,var10,var11,var12,var13,var14,var15,var16,var17,var18,var19,var20;
 } values;
 
 class decode_msgs{
@@ -53,11 +53,12 @@ std::string decode_msgs::findTwosComplement(std::string str) {
 values decode_msgs::decode_message( unsigned int msg_id, std::string msg){
   values returnedVal;
   unsigned long long int n;
-  std::string binary;
+  //std::string binary;
   std::string raw;
   std::string raw2;
   std::string raw3;
   std::string raw4;
+  std::string raw5;
   std::string rawVal;
   float scaled;
   float conversion;
@@ -66,11 +67,32 @@ values decode_msgs::decode_message( unsigned int msg_id, std::string msg){
   returnedVal.var2=0.0;
   returnedVal.var3=0.0;
   returnedVal.var4=0.0;
-if (msg_id == 37){
-    	std::stringstream hex_ss(msg);
-    	hex_ss >> std::hex >> n;// making the message hex
-    	binary = std::bitset<64>(n).to_string(); // convert hex to binary
+  returnedVal.var5=0.0;
 
+  int len = msg.length();
+  int i = 0;
+  std::string word;
+  std::string binary;
+  while (i < len){
+      while (i < len-16){
+          // std::cout << msg.substr(i,16) << '\n';
+          word = msg.substr(i,16);
+          std::istringstream(word) >> std::hex >> n;
+          // std::cout << std::dec << "Parsing word gives " << n << '\n';
+          // std::cout << std::bitset<64>{n} << '\n';
+          binary.append(std::bitset<64>{n}.to_string());
+          i = i + 16;
+      }
+      // std::cout << msg.substr(i,1) << '\n';
+      word = msg.substr(i,1);
+      std::istringstream(word) >> std::hex >> n;
+      // std::cout << std::dec << "Parsing word gives " << n << '\n';
+      // std::cout << std::bitset<4>{n} << '\n';
+      binary.append(std::bitset<4>{n}.to_string());
+
+      i = i+1;
+  }
+if (msg_id == 37){
 	std::string raw1 = binary.substr(4,12); //STEER_ANGLE
 float STEER_ANGLE_fl;
         	if (raw1[0] == '0'){
@@ -86,10 +108,6 @@ float STEER_ANGLE_fl;
 	return returnedVal;
 }
 if (msg_id == 180){
-    	std::stringstream hex_ss(msg);
-    	hex_ss >> std::hex >> n;// making the message hex
-    	binary = std::bitset<64>(n).to_string(); // convert hex to binary
-
 	std::string raw1 = binary.substr(40,16); //SPEED
 	raw_dec = std::stoull(raw1, 0, 2);
 	scaled = (float)raw_dec * 0.010000 + 0.000000;
@@ -99,10 +117,6 @@ if (msg_id == 180){
 	return returnedVal;
 }
 if (msg_id == 869){
-    	std::stringstream hex_ss(msg);
-    	hex_ss >> std::hex >> n;// making the message hex
-    	binary = std::bitset<56>(n).to_string(); // convert hex to binary
-
 	std::string raw1 = binary.substr(32,8); //LEAD_DISTANCE
 	raw_dec = std::stoull(raw1, 0, 2);
 	scaled = (float)raw_dec * 1.000000 + 0.000000;
@@ -123,10 +137,6 @@ float REL_SPEED_fl;
 	return returnedVal;
 }
 if (msg_id == 384){
-    	std::stringstream hex_ss(msg);
-    	hex_ss >> std::hex >> n;// making the message hex
-    	binary = std::bitset<64>(n).to_string(); // convert hex to binary
-
 	std::string raw1 = binary.substr(8,13); //LONG_DIST
 	raw_dec = std::stoull(raw1, 0, 2);
 	scaled = (float)raw_dec * 0.040000 + 0.000000;
@@ -159,10 +169,6 @@ float REL_SPEED_fl;
 	return returnedVal;
 }
 if (msg_id == 385){
-    	std::stringstream hex_ss(msg);
-    	hex_ss >> std::hex >> n;// making the message hex
-    	binary = std::bitset<64>(n).to_string(); // convert hex to binary
-
 	std::string raw1 = binary.substr(8,13); //LONG_DIST
 	raw_dec = std::stoull(raw1, 0, 2);
 	scaled = (float)raw_dec * 0.040000 + 0.000000;
@@ -195,10 +201,6 @@ float REL_SPEED_fl;
 	return returnedVal;
 }
 if (msg_id == 386){
-    	std::stringstream hex_ss(msg);
-    	hex_ss >> std::hex >> n;// making the message hex
-    	binary = std::bitset<64>(n).to_string(); // convert hex to binary
-
 	std::string raw1 = binary.substr(8,13); //LONG_DIST
 	raw_dec = std::stoull(raw1, 0, 2);
 	scaled = (float)raw_dec * 0.040000 + 0.000000;
@@ -231,10 +233,6 @@ float REL_SPEED_fl;
 	return returnedVal;
 }
 if (msg_id == 387){
-    	std::stringstream hex_ss(msg);
-    	hex_ss >> std::hex >> n;// making the message hex
-    	binary = std::bitset<64>(n).to_string(); // convert hex to binary
-
 	std::string raw1 = binary.substr(8,13); //LONG_DIST
 	raw_dec = std::stoull(raw1, 0, 2);
 	scaled = (float)raw_dec * 0.040000 + 0.000000;
@@ -267,10 +265,6 @@ float REL_SPEED_fl;
 	return returnedVal;
 }
 if (msg_id == 388){
-    	std::stringstream hex_ss(msg);
-    	hex_ss >> std::hex >> n;// making the message hex
-    	binary = std::bitset<64>(n).to_string(); // convert hex to binary
-
 	std::string raw1 = binary.substr(8,13); //LONG_DIST
 	raw_dec = std::stoull(raw1, 0, 2);
 	scaled = (float)raw_dec * 0.040000 + 0.000000;
@@ -303,10 +297,6 @@ float REL_SPEED_fl;
 	return returnedVal;
 }
 if (msg_id == 389){
-    	std::stringstream hex_ss(msg);
-    	hex_ss >> std::hex >> n;// making the message hex
-    	binary = std::bitset<64>(n).to_string(); // convert hex to binary
-
 	std::string raw1 = binary.substr(8,13); //LONG_DIST
 	raw_dec = std::stoull(raw1, 0, 2);
 	scaled = (float)raw_dec * 0.040000 + 0.000000;
@@ -339,10 +329,6 @@ float REL_SPEED_fl;
 	return returnedVal;
 }
 if (msg_id == 390){
-    	std::stringstream hex_ss(msg);
-    	hex_ss >> std::hex >> n;// making the message hex
-    	binary = std::bitset<64>(n).to_string(); // convert hex to binary
-
 	std::string raw1 = binary.substr(8,13); //LONG_DIST
 	raw_dec = std::stoull(raw1, 0, 2);
 	scaled = (float)raw_dec * 0.040000 + 0.000000;
@@ -375,10 +361,6 @@ float REL_SPEED_fl;
 	return returnedVal;
 }
 if (msg_id == 391){
-    	std::stringstream hex_ss(msg);
-    	hex_ss >> std::hex >> n;// making the message hex
-    	binary = std::bitset<64>(n).to_string(); // convert hex to binary
-
 	std::string raw1 = binary.substr(8,13); //LONG_DIST
 	raw_dec = std::stoull(raw1, 0, 2);
 	scaled = (float)raw_dec * 0.040000 + 0.000000;
@@ -411,10 +393,6 @@ float REL_SPEED_fl;
 	return returnedVal;
 }
 if (msg_id == 392){
-    	std::stringstream hex_ss(msg);
-    	hex_ss >> std::hex >> n;// making the message hex
-    	binary = std::bitset<64>(n).to_string(); // convert hex to binary
-
 	std::string raw1 = binary.substr(8,13); //LONG_DIST
 	raw_dec = std::stoull(raw1, 0, 2);
 	scaled = (float)raw_dec * 0.040000 + 0.000000;
@@ -447,10 +425,6 @@ float REL_SPEED_fl;
 	return returnedVal;
 }
 if (msg_id == 393){
-    	std::stringstream hex_ss(msg);
-    	hex_ss >> std::hex >> n;// making the message hex
-    	binary = std::bitset<64>(n).to_string(); // convert hex to binary
-
 	std::string raw1 = binary.substr(8,13); //LONG_DIST
 	raw_dec = std::stoull(raw1, 0, 2);
 	scaled = (float)raw_dec * 0.040000 + 0.000000;
@@ -483,10 +457,6 @@ float REL_SPEED_fl;
 	return returnedVal;
 }
 if (msg_id == 394){
-    	std::stringstream hex_ss(msg);
-    	hex_ss >> std::hex >> n;// making the message hex
-    	binary = std::bitset<64>(n).to_string(); // convert hex to binary
-
 	std::string raw1 = binary.substr(8,13); //LONG_DIST
 	raw_dec = std::stoull(raw1, 0, 2);
 	scaled = (float)raw_dec * 0.040000 + 0.000000;
@@ -519,10 +489,6 @@ float REL_SPEED_fl;
 	return returnedVal;
 }
 if (msg_id == 395){
-    	std::stringstream hex_ss(msg);
-    	hex_ss >> std::hex >> n;// making the message hex
-    	binary = std::bitset<64>(n).to_string(); // convert hex to binary
-
 	std::string raw1 = binary.substr(8,13); //LONG_DIST
 	raw_dec = std::stoull(raw1, 0, 2);
 	scaled = (float)raw_dec * 0.040000 + 0.000000;
@@ -555,10 +521,6 @@ float REL_SPEED_fl;
 	return returnedVal;
 }
 if (msg_id == 396){
-    	std::stringstream hex_ss(msg);
-    	hex_ss >> std::hex >> n;// making the message hex
-    	binary = std::bitset<64>(n).to_string(); // convert hex to binary
-
 	std::string raw1 = binary.substr(8,13); //LONG_DIST
 	raw_dec = std::stoull(raw1, 0, 2);
 	scaled = (float)raw_dec * 0.040000 + 0.000000;
@@ -591,10 +553,6 @@ float REL_SPEED_fl;
 	return returnedVal;
 }
 if (msg_id == 397){
-    	std::stringstream hex_ss(msg);
-    	hex_ss >> std::hex >> n;// making the message hex
-    	binary = std::bitset<64>(n).to_string(); // convert hex to binary
-
 	std::string raw1 = binary.substr(8,13); //LONG_DIST
 	raw_dec = std::stoull(raw1, 0, 2);
 	scaled = (float)raw_dec * 0.040000 + 0.000000;
@@ -627,10 +585,6 @@ float REL_SPEED_fl;
 	return returnedVal;
 }
 if (msg_id == 398){
-    	std::stringstream hex_ss(msg);
-    	hex_ss >> std::hex >> n;// making the message hex
-    	binary = std::bitset<64>(n).to_string(); // convert hex to binary
-
 	std::string raw1 = binary.substr(8,13); //LONG_DIST
 	raw_dec = std::stoull(raw1, 0, 2);
 	scaled = (float)raw_dec * 0.040000 + 0.000000;
@@ -663,10 +617,6 @@ float REL_SPEED_fl;
 	return returnedVal;
 }
 if (msg_id == 399){
-    	std::stringstream hex_ss(msg);
-    	hex_ss >> std::hex >> n;// making the message hex
-    	binary = std::bitset<64>(n).to_string(); // convert hex to binary
-
 	std::string raw1 = binary.substr(8,13); //LONG_DIST
 	raw_dec = std::stoull(raw1, 0, 2);
 	scaled = (float)raw_dec * 0.040000 + 0.000000;
@@ -699,10 +649,6 @@ float REL_SPEED_fl;
 	return returnedVal;
 }
 if (msg_id == 1570){
-    	std::stringstream hex_ss(msg);
-    	hex_ss >> std::hex >> n;// making the message hex
-    	binary = std::bitset<64>(n).to_string(); // convert hex to binary
-
 	std::string raw1 = binary.substr(25,1); //HIGH_BEAMS_ON
 	raw_dec = std::stoull(raw1, 0, 2);
 	scaled = (float)raw_dec * 1.000000 + 0.000000;
@@ -711,10 +657,6 @@ if (msg_id == 1570){
 	return returnedVal;
 }
 if (msg_id == 467){
-    	std::stringstream hex_ss(msg);
-    	hex_ss >> std::hex >> n;// making the message hex
-    	binary = std::bitset<64>(n).to_string(); // convert hex to binary
-
 	std::string raw1 = binary.substr(8,1); //MAIN_ON
 	raw_dec = std::stoull(raw1, 0, 2);
 	scaled = (float)raw_dec * 1.000000 + 0.000000;
@@ -729,10 +671,6 @@ if (msg_id == 467){
 	return returnedVal;
 }
 if (msg_id == 921){
-    	std::stringstream hex_ss(msg);
-    	hex_ss >> std::hex >> n;// making the message hex
-    	binary = std::bitset<64>(n).to_string(); // convert hex to binary
-
 	std::string raw1 = binary.substr(3,1); //MAIN_ON
 	raw_dec = std::stoull(raw1, 0, 2);
 	scaled = (float)raw_dec * 1.000000 + 0.000000;
@@ -748,13 +686,19 @@ if (msg_id == 921){
 	scaled = (float)raw_dec * 1.000000 + 0.000000;
 	returnedVal.var3 = scaled;
 
+	std::string raw4 = binary.substr(9,2); //DISTANCE_LINES
+	raw_dec = std::stoull(raw4, 0, 2);
+	scaled = (float)raw_dec * 1.000000 + 0.000000;
+	returnedVal.var4 = scaled;
+
+	std::string raw5 = binary.substr(24,8); //UI_SET_SPEED
+	raw_dec = std::stoull(raw5, 0, 2);
+	scaled = (float)raw_dec * 1.000000 + 0.000000;
+	returnedVal.var5 = scaled;
+
 	return returnedVal;
 }
 if (msg_id == 552){
-    	std::stringstream hex_ss(msg);
-    	hex_ss >> std::hex >> n;// making the message hex
-    	binary = std::bitset<32>(n).to_string(); // convert hex to binary
-
 	std::string raw1 = binary.substr(1,15); //ACCEL_X
 float ACCEL_X_fl;
         	if (raw1[0] == '0'){

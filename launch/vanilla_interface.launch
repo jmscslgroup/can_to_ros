@@ -1,0 +1,14 @@
+<launch>
+<!-- include information for the joystick, etc. args="$(env HOME)"  -->
+<arg name="description" default="_all"/>
+
+<node pkg="can_to_ros" type="vanilla_vehicle_interface" name="vanilla_vehicle_interface" output="screen" />
+
+<node pkg="can_to_ros" type="subs" name="subs" output="screen" />
+
+<node pkg="can_to_ros" type ="rosbag_record.sh" name="bashscript1" output="screen" args="$(arg description) true"/>
+
+<!-- <node pkg="can_to_ros" type ="panda_csv_record.sh" name="bashscript2" output="screen"/> -->
+
+
+</launch>

@@ -8,7 +8,7 @@
 	<arg name="hwil" default="true"/>
 	<arg name="readonly" default="false"/>
 	
-	<arg name="timegap" default="2.0"/>	
+<!-- 	<arg name="timegap" default="2.0"/>	
 	<arg name="k_timegap" default="0.1"/>	
 	<arg name="s_min" default="15.0"/>	
 	<arg name="k1" default="0.5"/>	
@@ -23,7 +23,7 @@
 	<param name="/k_timegap" value="$(arg k_timegap)"/>
 	<param name="/s_min" value="$(arg s_min)"/>
 	<param name="/k1" value="$(arg k1)"/>
-	<param name="/k2" value="$(arg k2)"/>
+	<param name="/k2" value="$(arg k2)"/> -->
 	
 	<node pkg="can_to_ros" type ="subs_fs" name="subs_fs" output="screen" if="$(arg hwil)"/> 
 

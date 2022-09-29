@@ -37,7 +37,7 @@ int main(int argc, char **argv){
     }
 
 // outFile.open("headlights.csv");
-    ros::Rate rate(750.0); // the publish rate is 1/delta_t 
+    ros::Rate rate(2800.0); // the publish rate is 1/delta_t 
 // outFile << "Time,"<< "LIGHT_STATE_CHANGED,"<< "HIGH_BEAMS_ON," << "HEAD_LAMPS_ON,"<< "RUNNING_LIGHTS_ON"<< std::endl;
 
     inFile.open(argv[1]);
@@ -58,20 +58,20 @@ int main(int argc, char **argv){
 
         std::replace(inputLine.begin(), inputLine.end(), ',', ' '); // replace the commas with white space
 
-        std::stringstream ss(inputLine);
-        ss >> Time>> Bus>> MessageID>> Message>> MessageLength;
+        //std::stringstream ss(inputLine);
+        //ss >> Time>> Bus>> MessageID>> Message>> MessageLength;
 
 
-        if (MessageID == 180 || MessageID == 37 || MessageID== 1570 
-		    || MessageID== 869 || (MessageID>= 384 && MessageID<=399 ) || MessageID== 552 )
-		{
-			std_msgs::String msgs;
-            msgs.data=inputLine;
-            pub_.publish(msgs);
-            rate.sleep(); 
+        //if (MessageID == 180 || MessageID == 37 || MessageID== 1570 
+	//	    || MessageID== 869 || (MessageID>= 384 && MessageID<=399 ) || MessageID== 552 )
+	//	{
+	//		std_msgs::String msgs;
+         //   msgs.data=inputLine;
+        //    pub_.publish(msgs);
+        //    rate.sleep(); 
 
              
-		}
+	//	}
         
         // if (MessageID == 1570 && Bus ==0){
         // data = obj.decode_message (MessageID, Message);
@@ -87,7 +87,10 @@ int main(int argc, char **argv){
         // msgs.datalength=20;
 
   
-
+	std_msgs::String msgs;
+	msgs.data=inputLine;
+	pub_.publish(msgs);
+	rate.sleep();
 
     }
 

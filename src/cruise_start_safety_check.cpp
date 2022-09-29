@@ -28,7 +28,7 @@
  
  Cruise will be engaged if and only if:
  - Upon a rising edge (false->true) on the topic /car/libpanda/controls_allowed, both:
-	1) The topic /cmd_accel is withing a certain range [-0.5, 0.5]
+	1) The topic /cmd_accel is withing a certain range [-0.5, 2.0]
 	2) The topic /car/hud/mini_car_enable is true
  
  This node will only publish to topic /car/hud/cruise_cancel_request briefly on state changes to /car/libpanda/controls_allowed
