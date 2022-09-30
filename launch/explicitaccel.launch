@@ -2,7 +2,7 @@
 
 <launch>
 
-	<arg name="description" default="explicit_accel"/>
+	<arg name="description" default="_explicit_accel"/>
 	
 	<arg name="hwil" default="true"/>
 	<arg name='readonly' default='true'/>
