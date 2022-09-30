@@ -30,7 +30,7 @@ toyota_rav4 = {37:{'steering_angle':[['std_msgs::Float64'],['STEER_ANGLE']]},
          },
          921:{'cruise_state':[['geometry_msgs::Point'],['MAIN_ON','UI_SET_SPEED','CRUISE_CONTROL_STATE']]
          ,'acc/distance_setting':[['std_msgs::Int16'],['DISTANCE_LINES']]
-         ,'acc/set_speed':[['std_msgs::Float64'],['UI_SET_SPEED']]
+         ,'acc/set_speed':[['std_msgs::Int16'],['UI_SET_SPEED']]
          ,'acc/set_speed2':[['std_msgs::Float64'],['UI_SET_SPEED']]},
          552:{'accel':[['std_msgs::Float64'],['ACCEL_X']]}
 

@@ -49,7 +49,7 @@ public:
 	acc_acc_malfunction_pub = n_.advertise<std_msgs::Int16>("acc/acc_malfunction",1000);
 	cruise_state_pub = n_.advertise<geometry_msgs::Point>("cruise_state",1000);
 	acc_distance_setting_pub = n_.advertise<std_msgs::Int16>("acc/distance_setting",1000);
-	acc_set_speed_pub = n_.advertise<std_msgs::Float64>("acc/set_speed",1000);
+	acc_set_speed_pub = n_.advertise<std_msgs::Int16>("acc/set_speed",1000);
 	acc_set_speed2_pub = n_.advertise<std_msgs::Float64>("acc/set_speed2",1000);
 	accel_pub = n_.advertise<std_msgs::Float64>("accel",1000);
 
@@ -332,7 +332,7 @@ public:
 		msg2.data = data.var4; //DISTANCE_LINES
 		acc_distance_setting_pub.publish(msg2);
 
-		std_msgs::Float64 msg3;
+		std_msgs::Int16 msg3;
 		msg3.data = data.var2; //UI_SET_SPEED
 		acc_set_speed_pub.publish(msg3);
 

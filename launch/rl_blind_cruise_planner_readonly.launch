@@ -26,7 +26,9 @@
 	<node pkg="can_to_ros" type="lead_info" name="lead_info" output="screen" if="$(arg hwil)"/>
 	<node pkg="can_to_ros" type="simple_mini_car_from_lead_distance" name="simple_mini_car_from_lead_distance" output="screen" if="$(arg hwil)"/>
 -->
-        <include file="$(find can_to_ros)/launch/vanilla_interface.launch"/>
+        <include file="$(find can_to_ros)/launch/vanilla_interface.launch">
+		<param name="description" value="$(arg description)"/>
+	</include>
 
 <!--
 	<node pkg="can_to_ros" type="vehicle_interface_nissan" name="vehicle_interface_nissan" output="screen" />
