@@ -7,6 +7,7 @@
 <node pkg="can_to_ros" type="subs" name="subs" output="screen" />
 
 <node pkg="can_to_ros" type ="rosbag_record.sh" name="bashscript1" output="screen" args="$(arg description) true"/>
+<node pkg="live_tracker" type="live_tracker.py" name="live_tracker" output="screen" />
 
 <!-- <node pkg="can_to_ros" type ="panda_csv_record.sh" name="bashscript2" output="screen"/> -->
 
