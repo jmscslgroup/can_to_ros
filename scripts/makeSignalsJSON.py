@@ -22,7 +22,9 @@ toyota_rav4 = {37:{'steering_angle':[['std_msgs::Float64'],['STEER_ANGLE']]},
          398:{'track_a14':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
          399:{'track_a15':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
          1570:{'highbeams':[['std_msgs::Float64'],['HIGH_BEAMS_ON']]},
-         467:{'pcm_cruise_2':[['geometry_msgs::Point'],['MAIN_ON','SET_SPEED']]},
+         467:{'pcm_cruise_2':[['geometry_msgs::Point'],['MAIN_ON','SET_SPEED']] 
+		,'acc/set_speed' : [['std_msgs::Int16'], ['SET_SPEED']]
+		},
          835:{'acc/accel_cmd':[['std_msgs::Float64'],['ACCEL_CMD']],
          'acc/acc_info':[['geometry_msgs::Point'],['MINI_CAR','CAR_AHEAD','CANCEL_REQ']],
          'acc/acc_cut_in':[['std_msgs::Int16'],['ACC_CUT_IN']],
@@ -30,7 +32,6 @@ toyota_rav4 = {37:{'steering_angle':[['std_msgs::Float64'],['STEER_ANGLE']]},
          },
          921:{'cruise_state':[['geometry_msgs::Point'],['MAIN_ON','UI_SET_SPEED','CRUISE_CONTROL_STATE']]
          ,'acc/distance_setting':[['std_msgs::Int16'],['DISTANCE_LINES']]
-         ,'acc/set_speed':[['std_msgs::Int16'],['UI_SET_SPEED']]
          ,'acc/set_speed2':[['std_msgs::Float64'],['UI_SET_SPEED']]},
          552:{'accel':[['std_msgs::Float64'],['ACCEL_X']]}
 

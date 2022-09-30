@@ -43,13 +43,13 @@ public:
 	track_a15_pub = n_.advertise<geometry_msgs::PointStamped>("track_a15",1000);
 	highbeams_pub = n_.advertise<std_msgs::Float64>("highbeams",1000);
 	pcm_cruise_2_pub = n_.advertise<geometry_msgs::Point>("pcm_cruise_2",1000);
+	acc_set_speed_pub = n_.advertise<std_msgs::Int16>("acc/set_speed",1000);
 	acc_accel_cmd_pub = n_.advertise<std_msgs::Float64>("acc/accel_cmd",1000);
 	acc_acc_info_pub = n_.advertise<geometry_msgs::Point>("acc/acc_info",1000);
 	acc_acc_cut_in_pub = n_.advertise<std_msgs::Int16>("acc/acc_cut_in",1000);
 	acc_acc_malfunction_pub = n_.advertise<std_msgs::Int16>("acc/acc_malfunction",1000);
 	cruise_state_pub = n_.advertise<geometry_msgs::Point>("cruise_state",1000);
 	acc_distance_setting_pub = n_.advertise<std_msgs::Int16>("acc/distance_setting",1000);
-	acc_set_speed_pub = n_.advertise<std_msgs::Int16>("acc/set_speed",1000);
 	acc_set_speed2_pub = n_.advertise<std_msgs::Float64>("acc/set_speed2",1000);
 	accel_pub = n_.advertise<std_msgs::Float64>("accel",1000);
 
@@ -296,6 +296,10 @@ public:
 		msg1.y = data.var2; //SET_SPEED
 		pcm_cruise_2_pub.publish(msg1);
 
+		std_msgs::Int16 msg2;
+		msg2.data = data.var2; //SET_SPEED
+		acc_set_speed_pub.publish(msg2);
+
 	}
 	else if (MessageID == 835)
 	{
@@ -332,13 +336,9 @@ public:
 		msg2.data = data.var4; //DISTANCE_LINES
 		acc_distance_setting_pub.publish(msg2);
 
-		std_msgs::Int16 msg3;
+		std_msgs::Float64 msg3;
 		msg3.data = data.var2; //UI_SET_SPEED
-		acc_set_speed_pub.publish(msg3);
-
-		std_msgs::Float64 msg4;
-		msg4.data = data.var2; //UI_SET_SPEED
-		acc_set_speed2_pub.publish(msg4);
+		acc_set_speed2_pub.publish(msg3);
 
 	}
 	else if (MessageID == 552)
@@ -374,13 +374,13 @@ private:
 	ros::Publisher track_a15_pub;
 	ros::Publisher highbeams_pub;
 	ros::Publisher pcm_cruise_2_pub;
+	ros::Publisher acc_set_speed_pub;
 	ros::Publisher acc_accel_cmd_pub;
 	ros::Publisher acc_acc_info_pub;
 	ros::Publisher acc_acc_cut_in_pub;
 	ros::Publisher acc_acc_malfunction_pub;
 	ros::Publisher cruise_state_pub;
 	ros::Publisher acc_distance_setting_pub;
-	ros::Publisher acc_set_speed_pub;
 	ros::Publisher acc_set_speed2_pub;
 	ros::Publisher accel_pub;
 
