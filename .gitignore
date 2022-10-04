@@ -4,3 +4,7 @@ scripts/kalmanTracking.pyc
 bagfiles/.DS_Store
 scripts/.ipynb_checkpoints/develForVersion2-checkpoint.ipynb
 .DS_Store
+scripts/toyota_rav4.json
+include/header_package/can_decode.h
+src/subs.cpp
+src/vanilla_vehicle_interface.cpp

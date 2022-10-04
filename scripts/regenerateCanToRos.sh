@@ -1,5 +1,20 @@
 #/bin/bash
 
+if [ $EUID -ne 0 ]; then
+    echo "$0 not running as root. Please call using sudo."
+    exit 2
+fi
+
+
+FILE=/etc/libpanda.d/vin_details.json
+if test -f "$FILE"; then
+    echo "$FILE exists."
+else
+    echo "$FILE doesn't exist. Running vinParser"
+    python3 /home/circles/libpanda/scripts/vinParser.py
+    # python3 /Users/mnice/Documents/GitHub/libpanda_real/scripts/vinParser.py
+fi
+
 echo "The current vin details are  " $(cat /etc/libpanda.d/vin_details.json)
 echo "The current vin is " $(cat /etc/libpanda.d/vin)
 echo "If something is incorrect, run libpanda/scripts/setVin.sh, or run vinParser.py to lookup details"
