@@ -12,6 +12,7 @@
 typedef struct values_struct
 {
    float var1,var2,var3,var4,var5,var6,var7,var8,var9,var10,var11,var12,var13,var14,var15,var16,var17,var18,var19,var20,var21,var22,var23,var24;
+   string choice_var3;
 } values;
 
 class decode_msgs{
@@ -106,6 +107,7 @@ values decode_msgs::decode_message( unsigned int msg_id, std::string msg){
   returnedVal.var22=0.0;
   returnedVal.var23=0.0;
   returnedVal.var24=0.0;
+  returnedVal.choice_var3="";
 
   int len = msg.length();
   int i = 0;
