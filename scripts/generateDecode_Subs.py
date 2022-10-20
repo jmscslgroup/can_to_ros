@@ -130,10 +130,10 @@ def findSubstring(signal, varNum):
     if signal.choices != None:
         choiceDict=signal.choices
         for key in choiceDict.keys():
-            string_choice += "\n\
+            string_choice += '\n\
             \tif (int(scaled) == %d){\n\
-            \treturnedVal.choice_var%d = '%s';\n\
-            \t}\n"%(key,varNum,choiceDict[key])
+            \treturnedVal.choice_var%d = "%s";\n\
+            \t}\n'%(key,varNum,choiceDict[key])
 
 
     ##  if decimal value is in choiceDict.keys()
