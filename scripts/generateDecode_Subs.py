@@ -105,7 +105,7 @@ def findSubstring(signal, varNum):
     if not signal.is_signed:
         rawVal_dec = "\traw_dec = std::stoull(raw%d, 0, 2);\n"%(varNum)
     else:
-        rawVal_dec = "float %s_fl;\n\
+        rawVal_dec = "\tfloat %s_fl;\n\
         \tif (raw%d[0] == '0'){\n\
         \t%s_fl= std::stoul( raw%d, 0, 2 );\n\t}\n\telse {\n\
         \t%s_fl = std::stoul(findTwosComplement(raw%d), 0, 2);\n\
@@ -125,8 +125,22 @@ def findSubstring(signal, varNum):
         conversion = ''
         returner = '\treturnedVal.var%d = scaled;\n'%(varNum)
 
+#####changes to make to create a string in the header file #########
+    string_choice = ''
+    if signal.choices != None:
+        choiceDict=signal.choices
+        for key in choiceDict.keys():
+            string_choice += "\n\
+            \tif (int(scaled) == %d){\n\
+            \treturnedVal.choice_var%d = %s\n\
+            \t}\n"%(key,varNum,signal.name)
 
-    mySignalCode = rawVal + rawVal_dec + scale + conversion + returner +'\n'
+
+    ##  if decimal value is in choiceDict.keys()
+    ##      change value to be a string in the values_struct
+    ##  else: return the decimal value as usual
+
+    mySignalCode = rawVal + rawVal_dec + scale + conversion + returner + string_choice +'\n'
 #     print(decode)
 
     return mySignalCode
@@ -216,6 +230,12 @@ def buildCallbacks(toROS):##add varNum?
                     # print(signals)
                     text += '\t\tmsg%d%s = data.var%s; //%s\n'%(count,var[i],toDecode.get(canid).index(signals[i])+1,signals[i])
                     found = True
+            #### changes to make in the cpp node ####
+            ## if the rosmsg is String
+            elif 'String' in rosmsg:
+                text += '\t\tmsg%d.data = data.choice_var%d; //%s\n'%(count,toDecode.get(canid).index(signals[0])+1,signals[0])
+                found = True
+            ## take the string value from the values_struct of the signal index
             else:
                 singleValTypes = ['Float64','Float32','Int16','Int8']
 
@@ -285,7 +305,7 @@ def generateMain(toROS):
     text = ''
 
     text +='int main(int argc, char **argv){\n\
-\tros::init(argc, argv, "subs_fs_test");\n\
+\tros::init(argc, argv, "subs_fs");\n\
 \tros::NodeHandle nh1;\n\
 \tSubscribeAndPublish SAPObject;\n\
 \tros::spin();\n\
@@ -354,7 +374,7 @@ text += '\treturn returnedVal;\n}\n'
 ##each line states the message ID and length to published
 
 #output into C++ file(s)
-#TODO make them the real files (after testing)
+#TODO make them the real files (after testing) <--DONE
 file1 = open('../include/header_package/can_decode.h', 'w')
 file2 = open('can_decode_base.h','r')
 file1.writelines(file2.read())
