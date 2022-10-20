@@ -5,7 +5,7 @@
 #include "std_msgs/Int16.h"
 #include "std_msgs/Int8.h"
 #include "sensor_msgs/TimeReference.h"
-#include "header_package/can_decode_test.h"
+#include "header_package/can_decode.h"
 #include "visualization_msgs/Marker.h"
 #include "geometry_msgs/PointStamped.h"
 #include "geometry_msgs/AccelStamped.h"
@@ -50,6 +50,7 @@ public:
 	acc_acc_malfunction_pub = n_.advertise<std_msgs::Int16>("acc/acc_malfunction",1000);
 	cruise_state_pub = n_.advertise<geometry_msgs::Point>("cruise_state",1000);
 	acc_distance_setting_pub = n_.advertise<std_msgs::Int16>("acc/distance_setting",1000);
+	acc_cruise_state_pub = n_.advertise<std_msgs::String>("acc/cruise_state",1000);
 	acc_set_speed2_pub = n_.advertise<std_msgs::Float64>("acc/set_speed2",1000);
 	accel_pub = n_.advertise<std_msgs::Float64>("accel",1000);
 
@@ -336,9 +337,13 @@ public:
 		msg2.data = data.var4; //DISTANCE_LINES
 		acc_distance_setting_pub.publish(msg2);
 
-		std_msgs::Float64 msg3;
-		msg3.data = data.var2; //UI_SET_SPEED
-		acc_set_speed2_pub.publish(msg3);
+		std_msgs::String msg3;
+		msg3.data = data.choice_var3; //CRUISE_CONTROL_STATE
+		acc_cruise_state_pub.publish(msg3);
+
+		std_msgs::Float64 msg4;
+		msg4.data = data.var2; //UI_SET_SPEED
+		acc_set_speed2_pub.publish(msg4);
 
 	}
 	else if (MessageID == 552)
@@ -381,6 +386,7 @@ private:
 	ros::Publisher acc_acc_malfunction_pub;
 	ros::Publisher cruise_state_pub;
 	ros::Publisher acc_distance_setting_pub;
+	ros::Publisher acc_cruise_state_pub;
 	ros::Publisher acc_set_speed2_pub;
 	ros::Publisher accel_pub;
 
@@ -391,7 +397,7 @@ private:
 	values data;
 };
 int main(int argc, char **argv){
-	ros::init(argc, argv, "subs_fs_test");
+	ros::init(argc, argv, "subs_fs");
 	ros::NodeHandle nh1;
 	SubscribeAndPublish SAPObject;
 	ros::spin();
