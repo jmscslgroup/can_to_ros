@@ -765,23 +765,23 @@ if (msg_id == 921){
 	returnedVal.var3 = scaled;
 
             	if (int(scaled) == 2){
-            	returnedVal.choice_var3 = CRUISE_CONTROL_STATE
+            	returnedVal.choice_var3 = 'disabled';
             	}
 
             	if (int(scaled) == 11){
-            	returnedVal.choice_var3 = CRUISE_CONTROL_STATE
+            	returnedVal.choice_var3 = 'hold';
             	}
 
             	if (int(scaled) == 10){
-            	returnedVal.choice_var3 = CRUISE_CONTROL_STATE
+            	returnedVal.choice_var3 = 'hold_waiting_user_cmd';
             	}
 
             	if (int(scaled) == 6){
-            	returnedVal.choice_var3 = CRUISE_CONTROL_STATE
+            	returnedVal.choice_var3 = 'enabled';
             	}
 
             	if (int(scaled) == 5){
-            	returnedVal.choice_var3 = CRUISE_CONTROL_STATE
+            	returnedVal.choice_var3 = 'faulted';
             	}
 
 	std::string raw4 = binary.substr(9,2); //DISTANCE_LINES
