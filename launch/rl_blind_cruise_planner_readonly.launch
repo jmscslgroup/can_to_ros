@@ -2,7 +2,7 @@
 
 <launch>
 
-	<arg name="description" default="rl_cruise_planner"/>
+	<arg name="description" default="rl_blind_cruise_planner"/>
 	
 	<arg name="hwil" default="true"/>
 	<arg name="SPACEGAP_SCALE" default="100.0"/>
