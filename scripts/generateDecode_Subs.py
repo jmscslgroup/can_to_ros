@@ -96,11 +96,15 @@ def decodeBuilder(msg, signals,toROS):
     #for each signal in the set of signals:
     signalString = ""
     for i in signals: #pass the rosmsg(s) for a signal to the findSubstring function
+        # print('signal is: ', i)
         for canid in toROS:
+            # print('canid is: ', canid)
             for rostopic in toROS[canid]:
+                # print('rostopic is: ', rostopic)
                 rosmsg= toROS[canid][rostopic]
                 if i.name in rosmsg[1]:
                     rosmsg_info=rosmsg
+                    # print('rosmsg info is: ',rosmsg_info)
         signalString += findSubstring(i,signals.index(i),rosmsg_info) #finds substring and does conversions
 #         print(signals.index(i))
     returns = '\treturn returnedVal;\n}\n'
@@ -142,11 +146,12 @@ def findSubstring(signal, varNum, rosmsg_info):
     string_choice = ''
     if (signal.choices != None and ('String' in rosmsg_info[0][0])):##rosmsg type is string):
         choiceDict=signal.choices
+        print('found a string')
         for key in choiceDict.keys():
             string_choice += '\n\
-            \tif (int(scaled) == %d){\n\
-            \treturnedVal.choice_var%d = "%s";\n\
-            \t}\n'%(key,varNum,choiceDict[key])
+    if (int(scaled) == %d){\n\
+    \treturnedVal.choice_var%d = "%s";\n\
+    \t}\n'%(key,varNum,choiceDict[key])
 
 
     ##  if decimal value is in choiceDict.keys()
@@ -206,7 +211,7 @@ def buildCallbacks(toROS):##add varNum?
             text += call
         count = 0
         for rostopic in toROS[canid]:
-            # print(rostopic)
+            print(rostopic)
             found=False
 
             rosmsg = toROS[canid][rostopic][0][0]
@@ -246,6 +251,7 @@ def buildCallbacks(toROS):##add varNum?
             #### changes to make in the cpp node ####
             ## if the rosmsg is String
             elif 'String' in rosmsg:
+                print('found a string in callbacks')
                 text += '\t\tmsg%d.data = data.choice_var%d; //%s\n'%(count,toDecode.get(canid).index(signals[0])+1,signals[0])
                 found = True
             ## take the string value from the values_struct of the signal index
