@@ -18,8 +18,7 @@ def findDBC(vin_details):
             if 'HV' in vin_details['Trim']:
                 # dbcfile = '/Users/mnice/Documents/GitHub/strym/strym/dbc/toyota_rav4_hybrid.dbc'
                 dbcfile = '/home/circles/strym/strym/dbc/toyota_rav4_hybrid.dbc'
-
-#space here to add in info for honda and nissan vehicles
+    #space here to add in info for honda and nissan vehicles
     if vin_details['Make'] == 'NISSAN':
         if vin_details['Model'] == 'Rogue':
             jsonfile = 'nissan_rogue.json'
@@ -77,18 +76,32 @@ def getSignals(key, dictionary, dbc):
 
     return msg, signals
 
-def decodeBuilder(msg, signals):
+def decodeBuilder(msg, signals,toROS):
     """Cantools message and signals are input."""
 
     decode = "if (msg_id == %d){\n"%(msg.frame_id)
     # \tstd::stringstream hex_ss(msg);\n\
     # \thex_ss >> std::hex >> n;// making the message hex\n\
     # \tbinary = std::bitset<%d>(n).to_string(); // convert hex to binary\n\n"%(msg.frame_id,msg.length*8)
+    # for canid in toROS:
+    #     for rostopic in toROS[canid]:
+    #         rosmsg= toROS[canid][rostopic]
+    #             if signals[0].name in rosmsg[1]:
+    #                 print(rosmsg)
+    #                 if 'String' in rosmsg[0][0]:
+    #                     print('string in here!')
+
+    ##find rosmsg(s) for a given signal in toROS
 
     #for each signal in the set of signals:
     signalString = ""
-    for i in signals:
-        signalString += findSubstring(i,signals.index(i)) #finds substring and does conversions
+    for i in signals: #pass the rosmsg(s) for a signal to the findSubstring function
+        for canid in toROS:
+            for rostopic in toROS[canid]:
+                rosmsg= toROS[canid][rostopic]
+                    if i.name in rosmsg[1]:
+                        rosmsg_info=rosmsg
+        signalString += findSubstring(i,signals.index(i),rosmsg_info) #finds substring and does conversions
 #         print(signals.index(i))
     returns = '\treturn returnedVal;\n}\n'
 
@@ -96,7 +109,7 @@ def decodeBuilder(msg, signals):
 
     return decode
 
-def findSubstring(signal, varNum):
+def findSubstring(signal, varNum, rosmsg_info):
     #find the bit substring
     varNum+=1
     pos = bitConversion(signal.start)
@@ -127,7 +140,7 @@ def findSubstring(signal, varNum):
 
 #####changes to make to create a string in the header file #########
     string_choice = ''
-    if signal.choices != None:
+    if (signal.choices != None and ('String' in rosmsg_info[0][0])):##rosmsg type is string):
         choiceDict=signal.choices
         for key in choiceDict.keys():
             string_choice += '\n\
@@ -363,7 +376,8 @@ text = ''
 print('The JSON file contains these signals: ',toDecode)
 for i in toDecode.keys():
     msg, signals = getSignals(i,toDecode,dbc)
-    text += decodeBuilder(msg, signals)
+    # rosmsg = ###name of the rosmsg rosmsg = toROS[canid][rostopic][0][0]
+    text += decodeBuilder(msg, signals,toROS)
 text += '\treturn returnedVal;\n}\n'
 
 ###put in changes for realtime_raw_data publishing in can to ros #####
