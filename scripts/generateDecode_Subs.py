@@ -99,8 +99,8 @@ def decodeBuilder(msg, signals,toROS):
         for canid in toROS:
             for rostopic in toROS[canid]:
                 rosmsg= toROS[canid][rostopic]
-                    if i.name in rosmsg[1]:
-                        rosmsg_info=rosmsg
+                if i.name in rosmsg[1]:
+                    rosmsg_info=rosmsg
         signalString += findSubstring(i,signals.index(i),rosmsg_info) #finds substring and does conversions
 #         print(signals.index(i))
     returns = '\treturn returnedVal;\n}\n'
