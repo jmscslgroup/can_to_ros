@@ -95,6 +95,7 @@ def decodeBuilder(msg, signals,toROS):
 
     #for each signal in the set of signals:
     signalString = ""
+    rosmsg_info_list = []
     for i in signals: #pass the rosmsg(s) for a signal to the findSubstring function
         # print('signal is: ', i)
         for canid in toROS:
@@ -103,9 +104,10 @@ def decodeBuilder(msg, signals,toROS):
                 # print('rostopic is: ', rostopic)
                 rosmsg= toROS[canid][rostopic]
                 if i.name in rosmsg[1]:
-                    rosmsg_info=rosmsg
+                    rosmsg_info_list+=rosmsg
                     # print('rosmsg info is: ',rosmsg_info)
-        signalString += findSubstring(i,signals.index(i),rosmsg_info) #finds substring and does conversions
+        signalString += findSubstring(i,signals.index(i),rosmsg_info_list) #finds substring and does conversions
+        rosmsg_info = []
 #         print(signals.index(i))
     returns = '\treturn returnedVal;\n}\n'
 
@@ -113,8 +115,10 @@ def decodeBuilder(msg, signals,toROS):
 
     return decode
 
-def findSubstring(signal, varNum, rosmsg_info):
+def findSubstring(signal, varNum, rosmsg_info_list):
     #find the bit substring
+    print('running substring, my signal is: ', signal)
+    print('my rosmsg info is: ', rosmsg_info_list,'\n')
     varNum+=1
     pos = bitConversion(signal.start)
     rawVal = "\tstd::string raw%d = binary.substr(%d,%d); //%s\n"%(varNum,pos,signal.length,signal.name)
@@ -144,9 +148,14 @@ def findSubstring(signal, varNum, rosmsg_info):
 
 #####changes to make to create a string in the header file #########
     string_choice = ''
-    if (signal.choices != None and ('String' in rosmsg_info[0][0])):##rosmsg type is string):
+    flag = False
+    for l in rosmsg_info_list:
+        for k in l:
+            if 'String' in k:
+                flag = True
+    if (signal.choices != None and flag==True):##rosmsg type is string):
         choiceDict=signal.choices
-        print('found a string')
+        print('found a string in header')
         for key in choiceDict.keys():
             string_choice += '\n\
     if (int(scaled) == %d){\n\
