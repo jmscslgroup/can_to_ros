@@ -12,7 +12,7 @@
 typedef struct values_struct
 {
    float var1,var2,var3,var4,var5,var6,var7,var8,var9,var10,var11,var12,var13,var14,var15,var16,var17,var18,var19,var20,var21,var22,var23,var24;
-   std::string choice_var3;
+   std::string choice_var1,choice_var2,choice_var3,choice_var4,choice_var5,choice_var6,choice_var7,choice_var8,choice_var9,choice_var10,choice_var11,choice_var12,choice_var13,choice_var14,choice_var15,choice_var16,choice_var17,choice_var18,choice_var19,choice_var20,choice_var21,choice_var22,choice_var23,choice_var24;
 } values;
 
 class decode_msgs{
@@ -107,7 +107,30 @@ values decode_msgs::decode_message( unsigned int msg_id, std::string msg){
   returnedVal.var22=0.0;
   returnedVal.var23=0.0;
   returnedVal.var24=0.0;
+  returnedVal.choice_var1="";
+  returnedVal.choice_var2="";
   returnedVal.choice_var3="";
+  returnedVal.choice_var4="";
+  returnedVal.choice_var5="";
+  returnedVal.choice_var6="";
+  returnedVal.choice_var7="";
+  returnedVal.choice_var8="";
+  returnedVal.choice_var9="";
+  returnedVal.choice_var10="";
+  returnedVal.choice_var11="";
+  returnedVal.choice_var12="";
+  returnedVal.choice_var13="";
+  returnedVal.choice_var14="";
+  returnedVal.choice_var15="";
+  returnedVal.choice_var16="";
+  returnedVal.choice_var17="";
+  returnedVal.choice_var18="";
+  returnedVal.choice_var19="";
+  returnedVal.choice_var20="";
+  returnedVal.choice_var21="";
+  returnedVal.choice_var22="";
+  returnedVal.choice_var23="";
+  returnedVal.choice_var24="";
 
   int len = msg.length();
   int i = 0;
