@@ -27,12 +27,12 @@ toyota_rav4 = {37:{'steering_angle':[['std_msgs::Float64'],['STEER_ANGLE']]},
 		},
          835:{'acc/accel_cmd':[['std_msgs::Float64'],['ACCEL_CMD']],
          'acc/acc_info':[['geometry_msgs::Point'],['MINI_CAR','CAR_AHEAD','CANCEL_REQ']],
-         'acc/mini_car':[['std_msgs::Float64'],['MINI_CAR']],
+         'acc/mini_car':[['std_msgs::Int16'],['MINI_CAR']],
          'acc/acc_cut_in':[['std_msgs::Int16'],['ACC_CUT_IN']],
          'acc/acc_malfunction':[['std_msgs::Int16'],['ACC_MALFUNCTION']]
          },
          921:{'cruise_state':[['geometry_msgs::Point'],['MAIN_ON','UI_SET_SPEED','CRUISE_CONTROL_STATE']]
-         ,'acc/distance_setting':[['std_msgs::Int16'],['DISTANCE_LINES']]
+         ,'acc/set_distance':[['std_msgs::Int16'],['DISTANCE_LINES']]
          ,'acc/cruise_state':[['std_msgs::String'],['CRUISE_CONTROL_STATE']]
          ,'acc/cruise_state_int':[['std_msgs::Int16'],['CRUISE_CONTROL_STATE']]
          ,'acc/set_speed2':[['std_msgs::Float64'],['UI_SET_SPEED']]
@@ -69,17 +69,19 @@ toyota_rav4 = {37:{'steering_angle':[['std_msgs::Float64'],['STEER_ANGLE']]},
 #          }
 nissan_rogue = {139:{'steering_angle':[['std_msgs::Float64'],['STEER_ANGLE']]},
          303:{'vel':[['std_msgs::Float64'],['SPEED']]},
-         308:{'acc/cruise_state':[['std_msgs::Float64'],['CRUISE_STATE']]},
-         1119:{'acc/acc_btns':[['std_msgs::Float64'],['ACC_BTNS']],
+         308:{'acc/cruise_state_int':[['std_msgs::Int16'],['CRUISE_STATE']]
+         ,'acc/cruise_state':[['std_msgs::String'],['CRUISE_STATE']]
+         },
+         1119:{'acc/acc_btns':[['std_msgs::Int16'],['ACC_BTNS']],
          #'unknown_btns':[['std_msgs::Float64'],['SIGNAL1']],
          'lkas_btn':[['std_msgs::Float64'],['LKAS_LDW_ON']]
          },
          1487:{'acc/set_speed':[['std_msgs::Int16'],['SET_SPEED']],
          #'lane_lines':[['std_msgs::Float64'],['LANE_LINES']],
          'acc/state_signal':[['std_msgs::Float64'],['STATE_SIGNAL']],
-         'acc/set_distance':[['std_msgs::Float64'],['SET_DISTANCE']],
+         'acc/set_distance':[['std_msgs::Int16'],['SET_DISTANCE']],
          'hud_states':[['std_msgs::Float64'],['HUD_STATES']],
-         'acc/mini_car':[['std_msgs::Float64'],['MINICAR']],
+         'acc/mini_car':[['std_msgs::Int16'],['MINICAR']],
          'system_on':[['std_msgs::Float64'],['SYSTEM_ON']]}
          # 'hud_state1':[['std_msgs::Float64'],['HUD_STATE1']],
 
