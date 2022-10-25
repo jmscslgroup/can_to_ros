@@ -74,7 +74,8 @@ nissan_rogue = {139:{'steering_angle':[['std_msgs::Float64'],['STEER_ANGLE']]},
          ,'wheel_torque':[['std_msgs::Float64'],['WHEEL_TORQUE_CMD']]
          ,'brake_torque':[['std_msgs::Float64'],['BRAKE_TORQUE_CMD']]
          },
-         1119:{'acc/acc_btns':[['std_msgs::Int16'],['ACC_BTNS']],
+         1119:{'acc/acc_btns':[['std_msgs::String'],['ACC_BTNS']],
+         'acc/acc_btns_int':[['std_msgs::Int16'],['ACC_BTNS']],
          #'unknown_btns':[['std_msgs::Float64'],['SIGNAL1']],
          'lkas_btn':[['std_msgs::Float64'],['LKAS_LDW_ON']]
          },
