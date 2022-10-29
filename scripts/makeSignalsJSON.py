@@ -68,24 +68,26 @@ toyota_rav4 = {37:{'steering_angle':[['std_msgs::Float64'],['STEER_ANGLE']]},
 #             }
 #          }
 nissan_rogue = {139:{'steering_angle':[['std_msgs::Float64'],['STEER_ANGLE']]},
+         116:{'accel_pedal_driver':[['std_msgs::Float64'],['ACCEL_PEDAL_DRIVER']]},
          303:{'vel':[['std_msgs::Float64'],['SPEED']]},
          308:{'acc/cruise_state_int':[['std_msgs::Int16'],['CRUISE_STATE']]
          ,'acc/cruise_state':[['std_msgs::String'],['CRUISE_STATE']]
          ,'wheel_torque':[['std_msgs::Float64'],['WHEEL_TORQUE_CMD']]
          ,'brake_torque':[['std_msgs::Float64'],['BRAKE_TORQUE_CMD']]
          },
+         548:{'brake_pedal':[['std_msgs::Float64'],'BRAKE_PEDAL']]},
          1119:{'acc/acc_btns':[['std_msgs::String'],['ACC_BTNS']],
          'acc/acc_btns_int':[['std_msgs::Int16'],['ACC_BTNS']],
          #'unknown_btns':[['std_msgs::Float64'],['SIGNAL1']],
-         'lkas_btn':[['std_msgs::Float64'],['LKAS_LDW_ON']]
+         # 'lkas_btn':[['std_msgs::Float64'],['LKAS_LDW_ON']]
          },
          1487:{'acc/set_speed':[['std_msgs::Int16'],['SET_SPEED']],
          #'lane_lines':[['std_msgs::Float64'],['LANE_LINES']],
          'acc/state_signal':[['std_msgs::Float64'],['STATE_SIGNAL']],
          'acc/set_distance':[['std_msgs::Int16'],['SET_DISTANCE']],
          'hud_states':[['std_msgs::Float64'],['HUD_STATES']],
-         'acc/mini_car':[['std_msgs::Int16'],['MINICAR']],
-         'system_on':[['std_msgs::Float64'],['SYSTEM_ON']]}
+         'acc/mini_car':[['std_msgs::Int16'],['MINICAR']]}#,
+         # 'system_on':[['std_msgs::Float64'],['SYSTEM_ON']]}
          # 'hud_state1':[['std_msgs::Float64'],['HUD_STATE1']],
 
          # 951: {"front_radar_track1": [["geometry_msgs::PointStamped"], ["SIG1_LEAD"]],
