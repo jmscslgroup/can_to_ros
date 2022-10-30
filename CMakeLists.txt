@@ -246,8 +246,8 @@ target_link_libraries(publish_libpanda ${catkin_LIBRARIES} libpandac.so) #libpan
 add_executable(realtime_publishing src/realtime_publishing.cpp)
 target_link_libraries(realtime_publishing ${catkin_LIBRARIES})
 
-add_executable(sendCommands src/sendCommands.cpp)
-target_link_libraries(sendCommands ${catkin_LIBRARIES} libpandac.so)
+#add_executable(sendCommands src/sendCommands.cpp)
+#target_link_libraries(sendCommands ${catkin_LIBRARIES} libpandac.so)
 
 
 add_executable(commandDuration src/commandDuration.cpp)
@@ -269,6 +269,10 @@ target_link_libraries(vehicle_interface ${catkin_LIBRARIES} libpandac.so)
 
 add_executable(vanilla_vehicle_interface src/vanilla_vehicle_interface.cpp)
 target_link_libraries(vanilla_vehicle_interface ${catkin_LIBRARIES} libpandac.so)
+
+
+add_executable(nissan_target_speed_to_acc_buttons src/nissan_target_speed_to_acc_buttons.cpp)
+target_link_libraries(nissan_target_speed_to_acc_buttons ${catkin_LIBRARIES} libpandac.so)
 
 add_executable(simple_mini_car_from_lead_distance src/simple_mini_car_from_lead_distance.cpp)
 target_link_libraries(simple_mini_car_from_lead_distance ${catkin_LIBRARIES})

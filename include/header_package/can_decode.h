@@ -12,7 +12,7 @@
 typedef struct values_struct
 {
    float var1,var2,var3,var4,var5,var6,var7,var8,var9,var10,var11,var12,var13,var14,var15,var16,var17,var18,var19,var20,var21,var22,var23,var24;
-   std::string choice_var3;
+   std::string choice_var1,choice_var2,choice_var3,choice_var4,choice_var5,choice_var6,choice_var7,choice_var8,choice_var9,choice_var10,choice_var11,choice_var12,choice_var13,choice_var14,choice_var15,choice_var16,choice_var17,choice_var18,choice_var19,choice_var20,choice_var21,choice_var22,choice_var23,choice_var24;
 } values;
 
 class decode_msgs{
@@ -107,7 +107,30 @@ values decode_msgs::decode_message( unsigned int msg_id, std::string msg){
   returnedVal.var22=0.0;
   returnedVal.var23=0.0;
   returnedVal.var24=0.0;
+  returnedVal.choice_var1="";
+  returnedVal.choice_var2="";
   returnedVal.choice_var3="";
+  returnedVal.choice_var4="";
+  returnedVal.choice_var5="";
+  returnedVal.choice_var6="";
+  returnedVal.choice_var7="";
+  returnedVal.choice_var8="";
+  returnedVal.choice_var9="";
+  returnedVal.choice_var10="";
+  returnedVal.choice_var11="";
+  returnedVal.choice_var12="";
+  returnedVal.choice_var13="";
+  returnedVal.choice_var14="";
+  returnedVal.choice_var15="";
+  returnedVal.choice_var16="";
+  returnedVal.choice_var17="";
+  returnedVal.choice_var18="";
+  returnedVal.choice_var19="";
+  returnedVal.choice_var20="";
+  returnedVal.choice_var21="";
+  returnedVal.choice_var22="";
+  returnedVal.choice_var23="";
+  returnedVal.choice_var24="";
 
   int len = msg.length();
   int i = 0;
@@ -132,167 +155,106 @@ values decode_msgs::decode_message( unsigned int msg_id, std::string msg){
 
       i = i+1;
   }
-if (msg_id == 37){
-	std::string raw1 = binary.substr(4,12); //STEER_ANGLE
-	float STEER_ANGLE_fl;
-        	if (raw1[0] == '0'){
-        	STEER_ANGLE_fl= std::stoul( raw1, 0, 2 );
-	}
-	else {
-        	STEER_ANGLE_fl = std::stoul(findTwosComplement(raw1), 0, 2);
-        	STEER_ANGLE_fl = STEER_ANGLE_fl * -1.0;
-        	}
-	scaled = STEER_ANGLE_fl * 1.500000 + 0.000000;
+if (msg_id == 139){
+	std::string raw1 = binary.substr(48,16); //STEER_ANGLE
+	raw_dec = std::stoull(raw1, 0, 2);
+	scaled = (float)raw_dec * 0.050000 + 0.000000;
 	returnedVal.var1 = scaled;
 
 	return returnedVal;
 }
-if (msg_id == 180){
-	std::string raw1 = binary.substr(40,16); //SPEED
+if (msg_id == 140){
+	std::string raw1 = binary.substr(44,10); //ACCEL_PEDAL_POSITION
 	raw_dec = std::stoull(raw1, 0, 2);
-	scaled = (float)raw_dec * 0.010000 + 0.000000;
+	scaled = (float)raw_dec * 1.000000 + 0.000000;
+	returnedVal.var1 = scaled;
+
+	return returnedVal;
+}
+if (msg_id == 303){
+	std::string raw1 = binary.substr(74,12); //SPEED
+	raw_dec = std::stoull(raw1, 0, 2);
+	scaled = (float)raw_dec * 0.050000 + 0.000000;
 	conversion = ceilf((scaled* (10.0/36.0)) * 100) / 100;
 	returnedVal.var1 = conversion;
 
 	return returnedVal;
 }
-if (msg_id == 869){
-	std::string raw1 = binary.substr(32,8); //LEAD_DISTANCE
+if (msg_id == 308){
+	std::string raw1 = binary.substr(309,5); //CRUISE_STATE
 	raw_dec = std::stoull(raw1, 0, 2);
 	scaled = (float)raw_dec * 1.000000 + 0.000000;
 	returnedVal.var1 = scaled;
 
-	std::string raw2 = binary.substr(40,12); //REL_SPEED
-	float REL_SPEED_fl;
-        	if (raw2[0] == '0'){
-        	REL_SPEED_fl= std::stoul( raw2, 0, 2 );
-	}
-	else {
-        	REL_SPEED_fl = std::stoul(findTwosComplement(raw2), 0, 2);
-        	REL_SPEED_fl = REL_SPEED_fl * -1.0;
-        	}
-	scaled = REL_SPEED_fl * 0.017850 + 0.000000;
-	returnedVal.var2 = scaled;
-
-	return returnedVal;
-}
-if (msg_id == 1570){
-	std::string raw1 = binary.substr(25,1); //HIGH_BEAMS_ON
-	raw_dec = std::stoull(raw1, 0, 2);
-	scaled = (float)raw_dec * 1.000000 + 0.000000;
-	returnedVal.var1 = scaled;
-
-	return returnedVal;
-}
-if (msg_id == 467){
-	std::string raw1 = binary.substr(8,1); //MAIN_ON
-	raw_dec = std::stoull(raw1, 0, 2);
-	scaled = (float)raw_dec * 1.000000 + 0.000000;
-	returnedVal.var1 = scaled;
-
-	std::string raw2 = binary.substr(16,8); //SET_SPEED
-	raw_dec = std::stoull(raw2, 0, 2);
-	scaled = (float)raw_dec * 1.000000 + 0.000000;
-	conversion = ceilf((scaled* (10.0/36.0)) * 100) / 100;
-	returnedVal.var2 = conversion;
-
-	return returnedVal;
-}
-if (msg_id == 835){
-	std::string raw1 = binary.substr(0,16); //ACCEL_CMD
-	float ACCEL_CMD_fl;
-        	if (raw1[0] == '0'){
-        	ACCEL_CMD_fl= std::stoul( raw1, 0, 2 );
-	}
-	else {
-        	ACCEL_CMD_fl = std::stoul(findTwosComplement(raw1), 0, 2);
-        	ACCEL_CMD_fl = ACCEL_CMD_fl * -1.0;
-        	}
-	scaled = ACCEL_CMD_fl * 0.001000 + 0.000000;
-	returnedVal.var1 = scaled;
-
-	std::string raw2 = binary.substr(18,1); //MINI_CAR
+	std::string raw2 = binary.substr(67,12); //WHEEL_TORQUE_CMD
 	raw_dec = std::stoull(raw2, 0, 2);
 	scaled = (float)raw_dec * 1.000000 + 0.000000;
 	returnedVal.var2 = scaled;
 
-	std::string raw3 = binary.substr(25,1); //CAR_AHEAD
+	std::string raw3 = binary.substr(173,10); //BRAKE_TORQUE_CMD
 	raw_dec = std::stoull(raw3, 0, 2);
 	scaled = (float)raw_dec * 1.000000 + 0.000000;
 	returnedVal.var3 = scaled;
 
-	std::string raw4 = binary.substr(31,1); //CANCEL_REQ
-	raw_dec = std::stoull(raw4, 0, 2);
-	scaled = (float)raw_dec * 1.000000 + 0.000000;
-	returnedVal.var4 = scaled;
-
-	std::string raw5 = binary.substr(30,1); //ACC_CUT_IN
-	raw_dec = std::stoull(raw5, 0, 2);
-	scaled = (float)raw_dec * 1.000000 + 0.000000;
-	returnedVal.var5 = scaled;
-
-	std::string raw6 = binary.substr(21,1); //ACC_MALFUNCTION
-	raw_dec = std::stoull(raw6, 0, 2);
-	scaled = (float)raw_dec * 1.000000 + 0.000000;
-	returnedVal.var6 = scaled;
-
 	return returnedVal;
 }
-if (msg_id == 921){
-	std::string raw1 = binary.substr(3,1); //MAIN_ON
+if (msg_id == 1119){
+	std::string raw1 = binary.substr(58,3); //ACC_BTNS
 	raw_dec = std::stoull(raw1, 0, 2);
 	scaled = (float)raw_dec * 1.000000 + 0.000000;
 	returnedVal.var1 = scaled;
 
-	std::string raw2 = binary.substr(24,8); //UI_SET_SPEED
-	raw_dec = std::stoull(raw2, 0, 2);
-	scaled = (float)raw_dec * 1.000000 + 0.000000;
-	returnedVal.var2 = scaled;
+    if (int(scaled) == 0){
+    	returnedVal.choice_var1 = "none";
+    	}
 
-	std::string raw3 = binary.substr(12,4); //CRUISE_CONTROL_STATE
-	raw_dec = std::stoull(raw3, 0, 2);
-	scaled = (float)raw_dec * 1.000000 + 0.000000;
-	returnedVal.var3 = scaled;
+    if (int(scaled) == 1){
+    	returnedVal.choice_var1 = "resume";
+    	}
 
     if (int(scaled) == 2){
-    	returnedVal.choice_var3 = "disabled";
+    	returnedVal.choice_var1 = "set";
     	}
 
-    if (int(scaled) == 11){
-    	returnedVal.choice_var3 = "hold";
+    if (int(scaled) == 3){
+    	returnedVal.choice_var1 = "distance";
     	}
 
-    if (int(scaled) == 10){
-    	returnedVal.choice_var3 = "hold_waiting_user_cmd";
-    	}
-
-    if (int(scaled) == 6){
-    	returnedVal.choice_var3 = "enabled";
+    if (int(scaled) == 4){
+    	returnedVal.choice_var1 = "cancel";
     	}
 
     if (int(scaled) == 5){
-    	returnedVal.choice_var3 = "faulted";
+    	returnedVal.choice_var1 = "system_toggle";
     	}
 
-	std::string raw4 = binary.substr(9,2); //DISTANCE_LINES
+	return returnedVal;
+}
+if (msg_id == 1487){
+	std::string raw1 = binary.substr(153,7); //SET_SPEED
+	raw_dec = std::stoull(raw1, 0, 2);
+	scaled = (float)raw_dec * 1.000000 + 0.000000;
+	returnedVal.var1 = scaled;
+
+	std::string raw2 = binary.substr(280,4); //STATE_SIGNAL
+	raw_dec = std::stoull(raw2, 0, 2);
+	scaled = (float)raw_dec * 1.000000 + 0.000000;
+	returnedVal.var2 = scaled;
+
+	std::string raw3 = binary.substr(161,2); //SET_DISTANCE
+	raw_dec = std::stoull(raw3, 0, 2);
+	scaled = (float)raw_dec * 1.000000 + 0.000000;
+	returnedVal.var3 = scaled;
+
+	std::string raw4 = binary.substr(182,5); //HUD_STATES
 	raw_dec = std::stoull(raw4, 0, 2);
 	scaled = (float)raw_dec * 1.000000 + 0.000000;
 	returnedVal.var4 = scaled;
 
-	return returnedVal;
-}
-if (msg_id == 552){
-	std::string raw1 = binary.substr(1,15); //ACCEL_X
-	float ACCEL_X_fl;
-        	if (raw1[0] == '0'){
-        	ACCEL_X_fl= std::stoul( raw1, 0, 2 );
-	}
-	else {
-        	ACCEL_X_fl = std::stoul(findTwosComplement(raw1), 0, 2);
-        	ACCEL_X_fl = ACCEL_X_fl * -1.0;
-        	}
-	scaled = ACCEL_X_fl * 0.001000 + 0.000000;
-	returnedVal.var1 = scaled;
+	std::string raw5 = binary.substr(137,1); //MINICAR
+	raw_dec = std::stoull(raw5, 0, 2);
+	scaled = (float)raw_dec * 1.000000 + 0.000000;
+	returnedVal.var5 = scaled;
 
 	return returnedVal;
 }

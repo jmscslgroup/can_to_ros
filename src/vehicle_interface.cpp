@@ -37,6 +37,8 @@
 #include "visualization_msgs/Marker.h"
 // Libpanda headers:
 #include "panda/toyota.h"
+#include "panda/nissan.h"
+#include "panda/controller.h"	// No more direct vehicle controller class instantiation
 #include <panda.h>
 #include <sstream>
 
@@ -60,14 +62,24 @@
 class Control {
 private:
 	ros::NodeHandle* n_;
-	ros::Subscriber sub_;
-	ros::Subscriber subscriberMiniCarHud;
-	ros::Subscriber subscriberCruiseCancel;
+	ros::Subscriber subscribers[3];
+//	ros::Subscriber sub_;
+//	ros::Subscriber subscriberMiniCarHud;
+//	ros::Subscriber subscriberCruiseCancel;
 	// Initialize panda and toyota handlers
+//	Panda::ToyotaHandler* toyotaHandler;
+	Panda::Controller* pandaController;
+	
+	// These are dynamically populate based on VIN reading:
 	Panda::ToyotaHandler* toyotaHandler;
+	Panda::NissanAccButtonController* nissanAccButtonHandler;
 
 public:
-	void callback(const std_msgs::Float64::ConstPtr& msg)
+	
+	/*
+	 Toyota subscribers:
+	 */
+	void callbackAccelInput(const std_msgs::Float64::ConstPtr& msg)
 	{
 		// use these functions to set the acceleration and steeting Tourque
 		toyotaHandler->setAcceleration(msg->data);
@@ -84,16 +96,38 @@ public:
 	{
 		toyotaHandler->setHudCruiseCancelRequest(msg->data);
 	}
+	
+	
+	/*
+	 Nisaan ACC button subscribers:
+	 */
+	void callbackAccButtonRequest(const std_msgs::UInt8::ConstPtr& msg)
+	{
+		nissanAccButtonHandler->sendButton((Panda::NissanButton)msg->data);
+	}
 
-	Control(Panda::ToyotaHandler* toyotaHandler, ros::NodeHandle* nodeHandle) {
+	
+	
+	//Control(Panda::ToyotaHandler* toyotaHandler, ros::NodeHandle* nodeHandle) {
+	Control(Panda::Controller* pandaController, ros::NodeHandle* nodeHandle) {
 		n_ = nodeHandle;
+		
+		nissanAccButtonHandler = NULL;
+		toyotaHandler = NULL;
 
-		this->toyotaHandler = toyotaHandler;
+//		this->toyotaHandler = toyotaHandler;
+		this->pandaController = pandaController;
 		// intializing a subscriber
 //		sub_ = n_->subscribe("/commands", 1000, &Control::callback, this);
-		sub_ = n_->subscribe("/car/cruise/accel_input", 1000, &Control::callback, this);
-		subscriberMiniCarHud = n_->subscribe("/car/hud/mini_car_enable", 1000, &Control::callbackMiniCar, this);
-		subscriberCruiseCancel = n_->subscribe("/car/hud/cruise_cancel_request", 1000, &Control::callbackCruiseCancel, this);
+		if (pandaController->getPandaHandler()->getVehicleManufacturer() == Panda::VEHICLE_MANUFACTURE_NISSAN) {
+			nissanAccButtonHandler = static_cast<Panda::NissanAccButtonController*>(pandaController);
+			subscribers[0] = n_->subscribe("/car/cruise/cmd_btn", 1000, &Control::callbackAccButtonRequest, this);
+		} else {
+			toyotaHandler = static_cast<Panda::ToyotaHandler*>(pandaController);
+			subscribers[0] = n_->subscribe("/car/cruise/accel_input", 1000, &Control::callbackAccelInput, this);
+			subscribers[1] = n_->subscribe("/car/hud/mini_car_enable", 1000, &Control::callbackMiniCar, this);
+			subscribers[2] = n_->subscribe("/car/hud/cruise_cancel_request", 1000, &Control::callbackCruiseCancel, this);
+		}
 	}
 
 	~Control(){
@@ -101,7 +135,8 @@ public:
 	}
 };
 
-class PandaStatusPublisher : public Panda::ToyotaListener {
+//class PandaStatusPublisher : public Panda::ToyotaListener {
+class PandaStatusPublisher : public Panda::ControllerListener {
 	ros::Publisher publisherLibpandaControlsEnabled;
 
 	ros::Publisher publisherPandaControlsEnabled;
@@ -123,10 +158,12 @@ class PandaStatusPublisher : public Panda::ToyotaListener {
 	// 	publisherPandaGasInterceptorDetected.publish( msgGasInterceptorDetected );
 	// }
 
-	void newControlNotification(Panda::ToyotaHandler* toyotaHandler) {
+//	void newControlNotification(Panda::ToyotaHandler* toyotaHandler) {
+	void newControlNotification(Panda::Controller* controller) {
 		std_msgs::Bool msgControlsEnabled;
 
-		msgControlsEnabled.data = toyotaHandler->getPandaControlsAllowed();
+//		msgControlsEnabled.data = controller->getPandaControlsAllowed();
+		msgControlsEnabled.data = controller->getControlsAllowed();
 
 		publisherLibpandaControlsEnabled.publish( msgControlsEnabled );
 	}
@@ -162,59 +199,91 @@ private:
 	std::stringstream ss;
 	std::ofstream csvfile;
 
-	Panda::ToyotaHandler* toyotaHandler;
-
-	void newDataNotification( Panda::CanFrame* canData ) {
-	char messageString[200];
-	char messageTofile[200];
-		sprintf( messageString, "%d.%06d ", (unsigned int)0, (int)0);
-		sprintf( messageString,"%s%d %d ", messageString, (int)canData->bus, canData->messageID);
+//	Panda::ToyotaHandler* toyotaHandler;
+	Panda::Controller* pandaController;
+	
+	
+	char messageString[1000];
+//	char messageTofile[1000];
+	
+	void publishCanMessage( Panda::CanFrame* canData ) {
+		//			sprintf( messageString, "%d.%06d ", (unsigned int)0, (int)0);
+		//			sprintf( messageString,"%s%d %d ", messageString, (int)canData->bus, canData->messageID);
+		sprintf( messageString, "0.000000 %d %d ", (int)canData->bus, canData->messageID);
 		for (int i = 0; i < canData->dataLength; i++) {
 			sprintf( messageString, "%s%02x", messageString, canData->data[i]);
 		}
 		sprintf( messageString, "%s %d", messageString, canData->dataLength);
-
+		
 		std_msgs::String msgs;
-    	msgs.data = messageString;
+		msgs.data = messageString;
+		
+		pub_.publish(msgs);
+	}
 
-		if (canData->messageID == 139 || canData->messageID == 37 || canData->messageID== 1570
-		    || canData->messageID== 869 || (canData->messageID>= 384 && canData->messageID<=399 )
-			|| canData->messageID== 552 || canData->messageID== 921 || canData->messageID== 467 )
-		{
-			pub_.publish(msgs);
+	void newDataNotification( Panda::CanFrame* canData ) {
+		
+		if( pandaController->getPandaHandler()->getVehicleManufacturer() == Panda::VEHICLE_MANUFACTURE_TOYOTA) {
+			if ( // Toyota:
+				
+				//this is where the msgs to be published start
+//				canData->messageID == 139 || canData->messageID == 37 || canData->messageID== 1570
+//				|| canData->messageID== 869 || (canData->messageID>= 384 && canData->messageID<=399 )
+//				|| canData->messageID== 552 || canData->messageID== 921 || canData->messageID== 467
+				(canData->messageID==37&&canData->dataLength==8)
+				||(canData->messageID==180&&canData->dataLength==8)
+				||(canData->messageID==869&&canData->dataLength==7)
+				||(canData->messageID==384&&canData->dataLength==8)
+				||(canData->messageID==385&&canData->dataLength==8)
+				||(canData->messageID==386&&canData->dataLength==8)
+				||(canData->messageID==387&&canData->dataLength==8)
+				||(canData->messageID==388&&canData->dataLength==8)
+				||(canData->messageID==389&&canData->dataLength==8)
+				||(canData->messageID==390&&canData->dataLength==8)
+				||(canData->messageID==391&&canData->dataLength==8)
+				||(canData->messageID==392&&canData->dataLength==8)
+				||(canData->messageID==393&&canData->dataLength==8)
+				||(canData->messageID==394&&canData->dataLength==8)
+				||(canData->messageID==395&&canData->dataLength==8)
+				||(canData->messageID==396&&canData->dataLength==8)
+				||(canData->messageID==397&&canData->dataLength==8)
+				||(canData->messageID==398&&canData->dataLength==8)
+				||(canData->messageID==399&&canData->dataLength==8)
+				||(canData->messageID==1570&&canData->dataLength==8)
+				||(canData->messageID==467&&canData->dataLength==8)
+				||(canData->messageID==835&&canData->dataLength==8)
+				||(canData->messageID==921&&canData->dataLength==8)
+				||(canData->messageID==552&&canData->dataLength==4)
+				//this is where the msgs to be published end
+				
+				) {
+					publishCanMessage(canData);
+				}
+		} else {
+			if ( // Nissan:
+				
+				//this is where the msgs to be published start
+				(canData->messageID==139&&canData->dataLength==48)
+				||(canData->messageID==140&&canData->dataLength==48)
+				||(canData->messageID==303&&canData->dataLength==12)
+				||(canData->messageID==308&&canData->dataLength==64)
+				||(canData->messageID==1119&&canData->dataLength==20)
+				||(canData->messageID==1487&&canData->dataLength==48)
+				//this is where the msgs to be published end
+				
+				) {
+					publishCanMessage(canData);
+				}
+			
 		}
-		// sprintf( messageTofile, "%f,", ros::Time::now().toSec());
-		// sprintf( messageTofile,"%s%d,%d,", messageTofile, (int)canData->bus, canData->messageID);
-		// for (int i = 0; i < canData->dataLength; i++) {
-		// 	sprintf( messageTofile, "%s%02x", messageTofile, canData->data[i]);
-		// }
-		// sprintf( messageTofile, "%s,%d", messageTofile, canData->dataLength);
-
-		// csvfile << messageTofile << std::endl;
-
-//		if ( canData->messageID == 869 ) {
-//			if( toyotaHandler != NULL ) {
-//				int valueOfLeadDistance = ((*(unsigned long*)canData->data) >> (39+1-8)) & 0xFF;
-//				//			ROS_INFO("valueOfLeadDistance = %d\n", valueOfLeadDistance);
-//				if( valueOfLeadDistance < 252 ) {
-//					toyotaHandler->setHudMiniCar( true );
-//				} else {
-//					toyotaHandler->setHudMiniCar( false );
-//				}
-//			}
-//		}
-
-//		if ( canData->messageID == 921 ) {
-//			std_msgs::UInt8 msgCruiseSetSpeed;
-//			msgCruiseSetSpeed.data = ((*(unsigned long*)canData->data) >> (31+1-8)) & 0xFF;
-//			publisherCarSetSpeed.publish( msgCruiseSetSpeed );
-//		}
-
+		
 	}
 
 public:
-	CanToRosPublisher(ros::NodeHandle* nodeHandle, Panda::ToyotaHandler* handler) {
-		toyotaHandler = handler;
+//	CanToRosPublisher(ros::NodeHandle* nodeHandle, Panda::ToyotaHandler* handler) {
+	CanToRosPublisher(ros::NodeHandle* nodeHandle, Panda::Controller* controller) {
+//		toyotaHandler = handler;
+		pandaController = controller;
 		nh1 = nodeHandle;
 		// std::time_t t=time(0);
 		// struct tm * now = localtime( &t );
@@ -263,21 +332,42 @@ int main(int argc, char **argv) {
 	Panda::GpsTracker mGpsTracker;	// Saves to /etc/libpanda.d/latest_gps
 	pandaHandler.addGpsObserver(mGpsTracker);
 
-	Panda::ToyotaHandler toyotaHandler(&pandaHandler);
-//	pandaHandler.getCan().addObserver(&toyotaHandler);
+//	Panda::ToyotaHandler toyotaHandler(&pandaHandler);
+	
 
 	ROS_INFO("Initializing PandaHandler...");
 	pandaHandler.initialize();
-
+	
+	ROS_INFO("Initializing pandaController from factory...");
+	Panda::ControllerClient* pandaController = new Panda::ControllerClient(pandaHandler);
+	
+	if(pandaController->getController() == NULL) {
+		ROS_ERROR("No VIN discovered, unable to build controller handler");
+//		exit(EXIT_FAILURE);
+		
+		delete pandaController;
+		exit(EXIT_FAILURE);
+		
+		// We can for set the VIN to continue with the follwing code, but best to just fail everythign since somethin aint right:
+//		ROS_ERROR("Force setting the VIN to JN8AT3CB9MW240939");
+//		pandaHandler.forceSetVin((const unsigned char*)"JN8AT3CB9MW240939");	// Hard coded VIN setting
+//		pandaController = new Panda::ControllerClient(pandaHandler);
+//		if(pandaController->getController() == NULL) {
+//			std::cerr << "ERROR 2: No VIN discovered, unable to make test controller" << std::endl;
+//			exit(EXIT_FAILURE);
+//		}
+	}
 
     // Initialize Libpanda with ROS publisher:
 	ROS_INFO("Starting CanToRosPublisher...");
-	CanToRosPublisher canToRosPublisher(&nh, &toyotaHandler);
+//	CanToRosPublisher canToRosPublisher(&nh, &toyotaHandler);
+	CanToRosPublisher canToRosPublisher(&nh, pandaController->getController());
 
 
 	ROS_INFO("Connecting  PandaStatusPublisher...");
 	PandaStatusPublisher mPandaStatusPublisher(&nh);
-	toyotaHandler.addObserver(&mPandaStatusPublisher);
+//	toyotaHandler.addObserver(&mPandaStatusPublisher);
+	pandaController->getController()->addObserver(&mPandaStatusPublisher);
 	//SimpleGpsObserver myGpsObserver;
 	// Initialize Usb, this requires a connected Panda
 	//Panda::Handler pandaHandler;
@@ -285,12 +375,14 @@ int main(int argc, char **argv) {
 	pandaHandler.addCanObserver(canToRosPublisher);
 
 	// Initialize panda and toyota handlers
-	ROS_INFO("Starting ToyotaHandler...");
+//	ROS_INFO("Starting ToyotaHandler...");
 	//toyotaHandler.start();
 
 
-	ROS_INFO("Starting Control relay...");
-	Control vehicleControl(&toyotaHandler, &nh);
+	ROS_INFO("Starting Panda::Controller...");
+//	Control vehicleControl(&toyotaHandler, &nh);
+	Control vehicleControl(pandaController->getController(), &nh);
+	pandaController->getController()->start();
 
 	writeToFileThenClose(filenameGpsStatus, "0\n");	// state 0: on but time not set
 
@@ -364,7 +456,8 @@ int main(int argc, char **argv) {
 
 	// Cleanup:
 //	mPandaStatusPublisher.stop();
-	toyotaHandler.stop();
+//	toyotaHandler.stop();
+	pandaController->getController()->stop();
 	pandaHandler.stop();
 	writeToFileThenClose(filenameGpsStatus, "-1\n");
 
