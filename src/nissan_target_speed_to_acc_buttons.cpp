@@ -159,15 +159,15 @@ private:
 	void callbackControlsAllowed(const std_msgs::Bool::ConstPtr& msg)
 	{
 		this->controls_allowed = msg->data;
-		if(state == STATE_CONTROLS_OFF) {
-			if(controls_allowed == true) {
-				transtionToState(STATE_IDLE);
-			}
-		} else {
-			if(controls_allowed == false) {
-				transtionToState(STATE_CONTROLS_OFF);
-			}
-		}
+//		if(state == STATE_CONTROLS_OFF) {
+//			if(controls_allowed == true) {
+//				transtionToState(STATE_IDLE);
+//			}
+//		} else {
+//			if(controls_allowed == false) {
+//				transtionToState(STATE_CONTROLS_OFF);
+//			}
+//		}
 		
 	}
 	
@@ -299,8 +299,19 @@ public:
 	}
 	
 	void process( ) {
+		// This is a check that must be performed in ANY state other than CONTROLS_OFF
+		if((state != STATE_CONTROLS_OFF) &&
+		   (controls_allowed == false)) {
+			transtionToState(STATE_CONTROLS_OFF);
+			return;
+		}
+		
+		// The following is only valid under (state != STATE_CONTROLS_OFF)
 		switch (state) {
 			case STATE_CONTROLS_OFF:
+				if(controls_allowed == true) {
+					transtionToState(STATE_IDLE);
+				}
 				break;
 				
 				// The rest represent CONTROLS_ON
