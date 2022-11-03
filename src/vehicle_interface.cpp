@@ -314,7 +314,7 @@ void writeToFileThenClose(const char* filename, const char* data) {
 int main(int argc, char **argv) {
 	// Initialize ROS stuff:
 	ros::init(argc, argv, "vehicle_interface");
-	ROS_INFO("Initializing ..");
+	ROS_INFO("Initializing...");
 
 	ros::NodeHandle nh;
 

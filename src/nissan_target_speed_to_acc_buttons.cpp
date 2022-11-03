@@ -1,25 +1,7 @@
 /*
- Author: Matt Bunting
- Copyright (c) 2020 Arizona Board of Regents
- All rights reserved.
- 
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the
- above copyright notice and the following two paragraphs appear in
- all copies of this software.
- IN NO EVENT SHALL THE ARIZONA BOARD OF REGENTS BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN
- IF THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
- THE ARIZONA BOARD OF REGENTS SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
- AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER
- IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATION
- TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
- 
+ Author: Matt Bunting, Matt Nice
  */
+
 #include <iostream>
 #include <stdlib.h>
 #include <fstream>
@@ -40,18 +22,18 @@
 #include <sstream>
 
 /*
- This ROS node interfaces libpanda's ToyotaHandler
+ This ROS node interfaces desired target ACC set points into button presses for vehicle_interface.cpp when operating a Nissan.  This node works with both target speed and target leader distance time-gap settings
  
  Publishers:
- 1) /realtime_raw_data - std_msgs/String -  This publishes CAN data of interest where the can_to_ros node named subs_fs.cpp can interpret values
- 2) /car/panda/gas_interceptor_detected - std_msgs/Bool - Reported by the Panda is their gas interceptor hardware is detected
- 3) /car/panda/controls_allowed - std_msgs/Bool -  Reported by the comma.ai panda.  This is not event-based from the Panda, but is regularly checked at 2 Hz to reset the Panda's heartbeat
- 4)	/car/libpanda/controls_allowed - std_msgs/Bool -  Reported by logic within libpanda.  This is event based from libpanda using CAN messages.  When no events occur, this regularly published at 1 Hz which can be used to assess libpanda's control command health
+ 1) /car/cruise/cmd_btn - std_msgs/UInt8 -  A request for vehicle_interface.cpp to perform an ACC button press via libpanda and its matthat.  See enum NissanButton for values
+
  
  Subscribers:
- 1) /car/cruise/accel_input - std_msgs/Float64 - This is for acceleration commands to be sent to the car's cruise controller (priorly known as /commands)
- 2) /car/hud/mini_car_enable - std_msgs/Bool - When true, this will display a mini-vehicle on the car's HUD which cruise control is on and engaged
- 3) /car/hud/cruise_cancel_request - std_msgs/Bool - When true  published, the cruise controller will disengage and notify the driver with an audible chime
+ 1) /car/libpanda/controls_allowed - std_msgs/Bool - Determines whether button requests are accepted.  Affects state machine state
+ 2) /target_speed_setting - std_msgs/Int16 - The desired ACC speed set point (valid values 20 to ?) Units: mph
+ 3) /target_gap_setting - std_msgs/UInt8 - The desired ACC gap set point (valid values 1, 2, or 3) Units: # of bars
+ 4) /acc/set_speed - std_msgs/Int16 - The ACC's current speed set point, as reported by the car. Units: mph
+ 5) /acc/set_distance - std_msgs/Int16 - The ACC's current gap set point, as reported by the car.  Units: # of bars
  
  */
 
@@ -73,7 +55,7 @@ typedef enum {
 	// The rest represent CONTROLS_ON
 	STATE_IDLE,	// ON
 	STATE_SHORT_PRESS,
-	STATE_TURN_OFF,
+	STATE_TURN_OFF,	// Button Release
 	STATE_LONG_PRESS,
 	STATE_CHECK_HOLD,
 	//ACC_STATE_COME_HOME	// ON
@@ -82,9 +64,9 @@ typedef enum {
 
 #define PROCESS_RATE (20.0)	// Hz
 
-#define BUTTON_PRESS_TIME (0.25)	// seconds
-#define BUTTON_LONG_PRESS_TIME (0.5)	// seconds
-#define BUTTON_RELEASE_TIME (0.5)	// seconds
+#define BUTTON_PRESS_TIME (0.25)	// seconds. This represents the total time the button is held
+#define BUTTON_LONG_PRESS_TIME (0.1)	// seconds.  This does NOT represent held time, only the interval to check if it should still be held
+#define BUTTON_RELEASE_TIME (0.25)	// seconds.  This represents a cooldown, the time between a button release and another button press
 
 #define PROCESS_DECIMATOR_PRESS (PROCESS_RATE * BUTTON_PRESS_TIME)
 #define PROCESS_DECIMATOR_LONG_PRESS (PROCESS_RATE * BUTTON_LONG_PRESS_TIME)
@@ -134,6 +116,7 @@ private:
 	}
 	
 	// Subscribers for state updates:
+	// state variables are updated by ROS subscribers here
 	void callbackTargetSpeed(const std_msgs::Int16::ConstPtr& msg)
 	{
 		this->target_speed = msg->data;
@@ -159,18 +142,24 @@ private:
 	void callbackControlsAllowed(const std_msgs::Bool::ConstPtr& msg)
 	{
 		this->controls_allowed = msg->data;
-//		if(state == STATE_CONTROLS_OFF) {
-//			if(controls_allowed == true) {
-//				transtionToState(STATE_IDLE);
-//			}
-//		} else {
-//			if(controls_allowed == false) {
-//				transtionToState(STATE_CONTROLS_OFF);
-//			}
-//		}
+		//		if(state == STATE_CONTROLS_OFF) {
+		//			if(controls_allowed == true) {
+		//				transtionToState(STATE_IDLE);
+		//			}
+		//		} else {
+		//			if(controls_allowed == false) {
+		//				transtionToState(STATE_CONTROLS_OFF);
+		//			}
+		//		}
 		
 	}
 	
+	// Publisher function:
+	void publishButtonRequest(NissanButton button) {
+		std_msgs::UInt8 msg;
+		msg.data = (unsigned char) button;
+		publisherButtonRequest.publish(msg);
+	}
 	
 	
 	
@@ -179,11 +168,11 @@ private:
 		return abs(target_speed - set_speed);
 	}
 	
-	void publishButtonRequest(NissanButton button) {
-		std_msgs::UInt8 msg;
-		msg.data = (unsigned char) button;
-		publisherButtonRequest.publish(msg);
+	bool distBad() {
+		return target_distance_setting != set_distance;
 	}
+	
+	
 	
 	
 	// State handling:
@@ -200,7 +189,7 @@ private:
 			case STATE_SHORT_PRESS:
 				decimatorShortPress = 0;	// timer reset
 				// figure out button
-				if(distBad()) {
+				if(distBad()) {		// Highest priority is for distance setting
 					buttonToSend = NISSAN_BUTTON_DISTANCE;
 				} else if(set_speed > target_speed) {
 					buttonToSend = NISSAN_BUTTON_SET;	// Down
@@ -241,7 +230,6 @@ private:
 			case STATE_IDLE:
 				break;
 				
-				
 			case STATE_CHECK_HOLD:
 				break;
 				
@@ -275,12 +263,7 @@ public:
 		controls_allowed = false;
 		
 		this->nodeHandle = nodeHandle;
-		//		publisherButtonRequest = nodeHandle->advertise<std_msgs::UInt8>("/car/cruise/nissan_button_request", 1000);
-		//
-		//		subscriberCmdVel = nodeHandle->subscribe("/car/cruise/cmd_vel", 1000, &SetPointToAccButtonLogic::callbackCmdVel, this);
-		//		subscriberDistanceSetting = nodeHandle->subscribe("/acc/distance_setting", 1000, &SetPointToAccButtonLogic::callbackDistanceSetting, this);
-		//		subscriberSetSpeed = nodeHandle->subscribe("/acc/set_speed", 1000, &SetPointToAccButtonLogic::callbackSetSpeed, this);
-		//
+		
 		publisherButtonRequest = nodeHandle->advertise<std_msgs::UInt8>("/car/cruise/cmd_btn", 1000);
 		
 		subscriberControlsAllowed = nodeHandle->subscribe("/car/libpanda/controls_allowed", 1000, &SetPointToAccButtonLogic::callbackControlsAllowed, this);
@@ -289,14 +272,9 @@ public:
 		subscriberSetSpeed = nodeHandle->subscribe("/acc/set_speed", 1000, &SetPointToAccButtonLogic::callbackSetSpeed, this);
 		subscriberSetDistance = nodeHandle->subscribe("/acc/set_distance", 1000, &SetPointToAccButtonLogic::callbackSetDistance, this);
 		
+		ROS_INFO("SetPointToAccButtonLogic has started with state %s, target_speed_setting = %d, target_gap_setting = %d", stateToName(state), target_speed, target_distance_setting);
 	}
 	
-	
-	// state variables are updated by ROS subscribers here
-	
-	bool distBad() {
-		return target_distance_setting != set_distance;
-	}
 	
 	void process( ) {
 		// This is a check that must be performed in ANY state other than CONTROLS_OFF
@@ -371,35 +349,23 @@ public:
 
 
 
-
-
-
-
 int main(int argc, char **argv) {
 	// Initialize ROS stuff:
 	ros::init(argc, argv, "nissan_target_speed_to_acc_buttons");
-	ROS_INFO("Initializing ..");
+	ROS_INFO("Initializing...");
 	
 	ros::NodeHandle nh;
-	
-	//    ros::spin();
 	
 	SetPointToAccButtonLogic mSetPointToAccButtonLogic(&nh);
 	//ros::Publisher publisherGpsActive = nh.advertise<std_msgs::Bool>("/car/panda/gps_active", 1000);
 	
 	ros::Rate mainLoopRate(PROCESS_RATE);
 	while(ros::ok()) {
-		// publish that we are active:
-		//std_msgs::Bool msgGpsActive;
-		//msgGpsActive.data = true;
-		//publisherGpsActive.publish( msgGpsActive );
+		mSetPointToAccButtonLogic.process();
 		
-		mSetPointToAccButtonLogic.process();//1.0/PROCESS_RATE);
 		// Normal ROS rate limiting:
 		mainLoopRate.sleep();
 		ros::spinOnce();
-		
-		
 	}
 	
 	// Cleanup:
