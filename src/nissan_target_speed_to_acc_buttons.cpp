@@ -120,13 +120,13 @@ private:
 	void callbackTargetSpeed(const std_msgs::Int16::ConstPtr& msg)
 	{
 		this->target_speed = msg->data;
-		ROS_INFO("New target speed: %d", this->target_speed);
+		//ROS_INFO("New target speed: %d", this->target_speed);
 	}
 	
 	void callbackTargetDistanceSetting(const std_msgs::UInt8::ConstPtr& msg)
 	{
 		this->target_distance_setting = msg->data;
-		ROS_INFO("New distance setting: %d", this->target_distance_setting);
+		//ROS_INFO("New distance setting: %d", this->target_distance_setting);
 	}
 	
 	void callbackSetSpeed(const std_msgs::Int16::ConstPtr& msg)

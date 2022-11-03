@@ -138,6 +138,7 @@ public:
 //class PandaStatusPublisher : public Panda::ToyotaListener {
 class PandaStatusPublisher : public Panda::ControllerListener {
 	ros::Publisher publisherLibpandaControlsEnabled;
+	ros::Publisher publisherLibpandaAccButtonWireGood;
 
 	ros::Publisher publisherPandaControlsEnabled;
 	ros::Publisher publisherPandaGasInterceptorDetected;
