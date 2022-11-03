@@ -210,16 +210,24 @@ include_directories(
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
 
-INCLUDE_DIRECTORIES(
-/opt/libpanda/include
-/opt/libpanda/include/panda
-/opt/libpanda/include/mogi
-/opt/libpanda/NMEAParser/Software/NMEAParserLib/include)
+if(EXISTS /usr/local/include/panda.h)
+	message(" - libpanda found!")
+	set(LIBPANDA_FOUND YES)
+else()
+	message(" - libpanda NOT found")
+endif()
 
-LINK_DIRECTORIES(
-/opt/libpanda/build
-/opt/libpanda/build/utilities )
+if(DEFINED LIBPANDA_FOUND)
+	INCLUDE_DIRECTORIES(
+		/opt/libpanda/include
+		/opt/libpanda/include/panda
+		/opt/libpanda/include/mogi
+		/opt/libpanda/NMEAParser/Software/NMEAParserLib/include)
 
+	LINK_DIRECTORIES(
+		/opt/libpanda/build
+		/opt/libpanda/build/utilities )
+endif()
 
 add_executable(gpsfix src/gps_node.cpp)
 target_link_libraries(gpsfix ${catkin_LIBRARIES})
@@ -240,8 +248,10 @@ target_link_libraries(subs_fs_test ${catkin_LIBRARIES})
 add_executable(lead_info src/lead_info.cpp)
 target_link_libraries(lead_info ${catkin_LIBRARIES})
 
-add_executable(publish_libpanda src/publish_libpanda.cpp)
-target_link_libraries(publish_libpanda ${catkin_LIBRARIES} libpandac.so) #libpandac.so
+if(DEFINED LIBPANDA_FOUND)
+	add_executable(publish_libpanda src/publish_libpanda.cpp)
+	target_link_libraries(publish_libpanda ${catkin_LIBRARIES} libpandac.so) #libpandac.so
+endif()
 
 add_executable(realtime_publishing src/realtime_publishing.cpp)
 target_link_libraries(realtime_publishing ${catkin_LIBRARIES})
@@ -264,15 +274,17 @@ target_link_libraries(publishCommandsFS ${catkin_LIBRARIES})
 add_executable(cmd_accel_decel src/cmd_accel_decel.cpp)
 target_link_libraries(cmd_accel_decel ${catkin_LIBRARIES})
 
-add_executable(vehicle_interface src/vehicle_interface.cpp)
-target_link_libraries(vehicle_interface ${catkin_LIBRARIES} libpandac.so)
+if(DEFINED LIBPANDA_FOUND)
+	add_executable(vehicle_interface src/vehicle_interface.cpp)
+	target_link_libraries(vehicle_interface ${catkin_LIBRARIES} libpandac.so)
 
-add_executable(vanilla_vehicle_interface src/vanilla_vehicle_interface.cpp)
-target_link_libraries(vanilla_vehicle_interface ${catkin_LIBRARIES} libpandac.so)
+	add_executable(vanilla_vehicle_interface src/vanilla_vehicle_interface.cpp)
+	target_link_libraries(vanilla_vehicle_interface ${catkin_LIBRARIES} libpandac.so)
+endif()
 
 
 add_executable(nissan_target_speed_to_acc_buttons src/nissan_target_speed_to_acc_buttons.cpp)
-target_link_libraries(nissan_target_speed_to_acc_buttons ${catkin_LIBRARIES} libpandac.so)
+target_link_libraries(nissan_target_speed_to_acc_buttons ${catkin_LIBRARIES} )
 
 add_executable(simple_mini_car_from_lead_distance src/simple_mini_car_from_lead_distance.cpp)
 target_link_libraries(simple_mini_car_from_lead_distance ${catkin_LIBRARIES})
@@ -280,8 +292,10 @@ target_link_libraries(simple_mini_car_from_lead_distance ${catkin_LIBRARIES})
 add_executable(cruise_start_safety_check src/cruise_start_safety_check.cpp)
 target_link_libraries(cruise_start_safety_check ${catkin_LIBRARIES})
 
-add_executable(cut_in_disengager src/cut_in_disengager.cpp)
-target_link_libraries(cut_in_disengager ${catkin_LIBRARIES} libpandac.so)
+if(DEFINED LIBPANDA_FOUND)
+	add_executable(cut_in_disengager src/cut_in_disengager.cpp)
+	target_link_libraries(cut_in_disengager ${catkin_LIBRARIES} libpandac.so)
+endif()
 
 add_executable(cbf_smoother src/cbf_smoother.cpp)
 target_link_libraries(cbf_smoother ${catkin_LIBRARIES})
