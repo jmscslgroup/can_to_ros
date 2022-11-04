@@ -372,17 +372,17 @@ int main(int argc, char **argv) {
 		ROS_ERROR("No VIN discovered, unable to build controller handler");
 		
 		// Delete the controller and kill the process, this cannot continue
-		delete pandaController;
-		exit(EXIT_FAILURE);
+//		delete pandaController;
+//		exit(EXIT_FAILURE);
 		
 		// We can for set the VIN to continue with the follwing code, but best to just fail everything since somethin aint right:
-//		ROS_ERROR("Force setting the VIN to JN8AT3CB9MW240939");
-//		pandaHandler.forceSetVin((const unsigned char*)"JN8AT3CB9MW240939");	// Hard coded VIN setting
-//		pandaController = new Panda::ControllerClient(pandaHandler);
-//		if(pandaController->getController() == NULL) {
-//			std::cerr << "ERROR 2: No VIN discovered, unable to make test controller" << std::endl;
-//			exit(EXIT_FAILURE);
-//		}
+		ROS_ERROR("Force setting the VIN to 5N1000000P0000000");
+		pandaHandler.forceSetVin((const unsigned char*)"5N1000000P0000000");	// Hard coded VIN setting
+		pandaController = new Panda::ControllerClient(pandaHandler);
+		if(pandaController->getController() == NULL) {
+			std::cerr << "ERROR 2: No VIN discovered, unable to make test controller" << std::endl;
+			exit(EXIT_FAILURE);
+		}
 	}
 
     // Initialize Libpanda with ROS publisher:
