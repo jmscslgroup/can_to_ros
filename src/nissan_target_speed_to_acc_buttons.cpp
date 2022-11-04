@@ -86,12 +86,14 @@ private:
 	
 	// State variables
 	short target_speed;
-	unsigned char target_distance_setting;//uint8
+	short target_distance_setting;//uint8
 	short set_speed;
 	short set_distance;//int16
 	bool controls_allowed;
 	
 	CommandState state;
+	
+	NissanButton longPressedButton;
 	
 	
 	// Helper variables:
@@ -129,7 +131,7 @@ private:
 		//ROS_INFO("New target speed: %d", this->target_speed);
 	}
 	
-	void callbackTargetDistanceSetting(const std_msgs::UInt8::ConstPtr& msg)
+	void callbackTargetDistanceSetting(const std_msgs::Int16::ConstPtr& msg)
 	{
 		if( msg->data < 1 ) {
 			this->target_distance_setting = 1;
@@ -185,6 +187,13 @@ private:
 		return target_distance_setting != set_distance;
 	}
 	
+	NissanButton setOrRes() {
+		if(set_speed > target_speed) {
+			return NISSAN_BUTTON_SET;	// Down
+		}
+		return NISSAN_BUTTON_RES;	// up
+	}
+	
 	
 	
 	
@@ -204,10 +213,13 @@ private:
 				// figure out button
 				if(distBad()) {		// Highest priority is for distance setting
 					buttonToSend = NISSAN_BUTTON_DISTANCE;
-				} else if(set_speed > target_speed) {
-					buttonToSend = NISSAN_BUTTON_SET;	// Down
+//				} else if(set_speed > target_speed) {
+//					buttonToSend = NISSAN_BUTTON_SET;	// Down
+//				} else {
+//					buttonToSend = NISSAN_BUTTON_RES;	// up
+//				}
 				} else {
-					buttonToSend = NISSAN_BUTTON_RES;	// up
+					buttonToSend = setOrRes();
 				}
 				publishButtonRequest(buttonToSend);
 				break;
@@ -219,12 +231,13 @@ private:
 				
 			case STATE_LONG_PRESS:
 				decimatorLongPress = 0;	// timer reset
-				if(set_speed > target_speed) {
-					buttonToSend = NISSAN_BUTTON_SET;	// Down
-				} else {
-					buttonToSend = NISSAN_BUTTON_RES;	// up
-				}
-				publishButtonRequest(buttonToSend);
+//				if(set_speed > target_speed) {
+//					buttonToSend = NISSAN_BUTTON_SET;	// Down
+//				} else {
+//					buttonToSend = NISSAN_BUTTON_RES;	// up
+//				}
+				longPressedButton = setOrRes();
+				publishButtonRequest(longPressedButton);
 				break;
 				
 			case STATE_CHECK_HOLD:
@@ -263,6 +276,8 @@ private:
 		ROS_INFO("Transitiong from state %s to %s", stateToName(state), stateToName(newState));
 		exitState(state);
 		enterState(newState);
+		
+		process(); // for timing purposes, potentially dangerous?
 	}
 	
 public:
@@ -345,11 +360,12 @@ public:
 			case STATE_CHECK_HOLD:
 				// decide which path to take
 				if(distBad() ||
-				   (magDif() < 3)) {
+				   (magDif() < 3) ||
+				   (longPressedButton != setOrRes())) {
 					transtionToState(STATE_TURN_OFF);
 					return;
 				}
-				if(!distBad() ||
+				if(!distBad() &&
 				   (3 <= magDif())) {
 					transtionToState(STATE_LONG_PRESS);
 				}
