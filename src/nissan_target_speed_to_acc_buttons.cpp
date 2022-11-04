@@ -119,13 +119,26 @@ private:
 	// state variables are updated by ROS subscribers here
 	void callbackTargetSpeed(const std_msgs::Int16::ConstPtr& msg)
 	{
-		this->target_speed = msg->data;
+		if( msg->data < 20 ) {
+			this->target_speed = 20;
+		} else if ( msg->data > 100 ) {
+			this->target_speed = 100;
+		} else {
+			this->target_speed = msg->data;
+		}
 		//ROS_INFO("New target speed: %d", this->target_speed);
 	}
 	
 	void callbackTargetDistanceSetting(const std_msgs::UInt8::ConstPtr& msg)
 	{
-		this->target_distance_setting = msg->data;
+		if( msg->data < 1 ) {
+			this->target_distance_setting = 1;
+		} else if ( msg->data > 3 ) {
+			this->target_distance_setting = 3;
+		} else {
+			this->target_distance_setting = msg->data;
+			
+		}
 		//ROS_INFO("New distance setting: %d", this->target_distance_setting);
 	}
 	
