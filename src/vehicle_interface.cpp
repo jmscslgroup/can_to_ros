@@ -137,8 +137,10 @@ public:
 
 //class PandaStatusPublisher : public Panda::ToyotaListener {
 class PandaStatusPublisher : public Panda::ControllerListener {
+	ros::NodeHandle* nodeHandle;
+	
 	ros::Publisher publisherLibpandaControlsEnabled;
-	ros::Publisher publisherLibpandaAccButtonWireGood;
+	ros::Publisher* publisherLibpandaAccButtonWireGood;
 
 	ros::Publisher publisherPandaControlsEnabled;
 	ros::Publisher publisherPandaGasInterceptorDetected;
@@ -167,6 +169,19 @@ class PandaStatusPublisher : public Panda::ControllerListener {
 		msgControlsEnabled.data = controller->getControlsAllowed();
 
 		publisherLibpandaControlsEnabled.publish( msgControlsEnabled );
+		
+		if(controller->getPandaHandler()->getVehicleManufacturer() == Panda::VEHICLE_MANUFACTURE_NISSAN) {
+			if(publisherLibpandaAccButtonWireGood == NULL) {
+				publisherLibpandaAccButtonWireGood = new ros::Publisher;
+				*publisherLibpandaAccButtonWireGood = nodeHandle->advertise<std_msgs::Bool>("/car/libpanda/acc_button_wire_connected", 1000);
+			}
+			
+			Panda::NissanAccButtonController* nissanAccButtonHandler = static_cast<Panda::NissanAccButtonController*>(controller);
+			
+			std_msgs::Bool msgAccButtonWireConnected;
+			msgAccButtonWireConnected.data = nissanAccButtonHandler->isHardwareConnectionGood();
+			publisherLibpandaAccButtonWireGood->publish( msgAccButtonWireConnected );
+		}
 	}
 
 	void newPandaHealthNotification(const PandaHealth& pandaHealth) {
@@ -182,10 +197,19 @@ class PandaStatusPublisher : public Panda::ControllerListener {
 
 public:
 	PandaStatusPublisher(ros::NodeHandle* nodeHandle) {
+		this->nodeHandle = nodeHandle;
+		
 		publisherLibpandaControlsEnabled = nodeHandle->advertise<std_msgs::Bool>("/car/libpanda/controls_allowed", 1000);
+		publisherLibpandaAccButtonWireGood = NULL;
 
 		publisherPandaControlsEnabled = nodeHandle->advertise<std_msgs::Bool>("/car/panda/controls_allowed", 1000);
 		publisherPandaGasInterceptorDetected = nodeHandle->advertise<std_msgs::Bool>("/car/panda/gas_interceptor_detected", 1000);
+	}
+	
+	~PandaStatusPublisher() {
+		if(publisherLibpandaAccButtonWireGood) {
+			delete publisherLibpandaAccButtonWireGood;
+		}
 	}
 
 };
@@ -315,7 +339,7 @@ void writeToFileThenClose(const char* filename, const char* data) {
 int main(int argc, char **argv) {
 	// Initialize ROS stuff:
 	ros::init(argc, argv, "vehicle_interface");
-	ROS_INFO("Initializing...");
+	ROS_INFO("Initializing vehicle_interface...");
 
 	ros::NodeHandle nh;
 
@@ -342,14 +366,16 @@ int main(int argc, char **argv) {
 	ROS_INFO("Initializing pandaController from factory...");
 	Panda::ControllerClient* pandaController = new Panda::ControllerClient(pandaHandler);
 	
+	
+	
 	if(pandaController->getController() == NULL) {
 		ROS_ERROR("No VIN discovered, unable to build controller handler");
-//		exit(EXIT_FAILURE);
 		
+		// Delete the controller and kill the process, this cannot continue
 		delete pandaController;
 		exit(EXIT_FAILURE);
 		
-		// We can for set the VIN to continue with the follwing code, but best to just fail everythign since somethin aint right:
+		// We can for set the VIN to continue with the follwing code, but best to just fail everything since somethin aint right:
 //		ROS_ERROR("Force setting the VIN to JN8AT3CB9MW240939");
 //		pandaHandler.forceSetVin((const unsigned char*)"JN8AT3CB9MW240939");	// Hard coded VIN setting
 //		pandaController = new Panda::ControllerClient(pandaHandler);

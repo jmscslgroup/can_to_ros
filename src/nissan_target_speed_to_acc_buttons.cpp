@@ -352,7 +352,7 @@ public:
 int main(int argc, char **argv) {
 	// Initialize ROS stuff:
 	ros::init(argc, argv, "nissan_target_speed_to_acc_buttons");
-	ROS_INFO("Initializing...");
+	ROS_INFO("Initializing nissan_target_speed_to_acc_buttons...");
 	
 	ros::NodeHandle nh;
 	
