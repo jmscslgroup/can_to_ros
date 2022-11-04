@@ -173,7 +173,9 @@ private:
 	void publishButtonRequest(NissanButton button) {
 		std_msgs::UInt8 msg;
 		msg.data = (unsigned char) button;
+		ROS_INFO("nissan_target_speed_to_acc_buttons Publishing button request:   %d", (int)msg->data);
 		publisherButtonRequest.publish(msg);
+		ROS_INFO("nissan_target_speed_to_acc_buttons Done sending button request: %d", (int)msg->data);
 	}
 	
 	
@@ -273,7 +275,7 @@ private:
 	}
 	
 	void transtionToState( CommandState newState ) {
-		ROS_INFO("Transitiong from state %s to %s", stateToName(state), stateToName(newState));
+		ROS_INFO("Transition from state %s to %s", stateToName(state), stateToName(newState));
 		exitState(state);
 		enterState(newState);
 		

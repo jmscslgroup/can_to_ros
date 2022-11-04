@@ -103,7 +103,9 @@ public:
 	 */
 	void callbackAccButtonRequest(const std_msgs::UInt8::ConstPtr& msg)
 	{
+		ROS_INFO("vehicle_interface Received button request: %d: %s", (int)msg->data, nissanButtonToStr((Panda::NissanButton)msg->data));
 		nissanAccButtonHandler->sendButton((Panda::NissanButton)msg->data);
+		ROS_INFO("vehicle_interface Done pressing button:    %d: %s", (int)msg->data, nissanButtonToStr((Panda::NissanButton)msg->data));
 	}
 
 	
