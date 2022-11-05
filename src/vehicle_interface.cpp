@@ -71,7 +71,7 @@ private:
 	ros::Subscriber subscribers[3];
 	ros::Publisher publisherBusySendingButtonPress;
 	
-	std_msgs::String msgBusyButton;
+	std_msgs::Bool msgBusyButton;
 //	ros::Subscriber sub_;
 //	ros::Subscriber subscriberMiniCarHud;
 //	ros::Subscriber subscriberCruiseCancel;
@@ -115,9 +115,10 @@ public:
 		msgBusyButton.data = true;
 		publisherBusySendingButtonPress.publish(msgBusyButton);
 		ROS_INFO("vehicle_interface Received button request: %d: %s", (int)msg->data, nissanButtonToStr((Panda::NissanButton)msg->data));
-		nissanAccButtonHandler->sendButton((Panda::NissanButton)msg->data);
-		ROS_INFO("vehicle_interface Done pressing button:    %d: %s", (int)msg->data, nissanButtonToStr((Panda::NissanButton)msg->data));
 		
+		nissanAccButtonHandler->sendButton((Panda::NissanButton)msg->data);
+		
+		ROS_INFO("vehicle_interface Done pressing button:    %d: %s", (int)msg->data, nissanButtonToStr((Panda::NissanButton)msg->data));
 		msgBusyButton.data = false;
 		publisherBusySendingButtonPress.publish(msgBusyButton);
 	}
@@ -534,18 +535,20 @@ int main(int argc, char **argv) {
 
 //    ros::spin();
 
-	ros::Publisher publisherGpsActive = nh.advertise<std_msgs::Bool>("/car/panda/gps_active", 1000);
-	ros::Rate mainLoopRate(1); // 1Hz
-	while(ros::ok()) {
-		// publish that we are active:
-		std_msgs::Bool msgGpsActive;
-		msgGpsActive.data = true;
-		publisherGpsActive.publish( msgGpsActive );
-
-		// Normal ROS rate limiting:
-		mainLoopRate.sleep();
-		ros::spinOnce();
-	}
+//	ros::Publisher publisherGpsActive = nh.advertise<std_msgs::Bool>("/car/panda/gps_active", 1000);
+//	ros::Rate mainLoopRate(1); // 1Hz
+//	while(ros::ok()) {
+//		// publish that we are active:
+//		std_msgs::Bool msgGpsActive;
+//		msgGpsActive.data = true;
+//		//publisherGpsActive.publish( msgGpsActive );
+//
+//		// Normal ROS rate limiting:
+//		//mainLoopRate.sleep();
+////		ros::spinOnce();
+//		ros::spin();
+//	}
+	ros::spin();
 
 	// Cleanup:
 //	mPandaStatusPublisher.stop();

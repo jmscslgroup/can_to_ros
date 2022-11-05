@@ -173,6 +173,7 @@ private:
 	}
 	
 	void callbackBusySendingButtons(const std_msgs::Bool::ConstPtr& msg) {
+		ROS_INFO("nissan_target_speed_to_acc_buttons New busy button state:   %d", (int)msg->data);
 		this->busySendingButtonPress = msg->data;
 	}
 	
@@ -183,8 +184,8 @@ private:
 		ROS_INFO("nissan_target_speed_to_acc_buttons Publishing button request:   %d", (int)msg.data);
 		this->busySendingButtonPress = true;
 		publisherButtonRequest.publish(msg);
-		while(this->busySendingButtonPress) usleep(1000);	// HACKY
-		ROS_INFO("nissan_target_speed_to_acc_buttons Done sending button request: %d", (int)msg.data);
+//		while(this->busySendingButtonPress) usleep(1000);	// HACKY
+//		ROS_INFO("nissan_target_speed_to_acc_buttons Done sending button request: %d", (int)msg.data);
 	}
 	
 	
@@ -322,6 +323,10 @@ public:
 		if((state != STATE_CONTROLS_OFF) &&
 		   (controls_allowed == false)) {
 			transtionToState(STATE_CONTROLS_OFF);
+			return;
+		}
+		
+		if(this->busySendingButtonPress) {
 			return;
 		}
 		
