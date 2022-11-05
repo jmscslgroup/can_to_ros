@@ -34,7 +34,7 @@
 	<node pkg="can_to_ros" type ="rosbag_record.sh" name="bashscript2" output="screen" args="$(arg description) $(arg hwil)" /> 
 -->
 
-	<node pkg="onnx2ros" type="publish-speed-plan.py" name="publish_speed_plan"/>
+	<node pkg="onnx2ros" type="publish-speed-plan.py" name="publish_speed_plan" output="screen" />
 
 	<param name="model_slow" type="string" value="$(find onnx2ros)/../controllers/RL-cruise-hybrid/rl_acc_blind_sp/model.onnx"/>
 	<param name="model_fast" type="string" value="$(find onnx2ros)/../controllers/RL-cruise-hybrid/rl_acc_blind_sp_c/model.onnx"/>
