@@ -69,6 +69,9 @@ class Control {
 private:
 	ros::NodeHandle* n_;
 	ros::Subscriber subscribers[3];
+	ros::Publisher publisherBusySendingButtonPress;
+	
+	std_msgs::String msgBusyButton;
 //	ros::Subscriber sub_;
 //	ros::Subscriber subscriberMiniCarHud;
 //	ros::Subscriber subscriberCruiseCancel;
@@ -109,9 +112,14 @@ public:
 	 */
 	void callbackAccButtonRequest(const std_msgs::UInt8::ConstPtr& msg)
 	{
+		msgBusyButton.data = true;
+		publisherBusySendingButtonPress.publish(msgBusyButton);
 		ROS_INFO("vehicle_interface Received button request: %d: %s", (int)msg->data, nissanButtonToStr((Panda::NissanButton)msg->data));
 		nissanAccButtonHandler->sendButton((Panda::NissanButton)msg->data);
 		ROS_INFO("vehicle_interface Done pressing button:    %d: %s", (int)msg->data, nissanButtonToStr((Panda::NissanButton)msg->data));
+		
+		msgBusyButton.data = false;
+		publisherBusySendingButtonPress.publish(msgBusyButton);
 	}
 
 	
@@ -130,6 +138,7 @@ public:
 		if (pandaController->getPandaHandler()->getVehicleManufacturer() == Panda::VEHICLE_MANUFACTURE_NISSAN) {
 			nissanAccButtonHandler = static_cast<Panda::NissanAccButtonController*>(pandaController);
 			subscribers[0] = n_->subscribe("/car/cruise/cmd_btn", 1000, &Control::callbackAccButtonRequest, this);
+			publisherBusySendingButtonPress = n_->advertise<std_msgs::Bool>("/car/libpanda/busy_sending_button_press", 1000);
 		} else {
 			toyotaHandler = static_cast<Panda::ToyotaHandler*>(pandaController);
 			subscribers[0] = n_->subscribe("/car/cruise/accel_input", 1000, &Control::callbackAccelInput, this);
@@ -432,7 +441,7 @@ int main(int argc, char **argv) {
 //		delete pandaController;
 //		exit(EXIT_FAILURE);
 		
-		// We can for set the VIN to continue with the follwing code, but best to just fail everything since somethin aint right:
+		// We can for set the VIN to continue with the following code, but best to just fail everything since somethin aint right:
 		ROS_ERROR("Force setting the VIN to 5N1000000P0000000");
 		pandaHandler.forceSetVin((const unsigned char*)"5N1000000P0000000");	// Hard coded VIN setting
 		pandaController = new Panda::ControllerClient(pandaHandler);

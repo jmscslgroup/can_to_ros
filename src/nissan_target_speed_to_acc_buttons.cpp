@@ -83,6 +83,7 @@ private:
 	ros::Subscriber subscriberSetSpeed;
 	ros::Subscriber subscriberSetDistance;
 	ros::Subscriber subscriberControlsAllowed;
+	ros::Subscriber subscribers[1];
 	
 	// State variables
 	short target_speed;
@@ -90,6 +91,8 @@ private:
 	short set_speed;
 	short set_distance;//int16
 	bool controls_allowed;
+	
+	bool busySendingButtonPress;
 	
 	CommandState state;
 	
@@ -169,13 +172,19 @@ private:
 		
 	}
 	
+	void callbackBusySendingButtons(const std_msgs::Bool::ConstPtr& msg) {
+		this->busySendingButtonPress = msg->data;
+	}
+	
 	// Publisher function:
 	void publishButtonRequest(NissanButton button) {
 		std_msgs::UInt8 msg;
 		msg.data = (unsigned char) button;
-		ROS_INFO("nissan_target_speed_to_acc_buttons Publishing button request:   %d", (int)msg->data);
+		ROS_INFO("nissan_target_speed_to_acc_buttons Publishing button request:   %d", (int)msg.data);
+		this->busySendingButtonPress = true;
 		publisherButtonRequest.publish(msg);
-		ROS_INFO("nissan_target_speed_to_acc_buttons Done sending button request: %d", (int)msg->data);
+		while(this->busySendingButtonPress) usleep(1000);	// HACKY
+		ROS_INFO("nissan_target_speed_to_acc_buttons Done sending button request: %d", (int)msg.data);
 	}
 	
 	
@@ -291,6 +300,7 @@ public:
 		set_speed = 20;
 		set_distance = 3;
 		controls_allowed = false;
+		busySendingButtonPress = false;
 		
 		this->nodeHandle = nodeHandle;
 		
@@ -301,6 +311,7 @@ public:
 		subscriberTargetDistanceSetting = nodeHandle->subscribe("/target_gap_setting", 1000, &SetPointToAccButtonLogic::callbackTargetDistanceSetting, this);
 		subscriberSetSpeed = nodeHandle->subscribe("/acc/set_speed", 1000, &SetPointToAccButtonLogic::callbackSetSpeed, this);
 		subscriberSetDistance = nodeHandle->subscribe("/acc/set_distance", 1000, &SetPointToAccButtonLogic::callbackSetDistance, this);
+		subscribers[0] = nodeHandle->subscribe("/car/libpanda/busy_sending_button_press", 1000, &SetPointToAccButtonLogic::callbackBusySendingButtons, this);
 		
 		ROS_INFO("SetPointToAccButtonLogic has started with state %s, target_speed_setting = %d, target_gap_setting = %d", stateToName(state), target_speed, target_distance_setting);
 	}
