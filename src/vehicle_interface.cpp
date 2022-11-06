@@ -393,6 +393,33 @@ public:
 	}
 };
 
+class PublishGpsActive : public Mogi::Thread {
+private:
+	ros::Publisher publisher;
+	ros::Rate* publishRate;
+	std_msgs::Bool msgGpsActive;
+	
+	void doAction() {
+		msgGpsActive.data = true;
+		publisher.publish( msgGpsActive );
+		
+//		ROS_INFO("vehicle_interface Publishing true to /car/panda/gps_active");
+		
+		publishRate->sleep();	// 1Hz
+	}
+public:
+	PublishGpsActive(ros::NodeHandle* nodeHandle) {
+		publisher = nodeHandle->advertise<std_msgs::Bool>("/car/panda/gps_active", 1000);
+
+		publishRate = new ros::Rate(1.0);
+		this->start();
+	}
+	
+	~PublishGpsActive() {
+		delete publishRate;
+	}
+};
+
 //// This is a quick hacky function to allow for notifications of system time being set:
 void writeToFileThenClose(const char* filename, const char* data) {
 	FILE* file = fopen( filename, "w+");
@@ -483,6 +510,7 @@ int main(int argc, char **argv) {
 
 
 	//  Set the sytem time here:
+	if(pandaHandler.getGps().available()) {
 	ROS_INFO("Waiting to acquire satellites to set system time...");
 //	ROS_INFO(" - Each \'.\' represents 100 NMEA messages received:");
 	int lastNmeaMessageCount = 0;
@@ -494,6 +522,10 @@ int main(int argc, char **argv) {
 		}
 		ros::spinOnce();
 		usleep(10000);
+	}
+	} else {
+		ROS_ERROR("No avialable GPS! Continuting vehicle_interface without setting system time!");
+		
 	}
 
 	if(mSetSystemTimeObserver.hasTimeBeenSet()) {
@@ -548,6 +580,7 @@ int main(int argc, char **argv) {
 ////		ros::spinOnce();
 //		ros::spin();
 //	}
+	PublishGpsActive mPublishGpsActive(&nh);
 	ros::spin();
 
 	// Cleanup:
