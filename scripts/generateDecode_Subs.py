@@ -370,7 +370,8 @@ jsonfile, dbcfile = findDBC(vin_details)
 try:
     dbc = initializeDBC_Cantools(dbcfile)
 except FileNotFoundError:
-    os.system("wget -P ~/strym/strym/dbc https://raw.githubusercontent.com/jmscslgroup/strym/master/strym/dbc/%s",%(dbcfile.split('/')[-1]))
+    cmd = "wget -P ~/strym/strym/dbc https://raw.githubusercontent.com/jmscslgroup/strym/master/strym/dbc/%s",%(dbcfile.split('/')[-1])
+    os.system(cmd)
     # dbcfile = '/Users/mnice/Documents/GitHub/strym/strym/dbc/toyota_rav4_hybrid.dbc'
 
     dbc = initializeDBC_Cantools(dbcfile)
