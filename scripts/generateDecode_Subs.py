@@ -10,14 +10,14 @@ def findDBC(vin_details):
             jsonfile = 'toyota_rav4.json'
             if int(vin_details['ModelYear']) >= 2021:
                 #TODO: figure out where the dbc files will be
-                dbcfile = '/home/circles/strym/strym/dbc/toyota_rav4_2021.dbc'
+                dbcfile = '~/strym/strym/dbc/toyota_rav4_2021.dbc'
             elif int(vin_details['ModelYear']) == 2020:
-                dbcfile = '/home/circles/strym/strym/dbc/toyota_rav4_2020.dbc'
+                dbcfile = '~/strym/strym/dbc/toyota_rav4_2020.dbc'
             elif int(vin_details['ModelYear']) == 2019:
-                dbcfile = '/home/circles/strym/strym/dbc/toyota_rav4_2019.dbc'
+                dbcfile = '/~/strym/strym/dbc/toyota_rav4_2019.dbc'
             if 'HV' in vin_details['Trim']:
                 # dbcfile = '/Users/mnice/Documents/GitHub/strym/strym/dbc/toyota_rav4_hybrid.dbc'
-                dbcfile = '/home/circles/strym/strym/dbc/toyota_rav4_hybrid.dbc'
+                dbcfile = '~/strym/strym/dbc/toyota_rav4_hybrid.dbc'
     #space here to add in info for honda and nissan vehicles
     if vin_details['Make'] == 'NISSAN':
         if vin_details['Model'] == 'Rogue':
@@ -25,13 +25,13 @@ def findDBC(vin_details):
             if int(vin_details['ModelYear']) >= 2021:
                 #TODO: figure out where the dbc files will be
                 # dbcfile = '/Users/mnice/Documents/GitHub/strym/strym/dbc/nissan_rogue_2021.dbc'
-                dbcfile = '/home/circles/strym/strym/dbc/nissan_rogue_2021.dbc'
+                dbcfile = '~/strym/strym/dbc/nissan_rogue_2021.dbc'
                 # dbcfile = '/home/circles/strym/strym/dbc/nissan_rogue_experimental.dbc'
     try:
         print('The DBC is set as %s. The Json is set as %s'%(dbcfile,jsonfile))
     except UnboundLocalError:
         print('DBC File not found, check /etc/libpanda.d/vin_details.json is correct.')
-        
+
     return jsonfile, dbcfile
 
 def initializeDBC_Cantools(fileName):
@@ -369,13 +369,18 @@ f = open('/etc/libpanda.d/vin_details.json')
 vin_details = json.load(f)
 f.close()
 #find the correct DBC and ROS msg dict based on the vin details
-jsonfile, dbcfile = findDBC(vin_details)
+try:
+    jsonfile, dbcfile = findDBC(vin_details)
+except TypeError:
+    print('findDBC Function did not operate properly, check /etc/libpanda/vin_details.json')
 #load the correct DBC file to decode CAN to ROS
 try:
     dbc = initializeDBC_Cantools(dbcfile)
 except FileNotFoundError:
-    cmd = "wget -P ~/strym/strym/dbc https://raw.githubusercontent.com/jmscslgroup/strym/master/strym/dbc/" + (dbcfile.split('/')[-1])
-    os.system(cmd)
+    cmd = "wget -P ~/strym/strym/dbc/ https://raw.githubusercontent.com/jmscslgroup/strym/master/strym/dbc/" + (dbcfile.split('/')[-1])
+    print(cmd)
+    print("File Not Found -- did not run download.")
+    # os.system(cmd)
     # dbcfile = '/Users/mnice/Documents/GitHub/strym/strym/dbc/toyota_rav4_hybrid.dbc'
 
     dbc = initializeDBC_Cantools(dbcfile)
