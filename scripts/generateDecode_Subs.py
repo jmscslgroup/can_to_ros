@@ -1,4 +1,4 @@
-#Author: Mattehew Nice
+#Author: Matthew Nice
 
 import cantools
 import json
@@ -370,7 +370,9 @@ jsonfile, dbcfile = findDBC(vin_details)
 try:
     dbc = initializeDBC_Cantools(dbcfile)
 except FileNotFoundError:
-    dbcfile = '/Users/mnice/Documents/GitHub/strym/strym/dbc/toyota_rav4_hybrid.dbc'
+    os.system("wget -P ~/strym/strym/dbc https://raw.githubusercontent.com/jmscslgroup/strym/master/strym/dbc/%s",%(dbcfile.split('/')[-1]))
+    # dbcfile = '/Users/mnice/Documents/GitHub/strym/strym/dbc/toyota_rav4_hybrid.dbc'
+
     dbc = initializeDBC_Cantools(dbcfile)
 # Opening ROS JSON file
 f = open('./'+jsonfile)
