@@ -2,7 +2,7 @@
 
 import cantools
 import json
-
+import os
 
 def findDBC(vin_details):
     if vin_details['Make'] == 'TOYOTA':
@@ -27,7 +27,10 @@ def findDBC(vin_details):
                 # dbcfile = '/Users/mnice/Documents/GitHub/strym/strym/dbc/nissan_rogue_2021.dbc'
                 dbcfile = '/home/circles/strym/strym/dbc/nissan_rogue_2021.dbc'
                 # dbcfile = '/home/circles/strym/strym/dbc/nissan_rogue_experimental.dbc'
-    print('The DBC is set as %s'%(dbcfile))
+    try:
+        print('The DBC is set as %s'%(dbcfile))
+    except UnboundLocalError:
+        print('DBC File not found, check /etc/libpanda.d/vin_details.json is correct.')
     return jsonfile, dbcfile
 
 def initializeDBC_Cantools(fileName):
