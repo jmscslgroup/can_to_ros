@@ -1,0 +1,27 @@
+<!-- This file is based on nissan_interface.launch, written by Kathy who has zero to little experience in ROS. -->
+
+<launch>
+<!-- include information for the joystick, etc. args="$(env HOME)"  -->
+<arg name="description" default="_all"/>
+
+<!-- This interface is generic to each vehicle, and sends the raw data to ROS for decoding in can_to_ros -->
+<node pkg="can_to_ros" type="vehicle_interface" name="vehicle_interface" output="screen" />
+
+<!-- Publishes ROS topics that are to be used by subscribers of either recording or control -->
+<node pkg="can_to_ros" type="subs" name="subs" output="screen" />
+
+<!-- Records everything, with any description passed in to this launch file -->
+<node pkg="can_to_ros" type ="rosbag_record.sh" name="bashscript1" output="screen" args="$(arg description) true"/>
+
+<!-- Sends GPS and data information to the live viewer database at VU -->
+<node pkg="live_tracker" type="live_tracker.py" name="live_tracker" output="screen" />
+
+<!-- Records the configuration information for all ROS packages, and the default parameters used at startup -->
+<!-- Passing in 'true' to the script, in order that it records the params to /var/panda/.... --> 
+<node pkg="can_to_ros" type="saveparam.py" name="saveparam" output="screen" args="$(arg description) true"/>
+
+<!-- <node pkg="can_to_ros" type ="panda_csv_record.sh" name="bashscript2" output="screen"/> -->
+
+<include file="$(find can_to_ros)launch/safety_checks.launch" />
+
+</launch>
