@@ -8,7 +8,9 @@
 <node pkg="can_to_ros" type="vehicle_interface" name="vehicle_interface" output="screen" />
 
 <!-- Publishes ROS topics that are to be used by subscribers of either recording or control -->
-<node pkg="can_to_ros" type="subs" name="subs" output="screen" />
+<node pkg="can_to_ros" type="subs" name="subs" output="screen">
+    <remap from="/lead_dist" to="/lead_dist_869"/>	
+</node>
 
 <!-- Records everything, with any description passed in to this launch file -->
 <node pkg="can_to_ros" type ="rosbag_record.sh" name="bashscript1" output="screen" args="$(arg description) true"/>
@@ -23,5 +25,7 @@
 <!-- <node pkg="can_to_ros" type ="panda_csv_record.sh" name="bashscript2" output="screen"/> -->
 
 <include file="$(find can_to_ros)launch/safety_checks.launch" />
+
+<node pkg="can_to_ros" type="simple_mini_car_from_lead_distance" name="simple_mini_car_from_lead_distance" output="screen"/>
 
 </launch>
