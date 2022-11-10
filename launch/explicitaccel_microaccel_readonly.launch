@@ -31,7 +31,9 @@
 	<node pkg="can_to_ros" type ="rosbag_record.sh" name="bashscript2" output="screen" args="$(arg description) $(arg hwil)" /> 
 -->
 
-   <node pkg="explicitaccel_microaccel" type="explicitaccel_microaccel" name="explicitaccel_microaccel_node" output="screen"/>
+	<node pkg="explicitaccel_microaccel" type="explicitaccel_microaccel" name="explicitaccel_microaccel_node" output="screen">
+		<remap from="/lead_dist" to="/lead_dist_869"/>
+	</node>
 
 
 </launch>

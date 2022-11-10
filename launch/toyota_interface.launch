@@ -16,7 +16,9 @@
 <node pkg="can_to_ros" type ="rosbag_record.sh" name="bashscript1" output="screen" args="$(arg description) true"/>
 
 <!-- Sends GPS and data information to the live viewer database at VU -->
-<node pkg="live_tracker" type="live_tracker.py" name="live_tracker" output="screen" />
+<node pkg="live_tracker" type="live_tracker.py" name="live_tracker" output="screen">
+	<remap from="/lead_dist" to="/lead_dist_869"/>
+</node>
 
 <!-- Records the configuration information for all ROS packages, and the default parameters used at startup -->
 <!-- Passing in 'true' to the script, in order that it records the params to /var/panda/.... --> 
