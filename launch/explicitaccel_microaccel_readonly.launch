@@ -6,7 +6,7 @@
 	
 	<arg name="hwil" default="true"/>
 	<arg name="max_deaccel_lead" default="-4.5"/>
-	<arg name="use_target_speed" default="false"/>
+	<arg name="use_target_speed" default="true"/>
 	<arg name='readonly' default='true'/>
 
 	<param name="description" value="$(arg description)"/>
