@@ -24,6 +24,9 @@
     <include file="$(find can_to_ros)/launch/toyota_interface.launch">
 		<param name="description" value="$(arg description)"/>
 	</include>
+	<!--<include file="$(find can_to_ros)/launch/vehicle_interface.launch">
+		<param name="description" value="$(arg description)"/>
+	</include>-->
 
 <!--
 	<node pkg="can_to_ros" type="vehicle_interface_nissan" name="vehicle_interface_nissan" output="screen" />
@@ -33,7 +36,9 @@
 
 	<node pkg="explicitaccel_microaccel" type="explicitaccel_microaccel" name="explicitaccel_microaccel_node" output="screen">
 		<remap from="/lead_dist" to="/lead_dist_869"/>
+		<remap from="/target_speed" to="/sp/target_speed"/>
 	</node>
+	<node pkg="onnx2ros" type="publish-speed-plan.py" name="publish_speed_plan" output="screen" />
 
 
 </launch>

@@ -23,7 +23,7 @@ class CtrlCommands {
 //        command_pub = n.advertise<std_msgs::Float64>("commands", 1000);
 		command_pub = n.advertise<std_msgs::Float64>("car/cruise/accel_input", 1000);
     steer_pub = n.advertise<std_msgs::Float64>("car/cruise/steer_input",500);
-    sub_0 = n.subscribe("/timed_accel", 1000, &CtrlCommands::callback, this);
+//    sub_0 = n.subscribe("/timed_accel", 1000, &CtrlCommands::callback, this);
 //        sub_1 = n.subscribe("/cmd_accel", 1000, &CtrlCommands::callback, this);
 		sub_1 = n.subscribe("/cmd_accel_safe", 1000, &CtrlCommands::callback, this);
 

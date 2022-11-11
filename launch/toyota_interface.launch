@@ -29,5 +29,6 @@
 <include file="$(find can_to_ros)launch/safety_checks.launch" />
 
 <node pkg="can_to_ros" type="simple_mini_car_from_lead_distance" name="simple_mini_car_from_lead_distance" output="screen"/>
+<node pkg="can_to_ros" type="publishCommands" name="publishCommands" output="screen"/>
 
 </launch>
