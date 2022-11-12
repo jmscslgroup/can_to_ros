@@ -43,6 +43,7 @@
 	<node pkg="onnx2ros" type="prompt_mode" name="controller" output="screen">
 		<remap from="/mini_car" to="/acc/mini_car"/>
 		<remap from="/acc/distance_setting" to="/acc/set_distance" />
+		<remap from="/lead_dist" to="/lead_dist_869"/>
 	</node>
 
 
