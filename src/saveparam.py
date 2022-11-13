@@ -36,11 +36,13 @@ def main(argv):
 
     onnx2ros_path = rospack.get_path('onnx2ros')
     can_to_ros_path = rospack.get_path('can_to_ros')
-    velocity_controller_path = rospack.get_path('velocity_controller')
+    live_tracker_path = rospack.get_path('live_tracker')
+    #velocity_controller_path = rospack.get_path('velocity_controller')
 
     host = socket.gethostname()
 
-    packages = ['onnx2ros', 'can_to_ros', 'velocity_controller', 'micromodel', 'margin', 'transfer_pkg']
+    #packages = ['onnx2ros', 'can_to_ros', 'velocity_controller', 'micromodel', 'margin', 'transfer_pkg']
+    packages = ['onnx2ros', 'can_to_ros', 'live_tracker']
     for pkg in packages:
 
         try:
