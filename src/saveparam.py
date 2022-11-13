@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
 # Author: Rahul Bhadani
 # Copyright (c) Arizona Board of Regents
