@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
 #
 # Author: Rahul Bhadani
 # Copyright (c) Arizona Board of Regents
@@ -121,4 +121,3 @@ def main(argv):
 
 if __name__ == '__main__':
     main(sys.argv[1:])
-
