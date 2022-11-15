@@ -56,12 +56,21 @@
  2) /car/panda/gas_interceptor_detected - std_msgs/Bool - Reported by the Panda is their gas interceptor hardware is detected
  3) /car/panda/controls_allowed - std_msgs/Bool -  Reported by the comma.ai panda.  This is not event-based from the Panda, but is regularly checked at 2 Hz to reset the Panda's heartbeat
  4)	/car/libpanda/controls_allowed - std_msgs/Bool -  Reported by logic within libpanda.  This is event based from libpanda using CAN messages.  When no events occur, this regularly published at 1 Hz which can be used to assess libpanda's control command health
-
+ 
+Nissan Publisher:
+ 6) /car/libpanda/acc_button_wire_connected - std_msgs/Bool - Informs the integrity of the electrical connections of the vehicle, from the ACC button wire throught the ADAS CAN bus
+ 7) /car/libpanda/busy_sending_button_press - std_msgs/Bool - Can inform another service that button presses are currently being processed.
+ 
  Subscribers:
+ Toyota Subscribers:
  1) /car/cruise/accel_input - std_msgs/Float64 - This is for acceleration commands to be sent to the car's cruise controller (priorly known as /commands)
  2) /car/hud/mini_car_enable - std_msgs/Bool - When true, this will display a mini-vehicle on the car's HUD which cruise control is on and engaged
  3) /car/hud/cruise_cancel_request - std_msgs/Bool - When true  published, the cruise controller will disengage and notify the driver with an audible chime
 
+ Nissan Subscribers:
+ 1) /car/cruise/cmd_btn - std_msgs/UInt8 - A button command to be sent to Nissan's ACC.  See libpanda's enum NissanButton for values
+ 2) /car/libpanda/control_request - std_msgs/Bool - Send 1 to request controls.  If the Nissan's ACC is on and engaged, /car/libpanda/controls_allowed will become true.  Set to 0 to relinquish control, disarming the mattHat's relay
+ 
  */
 
 
@@ -108,7 +117,7 @@ public:
 	
 	
 	/*
-	 Nisaan ACC button subscribers:
+	 Nissan ACC button subscribers:
 	 */
 	void callbackAccButtonRequest(const std_msgs::UInt8::ConstPtr& msg)
 	{
@@ -121,6 +130,11 @@ public:
 		ROS_INFO("vehicle_interface Done pressing button:    %d: %s", (int)msg->data, nissanButtonToStr((Panda::NissanButton)msg->data));
 		msgBusyButton.data = false;
 		publisherBusySendingButtonPress.publish(msgBusyButton);
+	}
+	
+	void callbackControlRequest(const std_msgs::Bool::ConstPtr& msg)
+	{
+		nissanAccButtonHandler->requestControl(msg->data);
 	}
 
 	
@@ -139,6 +153,7 @@ public:
 		if (pandaController->getPandaHandler()->getVehicleManufacturer() == Panda::VEHICLE_MANUFACTURE_NISSAN) {
 			nissanAccButtonHandler = static_cast<Panda::NissanAccButtonController*>(pandaController);
 			subscribers[0] = n_->subscribe("/car/cruise/cmd_btn", 1000, &Control::callbackAccButtonRequest, this);
+			subscribers[1] = n_->subscribe("/car/libpanda/control_request", 1000, &Control::callbackControlRequest, this);
 			publisherBusySendingButtonPress = n_->advertise<std_msgs::Bool>("/car/libpanda/busy_sending_button_press", 1000);
 		} else {
 			toyotaHandler = static_cast<Panda::ToyotaHandler*>(pandaController);

@@ -26,7 +26,7 @@
 
 <!-- <node pkg="can_to_ros" type ="panda_csv_record.sh" name="bashscript2" output="screen"/> -->
 
-<include file="$(find can_to_ros)launch/safety_checks.launch" />
+<include file="$(find can_to_ros)launch/safety_checks_no_cut_in.launch" />
 
 <node pkg="can_to_ros" type="simple_mini_car_from_lead_distance" name="simple_mini_car_from_lead_distance" output="screen"/>
 <node pkg="can_to_ros" type="publishCommands" name="publishCommands" output="screen"/>

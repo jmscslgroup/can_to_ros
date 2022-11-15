@@ -1,0 +1,9 @@
+<launch>
+
+
+<node pkg="can_to_ros" type="cut_in_disengager" name="cut_in_disengager" output="screen" required="true">
+    <remap from="/lead_dist" to="/lead_dist_869"/>	
+</node>
+<node pkg="can_to_ros" type="cruise_start_safety_check" name="cruise_start_safety_check" output="screen" required="true" />
+
+</launch>
