@@ -62,7 +62,7 @@ typedef enum {
 } CommandState;
 
 
-#define PROCESS_RATE (20.0)	// Hz
+#define PROCESS_RATE (100.0)	// Hz
 
 #define BUTTON_PRESS_TIME (0.25)	// seconds. This represents the total time the button is held
 #define BUTTON_LONG_PRESS_TIME (0.1)	// seconds.  This does NOT represent held time, only the interval to check if it should still be held
