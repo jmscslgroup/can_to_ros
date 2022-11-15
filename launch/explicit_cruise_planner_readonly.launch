@@ -34,6 +34,9 @@
     <node pkg="can_to_ros" type ="rosbag_record.sh" name="bashscript2" output="screen" args="$(arg description) $(arg hwil)" />
 -->
 
+	<!-- load the speed planner -->
+	<node pkg="onnx2ros" type="publish-speed-plan.py" name="publish_speed_plan" output="screen" />
+
     <node pkg="explicit_cruise_planner" type="explicit_cruise_planner" name="explicit_cruise_planner_node" output="screen">
     </node>
 
