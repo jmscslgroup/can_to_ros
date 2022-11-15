@@ -126,8 +126,8 @@ private:
 	{
 		if( msg->data < 20 ) {
 			this->target_speed = 20;
-		} else if ( msg->data > 100 ) {
-			this->target_speed = 100;
+		} else if ( msg->data > 74 ) {
+			this->target_speed = 74;
 		} else {
 			this->target_speed = msg->data;
 		}
