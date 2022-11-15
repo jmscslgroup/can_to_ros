@@ -9,10 +9,8 @@
       <remap from="/car/libpanda/controls_allowed" to="/car/libpanda/controls_allowed_preliminary" />
 </node>
 
-<node pkg="can_to_ros" type="nissan_target_speed_to_acc_buttons" name="nissan_target_speed_to_acc_buttons" output="screen">
-      <!--<remap from="/car/libpanda/controls_allowed" to="/car/libpanda/controls_allowed_preliminary" /> -->
-</node>
->>>>>>> day_1_fixes
+<!-- Converts target gap and speed into button press commands to be read by vehicle_interface (Nissan specific) -->
+<node pkg="can_to_ros" type="nissan_target_speed_to_acc_buttons" name="nissan_target_speed_to_acc_buttons" output="screen" />
 
 <!-- Publishes ROS topics that are to be used by subscribers of either recording or control -->
 <node pkg="can_to_ros" type="subs" name="subs" output="screen" />
