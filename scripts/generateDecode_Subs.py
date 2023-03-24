@@ -27,6 +27,11 @@ def findDBC(vin_details):
                 # dbcfile = '/Users/mnice/Documents/GitHub/strym/strym/dbc/nissan_rogue_2021.dbc'
                 dbcfile = '/home/circles/strym/strym/dbc/nissan_rogue_2021.dbc'
                 # dbcfile = '/home/circles/strym/strym/dbc/nissan_rogue_experimental.dbc'
+
+    if vin_details['Make'] == 'HONDA':
+        if vin_details['Model'] == 'Pilot':
+            jsonfile = 'honda_pilot.json'
+            dbcfile = '/home/circles/strym/strym/dbc/honda_pilot_2017.dbc'
     try:
         print('The DBC is set as %s. The Json is set as %s'%(dbcfile,jsonfile))
     except UnboundLocalError:
