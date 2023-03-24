@@ -99,7 +99,7 @@ honda_pilot={
          506:{'acc/cruise_state_int':[['std_msgs::Int16'],['CRUISE_STATES']]},
          780:{'acc/set_speed':[['std_msgs::Int16'],['CRUISE_SPEED']]},
          419:{'gear':[['std_msgs::String'],['GEAR_SHIFTER']]},
-         422:{'acc/acc_btns':[['std_msgs::String'],['GEAR_SHIFTER']]},
+#         422:{'acc/acc_btns':[['std_msgs::String'],['GEAR_SHIFTER']]},
          490:{'accel':[['std_msgs::Float64'],['LONG_ACCEL']]},
          927:{'lead_dist':[['std_msgs::Float64'],['LEAD_DISTANCE']]}
 
