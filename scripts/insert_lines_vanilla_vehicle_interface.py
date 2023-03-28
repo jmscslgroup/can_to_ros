@@ -1,4 +1,4 @@
-#Author: Mattehew Nice 
+#Author: Matthew Nice 
 
 import json
 import cantools
@@ -33,6 +33,10 @@ def findDBC(vin_details):
                 dbcfile = '/home/circles/strym/strym/dbc/nissan_rogue_2021.dbc'
                 # dbcfile = '/home/circles/strym/strym/dbc/nissan_rogue_experimental.dbc'
     # print('the DBC is set as %s'%(dbcfile))
+    if vin_details['Make'] == 'HONDA':
+        jsonfile='honda_pilot.json'
+        dbcfile = '/home/circle/strym/strym/dbc/honda_pilot_2017.dbc'
+
     return jsonfile, dbcfile
 
 def initializeDBC_Cantools(fileName):
