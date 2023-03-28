@@ -40,7 +40,7 @@ toyota_rav4 = {37:{'steering_angle':[['std_msgs::Float64'],['STEER_ANGLE']]},
          552:{'accel':[['std_msgs::Float64'],['ACCEL_X']]}
 
 }
-#honda list
+
 #nissan list
 # nissan_rogue = {139:{'steering_angle':[['std_msgs::Float64'],['STEER_ANGLE']]},
 #          303:{'vel':[['std_msgs::Float64'],['SPEED']]},
@@ -87,45 +87,27 @@ nissan_rogue = {139:{'steering_angle':[['std_msgs::Float64'],['STEER_ANGLE']]},
          'acc/state_signal':[['std_msgs::Float64'],['STATE_SIGNAL']],
          'acc/set_distance':[['std_msgs::Int16'],['SET_DISTANCE']],
          'hud_states':[['std_msgs::Float64'],['HUD_STATES']],
-         'acc/mini_car':[['std_msgs::Int16'],['MINICAR']]}#,
-         # 'system_on':[['std_msgs::Float64'],['SYSTEM_ON']]}
-         # 'hud_state1':[['std_msgs::Float64'],['HUD_STATE1']],
+         'acc/mini_car':[['std_msgs::Int16'],['MINICAR']]}#,,
 
-         # 951: {"front_radar_track1": [["geometry_msgs::PointStamped"], ["SIG1_LEAD"]],
-         # "front_radar_track2": [["geometry_msgs::PointStamped"], ["SIG2_VEL"]],
-         # "front_radar_track3": [["geometry_msgs::PointStamped"], ["SIG3_ANGLEH"]],
-         # "front_radar_track4": [["geometry_msgs::PointStamped"], ["SIG4_ANGLEV"]],
-         # },
-         # 954: {"front_radar_track1": [["geometry_msgs::PointStamped"], ["SIG1_LEAD"]],
-         # "front_radar_track2": [["geometry_msgs::PointStamped"], ["SIG2_VEL"]],
-         # "front_radar_track3": [["geometry_msgs::PointStamped"], ["SIG3_ANGLEH"]],
-         # "front_radar_track4": [["geometry_msgs::PointStamped"], ["SIG4_ANGLEV"]],
-         # },
-         # 958: {"front_radar_track1": [["geometry_msgs::PointStamped"], ["SIG1_LEAD"]],
-         # "front_radar_track2": [["geometry_msgs::PointStamped"], ["SIG2_VEL"]],
-         # "front_radar_track3": [["geometry_msgs::PointStamped"], ["SIG3_ANGLEH"]],
-         # "front_radar_track4": [["geometry_msgs::PointStamped"], ["SIG4_ANGLEV"]],
-         # }
+
          } #others are 951,954,958
-# nissan_rogue = {
-# 	 427: {"bytes0": [["geometry_msgs::PointStamped"], ["BYTES0"]],
-#         "bytes1": [["geometry_msgs::PointStamped"], ["BYTES4"]],
-#         "bytes2": [["geometry_msgs::PointStamped"], ["BYTES8"]],
-#         "bytes3": [["geometry_msgs::PointStamped"], ["BYTES12"]],
-#         "bytes4": [["geometry_msgs::PointStamped"], ["BYTES16"]],
-#         "bytes5": [["geometry_msgs::PointStamped"], ["BYTES20"]],
-#         "bytes6": [["geometry_msgs::PointStamped"], ["BYTES24"]],
-#         "bytes7": [["geometry_msgs::PointStamped"], ["BYTES28"]],
-#         "bytes8": [["geometry_msgs::PointStamped"], ["BYTES32"]],
-#         "bytes9": [["geometry_msgs::PointStamped"], ["BYTES36"]],
-#         "bytes10": [["geometry_msgs::PointStamped"], ["BYTES40"]],
-#         "bytes11": [["geometry_msgs::PointStamped"], ["BYTES44"]]
-#          }
-#     }
 
-pubslist = [toyota_rav4, nissan_rogue] #ordered list of dicts to become make/model JSONs
+#honda list
+honda_pilot={
+         342:{'steer_angle':[['std_msgs::Float64'],['STEER_ANGLE']]},
+         344:{'vel':[['std_msgs::Float64'],['XMISSION_SPEED']]},
+         506:{'acc/cruise_state_int':[['std_msgs::Int16'],['CRUISE_STATES']]},
+         780:{'acc/set_speed':[['std_msgs::Int16'],['CRUISE_SPEED']]},
+         419:{'gear':[['std_msgs::String'],['GEAR_SHIFTER']]},
+#         422:{'acc/acc_btns':[['std_msgs::String'],['GEAR_SHIFTER']]},
+         490:{'accel':[['std_msgs::Float64'],['LONG_ACCEL']]},
+         927:{'lead_dist':[['std_msgs::Float64'],['LEAD_DISTANCE']]}
 
-dest_files = ['./toyota_rav4.json','./nissan_rogue.json'] #make into ordered list for multiple vehicles
+         }
+
+pubslist = [toyota_rav4, nissan_rogue, honda_pilot] #ordered list of dicts to become make/model JSONs
+
+dest_files = ['./toyota_rav4.json','./nissan_rogue.json', './honda_pilot.json'] #make into ordered list for multiple vehicles
 
 count = 0
 for dest_file in dest_files:
