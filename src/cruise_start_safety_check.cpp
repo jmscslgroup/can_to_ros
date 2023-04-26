@@ -1,5 +1,6 @@
 /*
  Author: Matt Bunting
+ Hack Edits: Matt Nice
  Copyright (c) 2021 Arizona Board of Regents
  All rights reserved.
 
@@ -54,7 +55,8 @@
 #include "std_msgs/Bool.h"
 #include "std_msgs/Float64.h"
 
-#define CMD_ACCEL_MIN (-0.5)
+//#define CMD_ACCEL_MIN (-0.5) //this is the original more strict bound
+#define CMD_ACCEL_MIN (-1.0) //HACK to make the engagement easier
 #define CMD_ACCEL_MAX (2.0)	// value > 1.5 means unbounded
 
 class CruiseStartSafetyCheck {
@@ -94,8 +96,8 @@ public:
 			
 			// Check if the request state is valid:
 			if (controlsAllowed &&                      // Rising edge
-				commandedAccelerationWithinBounds &&    // cmd_accel checks out
-				leadVehicleVisible ) {                  // Lead vehicle visible
+				commandedAccelerationWithinBounds){//HACKHACKHACK &&    // cmd_accel checks out
+			//HACKHACKHACK	leadVehicleVisible ) {                  // Lead vehicle visible
 				
 				// If all the above checks out, no need to send a cancel request
 				cruiseCancelMessage.data = false;
