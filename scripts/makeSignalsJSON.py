@@ -47,7 +47,7 @@ toyota_rav4 = {37:{'steering_angle':[['std_msgs::Float64'],['STEER_ANGLE']]},
          740:{'steer_request':[['std_msgs::Int16'],['STEER_REQUEST']],
          'steer_torque_cmd':[['std_msgs::Float64'],['STEER_TORQUE_CMD']]
          },
-         608:['steer_torque_driver':[['std_msgs::Float64'],['STEER_TORQUE_DRIVER']],
+         608:{'steer_torque_driver':[['std_msgs::Float64'],['STEER_TORQUE_DRIVER']],
          'steer_torque_eps':[['std_msgs::Float64'],['STEER_TORQUE_EPS']],
          'steer_override':[['std_msgs::Int16'],['STEER_OVERRIDE']]
          }
