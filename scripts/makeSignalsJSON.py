@@ -4,7 +4,12 @@ import json
 #toyota_rav4 list of ROS pubs
 toyota_rav4 = {37:{'steering_angle':[['std_msgs::Float64'],['STEER_ANGLE']]},
          180:{'vel':[['std_msgs::Float64'],['SPEED']]},
-         869:{'lead_dist': [['std_msgs::Float64'],['LEAD_DISTANCE']] ,'rel_vel':[['std_msgs::Float64'],['REL_SPEED']]},
+         869:{'lead_dist': [['std_msgs::Float64'],['LEAD_DISTANCE']] ,
+         'rel_vel':[['std_msgs::Float64'],['REL_SPEED']],
+         "acc/set_btn":[["std_msgs::Int16"],["SET_BTN"]],
+         "acc/res_btn":[["std_msgs::Int16"],["RES_BTN"]],
+         "acc/cancel_btn":[["std_msgs::Int16"],["CANCEL_BTN"]]
+         },
          # 384:{'track_a0':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
          # 385:{'track_a1':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
          # 386:{'track_a2':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
@@ -37,7 +42,11 @@ toyota_rav4 = {37:{'steering_angle':[['std_msgs::Float64'],['STEER_ANGLE']]},
          ,'acc/cruise_state_int':[['std_msgs::Int16'],['CRUISE_CONTROL_STATE']]
          ,'acc/set_speed2':[['std_msgs::Float64'],['UI_SET_SPEED']]
          },
-         552:{'accel':[['std_msgs::Float64'],['ACCEL_X']]}
+         552:{'accel':[['std_msgs::Float64'],['ACCEL_X']]
+         },
+         740:{'steer_request':[['std_msgs::Int16'],['STEER_REQUEST']],
+         'steer_torque_cmd':[['std_msgs::Float64'],['STEER_TORQUE_CMD']]
+         }
 
 }
 
