@@ -37,7 +37,7 @@ toyota_rav4 = {37:{'steering_angle':[['std_msgs::Float64'],['STEER_ANGLE']]},
          'acc/acc_malfunction':[['std_msgs::Int16'],['ACC_MALFUNCTION']]
          },
          921:{'cruise_state':[['geometry_msgs::Point'],['MAIN_ON','UI_SET_SPEED','CRUISE_CONTROL_STATE']]
-         ,'acc/set_distance':[['std_msgs::Int16'],['DISTANCE_LINES']]
+         ,'acc/set_distance':[['std_msgs::Int16'],['DISTANCE_LINES']]#this is the display, 0 is not showing
          ,'acc/cruise_state':[['std_msgs::String'],['CRUISE_CONTROL_STATE']]
          ,'acc/cruise_state_int':[['std_msgs::Int16'],['CRUISE_CONTROL_STATE']]
          ,'acc/set_speed2':[['std_msgs::Float64'],['UI_SET_SPEED']]
@@ -46,6 +46,10 @@ toyota_rav4 = {37:{'steering_angle':[['std_msgs::Float64'],['STEER_ANGLE']]},
          },
          740:{'steer_request':[['std_msgs::Int16'],['STEER_REQUEST']],
          'steer_torque_cmd':[['std_msgs::Float64'],['STEER_TORQUE_CMD']]
+         },
+         608:['steer_torque_driver':[['std_msgs::Float64'],['STEER_TORQUE_DRIVER']],
+         'steer_torque_eps':[['std_msgs::Float64'],['STEER_TORQUE_EPS']],
+         'steer_override':[['std_msgs::Int16'],['STEER_OVERRIDE']]
          }
 
 }
