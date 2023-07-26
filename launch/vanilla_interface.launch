@@ -15,7 +15,7 @@
 <node pkg="live_tracker" type="live_tracker.py" name="live_tracker" output="screen" />
 
 <!-- Records the configuration information for all ROS packages, and the default parameters used at startup -->
-<!-- Passing in 'true' to the script, in order that it records the params to /var/panda/.... --> 
+<!-- Passing in 'true' to the script, in order that it records the params to /var/panda/.... -->
 <node pkg="can_to_ros" type="saveparam.py" name="saveparam" output="screen" args="$(arg description) true"/>
 
 <!-- <node pkg="can_to_ros" type ="panda_csv_record.sh" name="bashscript2" output="screen"/> -->
