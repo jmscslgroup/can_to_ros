@@ -169,10 +169,22 @@ public:
 };
 
 class ExampleSteeringLimitListener: public Panda::SteeringLimiterListener {
+
 private:
+    ros::NodeHandle* nodeHandle;
+    ros::Publisher publishSteeringLimit;
     void steeringLimitNotification( Panda::STEERING_STATE value) {
-        std::cout << "New steering limit notification: " << (int)value << std::endl;
+        // std::cout << "New steering limit notification: " << (int)value << std::endl;
+    std_msgs::Int16 msgSteerLimit;
+    msgSteerLimit.data = (int)value;
+    publishSteeringLimit.publish(msgSteerLimit);
     }
+public:
+  	ExampleSteeringLimitListener(ros::NodeHandle* nodeHandle) {
+  	this->nodeHandle = nodeHandle;
+    publishSteeringLimit = nodeHandle->advertise<std_msgs::Int16>("/car/libpanda/steer_limiter_state", 1000);
+
+  }
 };
 
 //class PandaStatusPublisher : public Panda::ToyotaListener {
@@ -587,7 +599,7 @@ int main(int argc, char **argv) {
 	pandaHandler.getCan().saveToCsvFile(canDataFilename.c_str());
 	pandaHandler.getGps().saveToCsvFile(gpsDataFilename.c_str());
 
-  ExampleSteeringLimitListener myExampleSteeringLimitListener;    // This is only added if toyota is confrimed (below, next if statemenr)
+  ExampleSteeringLimitListener myExampleSteeringLimitListener(&nh);    // This is only added if toyota is confrimed (below, next if statemenr)
 
   if (pandaHandler.getVehicleManufacturer() == Panda::VEHICLE_MANUFACTURE_TOYOTA) {
     // This is nasty:
