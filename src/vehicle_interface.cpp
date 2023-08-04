@@ -56,11 +56,11 @@
  2) /car/panda/gas_interceptor_detected - std_msgs/Bool - Reported by the Panda is their gas interceptor hardware is detected
  3) /car/panda/controls_allowed - std_msgs/Bool -  Reported by the comma.ai panda.  This is not event-based from the Panda, but is regularly checked at 2 Hz to reset the Panda's heartbeat
  4)	/car/libpanda/controls_allowed - std_msgs/Bool -  Reported by logic within libpanda.  This is event based from libpanda using CAN messages.  When no events occur, this regularly published at 1 Hz which can be used to assess libpanda's control command health
- 
+
 Nissan Publisher:
  6) /car/libpanda/acc_button_wire_connected - std_msgs/Bool - Informs the integrity of the electrical connections of the vehicle, from the ACC button wire throught the ADAS CAN bus
  7) /car/libpanda/busy_sending_button_press - std_msgs/Bool - Can inform another service that button presses are currently being processed.
- 
+
  Subscribers:
  Toyota Subscribers:
  1) /car/cruise/accel_input - std_msgs/Float64 - This is for acceleration commands to be sent to the car's cruise controller (priorly known as /commands)
@@ -71,7 +71,7 @@ Nissan Publisher:
  Nissan Subscribers:
  1) /car/cruise/cmd_btn - std_msgs/UInt8 - A button command to be sent to Nissan's ACC.  See libpanda's enum NissanButton for values
  2) /car/libpanda/control_request - std_msgs/Bool - Send 1 to request controls.  If the Nissan's ACC is on and engaged, /car/libpanda/controls_allowed will become true.  Set to 0 to relinquish control, disarming the mattHat's relay
- 
+
  */
 
 
@@ -80,7 +80,7 @@ private:
 	ros::NodeHandle* n_;
 	ros::Subscriber subscribers[4];
 	ros::Publisher publisherBusySendingButtonPress;
-	
+
 	std_msgs::Bool msgBusyButton;
 //	ros::Subscriber sub_;
 //	ros::Subscriber subscriberMiniCarHud;
@@ -88,13 +88,13 @@ private:
 	// Initialize panda and toyota handlers
 //	Panda::ToyotaHandler* toyotaHandler;
 	Panda::Controller* pandaController;
-	
+
 	// These are dynamically populate based on VIN reading:
 	Panda::ToyotaHandler* toyotaHandler;
 	Panda::NissanAccButtonController* nissanAccButtonHandler;
 
 public:
-	
+
 	/*
 	 Toyota subscribers:
 	 */
@@ -119,8 +119,8 @@ public:
 	{
 		toyotaHandler->setHudCruiseCancelRequest(msg->data);
 	}
-	
-	
+
+
 	/*
 	 Nissan ACC button subscribers:
 	 */
@@ -129,25 +129,25 @@ public:
 		msgBusyButton.data = true;
 		publisherBusySendingButtonPress.publish(msgBusyButton);
 		ROS_INFO("vehicle_interface Received button request: %d: %s", (int)msg->data, nissanButtonToStr((Panda::NissanButton)msg->data));
-		
+
 		nissanAccButtonHandler->sendButton((Panda::NissanButton)msg->data);
-		
+
 		ROS_INFO("vehicle_interface Done pressing button:    %d: %s", (int)msg->data, nissanButtonToStr((Panda::NissanButton)msg->data));
 		msgBusyButton.data = false;
 		publisherBusySendingButtonPress.publish(msgBusyButton);
 	}
-	
+
 	void callbackControlRequest(const std_msgs::Bool::ConstPtr& msg)
 	{
 		nissanAccButtonHandler->requestControl(msg->data);
 	}
 
-	
-	
+
+
 	//Control(Panda::ToyotaHandler* toyotaHandler, ros::NodeHandle* nodeHandle) {
 	Control(Panda::Controller* pandaController, ros::NodeHandle* nodeHandle) {
 		n_ = nodeHandle;
-		
+
 		nissanAccButtonHandler = NULL;
 		toyotaHandler = NULL;
 
@@ -174,10 +174,29 @@ public:
 	}
 };
 
+class ExampleSteeringLimitListener: public Panda::SteeringLimiterListener {
+
+private:
+    ros::NodeHandle* nodeHandle;
+    ros::Publisher publishSteeringLimit;
+    void steeringLimitNotification( Panda::STEERING_STATE value) {
+        // std::cout << "New steering limit notification: " << (int)value << std::endl;
+    std_msgs::UInt8 msgSteerLimit;
+    msgSteerLimit.data = (int)value;
+    publishSteeringLimit.publish(msgSteerLimit);
+    }
+public:
+  	ExampleSteeringLimitListener(ros::NodeHandle* nodeHandle) {
+  	this->nodeHandle = nodeHandle;
+    publishSteeringLimit = nodeHandle->advertise<std_msgs::UInt8>("/car/libpanda/steer_limiter_state", 1000);
+
+  }
+};
+
 //class PandaStatusPublisher : public Panda::ToyotaListener {
 class PandaStatusPublisher : public Panda::ControllerListener {
 	ros::NodeHandle* nodeHandle;
-	
+
 	ros::Publisher publisherLibpandaControlsEnabled;
 	ros::Publisher* publisherLibpandaAccButtonWireGood;
 
@@ -208,15 +227,15 @@ class PandaStatusPublisher : public Panda::ControllerListener {
 		msgControlsEnabled.data = controller->getControlsAllowed();
 
 		publisherLibpandaControlsEnabled.publish( msgControlsEnabled );
-		
+
 		if(controller->getPandaHandler()->getVehicleManufacturer() == Panda::VEHICLE_MANUFACTURE_NISSAN) {
 			if(publisherLibpandaAccButtonWireGood == NULL) {
 				publisherLibpandaAccButtonWireGood = new ros::Publisher;
 				*publisherLibpandaAccButtonWireGood = nodeHandle->advertise<std_msgs::Bool>("/car/libpanda/acc_button_wire_connected", 1000);
 			}
-			
+
 			Panda::NissanAccButtonController* nissanAccButtonHandler = static_cast<Panda::NissanAccButtonController*>(controller);
-			
+
 			std_msgs::Bool msgAccButtonWireConnected;
 			msgAccButtonWireConnected.data = nissanAccButtonHandler->isHardwareConnectionGood();
 			publisherLibpandaAccButtonWireGood->publish( msgAccButtonWireConnected );
@@ -237,14 +256,14 @@ class PandaStatusPublisher : public Panda::ControllerListener {
 public:
 	PandaStatusPublisher(ros::NodeHandle* nodeHandle) {
 		this->nodeHandle = nodeHandle;
-		
+
 		publisherLibpandaControlsEnabled = nodeHandle->advertise<std_msgs::Bool>("/car/libpanda/controls_allowed", 1000);
 		publisherLibpandaAccButtonWireGood = NULL;
 
 		publisherPandaControlsEnabled = nodeHandle->advertise<std_msgs::Bool>("/car/panda/controls_allowed", 1000);
 		publisherPandaGasInterceptorDetected = nodeHandle->advertise<std_msgs::Bool>("/car/panda/gas_interceptor_detected", 1000);
 	}
-	
+
 	~PandaStatusPublisher() {
 		if(publisherLibpandaAccButtonWireGood) {
 			delete publisherLibpandaAccButtonWireGood;
@@ -265,11 +284,11 @@ private:
 
 //	Panda::ToyotaHandler* toyotaHandler;
 	Panda::Controller* pandaController;
-	
-	
+
+
 	char messageString[1000];
 //	char messageTofile[1000];
-	
+
 	void publishCanMessage( Panda::CanFrame* canData ) {
 		//			sprintf( messageString, "%d.%06d ", (unsigned int)0, (int)0);
 		//			sprintf( messageString,"%s%d %d ", messageString, (int)canData->bus, canData->messageID);
@@ -278,18 +297,18 @@ private:
 			sprintf( messageString, "%s%02x", messageString, canData->data[i]);
 		}
 		sprintf( messageString, "%s %d", messageString, canData->dataLength);
-		
+
 		std_msgs::String msgs;
 		msgs.data = messageString;
-		
+
 		pub_.publish(msgs);
 	}
 
 	void newDataNotification( Panda::CanFrame* canData ) {
-		
+
 		if( pandaController->getPandaHandler()->getVehicleManufacturer() == Panda::VEHICLE_MANUFACTURE_TOYOTA) {
 			if ( // Toyota:
-				
+
 				//this is where the msgs to be published start
 //				canData->messageID == 139 || canData->messageID == 37 || canData->messageID== 1570
 //				|| canData->messageID== 869 || (canData->messageID>= 384 && canData->messageID<=399 )
@@ -319,13 +338,13 @@ private:
 				||(canData->messageID==921&&canData->dataLength==8)
 				||(canData->messageID==552&&canData->dataLength==4)
 				//this is where the msgs to be published end
-				
+
 				) {
 					publishCanMessage(canData);
 				}
 		} else {
 			if ( // Nissan:
-				
+
 				//this is where the msgs to be published start
 				(canData->messageID==139&&canData->dataLength==48)
 				||(canData->messageID==140&&canData->dataLength==48)
@@ -334,13 +353,13 @@ private:
 				||(canData->messageID==1119&&canData->dataLength==20)
 				||(canData->messageID==1487&&canData->dataLength==48)
 				//this is where the msgs to be published end
-				
+
 				) {
 					publishCanMessage(canData);
 				}
-			
+
 		}
-		
+
 	}
 
 public:
@@ -419,13 +438,13 @@ private:
 	ros::Publisher publisher;
 	ros::Rate* publishRate;
 	std_msgs::Bool msgGpsActive;
-	
+
 	void doAction() {
 		msgGpsActive.data = true;
 		publisher.publish( msgGpsActive );
-		
+
 //		ROS_INFO("vehicle_interface Publishing true to /car/panda/gps_active");
-		
+
 		publishRate->sleep();	// 1Hz
 	}
 public:
@@ -435,7 +454,7 @@ public:
 		publishRate = new ros::Rate(1.0);
 		this->start();
 	}
-	
+
 	~PublishGpsActive() {
 		delete publishRate;
 	}
@@ -473,23 +492,23 @@ int main(int argc, char **argv) {
 	pandaHandler.addGpsObserver(publishGpsTracker);
 
 //	Panda::ToyotaHandler toyotaHandler(&pandaHandler);
-	
+
 
 	ROS_INFO("Initializing PandaHandler...");
 	pandaHandler.initialize();
-	
+
 	ROS_INFO("Initializing pandaController from factory...");
 	Panda::ControllerClient* pandaController = new Panda::ControllerClient(pandaHandler);
-	
-	
-	
+
+
+
 	if(pandaController->getController() == NULL) {
 		ROS_ERROR("No VIN discovered, unable to build controller handler");
-		
+
 		// Delete the controller and kill the process, this cannot continue
 //		delete pandaController;
 //		exit(EXIT_FAILURE);
-		
+
 		// We can for set the VIN to continue with the following code, but best to just fail everything since somethin aint right:
 		ROS_ERROR("Force setting the VIN to 5N1000000P0000000");
 		pandaHandler.forceSetVin((const unsigned char*)"5N1000000P0000000");	// Hard coded VIN setting
@@ -546,7 +565,7 @@ int main(int argc, char **argv) {
 	}
 	} else {
 		ROS_ERROR("No avialable GPS! Continuting vehicle_interface without setting system time!");
-		
+
 	}
 
 	if(mSetSystemTimeObserver.hasTimeBeenSet()) {
@@ -586,6 +605,16 @@ int main(int argc, char **argv) {
 	pandaHandler.getCan().saveToCsvFile(canDataFilename.c_str());
 	pandaHandler.getGps().saveToCsvFile(gpsDataFilename.c_str());
 
+  ExampleSteeringLimitListener myExampleSteeringLimitListener(&nh);    // This is only added if toyota is confrimed (below, next if statemenr)
+
+  if (pandaHandler.getVehicleManufacturer() == Panda::VEHICLE_MANUFACTURE_TOYOTA) {
+    // This is nasty:
+    Panda::ToyotaHandler* toyotaHandler = static_cast<Panda::ToyotaHandler*>(pandaController->getController());
+    pandaHandler.addCanObserver(toyotaHandler->mToyotaSteeringTorqueLimiter);
+
+    toyotaHandler->addSteeringTorqueLimiterListener(&myExampleSteeringLimitListener);
+
+  }
 //    ros::spin();
 
 //	ros::Publisher publisherGpsActive = nh.advertise<std_msgs::Bool>("/car/panda/gps_active", 1000);
