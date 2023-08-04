@@ -66,6 +66,7 @@ Nissan Publisher:
  1) /car/cruise/accel_input - std_msgs/Float64 - This is for acceleration commands to be sent to the car's cruise controller (priorly known as /commands)
  2) /car/hud/mini_car_enable - std_msgs/Bool - When true, this will display a mini-vehicle on the car's HUD which cruise control is on and engaged
  3) /car/hud/cruise_cancel_request - std_msgs/Bool - When true  published, the cruise controller will disengage and notify the driver with an audible chime
+ 4) /car/steer/tq - std_msgs/FLoat64 - This is for steering torque commands to be sent to the vehicle.
 
  Nissan Subscribers:
  1) /car/cruise/cmd_btn - std_msgs/UInt8 - A button command to be sent to Nissan's ACC.  See libpanda's enum NissanButton for values
@@ -77,7 +78,7 @@ Nissan Publisher:
 class Control {
 private:
 	ros::NodeHandle* n_;
-	ros::Subscriber subscribers[3];
+	ros::Subscriber subscribers[4];
 	ros::Publisher publisherBusySendingButtonPress;
 	
 	std_msgs::Bool msgBusyButton;
@@ -101,7 +102,11 @@ public:
 	{
 		// use these functions to set the acceleration and steeting Tourque
 		toyotaHandler->setAcceleration(msg->data);
-		toyotaHandler->setSteerTorque(0.0);  // doesnt work yet
+		//toyotaHandler->setSteerTorque(0.0);  // doesnt work yet
+	}
+	void callbackSteerTq(const std_msgs::Float64::ConstPtr& msg)
+	{
+		toyotaHandler->setSteerTorque(msg->data);
 	}
 
 	void callbackMiniCar(const std_msgs::Bool::ConstPtr& msg)
@@ -160,6 +165,7 @@ public:
 			subscribers[0] = n_->subscribe("/car/cruise/accel_input", 1000, &Control::callbackAccelInput, this);
 			subscribers[1] = n_->subscribe("/car/hud/mini_car_enable", 1000, &Control::callbackMiniCar, this);
 			subscribers[2] = n_->subscribe("/car/hud/cruise_cancel_request", 1000, &Control::callbackCruiseCancel, this);
+			subscribers[3] = n_->subscribe("/car/steer/tq", 1000, &Control::callbackSteerTq, this);
 		}
 	}
 
