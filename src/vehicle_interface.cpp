@@ -189,6 +189,11 @@ public:
   	ExampleSteeringLimitListener(ros::NodeHandle* nodeHandle) {
   	this->nodeHandle = nodeHandle;
     publishSteeringLimit = nodeHandle->advertise<std_msgs::UInt8>("/car/libpanda/steer_limiter_state", 1000);
+        
+    // Send inital value
+    std_msgs::UInt8 msgSteerLimit;
+    msgSteerLimit.data = (int)Panda::STEERING_STATE_OK;
+    publishSteeringLimit.publish(msgSteerLimit);
 
   }
 };
