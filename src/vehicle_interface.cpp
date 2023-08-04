@@ -175,14 +175,14 @@ private:
     ros::Publisher publishSteeringLimit;
     void steeringLimitNotification( Panda::STEERING_STATE value) {
         // std::cout << "New steering limit notification: " << (int)value << std::endl;
-    std_msgs::Int16 msgSteerLimit;
+    std_msgs::UInt8 msgSteerLimit;
     msgSteerLimit.data = (int)value;
     publishSteeringLimit.publish(msgSteerLimit);
     }
 public:
   	ExampleSteeringLimitListener(ros::NodeHandle* nodeHandle) {
   	this->nodeHandle = nodeHandle;
-    publishSteeringLimit = nodeHandle->advertise<std_msgs::Int16>("/car/libpanda/steer_limiter_state", 1000);
+    publishSteeringLimit = nodeHandle->advertise<std_msgs::UInt8>("/car/libpanda/steer_limiter_state", 1000);
 
   }
 };
