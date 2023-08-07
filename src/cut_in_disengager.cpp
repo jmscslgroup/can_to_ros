@@ -29,7 +29,7 @@
   - The controller commands a deceleration of less than a minimum
  
  Publishers:
- 1) /cmd_accel_safe -- std_msgs/Float64 - The topic /cmd_accel is passed through to this topic if this node does not think a disengage is required
+ 1) /car/cruise/accel_input -- std_msgs/Float64 - The topic /cmd_accel is passed through to this topic if this node does not think a disengage is required
  2) /car/hud/cruise_cancel_request - std_msgs/Bool - This node will publish a true to this topic during a cut in, and a false after ready to allow re-engagements
  
  Subscribers:
@@ -154,7 +154,7 @@ public:
 		lastCancelRequest = false;
 		cancelRequestDelayCounter = 0;
 		
-		publisherCommandAccelerationSafe = nodeHandle->advertise<std_msgs::Float64>("/cmd_accel_safe", 1000);
+		publisherCommandAccelerationSafe = nodeHandle->advertise<std_msgs::Float64>("/car/cruise/accel_input", 1000);
 		publisherCruiseCancelRequest = nodeHandle->advertise<std_msgs::Bool>("/car/hud/cruise_cancel_request", 1000);
 		
 		subscriberLeadDistance = nodeHandle->subscribe("/lead_dist_869", 1000, &Disengager::callbackLeadDistance, this);
