@@ -37,7 +37,7 @@
 	<node pkg="margin" type="margin_node" name="margin_node" output="screen" if="$(arg use_margin)">
 	</node>	
  
-	<node pkg="setpointreader" type="setpointreader_node" name="setpointreader_node" output="screen" required="true" >
+	<node pkg="setpointreader" type="setpointreader" name="setpointreader" output="screen" required="true" >
 		<remap from="/v_ref" to="/cmd_vel"/>
 	</node>
 	
