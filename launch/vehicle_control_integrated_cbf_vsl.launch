@@ -29,7 +29,7 @@
 </include>
 
 <!-- Sends GPS and data information to the live viewer database at VU -->
-<node pkg="live_tracker" type="live_tracker.py" name="live_tracker" output="screen" />
+<!-- <node pkg="live_tracker" type="live_tracker.py" name="live_tracker" output="screen" /> -->
 
 <!-- ramp from mux to velocity_controller (PID) -->
 <node pkg="can_to_ros" type="ramp" name="ramp" output="screen">
