@@ -295,6 +295,9 @@ target_link_libraries(cruise_start_safety_check ${catkin_LIBRARIES})
 if(DEFINED LIBPANDA_FOUND)
 	add_executable(cut_in_disengager src/cut_in_disengager.cpp)
 	target_link_libraries(cut_in_disengager ${catkin_LIBRARIES} libpandac.so)
+
+	add_executable(ramp src/ramp.cpp)
+	target_link_libraries(ramp ${catkin_LIBRARIES} libpandac.so)
 endif()
 
 add_executable(cbf_smoother src/cbf_smoother.cpp)
