@@ -1,0 +1,50 @@
+<launch>
+<arg name="vsl_hwil_test" value="true"/>
+<!-- include information for the joystick, etc. args="$(env HOME)"  -->
+<node pkg="can_to_ros" type="vehicle_interface" name="vehicle_interface" output="screen" respawn="true" respawn_delay="2" />
+
+<!-- The following two packages are very old, and effectively check that nodes exist otherwise constant 0s are published to /car/cruise/accel.  This should NOT happen, and the receiving node vehicle_interface should heartbeat check the topic and produce its own failure.
+<node pkg="can_to_ros" type="publishCommands" name="publishCommands" output="screen" required="true" />
+<node pkg="can_to_ros" type="node_status.py" name="node_status" output="screen" required="true" />
+-->
+
+<node pkg="can_to_ros" type="topic_check.py" name="topic_check" output="screen" />
+
+
+<include file="$(find can_to_ros)launch/safety_checks.launch" />
+
+<!-- runs the velocity_controller_node and cbf_node, this takes in from gps2vsl mux  -->
+<include file="$(find can_to_ros)/launch/cbf_vsl.launch">
+	<arg name="hwil" value="true"/>
+	<arg name="readonly" value="false"/>
+	<!-- set vsl_test to false if you want setpointreader to publish to mux -->
+	<!-- <arg name="vsl_hwil_test" value="true"/> -->
+</include>
+
+<!-- Takes gps_fix from live_tracker, processes, and looks up information for vsl gantry -->
+<include file="$(find gps2vsl)/launch/gps2vsl.launch">
+	<!-- set to true if you want mux to publish to velocity controller node -->
+	<!-- <arg name="connect_mux" value="false"/> NOT USED CURRENTLY 8/16/23-->
+	<arg name="vsl_hwil_test" value="true"/>
+</include>
+
+<!-- Sends GPS and data information to the live viewer database at VU -->
+<node pkg="live_tracker" type="live_tracker.py" name="live_tracker" output="screen" />
+
+<!-- ramp from mux to velocity_controller (PID) -->
+<node pkg="can_to_ros" type="ramp" name="ramp" output="screen">
+	<!-- /ramp_in : Float64 -->
+	<remap from="/ramp_in" to="/mux/set_speed"/>
+	<!-- /ramp_out: Float64 -->
+	<!-- <remap if="$(eval not vsl_hwil_test)" from="/ramp_out" to="/cmd_vel"/> -->
+
+	<!-- ramp_max_rate_up: default 1, defines max increase rate of output -->
+	<param name="/ramp_max_rate_up" value="1.5"/>
+	<!-- ramp_max_rate_down: default 1, defines max decrease rate of output -->
+	<param name="/ramp_max_rate_down" value="2"/>
+	<!--ramp_publish_rate: defualt 10Hz, defines output publish rate for potentially idle input -->
+	<param name="/ramp_publish_rate" value="10"/>
+
+</node>
+
+</launch>
