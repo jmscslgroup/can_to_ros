@@ -27,7 +27,7 @@
 	<param name="/k2" value="$(arg k2)"/> -->
 
 	<!-- <node pkg="can_to_ros" type ="subs_fs" name="subs_fs" output="screen" if="$(arg hwil)"/>  -->
-	<node pkg="can_to_ros" type ="subs" name="subs" output="screen" if="$(arg hwil)">
+	<node pkg="can_to_ros" type ="subs_fs" name="subs_fs" output="screen" if="$(arg hwil)">
 	</node>
 
 	<node pkg="can_to_ros" type="lead_info" name="lead_info" output="screen" if="$(arg hwil)"/>
@@ -43,7 +43,7 @@
 	<node pkg="setpointreader" type="setpointreader" name="setpointreader" output="screen" required="true" >
 		<!-- <remap from="/v_ref" to="/cmd_vel"/> -->
 		<!-- pcm_cruise_2 to msg_467 for the setpointreader to work -->
-			<remap from="/msg_467" to="/pcm_cruise_2"/>
+			<!-- <remap from="/msg_467" to="/pcm_cruise_2"/> only for using subs.cpp-->
 			<remap if="$(arg vsl_hwil_test)" from="/v_ref" to="/cmd_vel"/>
 	</node>
 
