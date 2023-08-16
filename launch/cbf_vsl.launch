@@ -7,7 +7,7 @@
 	<arg name="use_margin" default="false"/>
 	<arg name="hwil" default="true"/>
 	<arg name="readonly" default="false"/>
-	<arg name="vsl_test" default="true"/>
+	<arg name="vsl_hwil_test" default="true"/>
 
 <!-- 	<arg name="timegap" default="2.0"/>
 	<arg name="k_timegap" default="0.1"/>
