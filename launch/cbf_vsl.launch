@@ -28,7 +28,7 @@
 
 	<!-- <node pkg="can_to_ros" type ="subs_fs" name="subs_fs" output="screen" if="$(arg hwil)"/>  -->
 	<node pkg="can_to_ros" type ="subs" name="subs" output="screen" if="$(arg hwil)">
-		<node/>
+	</node>
 
 	<node pkg="can_to_ros" type="lead_info" name="lead_info" output="screen" if="$(arg hwil)"/>
 
