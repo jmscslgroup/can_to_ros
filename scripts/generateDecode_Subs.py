@@ -5,19 +5,23 @@ import json
 import os
 
 def findDBC(vin_details):
+    userFile = open('/etc/libpanda.d/libpanda_usr','r')
+    user = userFile.read().rstrip('\n\r')
+    userFile.close()
+    
     if vin_details['Make'] == 'TOYOTA':
         if vin_details['Model'] == 'RAV4':
             jsonfile = 'toyota_rav4.json'
             if int(vin_details['ModelYear']) >= 2021:
                 #TODO: figure out where the dbc files will be
-                dbcfile = '/home/circles/strym/strym/dbc/toyota_rav4_2021.dbc'
+                dbcfile = '/home/' + user + '/strym/strym/dbc/toyota_rav4_2021.dbc'
             elif int(vin_details['ModelYear']) == 2020:
-                dbcfile = '/home/circles/strym/strym/dbc/toyota_rav4_2020.dbc'
+                dbcfile = '/home/' + user + '/strym/strym/dbc/toyota_rav4_2020.dbc'
             elif int(vin_details['ModelYear']) == 2019:
-                dbcfile = '/home/circles/strym/strym/dbc/toyota_rav4_2019.dbc'
+                dbcfile = '/home/' + user + '/strym/strym/dbc/toyota_rav4_2019.dbc'
             if 'HV' in vin_details['Trim']:
                 # dbcfile = '/Users/mnice/Documents/GitHub/strym/strym/dbc/toyota_rav4_hybrid.dbc'
-                dbcfile = '/home/circles/strym/strym/dbc/toyota_rav4_hybrid.dbc'
+                dbcfile = '/home/' + user + '/strym/strym/dbc/toyota_rav4_hybrid.dbc'
     #space here to add in info for honda and nissan vehicles
     if vin_details['Make'] == 'NISSAN':
         if vin_details['Model'] == 'Rogue':
@@ -25,13 +29,13 @@ def findDBC(vin_details):
             if int(vin_details['ModelYear']) >= 2021:
                 #TODO: figure out where the dbc files will be
                 # dbcfile = '/Users/mnice/Documents/GitHub/strym/strym/dbc/nissan_rogue_2021.dbc'
-                dbcfile = '/home/circles/strym/strym/dbc/nissan_rogue_2021.dbc'
-                # dbcfile = '/home/circles/strym/strym/dbc/nissan_rogue_experimental.dbc'
+                dbcfile = '/home/' + user + '/strym/strym/dbc/nissan_rogue_2021.dbc'
+                # dbcfile = '/home/' + user + '/strym/strym/dbc/nissan_rogue_experimental.dbc'
 
     if vin_details['Make'] == 'HONDA':
         if vin_details['Model'] == 'Pilot':
             jsonfile = 'honda_pilot.json'
-            dbcfile = '/home/circles/strym/strym/dbc/honda_pilot_2017.dbc'
+            dbcfile = '/home/' + user + '/strym/strym/dbc/honda_pilot_2017.dbc'
     try:
         print('The DBC is set as %s. The Json is set as %s'%(dbcfile,jsonfile))
     except UnboundLocalError:

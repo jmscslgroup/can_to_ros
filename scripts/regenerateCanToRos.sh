@@ -11,7 +11,7 @@ if test -f "$FILE"; then
     echo "$FILE exists."
 else
     echo "$FILE doesn't exist. Running vinParser"
-    sudo python3 /home/circles/libpanda/scripts/vinParser.py
+    sudo python3 /home/$LIBPANDA_USER/libpanda/scripts/vinParser.py
     # python3 /Users/mnice/Documents/GitHub/libpanda_real/scripts/vinParser.py
 fi
 
