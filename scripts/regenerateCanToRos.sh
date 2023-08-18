@@ -25,8 +25,9 @@ read -r -p "Does this information look correct? Proceed to generating CANtoROS f
 
 	python3 ./makeSignalsJSON.py
 	python3 ./generateDecode_Subs.py
-  ./regen_vehicle_interface.sh
+	./regen_vehicle_interface.sh
 
 	cd /home/circles/catkin_ws
+	source devel/setup.bash
 	catkin_make
 esac

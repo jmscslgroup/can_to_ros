@@ -1,5 +1,5 @@
 <launch>
-<arg name="vsl_hwil_test" value="true"/>
+<arg name="vsl_hwil_test" value="false"/>
 <!-- include information for the joystick, etc. args="$(env HOME)"  -->
 <node pkg="can_to_ros" type="vehicle_interface" name="vehicle_interface" output="screen" respawn="true" respawn_delay="2" />
 
@@ -25,7 +25,7 @@
 <include file="$(find gps2vsl)/launch/gps2vsl.launch">
 	<!-- set to true if you want mux to publish to velocity controller node -->
 	<!-- <arg name="connect_mux" value="false"/> NOT USED CURRENTLY 8/16/23-->
-	<arg name="vsl_hwil_test" value="true"/>
+	<arg name="vsl_hwil_test" value="false"/>
 </include>
 
 <!-- Sends GPS and data information to the live viewer database at VU -->
