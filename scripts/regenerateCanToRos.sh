@@ -5,7 +5,7 @@
 #     exit 2
 # fi
 
-
+LIBPANDA_USER=$(cat /etc/libpanda.d/libpanda_usr)
 FILE=/etc/libpanda.d/vin_details.json
 if test -f "$FILE"; then
     echo "$FILE exists."
@@ -27,6 +27,6 @@ read -r -p "Does this information look correct? Proceed to generating CANtoROS f
 	python3 ./generateDecode_Subs.py
   ./regen_vehicle_interface.sh
 
-	cd /home/circles/catkin_ws
+	cd /home/$LIBPANDA_USER/catkin_ws
 	catkin_make
 esac
