@@ -27,7 +27,8 @@ read -r -p "Does this information look correct? Proceed to generating CANtoROS f
 	python3 ./generateDecode_Subs.py
 	./regen_vehicle_interface.sh
 
-	cd /home/$LIBPANDA_USER/catkin_ws
-	source devel/setup.bash
-	catkin_make
+#	cd /home/$LIBPANDA_USER/catkin_ws
+#	source devel/setup.bash
+#	catkin_make
+    echo "Code generation complete, please perform catkin_make"
 esac
