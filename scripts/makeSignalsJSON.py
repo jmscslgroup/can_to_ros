@@ -2,30 +2,33 @@
 import json
 
 #toyota_rav4 list of ROS pubs
-toyota_rav4 = {37:{'steering_angle':[['std_msgs::Float64'],['STEER_ANGLE']]},
-         180:{'vel':[['std_msgs::Float64'],['SPEED']]},
+toyota_rav4 = {37:{'car/state/steering_angle':[['std_msgs::Float64'],['STEER_ANGLE']]
+            ,'car/state/steer_fraction':[['std_msgs::Float64'],['STEER_FRACTION']]
+            ,'car/state/steer_rate':[['std_msgs::Float64'],['STEER_RATE']]
+          },
+         180:{'/car/state/vel_x':[['std_msgs::Float64'],['SPEED']]},
          869:{'lead_dist': [['std_msgs::Float64'],['LEAD_DISTANCE']] ,
          'rel_vel':[['std_msgs::Float64'],['REL_SPEED']],
          "acc/set_btn":[["std_msgs::Int16"],["SET_BTN"]],
          "acc/res_btn":[["std_msgs::Int16"],["RES_BTN"]],
          "acc/cancel_btn":[["std_msgs::Int16"],["CANCEL_BTN"]]
          },
-         # 384:{'track_a0':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
-         # 385:{'track_a1':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
-         # 386:{'track_a2':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
-         # 387:{'track_a3':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
-         # 388:{'track_a4':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
-         # 389:{'track_a5':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
-         # 390:{'track_a6':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
-         # 391:{'track_a7':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
-         # 392:{'track_a8':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
-         # 393:{'track_a9':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
-         # 394:{'track_a10':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
-         # 395:{'track_a11':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
-         # 396:{'track_a12':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
-         # 397:{'track_a13':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
-         # 398:{'track_a14':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
-         # 399:{'track_a15':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
+         384:{'car/radar/track_a0':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
+         385:{'car/radar/track_a1':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
+         386:{'car/radar/track_a2':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
+         387:{'car/radar/track_a3':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
+         388:{'car/radar/track_a4':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
+         389:{'car/radar/track_a5':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
+         390:{'car/radar/track_a6':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
+         391:{'car/radar/track_a7':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
+         392:{'car/radar/track_a8':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
+         393:{'car/radar/track_a9':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
+         394:{'car/radar/track_a10':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
+         395:{'car/radar/track_a11':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
+         396:{'car/radar/track_a12':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
+         397:{'car/radar/track_a13':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
+         398:{'car/radar/track_a14':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
+         399:{'car/radar/track_a15':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
          1570:{'highbeams':[['std_msgs::Float64'],['HIGH_BEAMS_ON']]},
          467:{'pcm_cruise_2':[['geometry_msgs::Point'],['MAIN_ON','SET_SPEED']]
 		,'acc/set_speed' : [['std_msgs::Int16'], ['SET_SPEED']]
@@ -42,7 +45,8 @@ toyota_rav4 = {37:{'steering_angle':[['std_msgs::Float64'],['STEER_ANGLE']]},
          ,'acc/cruise_state_int':[['std_msgs::Int16'],['CRUISE_CONTROL_STATE']]
          ,'acc/set_speed2':[['std_msgs::Float64'],['UI_SET_SPEED']]
          },
-         552:{'accel':[['std_msgs::Float64'],['ACCEL_X']]
+         552:{'car/state/accel_x':[['std_msgs::Float64'],['ACCEL_X']]
+         ,'car/state/accel_z':[['std_msgs::Float64'],['ACCEL_Z']]
          },
          740:{'steer_request':[['std_msgs::Int16'],['STEER_REQUEST']],
          'steer_torque_cmd':[['std_msgs::Float64'],['STEER_TORQUE_CMD']]
@@ -50,6 +54,11 @@ toyota_rav4 = {37:{'steering_angle':[['std_msgs::Float64'],['STEER_ANGLE']]},
          608:{'steer_torque_driver':[['std_msgs::Float64'],['STEER_TORQUE_DRIVER']],
          'steer_torque_eps':[['std_msgs::Float64'],['STEER_TORQUE_EPS']],
          'steer_override':[['std_msgs::Int16'],['STEER_OVERRIDE']]
+         },
+         36:{'car/state/accel_y':[['std_msgs::Float64'],['ACCEL_Y']]
+         ,'car/state/yaw_rate':[['std_msgs::Float64'],['YAW_RATE']]
+         },
+         170:{'car/state/wheel_speeds':[['std_msgs::Float64MultiArray'],['WHEEL_SPEED_FR','WHEEL_SPEED_FL','WHEEL_SPEED_RR','WHEEL_SPEED_RL']]
          }
 
 }
