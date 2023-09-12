@@ -414,6 +414,7 @@ private:
         ros::Time current_time = ros::Time::now();
         
         fix_position.header.stamp = current_time;
+        fix_position.header.frame_id = "base_link";
         fix_position.status.status = (gpsData->info.status == 'A' ? sensor_msgs::NavSatStatus::STATUS_FIX : sensor_msgs::NavSatStatus::STATUS_NO_FIX); //Marked as active if we get the active character
         fix_position.status.service = sensor_msgs::NavSatStatus::SERVICE_GPS; //Flagged as normal GPS
         fix_position.latitude = gpsData->pose.latitude;
