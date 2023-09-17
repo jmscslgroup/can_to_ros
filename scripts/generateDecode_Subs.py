@@ -277,13 +277,16 @@ def buildCallbacks(toROS):##add varNum?
                 text += '\t\tmsg%d.data = data.choice_var%d; //%s\n'%(count,toDecode.get(canid).index(signals[0])+1,signals[0])
                 found = True
             ## take the string value from the values_struct of the signal index
-            elif 'Float64MultiArray' in rosmsg: # courtesy of Bunitng
+            elif 'Float64MultiArray' in rosmsg: # courtesy of Bunting
+                arrayLabel = signals[0]
+                for i in range(len(signals)-1):
+                    arrayLabel += '/' + signals[i+1]
                 text += '\t\tmsg%d.layout.dim.push_back(std_msgs::MultiArrayDimension());\n\
                 msg%d.layout.dim[0].size = %d;\n\
                 msg%d.layout.dim[0].stride = 1;\n\
                 msg%d.layout.dim[0].label = "%s";\n\
                 \n\
-                msg%d.data.clear();\n' % (count, count, len(signals), count, count, signals[0], count)
+                msg%d.data.clear();\n' % (count, count, len(signals), count, count, arrayLabel, count)
                 for i in range(len(signals)):
                     text += '\t\tmsg%d.data.push_back(data.var%s);\t//%s\n' % (count,toDecode.get(canid).index(signals[i])+1,signals[i])
                 found = True
