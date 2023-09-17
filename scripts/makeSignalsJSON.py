@@ -2,9 +2,7 @@
 import json
 
 #toyota_rav4 list of ROS pubs
-toyota_rav4 = {37:{'car/state/steering_angle':[['std_msgs::Float64'],['STEER_ANGLE']]
-            ,'car/state/steer_fraction':[['std_msgs::Float64'],['STEER_FRACTION']]
-            ,'car/state/steer_rate':[['std_msgs::Float64'],['STEER_RATE']]
+toyota_rav4 = {37:{'car/state/steering':[['std_msgs::Float64MultiArray'],['STEER_ANGLE','STEER_FRACTION','STEER_RATE']]
           },
          180:{'/car/state/vel_x':[['std_msgs::Float64'],['SPEED']]},
          869:{'lead_dist': [['std_msgs::Float64'],['LEAD_DISTANCE']] ,
@@ -45,8 +43,7 @@ toyota_rav4 = {37:{'car/state/steering_angle':[['std_msgs::Float64'],['STEER_ANG
          ,'acc/cruise_state_int':[['std_msgs::Int16'],['CRUISE_CONTROL_STATE']]
          ,'acc/set_speed2':[['std_msgs::Float64'],['UI_SET_SPEED']]
          },
-         552:{'car/state/accel_x':[['std_msgs::Float64'],['ACCEL_X']]
-         ,'car/state/accel_z':[['std_msgs::Float64'],['ACCEL_Z']]
+         552:{'car/state/imu_x_z':[['std_msgs::Float64MultiArray'],['ACCEL_X','ACCEL_Z']]
          },
          740:{'steer_request':[['std_msgs::Int16'],['STEER_REQUEST']],
          'steer_torque_cmd':[['std_msgs::Float64'],['STEER_TORQUE_CMD']]
@@ -55,8 +52,7 @@ toyota_rav4 = {37:{'car/state/steering_angle':[['std_msgs::Float64'],['STEER_ANG
          'steer_torque_eps':[['std_msgs::Float64'],['STEER_TORQUE_EPS']],
          'steer_override':[['std_msgs::Int16'],['STEER_OVERRIDE']]
          },
-         36:{'car/state/accel_y':[['std_msgs::Float64'],['ACCEL_Y']]
-         ,'car/state/yaw_rate':[['std_msgs::Float64'],['YAW_RATE']]
+         36:{'car/state/imu_x_y_yaw':[['std_msgs::Float64MultiArray'],['ACCEL_X','ACCEL_Y','YAW_RATE']]
          },
          170:{'car/state/wheel_speeds':[['std_msgs::Float64MultiArray'],['WHEEL_SPEED_FR','WHEEL_SPEED_FL','WHEEL_SPEED_RR','WHEEL_SPEED_RL']]
          }
