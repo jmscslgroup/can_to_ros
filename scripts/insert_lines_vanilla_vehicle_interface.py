@@ -94,14 +94,17 @@ f.close()
 def main():
     count = 0
     lines = []
+    lines.append("\t\tfalse")
     for i in toROS.keys():
         msg = findMessageInfo(i,dbc)
-        if count ==0:
-            txt = "\t\t(canData->messageID==%d&&canData->dataLength==%d)"%(i,msg.length)
-            lines.append(txt)
-        else:
-            txt = "\t\t||(canData->messageID==%d&&canData->dataLength==%d)"%(i,msg.length)
-            lines.append(txt)
+        #if count ==0:
+        #    txt = "\t\t(canData->messageID==%d&&canData->dataLength==%d)"%(i,msg.length)
+        #    lines.append(txt)
+        #else:
+        #    txt = "\t\t||(canData->messageID==%d&&canData->dataLength==%d)"%(i,msg.length)
+        #    lines.append(txt)
+        txt = "\t\t||(canData->messageID==%d&&canData->dataLength==%d)"%(i,msg.length)
+        lines.append(txt)
         print(txt)
         count+=1
 
