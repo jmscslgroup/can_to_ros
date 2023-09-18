@@ -47,15 +47,15 @@
 			<remap if="$(arg vsl_hwil_test)" from="/v_ref" to="/cmd_vel"/>
 	</node>
 
-	<node pkg="velocity_controller" type="velocity_controller_node" name="velocity_controller_node" output="screen">
+	<node pkg="velocity_controller" type="velocity_controller" name="velocity_controller" output="screen">
 		<remap from="/vehicle/vel" to="/vel"/>
 		<remap from="/cmd_accel" to="/cmd_accel_pre"/>
 	</node>
 
-	<node pkg="cbf" type="cbf_node" name="cbf_node" if="$(eval not readonly and hwil)">
+	<node pkg="cbf" type="cbf" name="cbf" if="$(eval not readonly and hwil)">
 	</node>
 
-	<node pkg="cbf" type="cbf_node" name="cbf_node_readonly" if="$(eval not readonly and hwil)">
+	<node pkg="cbf" type="cbf" name="cbf_readonly" if="$(eval not readonly and hwil)">
 		<remap from="/cmd_accel" to="/cmd_accel_null"/>
 	</node>
 
