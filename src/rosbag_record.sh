@@ -2,7 +2,7 @@
 
 DESCRIPTION=$1
 
-AWAKE=$(rostopic echo -n 1 /car/panda/gps_active) &
+AWAKE=$(rostopic echo -n 1 /car/panda/gps_active) # wait until topic is published BEFORE recording
 echo "rosbag_record is now alive!"
 
 #Get the vin number of the vehicle
