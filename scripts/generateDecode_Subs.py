@@ -8,6 +8,8 @@ def findDBC(vin_details):
     userFile = open('/etc/libpanda.d/libpanda_usr','r')
     user = userFile.read().rstrip('\n\r')
     userFile.close()
+    jsonfile = None
+    dbcfile = None
     
     if vin_details['Make'] == 'TOYOTA':
         if vin_details['Model'] == 'RAV4':
@@ -396,26 +398,39 @@ try:
 except TypeError:
     print('findDBC Function did not operate properly, check /etc/libpanda/vin_details.json')
 #load the correct DBC file to decode CAN to ROS
-try:
-    dbc = initializeDBC_Cantools(dbcfile)
-except FileNotFoundError:
-    cmd = "wget -P ~/strym/strym/dbc/ https://raw.githubusercontent.com/jmscslgroup/strym/master/strym/dbc/" + (dbcfile.split('/')[-1])
-    print(cmd)
-    print("File Not Found -- did not run download.")
-    # os.system(cmd)
-    # dbcfile = '/Users/mnice/Documents/GitHub/strym/strym/dbc/toyota_rav4_hybrid.dbc'
+if dbcfile is not None:
+    try:
+        dbc = initializeDBC_Cantools(dbcfile)
+    except FileNotFoundError:
+        userFile = open('/etc/libpanda.d/libpanda_usr','r')
+        user = userFile.read().rstrip('\n\r')
+        userFile.close()
+        cmd = "mkdir -p /home/" + user + "/strym/strym/dbc && wget -P /home/" + user + "/strym/strym/dbc/ https://raw.githubusercontent.com/jmscslgroup/strym/master/strym/dbc/" + (dbcfile.split('/')[-1])
+        print(cmd)
+        print("File Not Found -- did not run download.")
+        # os.system(cmd)
+        # dbcfile = '/Users/mnice/Documents/GitHub/strym/strym/dbc/toyota_rav4_hybrid.dbc'
 
-    dbc = initializeDBC_Cantools(dbcfile)
-# Opening ROS JSON file
-f = open('./'+jsonfile)
+        #dbc = initializeDBC_Cantools(dbcfile)
+        dbc = cantools.database.Database()
+else:
+    dbc = cantools.database.Database()
+    
+if jsonfile is not None:
+    # Opening ROS JSON file
+    f = open('./'+jsonfile)
 
-# returns JSON object as a dictionary
-print('The generated JSON file is: ',jsonfile)
-toROS = json.load(f, object_hook=keystoint)
-# print('this is toROS before generateToDecode')
-# print(toROS)
+    # returns JSON object as a dictionary
+    print('The generated JSON file is: ',jsonfile)
+    toROS = json.load(f, object_hook=keystoint)
+    # print('this is toROS before generateToDecode')
+    # print(toROS)
+    f.close()
+else:
+    toROS = {}
+    
 toDecode = generateToDecode(toROS)
-f.close()
+
 #
 # print('this is toROS after generateToDecode')
 # print(toROS)

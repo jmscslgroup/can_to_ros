@@ -14,6 +14,8 @@ def findDBC(vin_details):
     userFile = open('/etc/libpanda.d/libpanda_usr','r')
     user = userFile.read().rstrip('\n\r')
     userFile.close()
+    jsonfile = None
+    dbcfile = None
     
     if vin_details['Make'] == 'TOYOTA':
         if vin_details['Model'] == 'RAV4':
@@ -81,20 +83,32 @@ f.close()
 #find the correct DBC and ROS msg dict based on the vin details
 jsonfile, dbcfile = findDBC(vin_details)
 #load the correct DBC file to decode CAN to ROS
-dbc = initializeDBC_Cantools(dbcfile)
+if dbcfile is not None:
+    dbc = initializeDBC_Cantools(dbcfile)
+else:
+    dbc = cantools.database.Database()
 
-# Opening ROS JSON file
-f = open('./'+jsonfile)
+if jsonfile is not None:
+    # Opening ROS JSON file
+    f = open('./'+jsonfile)
 
-# returns JSON object as a dictionary
-toROS = json.load(f, object_hook=keystoint)
+    # returns JSON object as a dictionary
+    toROS = json.load(f, object_hook=keystoint)
 
-f.close()
+    f.close()
+else:
+    toROS = {}
+    
 # Defining main function
 def main():
     count = 0
     lines = []
-    lines.append("\t\tfalse")
+    if len(toROS) == 0:
+        txt = "\t\ttrue"    # publish EVERYTHING
+    else:
+        txt = "\t\tfalse"
+    lines.append(txt)
+    print(txt)
     for i in toROS.keys():
         msg = findMessageInfo(i,dbc)
         #if count ==0:
