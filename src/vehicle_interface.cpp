@@ -425,17 +425,22 @@ private:
         fix_position.longitude = gpsData->pose.longitude;
         fix_position.altitude = gpsData->pose.altitude;
         
-        double hdop_squared_half_sqrt = sqrt(gpsData->quality.HDOP * gpsData->quality.HDOP / 2.0);
-        double vdop = gpsData->quality.VDOP;
-        double covariance_diagonal[] = {hdop_squared_half_sqrt, hdop_squared_half_sqrt, vdop};
-        for (size_t i = 0; i < 3; i++) {
-            for (size_t j = 0; j < 3; j++) {
-                size_t final_index = (i * 3) + j;
-                fix_position.position_covariance[final_index] = covariance_diagonal[i] * covariance_diagonal[j];
-            }
-        }
+//        double hdop_squared_half_sqrt = sqrt(gpsData->quality.HDOP * gpsData->quality.HDOP / 2.0);
+//        double vdop = gpsData->quality.VDOP;
+//        double covariance_diagonal[] = {hdop_squared_half_sqrt, hdop_squared_half_sqrt, vdop};
+//        for (size_t i = 0; i < 3; i++) {
+//            for (size_t j = 0; j < 3; j++) {
+//                size_t final_index = (i * 3) + j;
+//                fix_position.position_covariance[final_index] = covariance_diagonal[i] * covariance_diagonal[j];
+//            }
+//        }
+//        fix_position.position_covariance_type = sensor_msgs::NavSatFix::COVARIANCE_TYPE_APPROXIMATED; // Approximated as per above.
         
-        fix_position.position_covariance_type = sensor_msgs::NavSatFix::COVARIANCE_TYPE_APPROXIMATED; // Approximated as per above.
+        fix_position.position_covariance[0] = (gpsData->quality.HDOP * gpsData->quality.LatitudeSigmaError)*(gpsData->quality.HDOP * gpsData->quality.LatitudeSigmaError);
+        fix_position.position_covariance[4] = (gpsData->quality.HDOP * gpsData->quality.LongitudeSigmaError)*(gpsData->quality.HDOP * gpsData->quality.LongitudeSigmaError);
+        fix_position.position_covariance[8] = (gpsData->quality.VDOP * gpsData->quality.AltitudeSigmaError)*(gpsData->quality.VDOP * gpsData->quality.AltitudeSigmaError);
+        
+        fix_position.position_covariance_type = sensor_msgs::NavSatFix::COVARIANCE_TYPE_DIAGONAL_KNOWN; // Approximated as per above.
         
         fix_time.time_ref = ros::Time((uint32_t)gpsTime_t, ((uint32_t)gpsData->timeMilliseconds) * 1000000);
         fix_time.header.stamp = current_time;
