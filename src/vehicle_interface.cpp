@@ -451,8 +451,8 @@ private:
     }
 public:
     PublishGpsObserver() {
-        pub_fix = nhPublishGps.advertise<sensor_msgs::NavSatFix>("/gps_fix", 1000);
-        pub_gpstime = nhPublishGps.advertise<sensor_msgs::TimeReference>("/gps_fix_time", 1000);
+        pub_fix = nhPublishGps.advertise<sensor_msgs::NavSatFix>("/car/gps/fix", 1000);
+        pub_gpstime = nhPublishGps.advertise<sensor_msgs::TimeReference>("/car/gps/fix_time", 1000);
     }
 };
 
