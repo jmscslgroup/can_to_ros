@@ -405,11 +405,16 @@ public:
 };
 
 
-class PublishGpsObserver : public Panda::GpsListener {
+class PublishGpsObserver : public Panda::GpsListener, public Mogi::Thread {
 private:
     ros::NodeHandle nhPublishGps;
     ros::Publisher pub_fix;
+    ros::Publisher pub_heading;
     ros::Publisher pub_gpstime;
+    Panda::Gps* mGps;
+    char navMsgCov[100];
+    float cov[9]; // East, North, Up, row major order
+    
     void newDataNotification( Panda::GpsData* gpsData ) {
         time_t gpsTime_t = mktime(&gpsData->time);
         
@@ -425,6 +430,7 @@ private:
         fix_position.longitude = gpsData->pose.longitude;
         fix_position.altitude = gpsData->pose.altitude;
         
+//        // Old:
 //        double hdop_squared_half_sqrt = sqrt(gpsData->quality.HDOP * gpsData->quality.HDOP / 2.0);
 //        double vdop = gpsData->quality.VDOP;
 //        double covariance_diagonal[] = {hdop_squared_half_sqrt, hdop_squared_half_sqrt, vdop};
@@ -435,12 +441,20 @@ private:
 //            }
 //        }
 //        fix_position.position_covariance_type = sensor_msgs::NavSatFix::COVARIANCE_TYPE_APPROXIMATED; // Approximated as per above.
+//
+//        // New based on ROS nmea_driver package
+//        fix_position.position_covariance[0] = (gpsData->quality.HDOP * gpsData->quality.LatitudeSigmaError)*(gpsData->quality.HDOP * gpsData->quality.LatitudeSigmaError);
+//        fix_position.position_covariance[4] = (gpsData->quality.HDOP * gpsData->quality.LongitudeSigmaError)*(gpsData->quality.HDOP * gpsData->quality.LongitudeSigmaError);
+//        fix_position.position_covariance[8] = (gpsData->quality.VDOP * gpsData->quality.AltitudeSigmaError)*(gpsData->quality.VDOP * gpsData->quality.AltitudeSigmaError);
+//
+//        fix_position.position_covariance_type = sensor_msgs::NavSatFix::COVARIANCE_TYPE_APPROXIMATED; // Approximated as per above.
         
-        fix_position.position_covariance[0] = (gpsData->quality.HDOP * gpsData->quality.LatitudeSigmaError)*(gpsData->quality.HDOP * gpsData->quality.LatitudeSigmaError);
-        fix_position.position_covariance[4] = (gpsData->quality.HDOP * gpsData->quality.LongitudeSigmaError)*(gpsData->quality.HDOP * gpsData->quality.LongitudeSigmaError);
-        fix_position.position_covariance[8] = (gpsData->quality.VDOP * gpsData->quality.AltitudeSigmaError)*(gpsData->quality.VDOP * gpsData->quality.AltitudeSigmaError);
+        // Libpanda now supports UBX module full covariance matrix:
+        for(int i = 0; i < 9; i++) {
+            fix_position.position_covariance[i] = cov[i];
+        }
+        fix_position.position_covariance_type = sensor_msgs::NavSatFix::COVARIANCE_TYPE_KNOWN; // Hell yeah
         
-        fix_position.position_covariance_type = sensor_msgs::NavSatFix::COVARIANCE_TYPE_DIAGONAL_KNOWN; // Approximated as per above.
         
         fix_time.time_ref = ros::Time((uint32_t)gpsTime_t, ((uint32_t)gpsData->timeMilliseconds) * 1000000);
         fix_time.header.stamp = current_time;
@@ -449,16 +463,53 @@ private:
         pub_fix.publish(fix_position);
         pub_gpstime.publish(fix_time);
     }
+    
+    void newHeadingNotification(Panda::GpsData* gpsData) {
+        std_msgs::Float64 msg;
+        msg.data = gpsData->motion.course;
+        pub_heading.publish(msg);
+    }
+    
+    void doAction() {   // overload of Mogi::Thread
+        usleep(9000);
+        mGps->sendUbxCommand(Panda::UBX_CLASS_NAV, Panda::UBX_ID_NAV_COV, 0, NULL);
+        while(mGps->busyUbx()) {
+            usleep(100);
+        }
+        int length = mGps->getUbxResponse(navMsgCov);
+        if(length > 0) {
+
+            cov[0 + 3*0] = Panda::parseFloat(&navMsgCov[UBX_NAV_COV_POS_EE]);  //
+            cov[1 + 3*1] = Panda::parseFloat(&navMsgCov[UBX_NAV_COV_POS_NN]);  //
+            cov[2 + 3*2] = Panda::parseFloat(&navMsgCov[UBX_NAV_COV_POS_DD]);  //
+            
+            
+            cov[1 + 3*0] = Panda::parseFloat(&navMsgCov[UBX_NAV_COV_POS_NE]);  //
+            cov[0 + 3*1] = Panda::parseFloat(&navMsgCov[UBX_NAV_COV_POS_NE]);  //
+            
+            cov[2 + 3*0] = Panda::parseFloat(&navMsgCov[UBX_NAV_COV_POS_ED]);  //
+            cov[0 + 3*2] = Panda::parseFloat(&navMsgCov[UBX_NAV_COV_POS_ED]);  //
+            
+            cov[1 + 3*2] = Panda::parseFloat(&navMsgCov[UBX_NAV_COV_POS_ND]);  //
+            cov[2 + 3*1] = Panda::parseFloat(&navMsgCov[UBX_NAV_COV_POS_ND]);  //
+        }
+    }
 public:
-    PublishGpsObserver() {
+    PublishGpsObserver(Panda::Gps* mGps)
+    : mGps(mGps) {
+        for(int i = 0; i < 9; i++) {
+            cov[i] = nan("");
+        }
         pub_fix = nhPublishGps.advertise<sensor_msgs::NavSatFix>("/car/gps/fix", 1000);
+        pub_heading = nhPublishGps.advertise<std_msgs::Float64>("/car/gps/heading", 1000);
         pub_gpstime = nhPublishGps.advertise<sensor_msgs::TimeReference>("/car/gps/fix_time", 1000);
     }
+    
 };
 
 class PublishGpsActive : public Mogi::Thread {
 private:
-    ros::Publisher publisher;
+                  ros::Publisher publisher;
     ros::Rate* publishRate;
     std_msgs::Bool msgGpsActive;
     
@@ -511,7 +562,7 @@ int main(int argc, char **argv) {
     Panda::GpsTracker mGpsTracker;	// Saves to /etc/libpanda.d/latest_gps
     pandaHandler.addGpsObserver(mGpsTracker);
     
-    PublishGpsObserver publishGpsTracker;
+    PublishGpsObserver publishGpsTracker(&pandaHandler.getGps());
     pandaHandler.addGpsObserver(publishGpsTracker);
     
     //	Panda::ToyotaHandler toyotaHandler(&pandaHandler);
@@ -523,6 +574,7 @@ int main(int argc, char **argv) {
     ROS_INFO("Initializing pandaController from factory...");
     Panda::ControllerClient* pandaController = new Panda::ControllerClient(pandaHandler);
     
+    publishGpsTracker.start();
     
     
     if(pandaController->getController() == NULL) {
@@ -651,6 +703,7 @@ int main(int argc, char **argv) {
     ros::spin();
     
     // Cleanup:
+    publishGpsTracker.stop();
     //	mPandaStatusPublisher.stop();
     //	toyotaHandler.stop();
     pandaController->getController()->stop();
