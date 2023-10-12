@@ -10,7 +10,7 @@ def findDBC(vin_details):
     userFile.close()
     jsonfile = None
     dbcfile = None
-    
+
     if vin_details['Make'] == 'TOYOTA':
         if vin_details['Model'] == 'RAV4':
             jsonfile = 'toyota_rav4.json'
@@ -374,7 +374,7 @@ def buildNode(toROS):
     text = ""
     text+= buildAds(toROS)
     #ad subs and start stringstream
-    text+='\n\tsub_ = n_.subscribe("/realtime_raw_data", 1000, &SubscribeAndPublish::callback, this);\n\
+    text+='\n\tsub_ = n_.subscribe("/car/can/raw", 1000, &SubscribeAndPublish::callback, this);\n\
 }\n\
 \tvoid callback(const std_msgs::String::ConstPtr& raw_data)\n\
 {\n\n\
@@ -415,7 +415,7 @@ if dbcfile is not None:
         dbc = cantools.database.Database()
 else:
     dbc = cantools.database.Database()
-    
+
 if jsonfile is not None:
     # Opening ROS JSON file
     f = open('./'+jsonfile)
@@ -428,7 +428,7 @@ if jsonfile is not None:
     f.close()
 else:
     toROS = {}
-    
+
 toDecode = generateToDecode(toROS)
 
 #
