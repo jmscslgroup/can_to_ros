@@ -26,16 +26,19 @@ private:
     bool haveFileTimeStart;
     ros::Time fileTimeStart;
     
+    bool fileComplete;
     
 public:
     HighlySpecificFileReader ()
-    : haveFileTimeStart(false) {
+    : haveFileTimeStart(false), fileComplete(false) {
         
     }
     
     int readNextLine () {
-        if (!getline(file, latestLine))    // EOF
+        if (!getline(file, latestLine)) {   // EOF
+            fileComplete = true;
             return -1;
+        }
         
         
         if (latestLine.empty()) {
@@ -58,6 +61,10 @@ public:
         //        canMsg.data = latestLine;
         
         return 0;
+    }
+    
+    bool isComplete() {
+        return fileComplete;
     }
     
     void setStartTime(const ros::Time& startTime) {
@@ -193,7 +200,7 @@ int main(int argc, char **argv){
     while (ros::ok()){  //ros::ok()
         
         if(gpsFileProvided && canFileProvided) {
-            if(mCanHighlySpecificFileReader.runningTime() < mGpsHighlySpecificFileReader.runningTime()) {
+            if(mCanHighlySpecificFileReader.runningTime() < mGpsHighlySpecificFileReader.runningTime() && !mCanHighlySpecificFileReader.isComplete()) {
                 canShouldPublish = true;
                 nextPublishTime = mCanHighlySpecificFileReader.runningTime();
             } else {
@@ -253,6 +260,19 @@ int main(int argc, char **argv){
             mGpsHighlySpecificFileReader.readNextLine();    // Read the CSV's next line
         }
         
+        if(gpsFileProvided && canFileProvided) {
+            if(mGpsHighlySpecificFileReader.isComplete() && mCanHighlySpecificFileReader.isComplete()) {
+                break;
+            }
+        } else if (canFileProvided) {
+            if(mCanHighlySpecificFileReader.isComplete()) {
+                break;
+            }
+        } else {
+            if(mGpsHighlySpecificFileReader.isComplete()) {
+                break;
+            }
+        }
         
         //rate.sleep();
         
