@@ -200,7 +200,13 @@ int main(int argc, char **argv){
     while (ros::ok()){  //ros::ok()
         
         if(gpsFileProvided && canFileProvided) {
-            if(mCanHighlySpecificFileReader.runningTime() < mGpsHighlySpecificFileReader.runningTime() && !mCanHighlySpecificFileReader.isComplete()) {
+            if(!mCanHighlySpecificFileReader.isComplete() && mGpsHighlySpecificFileReader.isComplete()) {
+                canShouldPublish = true;
+                nextPublishTime = mCanHighlySpecificFileReader.runningTime();
+            } else if(mCanHighlySpecificFileReader.isComplete() && !mGpsHighlySpecificFileReader.isComplete()) {
+                canShouldPublish = false;
+                nextPublishTime = mGpsHighlySpecificFileReader.runningTime();
+            } else if(mCanHighlySpecificFileReader.runningTime() < mGpsHighlySpecificFileReader.runningTime()) {
                 canShouldPublish = true;
                 nextPublishTime = mCanHighlySpecificFileReader.runningTime();
             } else {
