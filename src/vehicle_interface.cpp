@@ -392,7 +392,7 @@ public:
         // std::string filename=buffer;
         // std::replace(filename.begin(), filename.end(), ':', '-');
         // cout << filename << std::endl;
-        pub_ = nh1->advertise<std_msgs::String>("/realtime_raw_data", 1000);
+        pub_ = nh1->advertise<std_msgs::String>("/car/can/raw", 1000);
         //		publisherCarSetSpeed = nh1->advertise<std_msgs::UInt8>("/car/cruise/ui_set_speed", 1000);
         //		publisherPandaControlsEnabled = nh1->advertise<std_msgs::String>("/panda/controls_enabled", 1000);
         
