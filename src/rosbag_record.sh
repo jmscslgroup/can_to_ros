@@ -34,4 +34,4 @@ fi
 
 mkdir -p ${DIR_PATH}
 
-rosbag record -O ${DIR_PATH}${FILENAME}${DESCRIPTION} -a -x /realtime_raw_data
+rosbag record -O ${DIR_PATH}${FILENAME}${DESCRIPTION} -a -x /car/can/raw

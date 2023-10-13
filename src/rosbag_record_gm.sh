@@ -19,4 +19,4 @@ mkdir -p ${DIR_PATH}
 
 # ghost_mode=`git -C ${FILEPATH1} rev-parse --abbrev-ref HEAD`
 
-rosbag record -O "${DIR_PATH}${FILENAME}${DESCRIPTION}" -a -x /realtime_raw_data
+rosbag record -O "${DIR_PATH}${FILENAME}${DESCRIPTION}" -a -x /car/can/raw

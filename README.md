@@ -26,7 +26,7 @@ Invokes the following:
  Expected interface topics:
  
  /cmd_accel - std_msgs/Float64 - This is where control commands should be sent.  cut_in_disengager will ensure convert this to /cmd_accel_safe as needed, then publishCommands will convert /cmd_accel_safe to /car/cruise/accel_input
- /realtime_raw_data - std_msgs/String - Reports CAN data.  Use the node subs_fs.cpp to interpret these into car sensing data
+ /car/can/raw - std_msgs/String - Reports CAN data.  Use the node subs_fs.cpp to interpret these into car sensing data
 
 
 ## Node Descriptions:
@@ -35,7 +35,7 @@ Invokes the following:
 This ROS node interfaces libpanda's ToyotaHandler
 
 Publishers:
-1) /realtime_raw_data - std_msgs/String -  This publishes CAN data of interest where the can_to_ros node named subs_fs.cpp can interpret values
+1) /car/can/raw - std_msgs/String -  This publishes CAN data of interest where the can_to_ros node named subs_fs.cpp can interpret values
 2) /car/panda/gas_interceptor_detected - std_msgs/Bool - Reported by the Panda is their gas interceptor hardware is detected
 3) /car/panda/controls_allowed - std_msgs/Bool -  Reported by the comma.ai panda.  This is not event-based from the Panda, but is regularly checked at 2 Hz to reset the Panda's heartbeat
 4)	/car/libpanda/controls_allowed - std_msgs/Bool -  Reported by logic within libpanda.  This is event based from libpanda using CAN messages.  When no events occur, this regularly published at 1 Hz which can be used to assess libpanda's control command health

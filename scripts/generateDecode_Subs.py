@@ -444,7 +444,7 @@ for i in toDecode.keys():
     text += decodeBuilder(msg, signals,toROS)
 text += '\treturn returnedVal;\n}\n'
 
-###put in changes for realtime_raw_data publishing in can to ros #####
+###put in changes for car/can/raw publishing in can to ros #####
 
 ##open base vehicle_interface_nissan
 ##find the line of the comment where the new lines go in

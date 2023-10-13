@@ -35,6 +35,6 @@ printf "ghost_mode branch: ${ghost_mode}\ntransfer_pkg branch: ${transfer_pkg}\n
 
 # mkdir -p ${DIR_PATH}
 
-# rosbag record -O ${DIR_PATH}${FILENAME} -a -x /realtime_raw_data
+# rosbag record -O ${DIR_PATH}${FILENAME} -a -x /car/can/raw
 
 # reference_tracking

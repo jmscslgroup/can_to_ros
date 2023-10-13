@@ -1,6 +1,6 @@
 <launch>
 	<arg name="prefix" default="can_coach"/>
-	<node name="recorder" pkg="rosbag" type="record" output="screen" args=" -o $(arg prefix) -a -x /realtime_raw_data"/>
+	<node name="recorder" pkg="rosbag" type="record" output="screen" args=" -o $(arg prefix) -a -x /car/can/raw"/>
    	<node pkg="modechanger" type ="modechanger_node" name="modechanger_node_cancoach" output="screen" />
 	<node pkg="director" type ="director_node" name="director_node_cancoach" output="screen"  />
 	

@@ -50,7 +50,7 @@
  This ROS node interfaces libpanda's ToyotaHandler
 
  Publishers:
- 1) /realtime_raw_data - std_msgs/String -  This publishes CAN data of interest where the can_to_ros node named subs_fs.cpp can interpret values
+ 1) /car/can/raw - std_msgs/String -  This publishes CAN data of interest where the can_to_ros node named subs_fs.cpp can interpret values
 
  */
 
@@ -114,7 +114,7 @@ private:
 
 public:
 	CanToRosPublisher() {
-		pub_ = nh1.advertise<std_msgs::String>("/realtime_raw_data", 1000);
+		pub_ = nh1.advertise<std_msgs::String>("/car/can/raw", 1000);
 
 	}
 

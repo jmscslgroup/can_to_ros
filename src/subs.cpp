@@ -36,7 +36,7 @@ public:
 	hud_states_pub = n_.advertise<std_msgs::Float64>("hud_states",1000);
 	acc_mini_car_pub = n_.advertise<std_msgs::Int16>("acc/mini_car",1000);
 
-	sub_ = n_.subscribe("/realtime_raw_data", 1000, &SubscribeAndPublish::callback, this);
+	sub_ = n_.subscribe("/car/can/raw", 1000, &SubscribeAndPublish::callback, this);
 }
 	void callback(const std_msgs::String::ConstPtr& raw_data)
 {
