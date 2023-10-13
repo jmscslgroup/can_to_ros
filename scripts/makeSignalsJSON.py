@@ -27,7 +27,7 @@ toyota_rav4 = {
          467:{'pcm_cruise_2':[['geometry_msgs::Point'],['MAIN_ON','SET_SPEED']],
 		'acc/set_speed' : [['std_msgs::Int16'], ['SET_SPEED']]
 		},
-        552:{'car/state/imu_x_z':[['std_msgs::Float64MultiArray'],['ACCEL_X','ACCEL_Z']]
+        552:{'car/state/imu_x':[['std_msgs::Float64MultiArray'],['ACCEL_X']]
         },
         608:{'steer_torque_driver':[['std_msgs::Float64'],['STEER_TORQUE_DRIVER']],
         'steer_torque_eps':[['std_msgs::Float64'],['STEER_TORQUE_EPS']],

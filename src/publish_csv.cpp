@@ -222,10 +222,10 @@ int main(int argc, char **argv){
         }
         
         runningTime = (ros::Time::now() - startTime).toSec();
-        printf("Next time: %f current Time %f CAN msgs: %07d GPS msgs: %07d \r", nextPublishTime, runningTime, totalPublishedCanMessages, totalPublishedGpsMessages);
+//        printf("Next time: %f current Time %f CAN msgs: %07d GPS msgs: %07d \r", nextPublishTime, runningTime, totalPublishedCanMessages, totalPublishedGpsMessages);
         while( runningTime < nextPublishTime ) {
 //            printf("Total Published CAN messages: % 7d GPS Messages: % 6d\r", totalPublishedCanMessages, totalPublishedGpsMessages);
-            printf("Next time: %f current Time %f\r", nextPublishTime, runningTime);
+  //          printf("Next time: %f current Time %f\r", nextPublishTime, runningTime);
             rate.sleep();
             runningTime = (ros::Time::now() - startTime).toSec();
         }
