@@ -54,6 +54,9 @@ toyota_rav4 = {
          ,'acc/cruise_state_int':[['std_msgs::Int16'],['CRUISE_CONTROL_STATE']]
          ,'acc/set_speed2':[['std_msgs::Float64'],['UI_SET_SPEED']]
          },
+         956:{'car/state/sport_mode':[['std_msgs::Bool'],['SPORT_ON']]
+         ,'car/state/eco_mode':[['std_msgs::Bool'],['ECON_ON']]
+         },
          1570:{'highbeams':[['std_msgs::Float64'],['HIGH_BEAMS_ON']]}
 }
 
