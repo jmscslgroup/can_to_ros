@@ -293,7 +293,7 @@ def buildCallbacks(toROS):##add varNum?
                     text += '\t\tmsg%d.data.push_back(data.var%s);\t//%s\n' % (count,toDecode.get(canid).index(signals[i])+1,signals[i])
                 found = True
             else:
-                singleValTypes = ['Float64','Float32','Int16','Int8']
+                singleValTypes = ['Float64','Float32','Int16','Int8', 'Bool']
 
                 for type in singleValTypes:
                     if type in rosmsg:
