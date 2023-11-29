@@ -116,10 +116,10 @@ honda_pilot={
          342:{'steer_angle':[['std_msgs::Float64'],['STEER_ANGLE']]},
          344:{'/car/state/vel_x':[['std_msgs::Float64'],['XMISSION_SPEED']]},
          506:{'acc/cruise_state_int':[['std_msgs::Int16'],['CRUISE_STATES']]},
-         780:{'acc/set_speed':[['std_msgs::Int16'],['CRUISE_SPEED']]},
+         780:{'acc/set_speed2':[['std_msgs::Int16'],['CRUISE_SPEED']]},
          419:{'gear':[['std_msgs::String'],['GEAR_SHIFTER']]},
 #         422:{'acc/acc_btns':[['std_msgs::String'],['GEAR_SHIFTER']]},
-         490:{'accel':[['std_msgs::Float64'],['LONG_ACCEL']]},
+         490:{'/car/state/imu_x':[['std_msgs::Float64'],['LONG_ACCEL']]},
          927:{'lead_dist':[['std_msgs::Float64'],['LEAD_DISTANCE']]}
 
          }
