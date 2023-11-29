@@ -114,7 +114,7 @@ nissan_rogue = {139:{'steering_angle':[['std_msgs::Float64'],['STEER_ANGLE']]},
 #honda list
 honda_pilot={
          342:{'steer_angle':[['std_msgs::Float64'],['STEER_ANGLE']]},
-         344:{'vel':[['std_msgs::Float64'],['XMISSION_SPEED']]},
+         344:{'/car/state/vel_x':[['std_msgs::Float64'],['XMISSION_SPEED']]},
          506:{'acc/cruise_state_int':[['std_msgs::Int16'],['CRUISE_STATES']]},
          780:{'acc/set_speed':[['std_msgs::Int16'],['CRUISE_SPEED']]},
          419:{'gear':[['std_msgs::String'],['GEAR_SHIFTER']]},
