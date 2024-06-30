@@ -113,14 +113,27 @@ nissan_rogue = {139:{'steering_angle':[['std_msgs::Float64'],['STEER_ANGLE']]},
 
 #honda list
 honda_pilot={
-         342:{'steer_angle':[['std_msgs::Float64'],['STEER_ANGLE']]},
-         344:{'vel':[['std_msgs::Float64'],['XMISSION_SPEED']]},
+         342:{'car/state/steering':[['std_msgs::Float64MultiArray'],['STEER_ANGLE','STEER_ANGLE_RATE']]},
+#         342:{'steer_angle':[['std_msgs::Float64'],['STEER_ANGLE']]},
+         344:{'car/state/vel_x':[['std_msgs::Float64'],['XMISSION_SPEED']]},
          506:{'acc/cruise_state_int':[['std_msgs::Int16'],['CRUISE_STATES']]},
          780:{'acc/set_speed':[['std_msgs::Int16'],['CRUISE_SPEED']]},
          419:{'gear':[['std_msgs::String'],['GEAR_SHIFTER']]},
 #         422:{'acc/acc_btns':[['std_msgs::String'],['GEAR_SHIFTER']]},
          490:{'accel':[['std_msgs::Float64'],['LONG_ACCEL']]},
-         927:{'lead_dist':[['std_msgs::Float64'],['LEAD_DISTANCE']]}
+#         927:{'lead_dist':[['std_msgs::Float64'],['LEAD_DISTANCE']]}
+         1040:{'car/radar/track_a0':[['geometry_msgs::PointStamped'], ['LEAD_DISTANCE','LATERAL_LOCATION','REL_VEL'] ]},
+         1041:{'car/radar/track_a1':[['geometry_msgs::PointStamped'], ['LEAD_DISTANCE','LATERAL_LOCATION','REL_VEL'] ]},
+         1042:{'car/radar/track_a2':[['geometry_msgs::PointStamped'], ['LEAD_DISTANCE','LATERAL_LOCATION','REL_VEL'] ]},
+         1043:{'car/radar/track_a3':[['geometry_msgs::PointStamped'], ['LEAD_DISTANCE','LATERAL_LOCATION','REL_VEL'] ]},
+         1044:{'car/radar/track_a4':[['geometry_msgs::PointStamped'], ['LEAD_DISTANCE','LATERAL_LOCATION','REL_VEL'] ]},
+         1045:{'car/radar/track_a5':[['geometry_msgs::PointStamped'], ['LEAD_DISTANCE','LATERAL_LOCATION','REL_VEL'] ]},
+         1046:{'car/radar/track_a6':[['geometry_msgs::PointStamped'], ['LEAD_DISTANCE','LATERAL_LOCATION','REL_VEL'] ]},
+         1047:{'car/radar/track_a7':[['geometry_msgs::PointStamped'], ['LEAD_DISTANCE','LATERAL_LOCATION','REL_VEL'] ]},
+         1090:{'car/radar/track_a8':[['geometry_msgs::PointStamped'], ['LEAD_DISTANCE','LATERAL_LOCATION','REL_VEL'] ]},
+         1091:{'car/radar/track_a9':[['geometry_msgs::PointStamped'], ['LEAD_DISTANCE','LATERAL_LOCATION','REL_VEL'] ]},
+         1092:{'car/radar/track_a10':[['geometry_msgs::PointStamped'], ['LEAD_DISTANCE','LATERAL_LOCATION','REL_VEL'] ]},
+         1093:{'car/radar/track_a11':[['geometry_msgs::PointStamped'], ['LEAD_DISTANCE','LATERAL_LOCATION','REL_VEL'] ]},
 
          }
 
