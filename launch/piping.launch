@@ -9,7 +9,7 @@
 
 <node pkg="can_to_ros" type ="subs" name="subs" output="screen" />
 
-<node pkg= "rosbag" name="record" type="record"  args="-a -x '/car/can/raw' -O $(env HOME)/$(arg bag_name)_CAN_realtime" />
+<node pkg= "rosbag" name="record" type="record"  args="-a -x '/car/can/raw' -O $(env HOME)/$(arg bag_name)" />
 
 
 </launch>
