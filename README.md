@@ -32,7 +32,8 @@ Invokes the following:
 This launch file allows you to pipe in replayed CAN and/or GPS data stored in CSV files, as if they are being read directly from the car in real time. Make sure that the generated subs.cpp node matches the vehicle type of the CSV file you are playing back data from. Caviat: the playback timing is not perfect in all cases but still very useful.
 
 > Usage:
-``` roslaunch can_to_ros piping.launch publish_csv_args:= "-c {/FILEPATH/DATE_VIN_CAN_Messages.csv} -g {/FILEPATH/DATE_VIN_GPS_Messages.csv}" bag_name:="my_bagfile"
+```
+roslaunch can_to_ros piping.launch publish_csv_args:= "-c {/FILEPATH/DATE_VIN_CAN_Messages.csv} -g {/FILEPATH/DATE_VIN_GPS_Messages.csv}" bag_name:="my_bagfile"
 ```
 
 Uses:
