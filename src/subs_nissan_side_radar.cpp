@@ -41,15 +41,27 @@ public:
     sub_ = n_.subscribe("/car/can/raw", 1000, &SubscribeAndPublish::callback, this);
   }
 
-  float decode(std::string binary_val, int start, int length, bool negative_flag) {
-    std::string raw1 = binary_val.substr(start, length);
+  float decode(const std::string& binary_val, int start, int length, bool negative_flag) {
+    std::string raw = binary_val.substr(start, length);
+
     if (negative_flag) {
-        raw1 = obj.findTwosComplement(raw1);
+        // First bit is the sign bit (MSB)
+        bool is_negative = (raw[0] == '1');
+        if (is_negative) {
+            // Interpret as two's complement signed integer
+            unsigned long long value = std::stoull(raw, nullptr, 2);
+            // Convert to signed by subtracting 2^length
+            long long signed_value = static_cast<long long>(value) - (1LL << length);
+            return static_cast<float>(signed_value);
+        } else {
+            // Positive number, direct conversion
+            return static_cast<float>(std::stoull(raw, nullptr, 2));
+        }
+    } else {
+        // Unsigned conversion
+        return static_cast<float>(std::stoull(raw, nullptr, 2));
     }
-    unsigned long long raw_dec = std::stoull(raw1, 0, 2);
-	float scaled = (float)raw_dec * 1.00000 + 0.000000;
-    return scaled;
-  }
+}
 
   void callback(const std_msgs::String::ConstPtr& raw_data)
   {
