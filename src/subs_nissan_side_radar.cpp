@@ -16,7 +16,7 @@
 #include <map>
 #include <string>
 #include <bitset>
-
+#include <iostream>
 
 
 class SubscribeAndPublish
@@ -138,9 +138,7 @@ public:
         marker.point.y = lat_data; // lat
         marker.point.z = valid_data; // rel speed
 
-        printf("Publishing to this track:")
-        printf(track_name)
-        printf("/n")
+        std::cout << "Publishing to this track: " << track_name << std::endl;
 
         nissan_radar_publishers[track_name].publish(marker);
     }
