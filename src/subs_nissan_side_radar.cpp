@@ -138,8 +138,8 @@ public:
         
         int offset = subtrack_to_offset[subtrack];
 
-        double long_data = decode(binary, 99 + offset, 13, false); // DISTANCE_B_#
-        double lat_data = decode(binary, 85 + offset, 13, true); // DISTANCE_A_#
+        double long_data = decode(binary, 99 + offset, 13, true); // DISTANCE_B_#
+        double lat_data = decode(binary, 85 + offset, 13, false); // DISTANCE_A_#
         double valid_data = decode(binary, 123 + offset, 1, false); // NEARBY_WARNING_FLAG_#
 
         geometry_msgs::PointStamped marker;
