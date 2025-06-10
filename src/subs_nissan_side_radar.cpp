@@ -37,6 +37,15 @@ public:
         }
     }
 
+    std::vector<std::string> keys;
+    for (const auto& kv : nissan_radar_publishers) {
+        keys.push_back(kv.first);
+    }
+
+    for (const auto& key : keys) std::cout << key << " ";
+    std::cout << std::endl;
+
+
     //Topic you want to subscribe
     sub_ = n_.subscribe("/car/can/raw", 1000, &SubscribeAndPublish::callback, this);
   }
@@ -138,7 +147,7 @@ public:
         marker.point.y = lat_data; // lat
         marker.point.z = valid_data; // rel speed
 
-        std::cout << "Publishing to this track: " << track_name << std::endl;
+        std::cout << "\n\nPublishing to this track: " << track_name << std::endl;
 
         nissan_radar_publishers[track_name].publish(marker);
     }
