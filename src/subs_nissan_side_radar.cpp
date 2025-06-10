@@ -140,7 +140,7 @@ public:
 
         double long_data = decode(binary, 99 + offset, 13, false); // DISTANCE_B_#
         double lat_data = decode(binary, 85 + offset, 13, true); // DISTANCE_A_#
-        double valid_data = decode(binary, 113 + offset, 1, false); // VALID_A_#
+        double valid_data = decode(binary, 123 + offset, 1, false); // NEARBY_WARNING_FLAG_#
 
         geometry_msgs::PointStamped marker;
         marker.header.frame_id = "front_laser_link";
