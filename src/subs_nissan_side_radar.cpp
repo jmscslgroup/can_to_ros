@@ -147,8 +147,6 @@ public:
         marker.point.y = lat_data; // lat
         marker.point.z = valid_data; // rel speed
 
-        // std::cout << "\n\nPublishing to this track: \n\n" << track_name << std::endl;
-
         nissan_radar_publishers[track_name].publish(marker);
     }
 
