@@ -138,6 +138,10 @@ public:
         marker.point.y = lat_data; // lat
         marker.point.z = valid_data; // rel speed
 
+        printf("Publishing to this track:")
+        printf(track_name)
+        printf("/n")
+
         nissan_radar_publishers[track_name].publish(marker);
     }
 
