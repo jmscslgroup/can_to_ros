@@ -74,10 +74,10 @@ public:
     int left_message_ids[10] = {381, 385, 389, 393, 398, 405, 411, 415, 419, 423};
     int right_message_ids[10] = {382, 386, 390, 394, 399, 407, 412, 416, 420, 425};
 
-    char side = 'L';
-    for (int i = 0; i < sizeof(right_message_ids)/sizeof(int); i++) {
+    std::string side = "L";
+    for (int i = 0; i < 10; i++) {
         if (right_message_ids[i] == MessageID) {
-            side = 'R';
+            side = "R";
             break;
         }
     }
@@ -147,7 +147,7 @@ public:
         marker.point.y = lat_data; // lat
         marker.point.z = valid_data; // rel speed
 
-        std::cout << "\n\nPublishing to this track: " << track_name << std::endl;
+        std::cout << "\n\nPublishing to this track: \n\n" << track_name << std::endl;
 
         nissan_radar_publishers[track_name].publish(marker);
     }
