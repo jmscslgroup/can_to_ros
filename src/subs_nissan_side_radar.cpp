@@ -28,11 +28,11 @@ public:
     for (int track = 1; track <= 10; track++) {
         for (int subtrack = 1; subtrack <= 6; subtrack++) {
             std::string side = "L";
-            std::string track_name = "track_" + side + std::to_string(track) + "_" + std::to_string(subtrack);
+            std::string track_name = "car/radar/track_" + side + std::to_string(track) + "_" + std::to_string(subtrack);
             nissan_radar_publishers[track_name] = n_.advertise<geometry_msgs::PointStamped>(track_name, 1000);
 
             side = "R";
-            track_name = "track_" + side + std::to_string(track) + "_" + std::to_string(subtrack);
+            track_name = "car/radar/track_" + side + std::to_string(track) + "_" + std::to_string(subtrack);
             nissan_radar_publishers[track_name] = n_.advertise<geometry_msgs::PointStamped>(track_name, 1000);
         }
     }
@@ -131,7 +131,7 @@ public:
 
 
     for (int subtrack = 1; subtrack <= 6; subtrack++) {
-        std::string track_name = "track_" + side + std::to_string(message_id_to_track[MessageID]) + "_" + std::to_string(subtrack);
+        std::string track_name = "car/radar/track_" + side + std::to_string(message_id_to_track[MessageID]) + "_" + std::to_string(subtrack);
         
         int offset = subtrack_to_offset[subtrack];
 
