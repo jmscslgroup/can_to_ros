@@ -37,7 +37,7 @@ public:
         }
     }
 
-    steer_pub = n_.advertise<std_msgs::Float64>('steering_angle', 1000);
+    steer_pub = n_.advertise<std_msgs::Float64>("steering_angle", 1000);
 
     //Topic you want to subscribe
     sub_ = n_.subscribe("/car/can/raw", 1000, &SubscribeAndPublish::callback, this);
