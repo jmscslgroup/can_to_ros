@@ -135,7 +135,7 @@ public:
     }
 
     if (MessageID == 139) {
-        float data = decode(binary, start, length, false);
+        float data = decode(binary, 48, 16, false);
         steer_pub.publish(data);
         return;
     }
