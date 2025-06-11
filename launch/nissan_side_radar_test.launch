@@ -1,0 +1,13 @@
+<launch>
+
+    <arg name="description" default="_all"/>
+
+    <node pkg="can_to_ros" type="vehicle_interface" name="vehicle_interface" output="screen" />
+
+    <node pkg="can_to_ros" type="subs_nissan_side_radar.cpp" name="subs_nissan_side_radar" output="screen"/>
+
+    <node pkg="can_to_ros" type="node_status.py" name="node_status" output="screen" />
+
+    <node pkg="can_to_ros" type ="rosbag_record.sh" name="bashscript1" output="screen" args="$(arg description)"/> 
+
+</launch>

@@ -37,6 +37,8 @@ public:
         }
     }
 
+    steer_pub = n_.advertise<std_msgs::Float64>('steering_angle', 1000);
+
     //Topic you want to subscribe
     sub_ = n_.subscribe("/car/can/raw", 1000, &SubscribeAndPublish::callback, this);
   }
@@ -70,7 +72,7 @@ public:
 
     ss >> Time>> Bus>> MessageID>> Message>> MessageLength;
 
-    if (!(MessageID >= 381 && MessageID <= 425)) {
+    if (!(MessageID == 139 || (MessageID >= 381 && MessageID <= 425))) {
         return;
     }
 
@@ -132,6 +134,12 @@ public:
         binary.append(std::bitset<4>(val).to_string());
     }
 
+    if (MessageID == 139) {
+        float data = decode(binary, start, length, false);
+        steer_pub.publish(data);
+        return;
+    }
+
 
     for (int subtrack = 1; subtrack <= 6; subtrack++) {
         std::string track_name = "car/radar/track_" + side + std::to_string(message_id_to_track[MessageID]) + "_" + std::to_string(subtrack);
@@ -159,6 +167,8 @@ private:
     ros::NodeHandle n_;
 
     std::map<std::string, ros::Publisher> nissan_radar_publishers;
+
+    ros::Publisher steer_pub;
 
     ros::Subscriber sub_;
     decode_msgs obj;
