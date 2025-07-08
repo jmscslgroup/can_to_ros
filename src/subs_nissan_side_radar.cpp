@@ -30,10 +30,12 @@ public:
             std::string side = "L";
             std::string track_name = "car/radar/track_" + side + std::to_string(track) + "_" + std::to_string(subtrack);
             nissan_radar_publishers[track_name] = n_.advertise<geometry_msgs::PointStamped>(track_name, 1000);
+            nissan_radar_publishers[track_name + "_mystery"] = n_.advertise<geometry_msgs::PointStamped>(track_name + "_mystery", 1000);
 
             side = "R";
             track_name = "car/radar/track_" + side + std::to_string(track) + "_" + std::to_string(subtrack);
             nissan_radar_publishers[track_name] = n_.advertise<geometry_msgs::PointStamped>(track_name, 1000);
+            nissan_radar_publishers[track_name + "_mystery"] = n_.advertise<geometry_msgs::PointStamped>(track_name + "_mystery", 1000);
         }
     }
 
@@ -151,6 +153,19 @@ public:
         marker.point.z = valid_data; // rel speed
 
         nissan_radar_publishers[track_name].publish(marker);
+
+        double mystery_a = decode(binary, 57 + offset, 6, true); // SIGNAL_QUESTION_A_#
+        double mystery_b = decode(binary, 63 + offset, 14, false); // SIGNAL_QUESTION_B_#
+
+        geometry_msgs::PointStamped marker_mystery;
+        marker_mystery.header.frame_id = "front_laser_link";
+        marker_mystery.header.stamp = ros::Time(std::stod(Time));
+
+        marker_mystery.point.x = mystery_a; // long
+        marker_mystery.point.y = mystery_b; // lat
+        marker_mystery.point.z = 0.0; // empty
+
+        nissan_mystery_publishers[track_name + "_mystery"].publish(marker_mystery);
     }
 
 }
@@ -159,6 +174,7 @@ private:
     ros::NodeHandle n_;
 
     std::map<std::string, ros::Publisher> nissan_radar_publishers;
+    std::map<std::string, ros::Publisher> nissan_mystery_publishers;
 
     ros::Subscriber sub_;
     decode_msgs obj;
