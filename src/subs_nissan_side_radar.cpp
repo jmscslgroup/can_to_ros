@@ -30,12 +30,12 @@ public:
             std::string side = "L";
             std::string track_name = "car/radar/track_" + side + std::to_string(track) + "_" + std::to_string(subtrack);
             nissan_radar_publishers[track_name] = n_.advertise<geometry_msgs::PointStamped>(track_name, 1000);
-            nissan_radar_publishers[track_name + "_mystery"] = n_.advertise<geometry_msgs::PointStamped>(track_name + "_mystery", 1000);
+            nissan_mystery_publishers[track_name + "_mystery"] = n_.advertise<geometry_msgs::PointStamped>(track_name + "_mystery", 1000);
 
             side = "R";
             track_name = "car/radar/track_" + side + std::to_string(track) + "_" + std::to_string(subtrack);
             nissan_radar_publishers[track_name] = n_.advertise<geometry_msgs::PointStamped>(track_name, 1000);
-            nissan_radar_publishers[track_name + "_mystery"] = n_.advertise<geometry_msgs::PointStamped>(track_name + "_mystery", 1000);
+            nissan_mystery_publishers[track_name + "_mystery"] = n_.advertise<geometry_msgs::PointStamped>(track_name + "_mystery", 1000);
         }
     }
 
