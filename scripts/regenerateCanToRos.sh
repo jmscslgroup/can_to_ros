@@ -25,13 +25,13 @@ read -r -p "Does this information look correct? Proceed to generating CANtoROS f
 
 	mkdir -p /home/$LIBPANDA_USER/strym/strym/dbc/
 
-	wget https://raw.githubusercontent.com/jmscslgroup/strym/master/strym/dbc/toyota_rav4_hybrid.dbc  -O ~/strym/strym/dbc/toyota_rav4_hybrid.dbc
-	wget https://raw.githubusercontent.com/jmscslgroup/strym/master/strym/dbc/honda_pilot_2017.dbc  -O ~/strym/strym/dbc/honda_pilot_2017.dbc
-	wget https://raw.githubusercontent.com/jmscslgroup/strym/master/strym/dbc/toyota_rav4_hybrid.dbc  -O ~/strym/strym/dbc/nissan_rogue_2021.dbc
-	wget https://raw.githubusercontent.com/jmscslgroup/strym/master/strym/dbc/toyota_rav4_hybrid.dbc  -O ~/strym/strym/dbc/toyota_rav4_2019.dbc
-	wget https://raw.githubusercontent.com/jmscslgroup/strym/master/strym/dbc/toyota_rav4_hybrid.dbc  -O ~/strym/strym/dbc/toyota_rav4_2020.dbc
-	wget https://raw.githubusercontent.com/jmscslgroup/strym/master/strym/dbc/toyota_rav4_hybrid.dbc  -O ~/strym/strym/dbc/toyota_rav4_2021.dbc
-	wget https://raw.githubusercontent.com/jmscslgroup/strym/master/strym/dbc/honda_pilot_2017.dbc -O ~/strym/strym/dbc/honda_pilot_2017.dbc
+	wget https://raw.githubusercontent.com/jmscslgroup/strym/refs/heads/master/src/strym/dbc/toyota_rav4_hybrid.dbc  -O ~/strym/strym/dbc/toyota_rav4_hybrid.dbc
+	wget https://raw.githubusercontent.com/jmscslgroup/strym/refs/heads/master/src/strym/dbc/honda_pilot_2017.dbc  -O ~/strym/strym/dbc/honda_pilot_2017.dbc
+	wget https://raw.githubusercontent.com/jmscslgroup/strym/refs/heads/master/src/strym/dbc/toyota_rav4_hybrid.dbc  -O ~/strym/strym/dbc/nissan_rogue_2021.dbc
+	wget https://raw.githubusercontent.com/jmscslgroup/strym/refs/heads/master/src/strym/dbc/toyota_rav4_hybrid.dbc  -O ~/strym/strym/dbc/toyota_rav4_2019.dbc
+	wget https://raw.githubusercontent.com/jmscslgroup/strym/refs/heads/master/src/strym/dbc/toyota_rav4_hybrid.dbc  -O ~/strym/strym/dbc/toyota_rav4_2020.dbc
+	wget https://raw.githubusercontent.com/jmscslgroup/strym/refs/heads/master/src/strym/dbc/toyota_rav4_hybrid.dbc  -O ~/strym/strym/dbc/toyota_rav4_2021.dbc
+	wget https://raw.githubusercontent.com/jmscslgroup/strym/refs/heads/master/src/strym/dbc/honda_pilot_2017.dbc -O ~/strym/strym/dbc/honda_pilot_2017.dbc
 	python3 ./makeSignalsJSON.py
 	python3 ./generateDecode_Subs.py
 	./regen_vehicle_interface.sh
