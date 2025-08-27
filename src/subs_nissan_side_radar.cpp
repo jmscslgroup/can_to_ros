@@ -155,7 +155,7 @@ public:
         nissan_radar_publishers[track_name].publish(marker);
 
         double mystery_a = decode(binary, 57 + offset, 6, true); // SIGNAL_QUESTION_A_#
-        double mystery_b = decode(binary, 63 + offset, 14, false); // SIGNAL_QUESTION_B_#
+        double mystery_b = decode(binary, 64 + offset, 9, false); // SIGNAL_QUESTION_B_#
 
         geometry_msgs::PointStamped marker_mystery;
         marker_mystery.header.frame_id = "front_laser_link";
