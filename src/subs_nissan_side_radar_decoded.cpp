@@ -1,0 +1,183 @@
+#include "ros/ros.h"
+#include "std_msgs/String.h"
+#include "geometry_msgs/Twist.h"
+#include "std_msgs/Float32.h"
+#include "std_msgs/Float64.h"
+#include "sensor_msgs/TimeReference.h"
+#include "header_package/can_decode.h"
+#include "visualization_msgs/Marker.h"
+#include "geometry_msgs/PointStamped.h"
+#include "geometry_msgs/AccelStamped.h"
+#include "geometry_msgs/Twist.h"
+#include "geometry_msgs/Point.h"
+//#include "can_to_ros/headlights.h"
+#include "std_msgs/UInt8.h"
+
+#include <map>
+#include <string>
+#include <bitset>
+#include <iostream>
+
+
+class SubscribeAndPublish
+{
+public:
+  SubscribeAndPublish()
+  {
+    //Topic you want to publish
+    for (int track = 1; track <= 10; track++) {
+        for (int subtrack = 1; subtrack <= 6; subtrack++) {
+            std::string side = "L";
+            std::string track_name = "car/radar/track_" + side + std::to_string(track) + "_" + std::to_string(subtrack);
+            nissan_radar_publishers[track_name] = n_.advertise<geometry_msgs::PointStamped>(track_name, 1000);
+
+            side = "R";
+            track_name = "car/radar/track_" + side + std::to_string(track) + "_" + std::to_string(subtrack);
+            nissan_radar_publishers[track_name] = n_.advertise<geometry_msgs::PointStamped>(track_name, 1000);
+        }
+    }
+
+    //Topic you want to subscribe
+    sub_ = n_.subscribe("/car/can/raw", 1000, &SubscribeAndPublish::callback, this);
+  }
+
+  float decode(const std::string& binary_val, int start, int length, bool negative_flag) {
+    std::string raw = binary_val.substr(start, length);
+
+    if (negative_flag) {
+        // First bit is the sign bit (MSB)
+        bool is_negative = (raw[0] == '1');
+        if (is_negative) {
+            // Interpret as two's complement signed integer
+            unsigned long long value = std::stoull(raw, nullptr, 2);
+            // Convert to signed by subtracting 2^length
+            long long signed_value = static_cast<long long>(value) - (1LL << length);
+            return static_cast<float>(signed_value);
+        } else {
+            // Positive number, direct conversion
+            return static_cast<float>(std::stoull(raw, nullptr, 2));
+        }
+    } else {
+        // Unsigned conversion
+        return static_cast<float>(std::stoull(raw, nullptr, 2));
+    }
+}
+
+  void callback(const std_msgs::String::ConstPtr& raw_data)
+  {
+
+    std::stringstream ss(raw_data->data);
+
+    ss >> Time>> Bus>> MessageID>> Message>> MessageLength;
+
+    if (!(MessageID >= 381 && MessageID <= 425)) {
+        return;
+    }
+
+    int left_message_ids[10] = {381, 385, 389, 393, 398, 405, 411, 415, 419, 423};
+    int right_message_ids[10] = {382, 386, 390, 394, 399, 407, 412, 416, 420, 425};
+
+    std::string side = "L";
+    for (int i = 0; i < 10; i++) {
+        if (right_message_ids[i] == MessageID) {
+            side = "R";
+            break;
+        }
+    }
+
+    std::map<int, int> message_id_to_track = {
+        {381, 1},
+        {382, 1},
+        {385, 2},
+        {386, 2},
+        {389, 3},
+        {390, 3},
+        {393, 4},
+        {394, 4},
+        {398, 5},
+        {399, 5},
+        {405, 6},
+        {407, 6},
+        {411, 7},
+        {412, 7},
+        {415, 8},
+        {416, 8},
+        {419, 9},
+        {420, 9},
+        {423, 10},
+        {425, 10}
+    };
+
+    std::map<int, int> subtrack_to_offset = {
+        {1, 0},
+        {2, 72},
+        {3, 72 * 2},
+        {4, 72 * 3},
+        {5, 72 * 4},
+        {6, 72 * 5}
+    };
+
+    int len = Message.length();
+    int i = 0;
+    std::string word;
+    std::string binary;
+    unsigned long long n;
+
+    binary.clear();
+    for (char c : Message) {
+        unsigned int val;
+        std::stringstream ss;
+        ss << std::hex << c;
+        ss >> val;
+        binary.append(std::bitset<4>(val).to_string());
+    }
+
+
+    for (int subtrack = 1; subtrack <= 6; subtrack++) {
+        std::string track_name = "car/radar/track_" + side + std::to_string(message_id_to_track[MessageID]) + "_" + std::to_string(subtrack);
+        
+        int offset = subtrack_to_offset[subtrack];
+
+        
+        double absolute_distance = 0.0176 * decode(binary, 85 + offset, 13, false) + 0.1163;
+        double angle = 0.0033 * decode(binary, 64 + offset, 9, true) + 0.4509;
+        double angle_flag = decode(binary, 63 + offset, 1, false); // NEARBY_WARNING_FLAG_#
+
+        geometry_msgs::PointStamped marker;
+        marker.header.frame_id = "front_laser_link";
+        marker.header.stamp = ros::Time(std::stod(Time));
+
+        marker.point.x = absolute_distance;
+        marker.point.y = angle;
+        marker.point.z = angle_flag;
+
+        nissan_radar_publishers[track_name].publish(marker);
+    }
+
+}
+
+private:
+    ros::NodeHandle n_;
+
+    std::map<std::string, ros::Publisher> nissan_radar_publishers;
+
+    ros::Subscriber sub_;
+    decode_msgs obj;
+    std::string Time,Buffer,Message,MessageLength;
+    double MessageID, Bus;
+    values data;
+
+};//End of class SubscribeAndPublish
+
+// }
+/****************************************************/
+int main(int argc, char **argv){
+    ros::init(argc, argv, "subs_nissan_side_radar_decoded");
+    ros::NodeHandle nh1;
+    // ROS_INFO("Got parameter");
+
+    SubscribeAndPublish SAPObject;
+     ros::spin();
+
+  return 0;
+}

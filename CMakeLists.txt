@@ -248,6 +248,9 @@ target_link_libraries(subs_fs_test ${catkin_LIBRARIES})
 add_executable(subs_nissan_side_radar src/subs_nissan_side_radar.cpp)
 target_link_libraries(subs_nissan_side_radar ${catkin_LIBRARIES})
 
+add_executable(subs_nissan_side_radar_decoded src/subs_nissan_side_radar_decoded.cpp)
+target_link_libraries(subs_nissan_side_radar_decoded ${catkin_LIBRARIES})
+
 add_executable(lead_info src/lead_info.cpp)
 target_link_libraries(lead_info ${catkin_LIBRARIES})
 
