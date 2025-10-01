@@ -141,7 +141,7 @@ public:
         
         double absolute_distance = 0.0176 * decode(binary, 85 + offset, 13, false) + 0.1163;
         double angle = 0.0033 * decode(binary, 64 + offset, 9, false) + 0.4509;
-        double angle_flag = decode(binary, 63 + offset, 1, false); // NEARBY_WARNING_FLAG_#
+        double angle_flag = decode(binary, 123 + offset, 1, false); // NEARBY_WARNING_FLAG_#
 
         geometry_msgs::PointStamped marker;
         marker.header.frame_id = "front_laser_link";
