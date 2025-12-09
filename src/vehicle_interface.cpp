@@ -586,8 +586,8 @@ int main(int argc, char **argv) {
         //		exit(EXIT_FAILURE);
 
         // We can for set the VIN to continue with the following code, but best to just fail everything since somethin aint right:
-        ROS_ERROR("Force setting the VIN to 5N1000000P0000000");
-        pandaHandler.forceSetVin((const unsigned char*)"5N1000000P0000000");	// Hard coded VIN setting
+        ROS_ERROR("Force setting the VIN to 2T3W1RFVXLW102405");
+        pandaHandler.forceSetVin((const unsigned char*)"2T3W1RFVXLW102405");	// Hard coded VIN setting
         pandaController = new Panda::ControllerClient(pandaHandler);
         if(pandaController->getController() == NULL) {
             std::cerr << "ERROR 2: No VIN discovered, unable to make test controller" << std::endl;
