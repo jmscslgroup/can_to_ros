@@ -79,9 +79,11 @@ private:
 
 		if (
       //this is where the msgs to be published start
-(canData->messageID==37&&canData->dataLength==8)
+false
+||(canData->messageID==36&&canData->dataLength==8)
+||(canData->messageID==37&&canData->dataLength==8)
+||(canData->messageID==170&&canData->dataLength==8)
 ||(canData->messageID==180&&canData->dataLength==8)
-||(canData->messageID==869&&canData->dataLength==7)
 ||(canData->messageID==384&&canData->dataLength==8)
 ||(canData->messageID==385&&canData->dataLength==8)
 ||(canData->messageID==386&&canData->dataLength==8)
@@ -98,11 +100,15 @@ private:
 ||(canData->messageID==397&&canData->dataLength==8)
 ||(canData->messageID==398&&canData->dataLength==8)
 ||(canData->messageID==399&&canData->dataLength==8)
-||(canData->messageID==1570&&canData->dataLength==8)
 ||(canData->messageID==467&&canData->dataLength==8)
-||(canData->messageID==835&&canData->dataLength==8)
-||(canData->messageID==921&&canData->dataLength==8)
 ||(canData->messageID==552&&canData->dataLength==4)
+||(canData->messageID==608&&canData->dataLength==8)
+||(canData->messageID==740&&canData->dataLength==5)
+||(canData->messageID==835&&canData->dataLength==8)
+||(canData->messageID==869&&canData->dataLength==7)
+||(canData->messageID==921&&canData->dataLength==8)
+||(canData->messageID==956&&canData->dataLength==8)
+||(canData->messageID==1570&&canData->dataLength==8)
       //this is where the msgs to be published end
 
 

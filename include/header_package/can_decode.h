@@ -155,106 +155,832 @@ values decode_msgs::decode_message( unsigned int msg_id, std::string msg){
 
       i = i+1;
   }
-if (msg_id == 139){
-	std::string raw1 = binary.substr(48,16); //STEER_ANGLE
+if (msg_id == 36){
+	std::string raw1 = binary.substr(22,10); //ACCEL_X
 	raw_dec = std::stoull(raw1, 0, 2);
-	scaled = (float)raw_dec * 0.050000 + 0.000000;
+	scaled = (float)raw_dec * 0.035890 + -18.375000;
 	returnedVal.var1 = scaled;
+
+	std::string raw2 = binary.substr(38,10); //ACCEL_Y
+	raw_dec = std::stoull(raw2, 0, 2);
+	scaled = (float)raw_dec * 0.035890 + -18.375000;
+	returnedVal.var2 = scaled;
+
+	std::string raw3 = binary.substr(6,10); //YAW_RATE
+	raw_dec = std::stoull(raw3, 0, 2);
+	scaled = (float)raw_dec * 0.244000 + -125.000000;
+	returnedVal.var3 = scaled;
 
 	return returnedVal;
 }
-if (msg_id == 140){
-	std::string raw1 = binary.substr(44,10); //ACCEL_PEDAL_POSITION
-	raw_dec = std::stoull(raw1, 0, 2);
-	scaled = (float)raw_dec * 1.000000 + 0.000000;
+if (msg_id == 37){
+	std::string raw1 = binary.substr(4,12); //STEER_ANGLE
+	float STEER_ANGLE_fl;
+        	if (raw1[0] == '0'){
+        	STEER_ANGLE_fl= std::stoul( raw1, 0, 2 );
+	}
+	else {
+        	STEER_ANGLE_fl = std::stoul(findTwosComplement(raw1), 0, 2);
+        	STEER_ANGLE_fl = STEER_ANGLE_fl * -1.0;
+        	}
+	scaled = STEER_ANGLE_fl * 1.500000 + 0.000000;
 	returnedVal.var1 = scaled;
+
+	std::string raw2 = binary.substr(32,4); //STEER_FRACTION
+	float STEER_FRACTION_fl;
+        	if (raw2[0] == '0'){
+        	STEER_FRACTION_fl= std::stoul( raw2, 0, 2 );
+	}
+	else {
+        	STEER_FRACTION_fl = std::stoul(findTwosComplement(raw2), 0, 2);
+        	STEER_FRACTION_fl = STEER_FRACTION_fl * -1.0;
+        	}
+	scaled = STEER_FRACTION_fl * 0.100000 + 0.000000;
+	returnedVal.var2 = scaled;
+
+	std::string raw3 = binary.substr(36,12); //STEER_RATE
+	float STEER_RATE_fl;
+        	if (raw3[0] == '0'){
+        	STEER_RATE_fl= std::stoul( raw3, 0, 2 );
+	}
+	else {
+        	STEER_RATE_fl = std::stoul(findTwosComplement(raw3), 0, 2);
+        	STEER_RATE_fl = STEER_RATE_fl * -1.0;
+        	}
+	scaled = STEER_RATE_fl * 1.000000 + 0.000000;
+	returnedVal.var3 = scaled;
 
 	return returnedVal;
 }
-if (msg_id == 303){
-	std::string raw1 = binary.substr(74,12); //SPEED
+if (msg_id == 170){
+	std::string raw1 = binary.substr(0,16); //WHEEL_SPEED_FR
 	raw_dec = std::stoull(raw1, 0, 2);
-	scaled = (float)raw_dec * 0.050000 + 0.000000;
+	scaled = (float)raw_dec * 0.010000 + -67.670000;
+	conversion = ceilf((scaled* (10.0/36.0)) * 100) / 100;
+	returnedVal.var1 = conversion;
+
+	std::string raw2 = binary.substr(16,16); //WHEEL_SPEED_FL
+	raw_dec = std::stoull(raw2, 0, 2);
+	scaled = (float)raw_dec * 0.010000 + -67.670000;
+	conversion = ceilf((scaled* (10.0/36.0)) * 100) / 100;
+	returnedVal.var2 = conversion;
+
+	std::string raw3 = binary.substr(32,16); //WHEEL_SPEED_RR
+	raw_dec = std::stoull(raw3, 0, 2);
+	scaled = (float)raw_dec * 0.010000 + -67.670000;
+	conversion = ceilf((scaled* (10.0/36.0)) * 100) / 100;
+	returnedVal.var3 = conversion;
+
+	std::string raw4 = binary.substr(48,16); //WHEEL_SPEED_RL
+	raw_dec = std::stoull(raw4, 0, 2);
+	scaled = (float)raw_dec * 0.010000 + -67.670000;
+	conversion = ceilf((scaled* (10.0/36.0)) * 100) / 100;
+	returnedVal.var4 = conversion;
+
+	return returnedVal;
+}
+if (msg_id == 180){
+	std::string raw1 = binary.substr(40,16); //SPEED
+	raw_dec = std::stoull(raw1, 0, 2);
+	scaled = (float)raw_dec * 0.010000 + 0.000000;
 	conversion = ceilf((scaled* (10.0/36.0)) * 100) / 100;
 	returnedVal.var1 = conversion;
 
 	return returnedVal;
 }
-if (msg_id == 308){
-	std::string raw1 = binary.substr(309,5); //CRUISE_STATE
+if (msg_id == 384){
+	std::string raw1 = binary.substr(8,13); //LONG_DIST
+	raw_dec = std::stoull(raw1, 0, 2);
+	scaled = (float)raw_dec * 0.040000 + 0.000000;
+	returnedVal.var1 = scaled;
+
+	std::string raw2 = binary.substr(24,11); //LAT_DIST
+	float LAT_DIST_fl;
+        	if (raw2[0] == '0'){
+        	LAT_DIST_fl= std::stoul( raw2, 0, 2 );
+	}
+	else {
+        	LAT_DIST_fl = std::stoul(findTwosComplement(raw2), 0, 2);
+        	LAT_DIST_fl = LAT_DIST_fl * -1.0;
+        	}
+	scaled = LAT_DIST_fl * 0.040000 + 0.000000;
+	returnedVal.var2 = scaled;
+
+	std::string raw3 = binary.substr(40,12); //REL_SPEED
+	float REL_SPEED_fl;
+        	if (raw3[0] == '0'){
+        	REL_SPEED_fl= std::stoul( raw3, 0, 2 );
+	}
+	else {
+        	REL_SPEED_fl = std::stoul(findTwosComplement(raw3), 0, 2);
+        	REL_SPEED_fl = REL_SPEED_fl * -1.0;
+        	}
+	scaled = REL_SPEED_fl * 0.017850 + 0.000000;
+	returnedVal.var3 = scaled;
+
+	return returnedVal;
+}
+if (msg_id == 385){
+	std::string raw1 = binary.substr(8,13); //LONG_DIST
+	raw_dec = std::stoull(raw1, 0, 2);
+	scaled = (float)raw_dec * 0.040000 + 0.000000;
+	returnedVal.var1 = scaled;
+
+	std::string raw2 = binary.substr(24,11); //LAT_DIST
+	float LAT_DIST_fl;
+        	if (raw2[0] == '0'){
+        	LAT_DIST_fl= std::stoul( raw2, 0, 2 );
+	}
+	else {
+        	LAT_DIST_fl = std::stoul(findTwosComplement(raw2), 0, 2);
+        	LAT_DIST_fl = LAT_DIST_fl * -1.0;
+        	}
+	scaled = LAT_DIST_fl * 0.040000 + 0.000000;
+	returnedVal.var2 = scaled;
+
+	std::string raw3 = binary.substr(40,12); //REL_SPEED
+	float REL_SPEED_fl;
+        	if (raw3[0] == '0'){
+        	REL_SPEED_fl= std::stoul( raw3, 0, 2 );
+	}
+	else {
+        	REL_SPEED_fl = std::stoul(findTwosComplement(raw3), 0, 2);
+        	REL_SPEED_fl = REL_SPEED_fl * -1.0;
+        	}
+	scaled = REL_SPEED_fl * 0.017850 + 0.000000;
+	returnedVal.var3 = scaled;
+
+	return returnedVal;
+}
+if (msg_id == 386){
+	std::string raw1 = binary.substr(8,13); //LONG_DIST
+	raw_dec = std::stoull(raw1, 0, 2);
+	scaled = (float)raw_dec * 0.040000 + 0.000000;
+	returnedVal.var1 = scaled;
+
+	std::string raw2 = binary.substr(24,11); //LAT_DIST
+	float LAT_DIST_fl;
+        	if (raw2[0] == '0'){
+        	LAT_DIST_fl= std::stoul( raw2, 0, 2 );
+	}
+	else {
+        	LAT_DIST_fl = std::stoul(findTwosComplement(raw2), 0, 2);
+        	LAT_DIST_fl = LAT_DIST_fl * -1.0;
+        	}
+	scaled = LAT_DIST_fl * 0.040000 + 0.000000;
+	returnedVal.var2 = scaled;
+
+	std::string raw3 = binary.substr(40,12); //REL_SPEED
+	float REL_SPEED_fl;
+        	if (raw3[0] == '0'){
+        	REL_SPEED_fl= std::stoul( raw3, 0, 2 );
+	}
+	else {
+        	REL_SPEED_fl = std::stoul(findTwosComplement(raw3), 0, 2);
+        	REL_SPEED_fl = REL_SPEED_fl * -1.0;
+        	}
+	scaled = REL_SPEED_fl * 0.017850 + 0.000000;
+	returnedVal.var3 = scaled;
+
+	return returnedVal;
+}
+if (msg_id == 387){
+	std::string raw1 = binary.substr(8,13); //LONG_DIST
+	raw_dec = std::stoull(raw1, 0, 2);
+	scaled = (float)raw_dec * 0.040000 + 0.000000;
+	returnedVal.var1 = scaled;
+
+	std::string raw2 = binary.substr(24,11); //LAT_DIST
+	float LAT_DIST_fl;
+        	if (raw2[0] == '0'){
+        	LAT_DIST_fl= std::stoul( raw2, 0, 2 );
+	}
+	else {
+        	LAT_DIST_fl = std::stoul(findTwosComplement(raw2), 0, 2);
+        	LAT_DIST_fl = LAT_DIST_fl * -1.0;
+        	}
+	scaled = LAT_DIST_fl * 0.040000 + 0.000000;
+	returnedVal.var2 = scaled;
+
+	std::string raw3 = binary.substr(40,12); //REL_SPEED
+	float REL_SPEED_fl;
+        	if (raw3[0] == '0'){
+        	REL_SPEED_fl= std::stoul( raw3, 0, 2 );
+	}
+	else {
+        	REL_SPEED_fl = std::stoul(findTwosComplement(raw3), 0, 2);
+        	REL_SPEED_fl = REL_SPEED_fl * -1.0;
+        	}
+	scaled = REL_SPEED_fl * 0.017850 + 0.000000;
+	returnedVal.var3 = scaled;
+
+	return returnedVal;
+}
+if (msg_id == 388){
+	std::string raw1 = binary.substr(8,13); //LONG_DIST
+	raw_dec = std::stoull(raw1, 0, 2);
+	scaled = (float)raw_dec * 0.040000 + 0.000000;
+	returnedVal.var1 = scaled;
+
+	std::string raw2 = binary.substr(24,11); //LAT_DIST
+	float LAT_DIST_fl;
+        	if (raw2[0] == '0'){
+        	LAT_DIST_fl= std::stoul( raw2, 0, 2 );
+	}
+	else {
+        	LAT_DIST_fl = std::stoul(findTwosComplement(raw2), 0, 2);
+        	LAT_DIST_fl = LAT_DIST_fl * -1.0;
+        	}
+	scaled = LAT_DIST_fl * 0.040000 + 0.000000;
+	returnedVal.var2 = scaled;
+
+	std::string raw3 = binary.substr(40,12); //REL_SPEED
+	float REL_SPEED_fl;
+        	if (raw3[0] == '0'){
+        	REL_SPEED_fl= std::stoul( raw3, 0, 2 );
+	}
+	else {
+        	REL_SPEED_fl = std::stoul(findTwosComplement(raw3), 0, 2);
+        	REL_SPEED_fl = REL_SPEED_fl * -1.0;
+        	}
+	scaled = REL_SPEED_fl * 0.017850 + 0.000000;
+	returnedVal.var3 = scaled;
+
+	return returnedVal;
+}
+if (msg_id == 389){
+	std::string raw1 = binary.substr(8,13); //LONG_DIST
+	raw_dec = std::stoull(raw1, 0, 2);
+	scaled = (float)raw_dec * 0.040000 + 0.000000;
+	returnedVal.var1 = scaled;
+
+	std::string raw2 = binary.substr(24,11); //LAT_DIST
+	float LAT_DIST_fl;
+        	if (raw2[0] == '0'){
+        	LAT_DIST_fl= std::stoul( raw2, 0, 2 );
+	}
+	else {
+        	LAT_DIST_fl = std::stoul(findTwosComplement(raw2), 0, 2);
+        	LAT_DIST_fl = LAT_DIST_fl * -1.0;
+        	}
+	scaled = LAT_DIST_fl * 0.040000 + 0.000000;
+	returnedVal.var2 = scaled;
+
+	std::string raw3 = binary.substr(40,12); //REL_SPEED
+	float REL_SPEED_fl;
+        	if (raw3[0] == '0'){
+        	REL_SPEED_fl= std::stoul( raw3, 0, 2 );
+	}
+	else {
+        	REL_SPEED_fl = std::stoul(findTwosComplement(raw3), 0, 2);
+        	REL_SPEED_fl = REL_SPEED_fl * -1.0;
+        	}
+	scaled = REL_SPEED_fl * 0.017850 + 0.000000;
+	returnedVal.var3 = scaled;
+
+	return returnedVal;
+}
+if (msg_id == 390){
+	std::string raw1 = binary.substr(8,13); //LONG_DIST
+	raw_dec = std::stoull(raw1, 0, 2);
+	scaled = (float)raw_dec * 0.040000 + 0.000000;
+	returnedVal.var1 = scaled;
+
+	std::string raw2 = binary.substr(24,11); //LAT_DIST
+	float LAT_DIST_fl;
+        	if (raw2[0] == '0'){
+        	LAT_DIST_fl= std::stoul( raw2, 0, 2 );
+	}
+	else {
+        	LAT_DIST_fl = std::stoul(findTwosComplement(raw2), 0, 2);
+        	LAT_DIST_fl = LAT_DIST_fl * -1.0;
+        	}
+	scaled = LAT_DIST_fl * 0.040000 + 0.000000;
+	returnedVal.var2 = scaled;
+
+	std::string raw3 = binary.substr(40,12); //REL_SPEED
+	float REL_SPEED_fl;
+        	if (raw3[0] == '0'){
+        	REL_SPEED_fl= std::stoul( raw3, 0, 2 );
+	}
+	else {
+        	REL_SPEED_fl = std::stoul(findTwosComplement(raw3), 0, 2);
+        	REL_SPEED_fl = REL_SPEED_fl * -1.0;
+        	}
+	scaled = REL_SPEED_fl * 0.017850 + 0.000000;
+	returnedVal.var3 = scaled;
+
+	return returnedVal;
+}
+if (msg_id == 391){
+	std::string raw1 = binary.substr(8,13); //LONG_DIST
+	raw_dec = std::stoull(raw1, 0, 2);
+	scaled = (float)raw_dec * 0.040000 + 0.000000;
+	returnedVal.var1 = scaled;
+
+	std::string raw2 = binary.substr(24,11); //LAT_DIST
+	float LAT_DIST_fl;
+        	if (raw2[0] == '0'){
+        	LAT_DIST_fl= std::stoul( raw2, 0, 2 );
+	}
+	else {
+        	LAT_DIST_fl = std::stoul(findTwosComplement(raw2), 0, 2);
+        	LAT_DIST_fl = LAT_DIST_fl * -1.0;
+        	}
+	scaled = LAT_DIST_fl * 0.040000 + 0.000000;
+	returnedVal.var2 = scaled;
+
+	std::string raw3 = binary.substr(40,12); //REL_SPEED
+	float REL_SPEED_fl;
+        	if (raw3[0] == '0'){
+        	REL_SPEED_fl= std::stoul( raw3, 0, 2 );
+	}
+	else {
+        	REL_SPEED_fl = std::stoul(findTwosComplement(raw3), 0, 2);
+        	REL_SPEED_fl = REL_SPEED_fl * -1.0;
+        	}
+	scaled = REL_SPEED_fl * 0.017850 + 0.000000;
+	returnedVal.var3 = scaled;
+
+	return returnedVal;
+}
+if (msg_id == 392){
+	std::string raw1 = binary.substr(8,13); //LONG_DIST
+	raw_dec = std::stoull(raw1, 0, 2);
+	scaled = (float)raw_dec * 0.040000 + 0.000000;
+	returnedVal.var1 = scaled;
+
+	std::string raw2 = binary.substr(24,11); //LAT_DIST
+	float LAT_DIST_fl;
+        	if (raw2[0] == '0'){
+        	LAT_DIST_fl= std::stoul( raw2, 0, 2 );
+	}
+	else {
+        	LAT_DIST_fl = std::stoul(findTwosComplement(raw2), 0, 2);
+        	LAT_DIST_fl = LAT_DIST_fl * -1.0;
+        	}
+	scaled = LAT_DIST_fl * 0.040000 + 0.000000;
+	returnedVal.var2 = scaled;
+
+	std::string raw3 = binary.substr(40,12); //REL_SPEED
+	float REL_SPEED_fl;
+        	if (raw3[0] == '0'){
+        	REL_SPEED_fl= std::stoul( raw3, 0, 2 );
+	}
+	else {
+        	REL_SPEED_fl = std::stoul(findTwosComplement(raw3), 0, 2);
+        	REL_SPEED_fl = REL_SPEED_fl * -1.0;
+        	}
+	scaled = REL_SPEED_fl * 0.017850 + 0.000000;
+	returnedVal.var3 = scaled;
+
+	return returnedVal;
+}
+if (msg_id == 393){
+	std::string raw1 = binary.substr(8,13); //LONG_DIST
+	raw_dec = std::stoull(raw1, 0, 2);
+	scaled = (float)raw_dec * 0.040000 + 0.000000;
+	returnedVal.var1 = scaled;
+
+	std::string raw2 = binary.substr(24,11); //LAT_DIST
+	float LAT_DIST_fl;
+        	if (raw2[0] == '0'){
+        	LAT_DIST_fl= std::stoul( raw2, 0, 2 );
+	}
+	else {
+        	LAT_DIST_fl = std::stoul(findTwosComplement(raw2), 0, 2);
+        	LAT_DIST_fl = LAT_DIST_fl * -1.0;
+        	}
+	scaled = LAT_DIST_fl * 0.040000 + 0.000000;
+	returnedVal.var2 = scaled;
+
+	std::string raw3 = binary.substr(40,12); //REL_SPEED
+	float REL_SPEED_fl;
+        	if (raw3[0] == '0'){
+        	REL_SPEED_fl= std::stoul( raw3, 0, 2 );
+	}
+	else {
+        	REL_SPEED_fl = std::stoul(findTwosComplement(raw3), 0, 2);
+        	REL_SPEED_fl = REL_SPEED_fl * -1.0;
+        	}
+	scaled = REL_SPEED_fl * 0.017850 + 0.000000;
+	returnedVal.var3 = scaled;
+
+	return returnedVal;
+}
+if (msg_id == 394){
+	std::string raw1 = binary.substr(8,13); //LONG_DIST
+	raw_dec = std::stoull(raw1, 0, 2);
+	scaled = (float)raw_dec * 0.040000 + 0.000000;
+	returnedVal.var1 = scaled;
+
+	std::string raw2 = binary.substr(24,11); //LAT_DIST
+	float LAT_DIST_fl;
+        	if (raw2[0] == '0'){
+        	LAT_DIST_fl= std::stoul( raw2, 0, 2 );
+	}
+	else {
+        	LAT_DIST_fl = std::stoul(findTwosComplement(raw2), 0, 2);
+        	LAT_DIST_fl = LAT_DIST_fl * -1.0;
+        	}
+	scaled = LAT_DIST_fl * 0.040000 + 0.000000;
+	returnedVal.var2 = scaled;
+
+	std::string raw3 = binary.substr(40,12); //REL_SPEED
+	float REL_SPEED_fl;
+        	if (raw3[0] == '0'){
+        	REL_SPEED_fl= std::stoul( raw3, 0, 2 );
+	}
+	else {
+        	REL_SPEED_fl = std::stoul(findTwosComplement(raw3), 0, 2);
+        	REL_SPEED_fl = REL_SPEED_fl * -1.0;
+        	}
+	scaled = REL_SPEED_fl * 0.017850 + 0.000000;
+	returnedVal.var3 = scaled;
+
+	return returnedVal;
+}
+if (msg_id == 395){
+	std::string raw1 = binary.substr(8,13); //LONG_DIST
+	raw_dec = std::stoull(raw1, 0, 2);
+	scaled = (float)raw_dec * 0.040000 + 0.000000;
+	returnedVal.var1 = scaled;
+
+	std::string raw2 = binary.substr(24,11); //LAT_DIST
+	float LAT_DIST_fl;
+        	if (raw2[0] == '0'){
+        	LAT_DIST_fl= std::stoul( raw2, 0, 2 );
+	}
+	else {
+        	LAT_DIST_fl = std::stoul(findTwosComplement(raw2), 0, 2);
+        	LAT_DIST_fl = LAT_DIST_fl * -1.0;
+        	}
+	scaled = LAT_DIST_fl * 0.040000 + 0.000000;
+	returnedVal.var2 = scaled;
+
+	std::string raw3 = binary.substr(40,12); //REL_SPEED
+	float REL_SPEED_fl;
+        	if (raw3[0] == '0'){
+        	REL_SPEED_fl= std::stoul( raw3, 0, 2 );
+	}
+	else {
+        	REL_SPEED_fl = std::stoul(findTwosComplement(raw3), 0, 2);
+        	REL_SPEED_fl = REL_SPEED_fl * -1.0;
+        	}
+	scaled = REL_SPEED_fl * 0.017850 + 0.000000;
+	returnedVal.var3 = scaled;
+
+	return returnedVal;
+}
+if (msg_id == 396){
+	std::string raw1 = binary.substr(8,13); //LONG_DIST
+	raw_dec = std::stoull(raw1, 0, 2);
+	scaled = (float)raw_dec * 0.040000 + 0.000000;
+	returnedVal.var1 = scaled;
+
+	std::string raw2 = binary.substr(24,11); //LAT_DIST
+	float LAT_DIST_fl;
+        	if (raw2[0] == '0'){
+        	LAT_DIST_fl= std::stoul( raw2, 0, 2 );
+	}
+	else {
+        	LAT_DIST_fl = std::stoul(findTwosComplement(raw2), 0, 2);
+        	LAT_DIST_fl = LAT_DIST_fl * -1.0;
+        	}
+	scaled = LAT_DIST_fl * 0.040000 + 0.000000;
+	returnedVal.var2 = scaled;
+
+	std::string raw3 = binary.substr(40,12); //REL_SPEED
+	float REL_SPEED_fl;
+        	if (raw3[0] == '0'){
+        	REL_SPEED_fl= std::stoul( raw3, 0, 2 );
+	}
+	else {
+        	REL_SPEED_fl = std::stoul(findTwosComplement(raw3), 0, 2);
+        	REL_SPEED_fl = REL_SPEED_fl * -1.0;
+        	}
+	scaled = REL_SPEED_fl * 0.017850 + 0.000000;
+	returnedVal.var3 = scaled;
+
+	return returnedVal;
+}
+if (msg_id == 397){
+	std::string raw1 = binary.substr(8,13); //LONG_DIST
+	raw_dec = std::stoull(raw1, 0, 2);
+	scaled = (float)raw_dec * 0.040000 + 0.000000;
+	returnedVal.var1 = scaled;
+
+	std::string raw2 = binary.substr(24,11); //LAT_DIST
+	float LAT_DIST_fl;
+        	if (raw2[0] == '0'){
+        	LAT_DIST_fl= std::stoul( raw2, 0, 2 );
+	}
+	else {
+        	LAT_DIST_fl = std::stoul(findTwosComplement(raw2), 0, 2);
+        	LAT_DIST_fl = LAT_DIST_fl * -1.0;
+        	}
+	scaled = LAT_DIST_fl * 0.040000 + 0.000000;
+	returnedVal.var2 = scaled;
+
+	std::string raw3 = binary.substr(40,12); //REL_SPEED
+	float REL_SPEED_fl;
+        	if (raw3[0] == '0'){
+        	REL_SPEED_fl= std::stoul( raw3, 0, 2 );
+	}
+	else {
+        	REL_SPEED_fl = std::stoul(findTwosComplement(raw3), 0, 2);
+        	REL_SPEED_fl = REL_SPEED_fl * -1.0;
+        	}
+	scaled = REL_SPEED_fl * 0.017850 + 0.000000;
+	returnedVal.var3 = scaled;
+
+	return returnedVal;
+}
+if (msg_id == 398){
+	std::string raw1 = binary.substr(8,13); //LONG_DIST
+	raw_dec = std::stoull(raw1, 0, 2);
+	scaled = (float)raw_dec * 0.040000 + 0.000000;
+	returnedVal.var1 = scaled;
+
+	std::string raw2 = binary.substr(24,11); //LAT_DIST
+	float LAT_DIST_fl;
+        	if (raw2[0] == '0'){
+        	LAT_DIST_fl= std::stoul( raw2, 0, 2 );
+	}
+	else {
+        	LAT_DIST_fl = std::stoul(findTwosComplement(raw2), 0, 2);
+        	LAT_DIST_fl = LAT_DIST_fl * -1.0;
+        	}
+	scaled = LAT_DIST_fl * 0.040000 + 0.000000;
+	returnedVal.var2 = scaled;
+
+	std::string raw3 = binary.substr(40,12); //REL_SPEED
+	float REL_SPEED_fl;
+        	if (raw3[0] == '0'){
+        	REL_SPEED_fl= std::stoul( raw3, 0, 2 );
+	}
+	else {
+        	REL_SPEED_fl = std::stoul(findTwosComplement(raw3), 0, 2);
+        	REL_SPEED_fl = REL_SPEED_fl * -1.0;
+        	}
+	scaled = REL_SPEED_fl * 0.017850 + 0.000000;
+	returnedVal.var3 = scaled;
+
+	return returnedVal;
+}
+if (msg_id == 399){
+	std::string raw1 = binary.substr(8,13); //LONG_DIST
+	raw_dec = std::stoull(raw1, 0, 2);
+	scaled = (float)raw_dec * 0.040000 + 0.000000;
+	returnedVal.var1 = scaled;
+
+	std::string raw2 = binary.substr(24,11); //LAT_DIST
+	float LAT_DIST_fl;
+        	if (raw2[0] == '0'){
+        	LAT_DIST_fl= std::stoul( raw2, 0, 2 );
+	}
+	else {
+        	LAT_DIST_fl = std::stoul(findTwosComplement(raw2), 0, 2);
+        	LAT_DIST_fl = LAT_DIST_fl * -1.0;
+        	}
+	scaled = LAT_DIST_fl * 0.040000 + 0.000000;
+	returnedVal.var2 = scaled;
+
+	std::string raw3 = binary.substr(40,12); //REL_SPEED
+	float REL_SPEED_fl;
+        	if (raw3[0] == '0'){
+        	REL_SPEED_fl= std::stoul( raw3, 0, 2 );
+	}
+	else {
+        	REL_SPEED_fl = std::stoul(findTwosComplement(raw3), 0, 2);
+        	REL_SPEED_fl = REL_SPEED_fl * -1.0;
+        	}
+	scaled = REL_SPEED_fl * 0.017850 + 0.000000;
+	returnedVal.var3 = scaled;
+
+	return returnedVal;
+}
+if (msg_id == 467){
+	std::string raw1 = binary.substr(8,1); //MAIN_ON
 	raw_dec = std::stoull(raw1, 0, 2);
 	scaled = (float)raw_dec * 1.000000 + 0.000000;
 	returnedVal.var1 = scaled;
 
-	std::string raw2 = binary.substr(67,12); //WHEEL_TORQUE_CMD
+	std::string raw2 = binary.substr(16,8); //SET_SPEED
 	raw_dec = std::stoull(raw2, 0, 2);
 	scaled = (float)raw_dec * 1.000000 + 0.000000;
+	conversion = ceilf((scaled* (10.0/36.0)) * 100) / 100;
+	returnedVal.var2 = conversion;
+
+	return returnedVal;
+}
+if (msg_id == 552){
+	std::string raw1 = binary.substr(1,15); //ACCEL_X
+	float ACCEL_X_fl;
+        	if (raw1[0] == '0'){
+        	ACCEL_X_fl= std::stoul( raw1, 0, 2 );
+	}
+	else {
+        	ACCEL_X_fl = std::stoul(findTwosComplement(raw1), 0, 2);
+        	ACCEL_X_fl = ACCEL_X_fl * -1.0;
+        	}
+	scaled = ACCEL_X_fl * 0.001000 + 0.000000;
+	returnedVal.var1 = scaled;
+
+	return returnedVal;
+}
+if (msg_id == 608){
+	std::string raw1 = binary.substr(8,16); //STEER_TORQUE_DRIVER
+	float STEER_TORQUE_DRIVER_fl;
+        	if (raw1[0] == '0'){
+        	STEER_TORQUE_DRIVER_fl= std::stoul( raw1, 0, 2 );
+	}
+	else {
+        	STEER_TORQUE_DRIVER_fl = std::stoul(findTwosComplement(raw1), 0, 2);
+        	STEER_TORQUE_DRIVER_fl = STEER_TORQUE_DRIVER_fl * -1.0;
+        	}
+	scaled = STEER_TORQUE_DRIVER_fl * 1.000000 + 0.000000;
+	returnedVal.var1 = scaled;
+
+	std::string raw2 = binary.substr(40,16); //STEER_TORQUE_EPS
+	float STEER_TORQUE_EPS_fl;
+        	if (raw2[0] == '0'){
+        	STEER_TORQUE_EPS_fl= std::stoul( raw2, 0, 2 );
+	}
+	else {
+        	STEER_TORQUE_EPS_fl = std::stoul(findTwosComplement(raw2), 0, 2);
+        	STEER_TORQUE_EPS_fl = STEER_TORQUE_EPS_fl * -1.0;
+        	}
+	scaled = STEER_TORQUE_EPS_fl * 0.660000 + 0.000000;
 	returnedVal.var2 = scaled;
 
-	std::string raw3 = binary.substr(173,10); //BRAKE_TORQUE_CMD
+	std::string raw3 = binary.substr(7,1); //STEER_OVERRIDE
 	raw_dec = std::stoull(raw3, 0, 2);
 	scaled = (float)raw_dec * 1.000000 + 0.000000;
 	returnedVal.var3 = scaled;
 
 	return returnedVal;
 }
-if (msg_id == 1119){
-	std::string raw1 = binary.substr(58,3); //ACC_BTNS
+if (msg_id == 740){
+	std::string raw1 = binary.substr(7,1); //STEER_REQUEST
 	raw_dec = std::stoull(raw1, 0, 2);
 	scaled = (float)raw_dec * 1.000000 + 0.000000;
 	returnedVal.var1 = scaled;
 
-    if (int(scaled) == 0){
-    	returnedVal.choice_var1 = "none";
-    	}
-
-    if (int(scaled) == 1){
-    	returnedVal.choice_var1 = "resume";
-    	}
-
-    if (int(scaled) == 2){
-    	returnedVal.choice_var1 = "set";
-    	}
-
-    if (int(scaled) == 3){
-    	returnedVal.choice_var1 = "distance";
-    	}
-
-    if (int(scaled) == 4){
-    	returnedVal.choice_var1 = "cancel";
-    	}
-
-    if (int(scaled) == 5){
-    	returnedVal.choice_var1 = "system_toggle";
-    	}
+	std::string raw2 = binary.substr(8,16); //STEER_TORQUE_CMD
+	float STEER_TORQUE_CMD_fl;
+        	if (raw2[0] == '0'){
+        	STEER_TORQUE_CMD_fl= std::stoul( raw2, 0, 2 );
+	}
+	else {
+        	STEER_TORQUE_CMD_fl = std::stoul(findTwosComplement(raw2), 0, 2);
+        	STEER_TORQUE_CMD_fl = STEER_TORQUE_CMD_fl * -1.0;
+        	}
+	scaled = STEER_TORQUE_CMD_fl * 1.000000 + 0.000000;
+	returnedVal.var2 = scaled;
 
 	return returnedVal;
 }
-if (msg_id == 1487){
-	std::string raw1 = binary.substr(153,7); //SET_SPEED
-	raw_dec = std::stoull(raw1, 0, 2);
-	scaled = (float)raw_dec * 1.000000 + 0.000000;
+if (msg_id == 835){
+	std::string raw1 = binary.substr(0,16); //ACCEL_CMD
+	float ACCEL_CMD_fl;
+        	if (raw1[0] == '0'){
+        	ACCEL_CMD_fl= std::stoul( raw1, 0, 2 );
+	}
+	else {
+        	ACCEL_CMD_fl = std::stoul(findTwosComplement(raw1), 0, 2);
+        	ACCEL_CMD_fl = ACCEL_CMD_fl * -1.0;
+        	}
+	scaled = ACCEL_CMD_fl * 0.001000 + 0.000000;
 	returnedVal.var1 = scaled;
 
-	std::string raw2 = binary.substr(280,4); //STATE_SIGNAL
+	std::string raw2 = binary.substr(18,1); //MINI_CAR
 	raw_dec = std::stoull(raw2, 0, 2);
 	scaled = (float)raw_dec * 1.000000 + 0.000000;
 	returnedVal.var2 = scaled;
 
-	std::string raw3 = binary.substr(161,2); //SET_DISTANCE
+	std::string raw3 = binary.substr(25,1); //CAR_AHEAD
 	raw_dec = std::stoull(raw3, 0, 2);
 	scaled = (float)raw_dec * 1.000000 + 0.000000;
 	returnedVal.var3 = scaled;
 
-	std::string raw4 = binary.substr(182,5); //HUD_STATES
+	std::string raw4 = binary.substr(31,1); //CANCEL_REQ
 	raw_dec = std::stoull(raw4, 0, 2);
 	scaled = (float)raw_dec * 1.000000 + 0.000000;
 	returnedVal.var4 = scaled;
 
-	std::string raw5 = binary.substr(137,1); //MINICAR
+	std::string raw5 = binary.substr(30,1); //ACC_CUT_IN
 	raw_dec = std::stoull(raw5, 0, 2);
 	scaled = (float)raw_dec * 1.000000 + 0.000000;
 	returnedVal.var5 = scaled;
+
+	std::string raw6 = binary.substr(21,1); //ACC_MALFUNCTION
+	raw_dec = std::stoull(raw6, 0, 2);
+	scaled = (float)raw_dec * 1.000000 + 0.000000;
+	returnedVal.var6 = scaled;
+
+	return returnedVal;
+}
+if (msg_id == 869){
+	std::string raw1 = binary.substr(32,8); //LEAD_DISTANCE
+	raw_dec = std::stoull(raw1, 0, 2);
+	scaled = (float)raw_dec * 1.000000 + 0.000000;
+	returnedVal.var1 = scaled;
+
+	std::string raw2 = binary.substr(40,12); //REL_SPEED
+	float REL_SPEED_fl;
+        	if (raw2[0] == '0'){
+        	REL_SPEED_fl= std::stoul( raw2, 0, 2 );
+	}
+	else {
+        	REL_SPEED_fl = std::stoul(findTwosComplement(raw2), 0, 2);
+        	REL_SPEED_fl = REL_SPEED_fl * -1.0;
+        	}
+	scaled = REL_SPEED_fl * 0.017850 + 0.000000;
+	returnedVal.var2 = scaled;
+
+	std::string raw3 = binary.substr(5,1); //SET_BTN
+	raw_dec = std::stoull(raw3, 0, 2);
+	scaled = (float)raw_dec * 1.000000 + 0.000000;
+	returnedVal.var3 = scaled;
+
+	std::string raw4 = binary.substr(4,1); //RES_BTN
+	raw_dec = std::stoull(raw4, 0, 2);
+	scaled = (float)raw_dec * 1.000000 + 0.000000;
+	returnedVal.var4 = scaled;
+
+	std::string raw5 = binary.substr(6,1); //CANCEL_BTN
+	raw_dec = std::stoull(raw5, 0, 2);
+	scaled = (float)raw_dec * 1.000000 + 0.000000;
+	returnedVal.var5 = scaled;
+
+	return returnedVal;
+}
+if (msg_id == 921){
+	std::string raw1 = binary.substr(3,1); //MAIN_ON
+	raw_dec = std::stoull(raw1, 0, 2);
+	scaled = (float)raw_dec * 1.000000 + 0.000000;
+	returnedVal.var1 = scaled;
+
+	std::string raw2 = binary.substr(24,8); //UI_SET_SPEED
+	raw_dec = std::stoull(raw2, 0, 2);
+	scaled = (float)raw_dec * 1.000000 + 0.000000;
+	returnedVal.var2 = scaled;
+
+	std::string raw3 = binary.substr(12,4); //CRUISE_CONTROL_STATE
+	raw_dec = std::stoull(raw3, 0, 2);
+	scaled = (float)raw_dec * 1.000000 + 0.000000;
+	returnedVal.var3 = scaled;
+
+    if (int(scaled) == 2){
+    	returnedVal.choice_var3 = "disabled";
+    	}
+
+    if (int(scaled) == 11){
+    	returnedVal.choice_var3 = "hold";
+    	}
+
+    if (int(scaled) == 10){
+    	returnedVal.choice_var3 = "hold_waiting_user_cmd";
+    	}
+
+    if (int(scaled) == 6){
+    	returnedVal.choice_var3 = "enabled";
+    	}
+
+    if (int(scaled) == 5){
+    	returnedVal.choice_var3 = "faulted";
+    	}
+
+    if (int(scaled) == 0){
+    	returnedVal.choice_var3 = "off";
+    	}
+
+	std::string raw4 = binary.substr(9,2); //DISTANCE_LINES
+	raw_dec = std::stoull(raw4, 0, 2);
+	scaled = (float)raw_dec * 1.000000 + 0.000000;
+	returnedVal.var4 = scaled;
+
+	return returnedVal;
+}
+if (msg_id == 956){
+	std::string raw1 = binary.substr(5,1); //SPORT_ON
+	raw_dec = std::stoull(raw1, 0, 2);
+	scaled = (float)raw_dec * 1.000000 + 0.000000;
+	returnedVal.var1 = scaled;
+
+	std::string raw2 = binary.substr(47,1); //ECON_ON
+	raw_dec = std::stoull(raw2, 0, 2);
+	scaled = (float)raw_dec * 1.000000 + 0.000000;
+	returnedVal.var2 = scaled;
+
+	return returnedVal;
+}
+if (msg_id == 1570){
+	std::string raw1 = binary.substr(25,1); //HIGH_BEAMS_ON
+	raw_dec = std::stoull(raw1, 0, 2);
+	scaled = (float)raw_dec * 1.000000 + 0.000000;
+	returnedVal.var1 = scaled;
 
 	return returnedVal;
 }
