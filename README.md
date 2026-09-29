@@ -35,7 +35,7 @@ Published by the generated subs node (see scripts/makeSignalsJSON.py):
  car/state/gear_selector - std_msgs/Int16 - GEAR_PACKET.GEAR (msg 956), shift lever: 0 D, 8 N, 16 R, 32 P
  car/state/gear_cmd - std_msgs/Int16 - commanded transmission gear 1-8 (msg 464, byte 4 + 1). It leads the mechanically engaged gear by about 0.5-0.9 s and reads 1 in P/N/R. Verified on a 2019 RAV4 2.5 L gasoline (UA80 8-speed); not verified on the hybrid (eCVT)
 
-Msg 464 is not yet in the strym DBC files, so it is defined in scripts/dbc/toyota_rav4_supplement.dbc. generateDecode_Subs.py and insert_lines_vanilla_vehicle_interface.py add supplement messages whose IDs are missing from the strym DBC (scripts/dbc_supplements.py). Once strym defines msg 464, its definition is used instead.
+Msg 464 is defined in strym's toyota_rav4_2019.dbc (jmscslgroup/strym#52). When a vehicle's DBC does not define a message or signal listed in its JSON (e.g. msg 464 on the 2020/2021/hybrid DBCs), generateDecode_Subs.py skips that topic with a warning instead of failing.
 
 #### piping.launch
 This launch file allows you to pipe in replayed CAN and/or GPS data stored in CSV files, as if they are being read directly from the car in real time. Make sure that the generated subs.cpp node matches the vehicle type of the CSV file you are playing back data from. Caviat: the playback timing is not perfect in all cases but still very useful.

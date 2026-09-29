@@ -1,7 +1,6 @@
 #Author: Matthew Nice
 
 import cantools
-from dbc_supplements import addSupplementalDBCs
 import json
 import os
 
@@ -76,6 +75,25 @@ def findMessageInfo(messageNameorNum,db):
             messageInfo = "not in DBC"
 
     return messageInfo
+
+def dropSignalsNotInDBC(toROS, dbc):
+    """Skip, with a warning, messages and topics whose signals the DBC does not define.
+    One JSON serves several DBCs (e.g. toyota_rav4.json for 2019/2020/2021/hybrid), and not
+    every DBC has every message (msg 464 is only in toyota_rav4_2019.dbc)."""
+    kept = {}
+    for canid, topics in toROS.items():
+        msg = findMessageInfo(canid, dbc)
+        if type(msg) is str:
+            print('warning: msg %d not in DBC, skipping topics %s' % (canid, list(topics)))
+            continue
+        names = [sig.name for sig in msg.signals]
+        for topic, rosmsg in topics.items():
+            missing = [sig for sig in rosmsg[1] if sig not in names]
+            if missing:
+                print('warning: signals %s of msg %d not in DBC, skipping topic %s' % (missing, canid, topic))
+            else:
+                kept.setdefault(canid, {})[topic] = rosmsg
+    return kept
 
 def signalCheck(signal):
     print(signal.start,signal.length,signal.scale, signal.offset, signal.unit, signal.is_signed)
@@ -416,8 +434,6 @@ if dbcfile is not None:
         dbc = cantools.database.Database()
 else:
     dbc = cantools.database.Database()
-#add messages not yet in the strym DBC (e.g. Toyota msg 464, commanded gear)
-addSupplementalDBCs(dbc, vin_details)
 
 if jsonfile is not None:
     # Opening ROS JSON file
@@ -432,6 +448,7 @@ if jsonfile is not None:
 else:
     toROS = {}
 
+toROS = dropSignalsNotInDBC(toROS, dbc)
 toDecode = generateToDecode(toROS)
 
 #
