@@ -111,6 +111,9 @@ def main():
     print(txt)
     for i in toROS.keys():
         msg = findMessageInfo(i,dbc)
+        if type(msg) is str:
+            print('warning: msg %d not in DBC, not publishing it' % i)
+            continue
         #if count ==0:
         #    txt = "\t\t(canData->messageID==%d&&canData->dataLength==%d)"%(i,msg.length)
         #    lines.append(txt)
