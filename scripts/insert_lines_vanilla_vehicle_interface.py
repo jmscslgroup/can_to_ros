@@ -2,6 +2,7 @@
 
 import json
 import cantools
+from dbc_supplements import addSupplementalDBCs
 
 
 def keystoint(x):
@@ -87,6 +88,8 @@ if dbcfile is not None:
     dbc = initializeDBC_Cantools(dbcfile)
 else:
     dbc = cantools.database.Database()
+#add messages not yet in the strym DBC (e.g. Toyota msg 464, commanded gear)
+addSupplementalDBCs(dbc, vin_details)
 
 if jsonfile is not None:
     # Opening ROS JSON file

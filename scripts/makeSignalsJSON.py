@@ -24,6 +24,8 @@ toyota_rav4 = {
          397:{'car/radar/track_a13':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
          398:{'car/radar/track_a14':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
          399:{'car/radar/track_a15':[['geometry_msgs::PointStamped'], ['LONG_DIST','LAT_DIST','REL_SPEED'] ]},
+         452:{'car/state/engine_rpm':[['std_msgs::Float64'],['RPM']]},#ENGINE_SPD, used by the gear estimator
+         464:{'car/state/gear_cmd':[['std_msgs::Int16'],['GEAR_CMD']]},#commanded gear 1-8, defined in scripts/dbc/toyota_rav4_supplement.dbc
          467:{'pcm_cruise_2':[['geometry_msgs::Point'],['MAIN_ON','SET_SPEED']],
 		'acc/set_speed' : [['std_msgs::Int16'], ['SET_SPEED']]
 		},
@@ -56,6 +58,7 @@ toyota_rav4 = {
          },
          956:{'car/state/sport_mode':[['std_msgs::Bool'],['SPORT_ON']]
          ,'car/state/eco_mode':[['std_msgs::Bool'],['ECON_ON']]
+         ,'car/state/gear_selector':[['std_msgs::Int16'],['GEAR']]#shift lever: 0 D, 8 N, 16 R, 32 P
          },
          1570:{'highbeams':[['std_msgs::Float64'],['HIGH_BEAMS_ON']]}
 }

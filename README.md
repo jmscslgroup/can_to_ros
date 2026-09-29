@@ -28,6 +28,15 @@ Invokes the following:
  /cmd_accel - std_msgs/Float64 - This is where control commands should be sent.  cut_in_disengager will ensure convert this to /cmd_accel_safe as needed, then publishCommands will convert /cmd_accel_safe to /car/cruise/accel_input
  /car/can/raw - std_msgs/String - Reports CAN data.  Use the node subs_fs.cpp to interpret these into car sensing data
 
+#### Powertrain signals for gear estimation (Toyota RAV4)
+Published by the generated subs node (see scripts/makeSignalsJSON.py):
+
+ car/state/engine_rpm - std_msgs/Float64 - ENGINE_SPD.RPM (msg 452), rpm
+ car/state/gear_selector - std_msgs/Int16 - GEAR_PACKET.GEAR (msg 956), shift lever: 0 D, 8 N, 16 R, 32 P
+ car/state/gear_cmd - std_msgs/Int16 - commanded transmission gear 1-8 (msg 464, byte 4 + 1). It leads the mechanically engaged gear by about 0.5-0.9 s and reads 1 in P/N/R. Verified on a 2019 RAV4 2.5 L gasoline (UA80 8-speed); not verified on the hybrid (eCVT)
+
+Msg 464 is not yet in the strym DBC files, so it is defined in scripts/dbc/toyota_rav4_supplement.dbc. generateDecode_Subs.py and insert_lines_vanilla_vehicle_interface.py add supplement messages whose IDs are missing from the strym DBC (scripts/dbc_supplements.py). Once strym defines msg 464, its definition is used instead.
+
 #### piping.launch
 This launch file allows you to pipe in replayed CAN and/or GPS data stored in CSV files, as if they are being read directly from the car in real time. Make sure that the generated subs.cpp node matches the vehicle type of the CSV file you are playing back data from. Caviat: the playback timing is not perfect in all cases but still very useful.
 

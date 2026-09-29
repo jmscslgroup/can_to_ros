@@ -1,0 +1,14 @@
+VERSION ""
+
+NS_ :
+
+BS_:
+
+BU_: XXX
+
+BO_ 464 TRANS_GEAR_464: 8 XXX
+ SG_ GEAR_CMD : 39|8@0+ (1,1) [1|8] "" XXX
+ SG_ CHECKSUM : 63|8@0+ (1,0) [0|255] "" XXX
+
+CM_ SG_ 464 GEAR_CMD "Commanded (target) transmission gear 1-8; raw byte 4 = gear-1. Leads mechanical engagement by ~0.9 s on upshifts, ~0.5 s on downshifts. Reads 1 in P/N/R and at standstill. Reverse-engineered from a 2019 RAV4 2.5 L gasoline, UA80 8-speed AT (VIN prefix 2T3Y1RFV), 2022 logs; not verified on other years or the hybrid (eCVT).";
+CM_ SG_ 464 CHECKSUM "Standard Toyota checksum: (sum of bytes 0-6 + 0x01 + 0xD0 + 8) & 0xFF.";
